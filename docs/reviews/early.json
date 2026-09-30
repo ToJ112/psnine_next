@@ -1,0 +1,3864 @@
+[
+  {
+    "sha": "e1a15a9c356a817b27603089cb3568d3b9af0c45",
+    "kind": "feature",
+    "summary": "Initial commit creating P9 dark mode Stylish CSS stylesheet",
+    "features": [
+      "dark_theme",
+      "hover_mask_reveal"
+    ],
+    "status": "reviewed",
+    "notes": "Created initial main.css for domain psnine.com with dark theme styles and hover reveal on .mark text; added README and screenshots."
+  },
+  {
+    "sha": "db98476327652bd6ebb2457b3df056ad5fbff876",
+    "kind": "docs",
+    "summary": "Update README documentation layout and screenshots",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Adjusted README image layout and header."
+  },
+  {
+    "sha": "5fd29b2e262950685ddcc87cc7746b368d98c06c",
+    "kind": "docs",
+    "summary": "Update README title and project description",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated title to P9 (PSNINE.COM) 夜间模式 with link."
+  },
+  {
+    "sha": "3ee1497d8ed255540bb423e6c9a3ff5ae90a4f8b",
+    "kind": "docs",
+    "summary": "Update README feature bullet points",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Noted hover mask reveal is optional."
+  },
+  {
+    "sha": "aefa8cafe49b15c9b4ceaf4444a17c99b4c54cf7",
+    "kind": "docs",
+    "summary": "Add GitHub commit and release badges to README",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Added shields.io badges for last commit and release."
+  },
+  {
+    "sha": "b4cb7338bfb3a00306dafe7e315b4b4502a97136",
+    "kind": "docs",
+    "summary": "Update release version tag in README",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Normalized version string to v1.0."
+  },
+  {
+    "sha": "81d71b349947f14f4d78ded2c1d9d9aefe2ee408",
+    "kind": "style",
+    "summary": "Release CSS v1.1 and add hover unmask color rule",
+    "features": [
+      "dark_theme",
+      "hover_mask_reveal"
+    ],
+    "status": "reviewed",
+    "notes": "Added .mark:hover { color: #2b2b2b !important; } in main.css and updated README."
+  },
+  {
+    "sha": "51fce0194dcb096b09ac9063d5242bca85d1a3a1",
+    "kind": "feature",
+    "summary": "Create Tampermonkey userscript psnineplus.js with charts, author highlight, and reply traceback",
+    "features": [
+      "author_highlight",
+      "specific_id_highlight",
+      "reply_content_preview",
+      "price_trend_chart",
+      "trophy_ratio_chart",
+      "trophy_timeline_chart",
+      "scroll_to_bottom"
+    ],
+    "status": "reviewed",
+    "notes": "Initial version 0.27 of psnineplus.js using jQuery and Highcharts CDN. Implemented author highlight (.psnnode.author), specific admin ID highlights, reply content hover traceback, game discount price trend Highcharts line chart, trophy platinum/gold/silver/bronze rarity ratio chart, trophy timeline acquisition chart, and scroll to bottom button."
+  },
+  {
+    "sha": "edf96b27f10e03610d7ab863656009ea482ea70d",
+    "kind": "chore",
+    "summary": "Bump version to 0.28 and add feature 3 comment in psnineplus.js",
+    "features": [
+      "reply_content_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Added comment labeling feature 3 for reply content traceback."
+  },
+  {
+    "sha": "b672cdfbcab38cc70579cedbd6fb18b4e69578bf",
+    "kind": "feature",
+    "summary": "Add image hover preview and bump version to 0.29",
+    "features": [
+      "hover_image_preview",
+      "author_highlight"
+    ],
+    "status": "reviewed",
+    "notes": "Added hover popup preview for external image links (a[target='_blank']) showing image on mousemove; bumped version to 0.29."
+  },
+  {
+    "sha": "b12477a3e8318b164a0f1f839d09bb16c3724111",
+    "kind": "fix",
+    "summary": "Fix reply traceback content matching and avatar extraction, bump to 0.31",
+    "features": [
+      "reply_content_preview",
+      "hover_image_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Refactored DOM selectors for reply traceback: querySelectorAll on div.meta, a.l for avatars; adjusted floor offset calculation."
+  },
+  {
+    "sha": "d3d5f910e757807997644651731ff51d20b99803",
+    "kind": "feature",
+    "summary": "Add JS hover unmask for black bars and support d7vg.com domain, bump to 0.32",
+    "features": [
+      "hover_mask_reveal",
+      "reply_content_preview",
+      "scroll_to_bottom"
+    ],
+    "status": "reviewed",
+    "notes": "Added hoverUnmark jQuery hover handler on .mark elements dynamically reading .box background-color; extended domain match in main.css to d7vg.com; updated selectors for .post .ml64."
+  },
+  {
+    "sha": "1c40daa745ce662b0b055c3139785d4db21c7b28",
+    "kind": "docs",
+    "summary": "Add feature preview screenshots and documentation attribution",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Uploaded screenshots (hoverImage, markHover, priceTrendency, replyContent, trophySummary); acknowledged mordom0404's P9 toolset."
+  },
+  {
+    "sha": "042ec11642505ac50cfc92e49b20ccf4befd8ff8",
+    "kind": "chore",
+    "summary": "Move screenshots into screenshots/ subdirectory",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Organized image assets into screenshots/ directory."
+  },
+  {
+    "sha": "87aca4fb6ba1e47ea3e68bb1c6cb259274384b5a",
+    "kind": "docs",
+    "summary": "Add screenshots table to README",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Added authorHighlight and highlightID screenshots."
+  },
+  {
+    "sha": "e63e00ce73ea329ff95790609abca5c162cff1d3",
+    "kind": "docs",
+    "summary": "Update screenshot assets in screenshots/",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated bottom.png, highlightAuthor.png, hoverImage.png."
+  },
+  {
+    "sha": "e5a35c157a830f6f0157ab09ca0ed12b109196e0",
+    "kind": "assets",
+    "summary": "Add browser and extension icons",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Added Firefox, Chrome, Tampermonkey, Violentmonkey icons."
+  },
+  {
+    "sha": "889db88d6d0734d962b0f1b576a728b9fa2e8c46",
+    "kind": "docs",
+    "summary": "Update README feature description for author highlight",
+    "features": [
+      "author_highlight"
+    ],
+    "status": "reviewed",
+    "notes": "Updated README copy describing author highlight and installation."
+  },
+  {
+    "sha": "a00139f27449e7930726a4b708bcb7a3596ebdc0",
+    "kind": "merge",
+    "summary": "Merge remote-tracking branch master of psnine-night-mode-CSS",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Merged upstream master changes with updated README and icons."
+  },
+  {
+    "sha": "a58fdc4a8ce0ea6a7cbf019ca9efe15913eff3ff",
+    "kind": "chore",
+    "summary": "Rename icon folder from Chinese characters to icon/",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Cleaned up directory structure moving icons from temporary folder to icon/."
+  },
+  {
+    "sha": "9366ad2dbd624f49c79f75028677a0fc03496b77",
+    "kind": "docs",
+    "summary": "Update replyContent.png screenshot",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Refreshed replyContent screenshot."
+  },
+  {
+    "sha": "d16d022baf663dc00df5617f67c49a6de57d5e80",
+    "kind": "docs",
+    "summary": "Update browser compatibility table in README",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Added Chrome and Firefox compatibility rows."
+  },
+  {
+    "sha": "ee6ef16fb48026c5ae566348cfeb0095d6d3a134",
+    "kind": "docs",
+    "summary": "Update README screenshot links",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Cleaned up markdown image paths in README."
+  },
+  {
+    "sha": "4875c9a6f07cb5effcc7aa2db3913705a709e812",
+    "kind": "docs",
+    "summary": "Use raw GitHub URLs for screenshots in README",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Switched image references to raw.githubusercontent.com for reliable rendering."
+  },
+  {
+    "sha": "1821e48968e3a544395a9d5ac2f35859a41a3ec2",
+    "kind": "merge",
+    "summary": "Merge branch master of psnine-night-mode-CSS",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Merged README and screenshot updates."
+  },
+  {
+    "sha": "2bf1527e564d28d8d5ac38ee2ce4d8cc2f069ff2",
+    "kind": "feature",
+    "summary": "Add foreign currency conversion to CNY (RMB) on store price pages, bump to 0.33",
+    "features": [
+      "foreign_currency_cny"
+    ],
+    "status": "reviewed",
+    "notes": "Added currency rates config (JPY, USD, HKD to CNY) and DOM parser for dd_price elements on store discount pages, appending approx RMB value (~xx.xx RMB); updated version to 0.33."
+  },
+  {
+    "sha": "204b17d2f437c1c5707ed98a7de04ce6fb59a209",
+    "kind": "feature",
+    "summary": "Add comment floor numbers in topic comments, bump to 0.34",
+    "features": [
+      "comment_floor_number"
+    ],
+    "status": "reviewed",
+    "notes": "Added floor index (#1, #2, etc.) to span.r in comment sections; bumped version to 0.34."
+  },
+  {
+    "sha": "7ba84e98d25e051df31513b272c4a15923b35314",
+    "kind": "feature",
+    "summary": "Add non-platinum game opacity, top pagination, and discount background colors, bump to 0.35",
+    "features": [
+      "trophy_card_opacity",
+      "top_pagination",
+      "discount_highlight"
+    ],
+    "status": "reviewed",
+    "notes": "Added filterNonePlatinum feature (lowering opacity of games without platinum trophy to 0.2), added pagination duplicated to top of game lists, and changed background color based on discount percentage; bumped to 0.35."
+  },
+  {
+    "sha": "0ee9e7d020a43b2bb5754a306815219904561590",
+    "kind": "docs",
+    "summary": "Update foreignCurrency.png screenshot",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated screenshot asset."
+  },
+  {
+    "sha": "5a73ef066fe91736a4e10294227551a8d45e59a2",
+    "kind": "fix",
+    "summary": "Fix URL pattern check for game lists to exclude user profiles, bump to 0.36",
+    "features": [
+      "trophy_card_opacity",
+      "top_pagination"
+    ],
+    "status": "reviewed",
+    "notes": "Added !/psnid/.test check so non-platinum opacity filter does not erroneously run on user personal game pages; bumped to 0.36."
+  },
+  {
+    "sha": "6ed917ff4949e18bd1a169461e79beaaa029b286",
+    "kind": "fix",
+    "summary": "Fix admin ID highlight under d7vg domain and reply traceback matching, bump to 0.37",
+    "features": [
+      "specific_id_highlight",
+      "reply_content_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Made domain check agnostic between psnine.com and d7vg.com using regex; improved link extraction for reply traceback."
+  },
+  {
+    "sha": "a112da381822f263aaab1e7542eca39fb23f9bcb",
+    "kind": "chore",
+    "summary": "Add Tampermonkey metadata headers (license, supportURL, compatible)",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Added @license CC BY-NC 4.0, @supportURL, and @compatible headers for Chrome, Firefox, Edge."
+  },
+  {
+    "sha": "8ad78a480795a29d5da477f0c6be2f64d7e650fc",
+    "kind": "refactor",
+    "summary": "Use jQuery append for scroll-to-bottom button, bump to 0.38",
+    "features": [
+      "scroll_to_bottom"
+    ],
+    "status": "reviewed",
+    "notes": "Simplified DOM append for .bottombar button using jQuery html string instead of createElement; bumped to 0.38."
+  },
+  {
+    "sha": "d8d6d2c1a2a839cd17c5ec6a7a72718696a88795",
+    "kind": "fix",
+    "summary": "Fix reply traceback indexing and reverse search, bump to 0.39",
+    "features": [
+      "reply_content_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Adjusted floor loop boundary and traceId matching logic in reply traceback."
+  },
+  {
+    "sha": "cf531e6b2b74f1201d7b04be32bf1d578ec71d7f",
+    "kind": "fix",
+    "summary": "Fix floor index boundary condition in reply traceback, bump to 0.40",
+    "features": [
+      "reply_content_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Changed floor loop lower bound to floor > 1."
+  },
+  {
+    "sha": "7d2b193b5173a7fbfcb057da0b3b50bbf742a818",
+    "kind": "feature",
+    "summary": "Create standalone night-mode-css.js userscript and adjust main.css colors",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Added night-mode-css.js standalone userscript injecting dark CSS via GM_addStyle; tweaked !important rules in main.css."
+  },
+  {
+    "sha": "11f77825fa12966de322b345a5bc95e1abd4054b",
+    "kind": "feature",
+    "summary": "Add user blacklist filtering for comments, bump to 0.41",
+    "features": [
+      "comment_block_user"
+    ],
+    "status": "reviewed",
+    "notes": "Added blockList array configuration; hides div.post containing blocked usernames; bumped to 0.41."
+  },
+  {
+    "sha": "aada03f292c040148364bab03e69953b5053aecf",
+    "kind": "feature",
+    "summary": "Add real-time character count on gene creation page, bump to 0.42",
+    "features": [
+      "gene_word_count"
+    ],
+    "status": "reviewed",
+    "notes": "Added live word count display for textarea in gene publishing form, updating on input; bumped to 0.42."
+  },
+  {
+    "sha": "72941dc59612a65982a0e5cc1764253966319e47",
+    "kind": "fix",
+    "summary": "Fix table styles in dark mode and selector specificity in reply traceback, bump to 0.43",
+    "features": [
+      "dark_theme",
+      "reply_content_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Used .post > .ml64 to prevent matching nested quote containers; fixed dark mode table borders and cell colors in main.css."
+  },
+  {
+    "sha": "92a6a18f53e9d4030086abc8eab9ff70b2dc0f4d",
+    "kind": "feature",
+    "summary": "Add trophy summary list with tippy.js tooltips, bump to 0.44",
+    "features": [
+      "trophy_summary_list"
+    ],
+    "status": "reviewed",
+    "notes": "Integrated tippy.js CDN dependency; parsed earned and unearned trophy lists and rendered summary unit container with tooltip hover details; bumped to 0.44."
+  },
+  {
+    "sha": "c2a973b52251e135fd9e947da9f1b79e64db65d1",
+    "kind": "fix",
+    "summary": "Fix trophy summary tooltip HTML container, bump to 0.45",
+    "features": [
+      "trophy_summary_list"
+    ],
+    "status": "reviewed",
+    "notes": "Changed tippy tooltip content wrapper from div to span to avoid layout breakage; bumped to 0.45."
+  },
+  {
+    "sha": "606517acf8e72aa050f62bdd89ea75efe1fbe47b",
+    "kind": "fix",
+    "summary": "Improve username matching accuracy in reply traceback, bump to 0.46",
+    "features": [
+      "reply_content_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Refined regex and matching logic to ensure @mentions match the exact user's closest prior message; bumped to 0.46."
+  },
+  {
+    "sha": "c0c2ebd5b9f62907e2fdc622604e26b3ba242e08",
+    "kind": "style",
+    "summary": "Fix trophy tooltip background color to match theme, bump to 0.47",
+    "features": [
+      "trophy_summary_list"
+    ],
+    "status": "reviewed",
+    "notes": "Added dynamic theme style for .tippy-tooltip.psnine-theme matching .box background; bumped to 0.47."
+  },
+  {
+    "sha": "bf5b32fcd7fa31ca01bbb66a5fba595f86f180ae",
+    "kind": "feature",
+    "summary": "Truncate long reply traceback text to 45 chars with ellipsis, bump to 0.48",
+    "features": [
+      "reply_content_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Added truncation for reply previews exceeding 45 characters, appending ellipsis (...); bumped to 0.48."
+  },
+  {
+    "sha": "f39f551b2ae024a4f7e5ae5176df1dd96752e7ab",
+    "kind": "docs",
+    "summary": "Update replyContent.png screenshot",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated screenshot showing truncated reply preview."
+  },
+  {
+    "sha": "ec585fe691d6d45872d37ecdb9a81dd89ca8fac6",
+    "kind": "style",
+    "summary": "Adjust reply traceback popup box styling, bump to 0.49",
+    "features": [
+      "reply_content_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Tuned CSS for .replyTraceback (border-radius, padding, background); bumped to 0.49."
+  },
+  {
+    "sha": "812c700ae3fbbf1e66da50a14e596c4dd3d8fa59",
+    "kind": "feature",
+    "summary": "Add default view of own trophies on game page and resizable comment box",
+    "features": [
+      "game_page_default_my_trophies",
+      "resizable_comment_box"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by mordom0404 (ly43972): auto-redirects from /psngame/:id to /psngame/:id?psnid=:myPsnid using __Psnine_psnid cookie; enabled CSS resize for textarea in trophy detail page."
+  },
+  {
+    "sha": "ebc5a326408cff15e8da12841ec52cdd5f361f49",
+    "kind": "feature",
+    "summary": "Add visual settings panel with localStorage persistence and test.html",
+    "features": [
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by mordom0404 (ly43972): created HTML/CSS floating settings panel (.setting-panel-box) bound to localStorage['psnine-night-mode-CSS-settings'], added gear/link entry in user avatar dropdown; added test.html for local mockup."
+  },
+  {
+    "sha": "18fcaf0126f7ae24c7c367aefdff43a65638c4ce",
+    "kind": "style",
+    "summary": "Increase z-index of settings panel to 999999",
+    "features": [
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Set .setting-panel-box z-index to 999999 to stay above all site elements."
+  },
+  {
+    "sha": "57858e1f53e8a7c4bf1eaf3984188d0f6a8e17d5",
+    "kind": "docs",
+    "summary": "Update README with settings panel usage instructions",
+    "features": [
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Documented settings panel location in user menu in README."
+  },
+  {
+    "sha": "c0e9701820e4b4bd8446db0e9a549827cabaad11",
+    "kind": "merge",
+    "summary": "Merge pull request #1 from mordom0404/replyStyleUpgrade-mordom0404",
+    "features": [
+      "game_page_default_my_trophies",
+      "resizable_comment_box"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #1 bringing my trophies default redirect and resizable textarea."
+  },
+  {
+    "sha": "a3dbcc8c23164a958a3265f78d8dda140df305e1",
+    "kind": "chore",
+    "summary": "Bump version to 0.50",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Bumped version to 0.50."
+  },
+  {
+    "sha": "3d02dfe89e6b816e74b2d94e42476c573bedb0b2",
+    "kind": "chore",
+    "summary": "Code formatting and comment cleanup in psnineplus.js",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Cleaned up comments and whitespace."
+  },
+  {
+    "sha": "f96e583a2e107f11dadc33b4e9511b59e8ff5b68",
+    "kind": "assets",
+    "summary": "Add Maxthon and Edge browser icons",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Added icon assets."
+  },
+  {
+    "sha": "4a99efd3f3dfae68c1ae10d33e36404654147743",
+    "kind": "docs",
+    "summary": "Restructure README to 'PSN中文网用户体验优化计划'",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Substantially updated README structure, adding feature overview and tables."
+  },
+  {
+    "sha": "29cf3f48516708bb23681552125fae965c2b6ae8",
+    "kind": "docs",
+    "summary": "Empty commit touching README.md",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Zero-diff git commit touching README.md."
+  },
+  {
+    "sha": "25acbdf9e91e711a8772acf600a34a27052834b2",
+    "kind": "merge",
+    "summary": "Merge branch master of psnine-night-mode-CSS",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Merged upstream master updates into local branch."
+  },
+  {
+    "sha": "fff0d00d644b17cea6a555520a9335c0d1d5c7b6",
+    "kind": "docs",
+    "summary": "Update README headings and formatting",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Formatting updates in README."
+  },
+  {
+    "sha": "8b357ee8915ee719da0e65a9850630c0a2d306ea",
+    "kind": "merge",
+    "summary": "Merge branch master into replyStyleUpgrade-mordom0404",
+    "features": [
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Branch merge synchronizing mordom0404's working branch with master."
+  },
+  {
+    "sha": "c61cd72adf1dce8209252f6cc58d20408dbc18d8",
+    "kind": "merge",
+    "summary": "Merge pull request #2 from mordom0404/replyStyleUpgrade-mordom0404",
+    "features": [
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #2 integrating settings panel and test.html."
+  },
+  {
+    "sha": "ed0f0a9a45afc96560f4d2fe7729bd977e702b76",
+    "kind": "chore",
+    "summary": "Bump version to 0.51 and add co-author mordom0404",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated version to 0.51; added mordom0404 to @author header."
+  },
+  {
+    "sha": "c7e0801ffa3d43a82bf2f70c956a369a34f98aee",
+    "kind": "docs",
+    "summary": "Update README with settings panel instructions",
+    "features": [
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Added documentation for plugin settings panel."
+  },
+  {
+    "sha": "d61623f29cd53a66f5b224323754d1cc3ca44f45",
+    "kind": "refactor",
+    "summary": "Replace opacity boolean toggle with slider in settings panel, bump to 0.52",
+    "features": [
+      "settings_panel",
+      "trophy_card_opacity",
+      "top_pagination"
+    ],
+    "status": "reviewed",
+    "notes": "Removed filterNonePlatinum boolean toggle in favor of filterNonePlatinumAlpha slider (alpha=1 means disabled); changed settings key to psnine-enhanced-version-settings; fixed interaction with top pagination; bumped to 0.52."
+  },
+  {
+    "sha": "0bbf0c885821b9db7ffebd8781415acdc3a286bb",
+    "kind": "fix",
+    "summary": "Revert settings key to psnine-night-mode-CSS-settings, fix empty blacklist bug, optimize slider",
+    "features": [
+      "settings_panel",
+      "comment_block_user"
+    ],
+    "status": "reviewed",
+    "notes": "Reverted localStorage key to psnine-night-mode-CSS-settings to preserve user settings; fixed blacklist handling when empty; updated test.html slider CSS."
+  },
+  {
+    "sha": "85e974d6e06320c5af199fe1579a76a13f855c63",
+    "kind": "feature",
+    "summary": "Add reply traceback toggle and hover-to-show reply button",
+    "features": [
+      "settings_panel",
+      "reply_traceback_toggle",
+      "comment_hover_reply_btn"
+    ],
+    "status": "reviewed",
+    "notes": "Added replyTraceback boolean setting; hid comment reply button by default (.sonlist a.r, .post a.r) and showed on hover; added option to test.html."
+  },
+  {
+    "sha": "10c67567c797bb2315db77bbd14126d112c19f8a",
+    "kind": "refactor",
+    "summary": "Reorganize reply traceback code order and comments",
+    "features": [
+      "reply_content_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Clarified comment explaining reply traceback only runs on main topic/gene posts, not comment subpages."
+  },
+  {
+    "sha": "209a32c4cc706a23524c019d2d528a15595725b8",
+    "kind": "feature",
+    "summary": "Add foldTropySummary setting to default fold/unfold trophy summary, bump to 0.53",
+    "features": [
+      "trophy_summary_list",
+      "settings_panel",
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Added foldTropySummary setting in settings panel; added .text-gray color rule to main.css; bumped to 0.53."
+  },
+  {
+    "sha": "889bd0f92eceecd37efeb11562bdecca0f6ee596",
+    "kind": "feature",
+    "summary": "Integrate night mode toggle into settings panel and userscript",
+    "features": [
+      "settings_panel",
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Added nightMode setting to settings panel, injecting dark CSS dynamically inside psnineplus.js when enabled; updated test.html options."
+  },
+  {
+    "sha": "4543bb2a47a7b11c19314f2f92d08dfabc72b1bb",
+    "kind": "style",
+    "summary": "Update dark mode highlight colors in main.css and inline styles",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Softened background colors for colored list items (#344836, #4f3945) in main.css and psnineplus.js."
+  },
+  {
+    "sha": "52d7fb8baf9060906d822b14b83956e7daab8ccb",
+    "kind": "refactor",
+    "summary": "Refactor trophy summary DOM creation and disable night mode by default, bump to 0.54",
+    "features": [
+      "trophy_summary_list",
+      "dark_theme",
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Optimized trophy summary container construction; changed default nightMode to false; bumped to 0.54."
+  },
+  {
+    "sha": "fabb2684509fee4f86d28b3abc66cdfae14a7a8f",
+    "kind": "fix",
+    "summary": "Fix trophy summary folding container selector bug, bump to 0.55",
+    "features": [
+      "trophy_summary_list"
+    ],
+    "status": "reviewed",
+    "notes": "Fixed selector bug: hid .tropyContainer instead of .tropyCount; bumped to 0.55."
+  },
+  {
+    "sha": "4e1ccc28e2900832d249f88ae52e402875d36398",
+    "kind": "merge",
+    "summary": "Merge branch master of psnine-enhanced-version",
+    "features": [
+      "trophy_summary_list",
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Merged master branch into feature branch."
+  },
+  {
+    "sha": "4ccb971bd211ee6881ac30de61c3752e289b9e79",
+    "kind": "style",
+    "summary": "Update border-bottom styling in dark mode",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Added border-bottom: 1px solid #333 for .list li, .box .post, td, th."
+  },
+  {
+    "sha": "b03bc6e85def650eb6dbfdd23ca6502ad2049f85",
+    "kind": "style",
+    "summary": "Add dark mode style for .cloud tags",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Added background-color: #3c3c3c !important for .cloud in main.css."
+  },
+  {
+    "sha": "35d55f020b2e7226bbe2d42d629894156143131c",
+    "kind": "style",
+    "summary": "Refine hover rules and usernames in dark mode",
+    "features": [
+      "dark_theme"
+    ],
+    "notes": "Removed .box .post:hover rule to fix layout flickering; adjusted .psnnode background.",
+    "status": "reviewed"
+  },
+  {
+    "sha": "c2434c2743b62b0fe8264e5e5eec1988828f2ea2",
+    "kind": "chore",
+    "summary": "Bump version to 0.56",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Bumped version to 0.56."
+  },
+  {
+    "sha": "7d7b8d0c14a3a0c3a6f59a97b2a9ce03f32dba3c",
+    "kind": "fix",
+    "summary": "Fix dark mode interaction with black bar hover unmask and floor numbering, bump to 0.57",
+    "features": [
+      "dark_theme",
+      "hover_mask_reveal",
+      "comment_floor_number",
+      "trophy_summary_list"
+    ],
+    "status": "reviewed",
+    "notes": "Fixed dark mode overriding black bar hover unmask; removed list hover that broke other elements; fixed floor numbering in Q&A/trade pages; ensured unearned trophies are greyed out; moved night mode execution to script top; bumped to 0.57."
+  },
+  {
+    "sha": "f388881a74fbab8f43ad3da028c128645de79f1b",
+    "kind": "style",
+    "summary": "Clean up hover and dropdown styles in main.css",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Removed list hover and cleaned up header dropdown selectors."
+  },
+  {
+    "sha": "ac72d8bad8863e331c6ab5a5a2113d7fff9bd426",
+    "kind": "assets",
+    "summary": "Add QQ and browser icons",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Added QQ and browser icon assets."
+  },
+  {
+    "sha": "a1ae4491dfc804084ab385bed7efbcc9f8f90001",
+    "kind": "chore",
+    "summary": "Add MIT license",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Created LICENSE file with MIT License."
+  },
+  {
+    "sha": "7a93bff42593da96bf7c9f8bd2cc56106a1f765e",
+    "kind": "docs",
+    "summary": "Update repository name in README to psnine-enhanced-version",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated repo links and badges to psnine-enhanced-version."
+  },
+  {
+    "sha": "98c046cca4feff2543cdb2ae711938d42db616c3",
+    "kind": "docs",
+    "summary": "Update README title and main features formatting",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Cleaned up README headings and emoji formatting."
+  },
+  {
+    "sha": "8e4e20ec9104d35cfb85ff03b143fadcfab88711",
+    "kind": "docs",
+    "summary": "Add co-author credits in README",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Added author credits for @InfinityLoop and @mordom0404."
+  },
+  {
+    "sha": "549046a5b659dc85cfd9d2942869daac4fd5a504",
+    "kind": "merge",
+    "summary": "Merge branch master of psnine-night-mode-CSS",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Merged license and README updates."
+  },
+  {
+    "sha": "59aa8594cf5d3faad959f05f65b08b75aefc2c6b",
+    "kind": "docs",
+    "summary": "Update browser compatibility table formatting in README",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated markdown table alignment."
+  },
+  {
+    "sha": "750467a4fdc6a52deedb9d771b0851896936ba45",
+    "kind": "chore",
+    "summary": "Update namespace to GitHub repo and update MIT license header",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated @namespace in psnineplus.js and refreshed screenshots."
+  },
+  {
+    "sha": "8f4aba9a52a4574ccfaa49e07ff9d6911bf2dfb3",
+    "kind": "docs",
+    "summary": "Add settings panel screenshot and instructions in README",
+    "features": [
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Added settings panel screenshot to README."
+  },
+  {
+    "sha": "b04f23621ee155765ec82e1273aa2cf3bb16fa1e",
+    "kind": "docs",
+    "summary": "Update features list order in README",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Reorganized feature categories in README."
+  },
+  {
+    "sha": "105d8a76582cb8f97c7fbbcd5a9954cf1877a1f4",
+    "kind": "docs",
+    "summary": "Refine top pagination description in README",
+    "features": [
+      "top_pagination"
+    ],
+    "status": "reviewed",
+    "notes": "Refined description of top pagination."
+  },
+  {
+    "sha": "12dab27c880e1f7267ea9f984325f17f134ab656",
+    "kind": "fix",
+    "summary": "Fix earned trophies title text typo, bump to 0.58",
+    "features": [
+      "trophy_summary_list"
+    ],
+    "status": "reviewed",
+    "notes": "Reverted namespace to swsoyee.github.io, fixed trophy container title string; bumped to 0.58."
+  },
+  {
+    "sha": "7e8166d3073f3e801ffbb52cd1f4313be0381959",
+    "kind": "fix",
+    "summary": "Fix case-insensitive username matching in blacklist filter, bump to 0.59",
+    "features": [
+      "comment_block_user"
+    ],
+    "status": "reviewed",
+    "notes": "Introduced helper Filter() with .toLowerCase() comparison so PSN IDs match regardless of case; bumped to 0.59."
+  },
+  {
+    "sha": "4b39e5d42f258697b29974f881863283e42bab90",
+    "kind": "feature",
+    "summary": "Localize Highcharts date and export menu labels to Chinese, bump to 0.60",
+    "features": [
+      "price_trend_chart",
+      "trophy_timeline_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Added Highcharts.setOptions with Chinese month names, weekdays, and export button labels; bumped to 0.60."
+  },
+  {
+    "sha": "db5f31bef74f7453fc95ceb4e5ea6ba3f7083943",
+    "kind": "style",
+    "summary": "Adjust price trend chart date format on X-axis",
+    "features": [
+      "price_trend_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Formatted X-axis date display with year and month/day labels (%y年, %y年<br/>%b%e日)."
+  },
+  {
+    "sha": "b9627b6b6969b9489c1dd72b63d7ce9aac327321",
+    "kind": "feature",
+    "summary": "Restore header news link, bump to 0.61",
+    "features": [
+      "nav_news_entry"
+    ],
+    "status": "reviewed",
+    "notes": "Added commented preparation for restoring header news navigation link; bumped to 0.61."
+  },
+  {
+    "sha": "9d2e4540e64ff7f360aea21c7851f90b60ab2735",
+    "kind": "feature",
+    "summary": "Add restore news navigation link option and settings UI, bump to 0.62",
+    "features": [
+      "nav_news_entry",
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Added restoreNews option in settings; prepended news link to #pcmenu; updated settings layout and test.html; bumped to 0.62."
+  },
+  {
+    "sha": "d2853d53e9e885a85c14d75d6423ef6cd8c62e63",
+    "kind": "feature",
+    "summary": "Add live BBCode preview for topic creation, bump to 0.63",
+    "features": [
+      "bbcode_live_preview",
+      "reply_content_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Added js-bbcode-parser CDN dependency; added live BBCode parser output container below topic input; allowed reply preview on comment pages; bumped to 0.63."
+  },
+  {
+    "sha": "4d5c77060ca647520851acf7625e73c8dfb4cff4",
+    "kind": "docs",
+    "summary": "Add news restore and BBCode preview to README",
+    "features": [
+      "nav_news_entry",
+      "bbcode_live_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Documented news restore and BBCode live preview in README."
+  },
+  {
+    "sha": "3b27ea2ed9ac274a170139c64655367b69a6c215",
+    "kind": "docs",
+    "summary": "Add user count badge to README",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Added GreasyFork 146 users badge."
+  },
+  {
+    "sha": "b6c0a3db3bb63acf40772977b3e1b29f356a5bd3",
+    "kind": "style",
+    "summary": "Update settings panel layout and width in test.html and psnineplus.js",
+    "features": [
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Adjusted setting-panel-box width from 550px to 500px, improved row padding and font-weight."
+  },
+  {
+    "sha": "b3f0156f2d088cee6cc75b85989a292ec7ea3e8f",
+    "kind": "style",
+    "summary": "Add custom scrollbar styles and max-height for settings panel",
+    "features": [
+      "settings_panel",
+      "custom_scrollbar"
+    ],
+    "status": "reviewed",
+    "notes": "Added max-height: 700px, overflow-y: auto, and custom scrollbar pseudo-elements (::-webkit-scrollbar, ::-webkit-scrollbar-thumb) for settings panel."
+  },
+  {
+    "sha": "71e742649f9b85aab0ace6f95624045d74b6bf6d",
+    "kind": "feature",
+    "summary": "Add autoCheckIn setting default to true in psnineplus.js, bump to 0.64",
+    "features": [
+      "auto_sign_in",
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Added autoCheckIn boolean setting in settings object; bumped to 0.64."
+  },
+  {
+    "sha": "6b1713ddd71f46f03075e6ece1f154db36f0f0a1",
+    "kind": "docs",
+    "summary": "Add auto check-in feature description and bump user count in README",
+    "features": [
+      "auto_sign_in"
+    ],
+    "status": "reviewed",
+    "notes": "Documented auto sign-in feature; updated user badge to 147."
+  },
+  {
+    "sha": "31781d4bfba8007d49b79b1cb78790a9ceadf8a8",
+    "kind": "feature",
+    "summary": "Colorize Q&A titles according to resolution status, bump to 0.65",
+    "features": [
+      "qa_title_color"
+    ],
+    "status": "reviewed",
+    "notes": "Added qaHighlightTitle setting; inspected .title in /qa and added green/gray badges based on solved/unsolved status; bumped to 0.65."
+  },
+  {
+    "sha": "936a30a6a83c55f4da8197171cf314105601e642",
+    "kind": "docs",
+    "summary": "Update README user badge to 154",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated user badge in README."
+  },
+  {
+    "sha": "76fa942d4df193e2bb19ed4dfb3f7065a89f9155",
+    "kind": "merge",
+    "summary": "Merge branch master of psnine-night-mode-CSS",
+    "features": [
+      "qa_title_color"
+    ],
+    "status": "reviewed",
+    "notes": "Merged Q&A title colorization and README changes."
+  },
+  {
+    "sha": "0f81fc9126db268ecf6772f079f9486c3484c4f1",
+    "kind": "docs",
+    "summary": "Update Q&A link in README",
+    "features": [
+      "qa_title_color"
+    ],
+    "status": "reviewed",
+    "notes": "Added hyperlink to psnine.com/qa in README."
+  },
+  {
+    "sha": "860ff14baf17a9d38cf7ce31e162891a52519e1c",
+    "kind": "feature",
+    "summary": "Add Q&A title colorization toggle to settings panel, bump to 0.66",
+    "features": [
+      "qa_title_color",
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Added qaHighlightTitle toggle selector in settings panel UI and test.html; bumped to 0.66."
+  },
+  {
+    "sha": "ad10cfd8b91203b5cb715394c5b98d81113386b6",
+    "kind": "feature",
+    "summary": "Add hover profile card on user avatars via Tippy.js and AJAX, bump to 0.67",
+    "features": [
+      "avatar_profile_hover",
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Added hoverHomepage setting; initialized Tippy.js on user avatars (.psnnode / a.l) to load user profile card async via jQuery.ajax from /psnid/:id; bumped to 0.67."
+  },
+  {
+    "sha": "36f1dfc19600904880c2bdf44a08708aff986315",
+    "kind": "docs",
+    "summary": "Add avatar hover profile preview description in README",
+    "features": [
+      "avatar_profile_hover"
+    ],
+    "status": "reviewed",
+    "notes": "Documented avatar hover profile card in README."
+  },
+  {
+    "sha": "0be936e466d22d87e57243ad6f21991c786c624f",
+    "kind": "docs",
+    "summary": "Update README with v1.8 release notes and user count 168",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Added v1.8 release notes in README."
+  },
+  {
+    "sha": "f17620bfd8b8de154c520f8fbd0760fb742a9a8c",
+    "kind": "fix",
+    "summary": "Extend avatar hover profile to Q&A pages, bump to 0.68",
+    "features": [
+      "avatar_profile_hover"
+    ],
+    "status": "reviewed",
+    "notes": "Added qa to location regex (gene|topic|trade|qa) for avatar hover card; bumped to 0.68."
+  },
+  {
+    "sha": "e1a7a94c1f2e33b128800ea5dbf01b3cd66272ba",
+    "kind": "feature",
+    "summary": "Broaden avatar hover card targeting across entire site, bump to 0.69",
+    "features": [
+      "avatar_profile_hover"
+    ],
+    "status": "reviewed",
+    "notes": "Removed narrow path check, applying avatar hover profile across all pages matching psnid links; bumped to 0.69."
+  },
+  {
+    "sha": "ac77c6a29ed8671a1eb3d0ebc4d260698aab455b",
+    "kind": "feature",
+    "summary": "Add unearned trophies filter button on game trophy pages, bump to 0.70",
+    "features": [
+      "unearned_trophy_filter"
+    ],
+    "status": "reviewed",
+    "notes": "Added unearned trophy filter button on /psngame/:id trophy list, toggling display of earned vs unearned rows; bumped to 0.70."
+  },
+  {
+    "sha": "f5a815deaef08a7aef2234d7d22606d55ea29fa3",
+    "kind": "docs",
+    "summary": "Add unearned trophy filter description in README",
+    "features": [
+      "unearned_trophy_filter"
+    ],
+    "status": "reviewed",
+    "notes": "Documented unearned trophy filter in README."
+  },
+  {
+    "sha": "c7b4900d26d7bd567b6488ed7057e8b969e41700",
+    "kind": "feature",
+    "summary": "Add auto-pagination (infinite scroll) for gene, qa, and trade pages, bump to 0.71",
+    "features": [
+      "auto_pagination"
+    ],
+    "status": "reviewed",
+    "notes": "Added scroll listener on window to fetch and append next page content asynchronously via AJAX when scrolling near bottom; bumped to 0.71."
+  },
+  {
+    "sha": "8378d5cd85373756122129ff4b9435278784f567",
+    "kind": "fix",
+    "summary": "Fix auto-pagination URL regex and adjust unearned trophies button, bump to 0.72",
+    "features": [
+      "auto_pagination",
+      "unearned_trophy_filter"
+    ],
+    "status": "reviewed",
+    "notes": "Fixed regex grouping for auto-pagination pages; styled unearned trophy toggle button; bumped to 0.72."
+  },
+  {
+    "sha": "238d2b0788ed7dd0bd44ab1c9b4afa8275cf63f9",
+    "kind": "fix",
+    "summary": "Fix features not working on dynamically loaded pages and add auto-paging setting, bump to 0.73",
+    "features": [
+      "auto_pagination",
+      "settings_panel",
+      "specific_id_highlight",
+      "comment_block_user",
+      "avatar_profile_hover",
+      "trophy_summary_list"
+    ],
+    "status": "reviewed",
+    "notes": "Added autoPaging setting to settings panel and test.html; re-executed ID highlighting, blacklist filter, and avatar hover on newly loaded pages; scoped trophy summary to game pages only; bumped to 0.73."
+  },
+  {
+    "sha": "7122ff9948d7fa04860cf0c9414f109c5cd5167f",
+    "kind": "feature",
+    "summary": "Add auto-pagination for games on user profile page with loading indicator, bump to 0.74",
+    "features": [
+      "auto_pagination"
+    ],
+    "status": "reviewed",
+    "notes": "Enabled auto-pagination on /psnid/:id pages; added #loadingMessage DOM indicator; added concurrency guard isbool to prevent duplicate AJAX requests; bumped to 0.74."
+  },
+  {
+    "sha": "227eecff1675ebe8071f4f0783a6b41ee14a394e",
+    "kind": "feature",
+    "summary": "Add hover trophy completion status on game covers, bump to 0.75",
+    "features": [
+      "game_trophy_completion_hover",
+      "avatar_profile_hover"
+    ],
+    "status": "reviewed",
+    "notes": "Added Tippy hover on game list items loading user's own trophy count for that game via AJAX; set tippy delay to 700ms; bumped to 0.75."
+  },
+  {
+    "sha": "6ba5e13846936d6a77b42c53b77e238a84db4ad4",
+    "kind": "feature",
+    "summary": "Add auto-paging configuration row in settings panel, bump to 0.76",
+    "features": [
+      "auto_pagination",
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Exposed autoPaging in settings panel UI and test.html; bumped to 0.76."
+  },
+  {
+    "sha": "6a6887744610aa0a32c87f94ff5ee32b42f71263",
+    "kind": "feature",
+    "summary": "Add option to remove creator avatar on battle page, bump to 0.77",
+    "features": [
+      "battle_hide_avatar",
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Added removeHeaderInBattle setting to hide initiator avatar in /battle; added setting UI in test.html; bumped to 0.77."
+  },
+  {
+    "sha": "050b870151b12ba8644a651f6051238501a25286",
+    "kind": "feature",
+    "summary": "Add smooth scrolling animation to bottom button, bump to 0.78",
+    "features": [
+      "smooth_scroll_to_bottom",
+      "avatar_profile_hover"
+    ],
+    "status": "reviewed",
+    "notes": "Implemented jQuery animate({ scrollTop: ... }, 400) on #scrollbottom button; fixed PSNID matching in personal profile; bumped to 0.78."
+  },
+  {
+    "sha": "2a93ed24be16fcacd16e319b2ac213c6c26b242f",
+    "kind": "fix",
+    "summary": "Exclude comment/rank/battle/gamelist subpages from trophy summary",
+    "features": [
+      "trophy_summary_list"
+    ],
+    "status": "reviewed",
+    "notes": "Refined URL negative lookahead regex to prevent trophy summary from activating on rank, battle, or gamelist subpages."
+  },
+  {
+    "sha": "3893e1ba4936467a3ef902d6fe6138a70e7a8ed2",
+    "kind": "feature",
+    "summary": "Add historic low filter on discounts and remove duplicate top pagination",
+    "features": [
+      "historic_low_filter",
+      "remove_top_pagination",
+      "comment_hover_reply_btn"
+    ],
+    "status": "reviewed",
+    "notes": "Historical turning point: removed top pagination feature; added historic low filter button (onlyShowHistoricLow) on /dd pages hiding non-historical-low items; expanded reply hover area to .post and .sonlist."
+  },
+  {
+    "sha": "4edb8faf3b6834d8d70ed26aa8fed7313331693a",
+    "kind": "docs",
+    "summary": "Update README with historic low filter and auto-checkin notes",
+    "features": [
+      "historic_low_filter",
+      "auto_sign_in"
+    ],
+    "status": "reviewed",
+    "notes": "Updated README with historic low filtering details; updated user badge."
+  },
+  {
+    "sha": "69cef99115c8ed682778792b8a9eb8238d1b391f",
+    "kind": "fix",
+    "summary": "Fix page URL matching for hover reply buttons",
+    "features": [
+      "comment_hover_reply_btn"
+    ],
+    "status": "reviewed",
+    "notes": "Adjusted negative lookahead for qa query string in comment hover reply button logic."
+  },
+  {
+    "sha": "0a437eb588aaffd4b8e22e534f8d4302f728a987",
+    "kind": "fix",
+    "summary": "Fix selector for reply buttons to span[class^='r']",
+    "features": [
+      "comment_hover_reply_btn"
+    ],
+    "status": "reviewed",
+    "notes": "Switched selector from .r to span[class^='r'] to properly target nested reply triggers."
+  },
+  {
+    "sha": "21bf6ed062a6390d0462c2306cf896421be199c1",
+    "kind": "fix",
+    "summary": "Fix floor number parsing and selector matching, bump to 0.79",
+    "features": [
+      "comment_floor_number"
+    ],
+    "status": "reviewed",
+    "notes": "Fixed floor index calculation when sub-comments exist; bumped to 0.79."
+  },
+  {
+    "sha": "d57c056baf77933e907ab0ff5314cc8db11231e0",
+    "kind": "fix",
+    "summary": "Fix template string interpolation in reply button selector",
+    "features": [
+      "comment_hover_reply_btn"
+    ],
+    "status": "reviewed",
+    "notes": "Fixed syntax error in selector: changed div ${subClass} to ${div} ${subClass}."
+  },
+  {
+    "sha": "ba4a5cc43e5a62d43cb7e84f696d79a00b423d82",
+    "kind": "docs",
+    "summary": "Update README user badge to 193",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated user badge in README."
+  },
+  {
+    "sha": "79e395b23700f5c78950aa2ea392a3ccc49dcf7d",
+    "kind": "fix",
+    "summary": "Update price trend chart URL matching scope, bump to 0.80",
+    "features": [
+      "price_trend_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Extended price trend chart matching regex to /dd/ and /game/:id/dd; bumped to 0.80."
+  },
+  {
+    "sha": "6b458244b875117774711d54e5e7803f2317be15",
+    "kind": "fix",
+    "summary": "Fix profile page game check when tbody is empty",
+    "features": [
+      "auto_pagination"
+    ],
+    "status": "reviewed",
+    "notes": "Added tbody count check to prevent running game pagination on user profile pages with no game table."
+  },
+  {
+    "sha": "633619e403fbd6e1878c6075a8f345365eb1f133",
+    "kind": "feature",
+    "summary": "Support reply traceback on battle pages",
+    "features": [
+      "reply_content_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Extended reply traceback URL matching regex to include battle posts."
+  },
+  {
+    "sha": "96a81a1eb44150846115c76a396e1c526a87198f",
+    "kind": "fix",
+    "summary": "Allow hyphens in PSNID regex on user profiles",
+    "features": [
+      "auto_pagination"
+    ],
+    "status": "reviewed",
+    "notes": "Updated PSNID regex from [A-Za-z0-9_]+ to [A-Za-z0-9_-]+."
+  },
+  {
+    "sha": "7924928c60082840b9472cfb8c133c86df23cda7",
+    "kind": "feature",
+    "summary": "Add autoCheckIn toggle to settings panel, bump to 0.81",
+    "features": [
+      "auto_sign_in",
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Added autoCheckIn toggle in settings UI and test.html; bumped to 0.81."
+  },
+  {
+    "sha": "539ac3c693e52269617c580b94726362d44892c9",
+    "kind": "chore",
+    "summary": "Add package.json and bump version to 0.8.1",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Created npm package.json with version 0.8.1; updated psnineplus.js version."
+  },
+  {
+    "sha": "b96b898b3fd7d3904fc92908d6a71907b55473d2",
+    "kind": "docs",
+    "summary": "Update README user badge to 200",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated user count badge."
+  },
+  {
+    "sha": "118efee125482efde04f80d30801260b608b926b",
+    "kind": "fix",
+    "summary": "Prevent false hover popup on game covers and rankings, bump to 0.8.2",
+    "features": [
+      "game_trophy_completion_hover",
+      "avatar_profile_hover"
+    ],
+    "status": "reviewed",
+    "notes": "Cleaned up hover bindings to avoid popup triggers on non-game cards and ranking rows; bumped to 0.8.2."
+  },
+  {
+    "sha": "2047b156e1faf63f68d56559a50c4c7352c265d3",
+    "kind": "fix",
+    "summary": "Prevent hiding accepted answer badge in Q&A, bump to 0.8.3",
+    "features": [
+      "comment_hover_reply_btn"
+    ],
+    "status": "reviewed",
+    "notes": "Changed reply selector to exact match span[class='r'] so '本条答案已被采纳' badge is not hidden; bumped to 0.8.3."
+  },
+  {
+    "sha": "69f55534d37910909f366391d63b9363fad79ab9",
+    "kind": "docs",
+    "summary": "Update README user badge to 207",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated user count in README."
+  },
+  {
+    "sha": "eb203ec61609b9fb4ed1fccbc20b6a24c118d444",
+    "kind": "merge",
+    "summary": "Merge branch master of psnine-night-mode-CSS",
+    "features": [
+      "comment_hover_reply_btn"
+    ],
+    "status": "reviewed",
+    "notes": "Merged accepted answer badge fix and README update."
+  },
+  {
+    "sha": "fa5353e260213404b140256d1ad6027700574284",
+    "kind": "docs",
+    "summary": "Update README user badge to 230",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated user count badge in README."
+  },
+  {
+    "sha": "3be886255bf4593f4bc9c5b15d42caac1ff51e39",
+    "kind": "docs",
+    "summary": "Update README user badge to 245",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated user count badge in README."
+  },
+  {
+    "sha": "22c65d0e51bdc43d36d8f5803af3c158eafd6a90",
+    "kind": "docs",
+    "summary": "Update README user badge to 315",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated user count badge in README."
+  },
+  {
+    "sha": "e49d4fe93d703628b6df83aab32a876eb5b7c00e",
+    "kind": "refactor",
+    "summary": "Code cleanup, remove unused variables, and adjust styles, bump to 0.8.4",
+    "features": [
+      "dark_theme",
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Removed hardcoded color variables; streamlined style injection; bumped to 0.8.4."
+  },
+  {
+    "sha": "db8d196dc70eca28bc5cd2557abd5d478c978721",
+    "kind": "fix",
+    "summary": "Escape regex dot in domain matching, bump to 0.8.5",
+    "features": [
+      "specific_id_highlight"
+    ],
+    "status": "reviewed",
+    "notes": "Properly escaped dot in regex match (.*)\\.com; bumped to 0.8.5."
+  },
+  {
+    "sha": "58bc66da931dbb40fc6f5bd00d87b0cc9134002f",
+    "kind": "docs",
+    "summary": "Update README user badge to 335",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated user badge in README."
+  },
+  {
+    "sha": "ec6e5e4156318f311d4be8f8bbf143b10c22103b",
+    "kind": "refactor",
+    "summary": "Prettify and format code style with Prettier/ESLint, bump to 0.8.6",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Formatted entire psnineplus.js codebase using standard 4-space indentation and semicolon rules; bumped to 0.8.6."
+  },
+  {
+    "sha": "b269704e94a60217e5695d8ec1c1783a24703e42",
+    "kind": "merge",
+    "summary": "Merge pull request #5 from swsoyee/format-code-style",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Merged code formatting PR #5."
+  },
+  {
+    "sha": "c8c7dff2e0b33a15baf813af048f56ab5a12237a",
+    "kind": "refactor",
+    "summary": "Simplify trophy summary dictionary mapping",
+    "features": [
+      "trophy_summary_list"
+    ],
+    "status": "reviewed",
+    "notes": "Extracted summaryTropyDict dictionary mapping CSS classes (.t1, .t2, .t3, .t4) to trophy type names and icons."
+  },
+  {
+    "sha": "069e93586ab0b0fe6d270cc1db9e8f139b6f916d",
+    "kind": "refactor",
+    "summary": "Formatting cleanup for jQuery selector in psnineplus.js",
+    "features": [
+      "specific_id_highlight"
+    ],
+    "status": "reviewed",
+    "notes": "Formatted multiline selector in admin ID highlight."
+  },
+  {
+    "sha": "a8fd8a298de63a901974dfbac5c064cbb9f291e3",
+    "kind": "refactor",
+    "summary": "Use ES6 template literals for profile ID and selectors, bump to 0.8.7",
+    "features": [
+      "avatar_profile_hover"
+    ],
+    "status": "reviewed",
+    "notes": "Replaced string concatenation with template literals (`#profile${i}`); bumped to 0.8.7."
+  },
+  {
+    "sha": "2dfffa277e6782ade9eb65230a08b19f2f78ea16",
+    "kind": "merge",
+    "summary": "Merge pull request #6 from swsoyee/format-code-style",
+    "features": [
+      "avatar_profile_hover"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #6 formatting refinements."
+  },
+  {
+    "sha": "b7209b96087c2b10d8265a046f900d4c23a782fb",
+    "kind": "feature",
+    "summary": "Support historic low filter on topic activity discount pages, bump to 0.8.8",
+    "features": [
+      "historic_low_filter"
+    ],
+    "status": "reviewed",
+    "notes": "Added /topic/ activity discount page support to onlyShowHistoricLow filter; bumped to 0.8.8."
+  },
+  {
+    "sha": "89d971caec34864faa1e7c13fdff029c083317a8",
+    "kind": "merge",
+    "summary": "Merge pull request #7 from swsoyee/dev",
+    "features": [
+      "historic_low_filter"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #7 enabling historic low filter on activity pages."
+  },
+  {
+    "sha": "4fdd4c9188baa57224617799d7bdee563af4555d",
+    "kind": "fix",
+    "summary": "Refactor discount tag color mapping dictionary, bump to 0.8.9",
+    "features": [
+      "discount_highlight"
+    ],
+    "status": "reviewed",
+    "notes": "Replaced if/else chains with priceTitleColorDict dictionary mapping discount percentages (100, 80, 50, etc.) to RGB colors; bumped to 0.8.9."
+  },
+  {
+    "sha": "1060ec578eca8cb2a19a6343f01a82431a2dbe8d",
+    "kind": "merge",
+    "summary": "Merge pull request #8 from swsoyee/dev",
+    "features": [
+      "discount_highlight"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #8 discount color dictionary refactor."
+  },
+  {
+    "sha": "00cb24fa5268c37850f73165fd3bc1713f44559a",
+    "kind": "docs",
+    "summary": "Update README description for historic low filter on activity pages",
+    "features": [
+      "historic_low_filter"
+    ],
+    "status": "reviewed",
+    "notes": "Updated README copy and screenshots."
+  },
+  {
+    "sha": "d19b8c5da4a948541561ab620704b14c0ebbd479",
+    "kind": "merge",
+    "summary": "Merge pull request #9 from swsoyee/dev",
+    "features": [
+      "historic_low_filter"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #9 documentation update."
+  },
+  {
+    "sha": "cb1056ace11b813c550a039f59c1570a15bb095d",
+    "kind": "docs",
+    "summary": "Update README user badge to 393",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated user badge in README."
+  },
+  {
+    "sha": "3172c261411957ad778cb39684004933cc42870f",
+    "kind": "refactor",
+    "summary": "Modularize auto-pagination helper functions with JSDoc",
+    "features": [
+      "auto_pagination"
+    ],
+    "status": "reviewed",
+    "notes": "Extracted getNextPageInfo() helper with JSDoc comments to resolve next page URL and number."
+  },
+  {
+    "sha": "d7380e4e518478b6dddec2e43399d339d2fe4e87",
+    "kind": "refactor",
+    "summary": "Clean up pagination logic and handle query strings",
+    "features": [
+      "auto_pagination"
+    ],
+    "status": "reviewed",
+    "notes": "Refactored URL query string handling when computing next page link in getNextPageInfo()."
+  },
+  {
+    "sha": "f49491b3d58c6168221f6904929bb36a26fe331e",
+    "kind": "refactor",
+    "summary": "Convert auto-pagination callbacks to ES6 arrow functions",
+    "features": [
+      "auto_pagination"
+    ],
+    "status": "reviewed",
+    "notes": "Converted jQuery AJAX success callback and setTimeout to arrow functions."
+  },
+  {
+    "sha": "21584e2e710f55432bb878801f3b720d87e0b970",
+    "kind": "refactor",
+    "summary": "Modularize author and followed user highlight functions with JSDoc",
+    "features": [
+      "author_highlight",
+      "specific_id_highlight"
+    ],
+    "status": "reviewed",
+    "notes": "Extracted addAuthorBadge() and highlightUserId() helper functions with JSDoc."
+  },
+  {
+    "sha": "5ace7836121665e019cfab75a9e2dbb1b1c10643",
+    "kind": "refactor",
+    "summary": "Convert addFloorIndex to ES6 arrow function",
+    "features": [
+      "comment_floor_number"
+    ],
+    "status": "reviewed",
+    "notes": "Converted addFloorIndex function definition to const arrow function."
+  },
+  {
+    "sha": "ae6829b364f284b4cbab0f1440aafd42b90990cb",
+    "kind": "refactor",
+    "summary": "Refactor scroll-to-bottom and restore news functions",
+    "features": [
+      "smooth_scroll_to_bottom",
+      "nav_news_entry"
+    ],
+    "status": "reviewed",
+    "notes": "Extracted toPageButton() and addNews() modular helper functions."
+  },
+  {
+    "sha": "f3d941fa818e33623b73802dfd22b39638bfd67c",
+    "kind": "refactor",
+    "summary": "Refactor autoCheckIn into helper function",
+    "features": [
+      "auto_sign_in"
+    ],
+    "status": "reviewed",
+    "notes": "Extracted autoCheckIn() modular helper function with isOn parameter."
+  },
+  {
+    "sha": "1549dd76715b758412a9101f87da232f9bac6d75",
+    "kind": "refactor",
+    "summary": "Refactor Q&A title colorization function with JSDoc",
+    "features": [
+      "qa_title_color"
+    ],
+    "status": "reviewed",
+    "notes": "Added JSDoc documentation to addColorToQaTitle()."
+  },
+  {
+    "sha": "798ee26b91898e5f79b46f354d1ef23cb36612e1",
+    "kind": "refactor",
+    "summary": "Optimize floor numbering and arrow functions",
+    "features": [
+      "comment_floor_number"
+    ],
+    "status": "reviewed",
+    "notes": "Refactored floor calculation logic and JSDoc annotations."
+  },
+  {
+    "sha": "5bf4e089e276db6de008397ca7c4b13b748fc3f5",
+    "kind": "refactor",
+    "summary": "Convert discount box loop to ES6 arrow functions",
+    "features": [
+      "discount_highlight"
+    ],
+    "status": "reviewed",
+    "notes": "Replaced function(i, n) with (i, el) => in .dd_box mapping."
+  },
+  {
+    "sha": "75e02868e5aa06c18118af4f68e2b981b59bb604",
+    "kind": "refactor",
+    "summary": "Refactor foreign currency conversion to CNY into dedicated function",
+    "features": [
+      "foreign_currency_cny"
+    ],
+    "status": "reviewed",
+    "notes": "Extracted addRmbPrice() helper function for foreign currency calculation."
+  },
+  {
+    "sha": "fe1b6ec9d0c9d16cb9db830999b609fe3b5c99cb",
+    "kind": "refactor",
+    "summary": "Optimize historic low filter implementation and JSDoc",
+    "features": [
+      "historic_low_filter",
+      "foreign_currency_cny"
+    ],
+    "status": "reviewed",
+    "notes": "Cleaned up addRmbPrice and extracted addOnlyHistoricLowButton helper."
+  },
+  {
+    "sha": "e1055654e33917187da496cbe8dfbf334fe48f34",
+    "kind": "refactor",
+    "summary": "Optimize non-platinum game opacity function",
+    "features": [
+      "trophy_card_opacity"
+    ],
+    "status": "reviewed",
+    "notes": "Extracted and documented addNonePlatinumGameFilter() function."
+  },
+  {
+    "sha": "071a6a07528737985c1a80a88b9f4f54285d2c8a",
+    "kind": "refactor",
+    "summary": "Refactor store discount page parser with region-to-currency mapping",
+    "features": [
+      "foreign_currency_cny"
+    ],
+    "status": "reviewed",
+    "notes": "Introduced nameToMarkDict and ratioToMark mapping tables for cleaner rate conversions."
+  },
+  {
+    "sha": "838af2648576e3c1dbc0f2491cd04f092a32171b",
+    "kind": "refactor",
+    "summary": "Consolidate currency symbol and exchange rate dictionary",
+    "features": [
+      "foreign_currency_cny"
+    ],
+    "status": "reviewed",
+    "notes": "Merged symbol and rate mappings into a single clean lookup table."
+  },
+  {
+    "sha": "4305c44e0cec3b050d38da524113c6cd43ef1b87",
+    "kind": "refactor",
+    "summary": "Refactor trophy ratio pie chart into dedicated function",
+    "features": [
+      "trophy_ratio_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Extracted createTrophyRatioPieChart() function from inline execution."
+  },
+  {
+    "sha": "7188c64475d399522773c25463b40bca0dfffc4e",
+    "kind": "chore",
+    "summary": "Bump version to 0.9.0",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated version to 0.9.0."
+  },
+  {
+    "sha": "f20f094fae2ca05573cce7dd9873faa241a4722d",
+    "kind": "merge",
+    "summary": "Merge pull request #10 from swsoyee/dev",
+    "features": [
+      "smooth_scroll_to_bottom",
+      "nav_news_entry",
+      "auto_sign_in",
+      "qa_title_color",
+      "foreign_currency_cny",
+      "trophy_card_opacity",
+      "trophy_ratio_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Merged large refactoring PR #10 modularizing core features."
+  },
+  {
+    "sha": "dbf98ce4c65864816644736ccc4adfbee0604f7f",
+    "kind": "docs",
+    "summary": "Update README install count badge to 418",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated installation badge."
+  },
+  {
+    "sha": "7cdeaa50c6c3495876f9df48bc9b6547584c2397",
+    "kind": "feature",
+    "summary": "Enhance trophy timeline chart with weekday localization and frame sizing",
+    "features": [
+      "trophy_timeline_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Localized Highcharts weekdays to short form ('周一', etc.); added addPlotFrame helper with explicit container width; improved timeline data parsing."
+  },
+  {
+    "sha": "7ce7e846c673a4ad4e121856a18073ff6028c6a5",
+    "kind": "fix",
+    "summary": "Fix end-of-series boundary calculation in trophy timeline chart",
+    "features": [
+      "trophy_timeline_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Removed inaccurate Date.now() push and last element subtraction in trophy timeline series."
+  },
+  {
+    "sha": "38cff74bbdf1a5aa52169c3703dd4581a0f38a90",
+    "kind": "chore",
+    "summary": "Bump version to 0.9.1",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Bumped version to 0.9.1."
+  },
+  {
+    "sha": "a21b76a4ab50819b8eff4b5fbdc46117c2e4bb18",
+    "kind": "merge",
+    "summary": "Merge pull request #11 from swsoyee/dev",
+    "features": [
+      "trophy_timeline_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Merged trophy timeline chart enhancement PR #11."
+  },
+  {
+    "sha": "c7e43bdaaadff4b6c20e354ec451f3f52c827990",
+    "kind": "refactor",
+    "summary": "Substantial refactor of price trend chart into modular functions, bump to 0.9.2",
+    "features": [
+      "price_trend_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Extracted createPriceTrendencyLineChart() and addPlotFrame(); separated data series preparation from chart rendering; bumped to 0.9.2."
+  },
+  {
+    "sha": "3854a4ad5d9aaaf4331c05e0ad4ef6d3f0bf479a",
+    "kind": "merge",
+    "summary": "Merge pull request #12 from swsoyee/dev",
+    "features": [
+      "price_trend_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Merged price trend chart refactoring PR #12."
+  },
+  {
+    "sha": "55cda4b8149b61b0d10ca5a694921dc9aa5613b4",
+    "kind": "refactor",
+    "summary": "Minor refactoring of smooth scrolling and bump version to 0.9.3",
+    "features": [
+      "smooth_scroll_to_bottom"
+    ],
+    "status": "reviewed",
+    "notes": "Formatted smooth scroll animation parameters; bumped version to 0.9.3."
+  },
+  {
+    "sha": "fa0425822d0e7faead19690e2990c4a8f3e35d62",
+    "kind": "merge",
+    "summary": "Merge pull request #13 from swsoyee/dev",
+    "features": [
+      "smooth_scroll_to_bottom"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #13."
+  },
+  {
+    "sha": "8f6a4c41d9ec72acc57f383093bc6694da0eef2b",
+    "kind": "refactor",
+    "summary": "Refactor Tippy.js AJAX body extraction with regex",
+    "features": [
+      "avatar_profile_hover"
+    ],
+    "status": "reviewed",
+    "notes": "Optimized HTML extraction from AJAX response using regex /[\\s\\S]*<\\/body>/g before jQuery parsing."
+  },
+  {
+    "sha": "0d834c28aee3abc3ebc3d98776c9d2ba377cd611",
+    "kind": "refactor",
+    "summary": "Refactor game completion hover function addMyTrophyStatusInGameList",
+    "features": [
+      "game_trophy_completion_hover"
+    ],
+    "status": "reviewed",
+    "notes": "Modularized hover game cover trophy status display into a dedicated function with JSDoc."
+  },
+  {
+    "sha": "5212dd6d3d9d3da61e444feafbb3cb15b51261f2",
+    "kind": "refactor",
+    "summary": "Refactor avatar profile AJAX fetch into getMyTrophyData function",
+    "features": [
+      "avatar_profile_hover",
+      "game_trophy_completion_hover"
+    ],
+    "status": "reviewed",
+    "notes": "Extracted getMyTrophyData(url, tip) helper to encapsulate Tippy content loading via AJAX."
+  },
+  {
+    "sha": "707e872e44aae77c28b8f8a409d6e6ed517cc1dd",
+    "kind": "refactor",
+    "summary": "Refactor HTML parsing of profile data in Tippy tooltip",
+    "features": [
+      "avatar_profile_hover"
+    ],
+    "status": "reviewed",
+    "notes": "Updated function signature to parseAJAXProfileData(data, tip) separating network request from DOM extraction."
+  },
+  {
+    "sha": "168725e9f54d791b29bdf18b8601c6274068f1f1",
+    "kind": "refactor",
+    "summary": "Encapsulate trophy acquisition time chart in createTrophyAcquisitionTimeChart",
+    "features": [
+      "trophy_timeline_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Wrapped inline Highcharts acquisition chart into a standalone function."
+  },
+  {
+    "sha": "77c5faf5bfe8ebbb41b2ad88aeb3d8193879e5ea",
+    "kind": "fix",
+    "summary": "Fix Q&A title not recoloring on dynamic pagination",
+    "features": [
+      "qa_title_color",
+      "auto_pagination"
+    ],
+    "status": "reviewed",
+    "notes": "Passed settings.qaHighlightTitle flag into addColorToQaTitle() callback during auto-pagination."
+  },
+  {
+    "sha": "db22b91c20ae83e8b1a1609f540c468b11ee0a99",
+    "kind": "refactor",
+    "summary": "Refactor gene character count and fix live preview, bump to 0.9.4",
+    "features": [
+      "gene_word_count",
+      "bbcode_live_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Relocated gene page helpers; fixed textarea input event binding for BBCode live preview; bumped to 0.9.4."
+  },
+  {
+    "sha": "4aa4b246ace94771fcd5dbf95e1890590b7a1de7",
+    "kind": "merge",
+    "summary": "Merge pull request #14 from swsoyee/dev",
+    "features": [
+      "avatar_profile_hover",
+      "gene_word_count",
+      "bbcode_live_preview",
+      "qa_title_color"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #14 completing AJAX refactoring and preview fixes."
+  },
+  {
+    "sha": "a2a3194763edcfec9ba1c5c53ea7dabfa6bfcddc",
+    "kind": "refactor",
+    "summary": "Convert black bar hover unmask to ES6 arrow function",
+    "features": [
+      "hover_mask_reveal"
+    ],
+    "status": "reviewed",
+    "notes": "Modularized hoverUnmark into unmarkContent() arrow function."
+  },
+  {
+    "sha": "fc9fe5dc1ed9b61a6ae2f1a9c05e61cfa6eed039",
+    "kind": "refactor",
+    "summary": "Convert reply traceback function to ES6 const and arrow syntax",
+    "features": [
+      "reply_content_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Modernized replyTraceback() with const/let declarations and arrow function callbacks."
+  },
+  {
+    "sha": "45fe646f132ca298540e2b103f3f5e7d904c78ee",
+    "kind": "refactor",
+    "summary": "Optimize reply traceback parent container selectors",
+    "features": [
+      "reply_content_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Cached .post > .ml64 jQuery object and refined upward traversal loop."
+  },
+  {
+    "sha": "8ddef83747df3b6799e2e036367f93b5c83d2823",
+    "kind": "refactor",
+    "summary": "Rename toPageButton to toPageBottom and reorganize execution order",
+    "features": [
+      "smooth_scroll_to_bottom",
+      "unearned_trophy_filter"
+    ],
+    "status": "reviewed",
+    "notes": "Renamed function to toPageBottom() for semantic clarity; aligned startup calls."
+  },
+  {
+    "sha": "3f4575374e16773038a4e430f194739ef3e2117a",
+    "kind": "refactor",
+    "summary": "Encapsulate reply traceback into addReplyTraceback helper, bump to 0.9.5",
+    "features": [
+      "reply_content_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Fully extracted addReplyTraceback() function and cleaned up main script entry point; bumped to 0.9.5."
+  },
+  {
+    "sha": "b8a21f4547909aac1dc58710bcc91ff7223122b9",
+    "kind": "merge",
+    "summary": "Merge pull request #15 from swsoyee/dev",
+    "features": [
+      "reply_content_preview",
+      "smooth_scroll_to_bottom"
+    ],
+    "status": "reviewed",
+    "notes": "Merged dev branch with reply traceback modularization and scroll-to-bottom rename."
+  },
+  {
+    "sha": "09b8108cad58f7356e877d100fd8a0ec8681f7c9",
+    "kind": "style",
+    "summary": "Minor avatar style adjustment in reply traceback popup",
+    "features": [
+      "reply_content_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Adjusted avatar img height and width (15x15) styling in traceback header."
+  },
+  {
+    "sha": "f3264ee2f86cc8b3133df0aab4ea7691a9587516",
+    "kind": "refactor",
+    "summary": "Simplify settings panel logic and use let instead of var, bump to 0.9.6",
+    "features": [
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Modernized settings panel variable declarations with let/const; bumped to 0.9.6."
+  },
+  {
+    "sha": "6dc1bc43b39616c8b330753cfe285062dda81f45",
+    "kind": "merge",
+    "summary": "Merge pull request #16 from swsoyee/dev",
+    "features": [
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #16 settings panel simplification."
+  },
+  {
+    "sha": "086fa38d8be7a3fe7b06bea93057276627c65023",
+    "kind": "feature",
+    "summary": "Add blacklist user filtering on homepage articles and gene listings",
+    "features": [
+      "comment_block_user"
+    ],
+    "status": "reviewed",
+    "notes": "Extended Filter() to .touchclick .psnnode and homepage listings."
+  },
+  {
+    "sha": "f66448399c093f5cc0bd5f8b91d95be872e5d3ce",
+    "kind": "feature",
+    "summary": "Add reverse sub-comment order display, bump to 0.9.7",
+    "features": [
+      "floor_reverse_order",
+      "comment_floor_number"
+    ],
+    "status": "reviewed",
+    "notes": "Added floor reverse order feature for sub-comments in thread floors; bumped to 0.9.7."
+  },
+  {
+    "sha": "2613135c0b271a0308a67818bc15a2d761563875",
+    "kind": "merge",
+    "summary": "Merge pull request #17 from swsoyee/dev",
+    "features": [
+      "floor_reverse_order",
+      "comment_block_user"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #17 reverse sub-comment ordering and homepage blacklist."
+  },
+  {
+    "sha": "ae35c91838a3dd0dc9186c3746f5dc753a83f129",
+    "kind": "refactor",
+    "summary": "Refactor and clean up auto-pagination execution logic, bump to 0.9.8",
+    "features": [
+      "auto_pagination"
+    ],
+    "status": "reviewed",
+    "notes": "Consolidated auto-paging event listener setup and throttle logic; bumped to 0.9.8."
+  },
+  {
+    "sha": "4377f9c7d3c25006915215b656791ff21d90ac44",
+    "kind": "merge",
+    "summary": "Merge pull request #18 from swsoyee/dev",
+    "features": [
+      "auto_pagination"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #18 auto-pagination cleanup."
+  },
+  {
+    "sha": "3b3412c915b4127ca8b65cb9e6dc374eeb9f164e",
+    "kind": "fix",
+    "summary": "Fix black bar hover unmask not working due to arrow function this context",
+    "features": [
+      "hover_mask_reveal"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by Nathaniel_Wu: restored standard function() instead of arrow function in jQuery .hover() to correctly bind $(this); added Nathaniel_Wu to @author."
+  },
+  {
+    "sha": "9f9abc1744dc4df1375cfe84521f114a758f9c7b",
+    "kind": "fix",
+    "summary": "Fix black bar hover unmask text color in game reviews",
+    "features": [
+      "hover_mask_reveal"
+    ],
+    "status": "reviewed",
+    "notes": "Set color to rgb(255,255,255) directly to handle game review dark containers."
+  },
+  {
+    "sha": "6d6062ff922f303fdd74e3bd72cdd30360a12891",
+    "kind": "fix",
+    "summary": "Fix black bar hover unmask in nested comment replies",
+    "features": [
+      "hover_mask_reveal"
+    ],
+    "status": "reviewed",
+    "notes": "Handled black bar hover unmask inside comment replies."
+  },
+  {
+    "sha": "8d88f99480758910161e8eea66a0b94d322acc3d",
+    "kind": "merge",
+    "summary": "Merge pull request #20 from Nathaniel-Wu/master",
+    "features": [
+      "hover_mask_reveal"
+    ],
+    "status": "reviewed",
+    "notes": "Merged Nathaniel-Wu's PR #20 fixing black bar unmask."
+  },
+  {
+    "sha": "0fc311a6592f0eb67d6b0986dce658d1e90380a1",
+    "kind": "docs",
+    "summary": "Update README install count to 580",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated user install badge in README."
+  },
+  {
+    "sha": "76a2b863e0e3b9c084e2c8743f23bef0781ea695",
+    "kind": "feature",
+    "summary": "Add critic score average calculation on game comment page",
+    "features": [
+      "game_critic_average"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by Nathaniel_Wu: added criticScoreAverage option; parsed all user score ratings on /psngame/:id/comment, computed average score, and displayed average badge."
+  },
+  {
+    "sha": "e4f824865ecfc4defea9f2a280fad8ccd8923d6f",
+    "kind": "docs",
+    "summary": "Update README with critic average score feature and bump version to 0.9.9",
+    "features": [
+      "game_critic_average"
+    ],
+    "status": "reviewed",
+    "notes": "Documented critic average feature in README; bumped version to 0.9.9."
+  },
+  {
+    "sha": "1fef25c5363620dda59c487a070b527ef56feed8",
+    "kind": "merge",
+    "summary": "Merge pull request #1 from Nathaniel-Wu/game-critic-average",
+    "features": [
+      "game_critic_average"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #1 critic score average calculation."
+  },
+  {
+    "sha": "b7764c1aa2375adb354a419ff3ce85676b4339bf",
+    "kind": "feature",
+    "summary": "Add critic score distribution bar chart and fix calculation for older games",
+    "features": [
+      "game_critic_average",
+      "score_distribution_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Added Highcharts column bar chart createScoreBarChart() showing score breakdown (1 to 10 points) on game comment pages."
+  },
+  {
+    "sha": "35698a5797085088bf87ba51f2b9a7d38240a09f",
+    "kind": "docs",
+    "summary": "Update package.json version to 0.9.9 and update README author info",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Synced package.json version with userscript."
+  },
+  {
+    "sha": "3cbad1da32b30253ff1def96bf468303ce46c2e0",
+    "kind": "merge",
+    "summary": "Merge pull request #2 from Nathaniel-Wu/game-critic-average",
+    "features": [
+      "score_distribution_chart",
+      "game_critic_average"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #2 adding critic score distribution bar chart."
+  },
+  {
+    "sha": "e4e1601891e9e56a25558f36c66881a11b4a55fb",
+    "kind": "feature",
+    "summary": "Add total player rating count to score bar chart credits",
+    "features": [
+      "score_distribution_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Appended total criticsCount to Highcharts credits text ('评分人数：' + criticsCount)."
+  },
+  {
+    "sha": "966e1ed08912a21ce2794537a2636da3665e80e2",
+    "kind": "merge",
+    "summary": "Merge pull request #3 from Nathaniel-Wu/game-critic-average",
+    "features": [
+      "score_distribution_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #3 total rating count."
+  },
+  {
+    "sha": "edc45f2a649763071acf2ee33ab64a9773ab3c98",
+    "kind": "feature",
+    "summary": "Add gaussian bell curve distribution overlay for critic scores",
+    "features": [
+      "score_distribution_chart",
+      "gaussian_distribution_curve"
+    ],
+    "status": "reviewed",
+    "notes": "Imported Highcharts histogram-bellcurve.js module; added criticScoreAverageGaussian setting to overlay gaussian distribution curve."
+  },
+  {
+    "sha": "9f79ab106880a5aa974153008ed3202efc4123d2",
+    "kind": "merge",
+    "summary": "Merge pull request #4 from Nathaniel-Wu/game-critic-average",
+    "features": [
+      "gaussian_distribution_curve"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #4 gaussian bell curve distribution."
+  },
+  {
+    "sha": "d59338169e92a159ac2d32f7d669d110a6f1feec",
+    "kind": "fix",
+    "summary": "Adjust tick interval when gaussian curve is active",
+    "features": [
+      "gaussian_distribution_curve"
+    ],
+    "status": "reviewed",
+    "notes": "Set tickInterval to 2 when gaussian curve is enabled, otherwise 1."
+  },
+  {
+    "sha": "4dd6ec7f6d414c0b7e700b340781750aa27eb334",
+    "kind": "style",
+    "summary": "Update style and settings toggle for critic score gaussian distribution",
+    "features": [
+      "gaussian_distribution_curve",
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Refined settings panel options and chart layout."
+  },
+  {
+    "sha": "ee420e22a9e0c7eb8e298b4bf074228e30ad6306",
+    "kind": "merge",
+    "summary": "Merge pull request #5 from Nathaniel-Wu/game-critic-average",
+    "features": [
+      "gaussian_distribution_curve"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #5 style updates."
+  },
+  {
+    "sha": "cbd35d8f74fccfd34d8bd561aac1948a5734fb48",
+    "kind": "chore",
+    "summary": "Clean up JSDoc and CSS formatting",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Whitespace and comment formatting."
+  },
+  {
+    "sha": "a48240d8a54824ae528b8a514179a9313703ccdf",
+    "kind": "refactor",
+    "summary": "Remove criticGaussianGradient option from settings and chart",
+    "features": [
+      "gaussian_distribution_curve"
+    ],
+    "status": "reviewed",
+    "notes": "Historical removal: removed criticGaussianGradient option and simplified bellcurve rendering."
+  },
+  {
+    "sha": "c4d310064eba4507694fc19403830f34900ab428",
+    "kind": "style",
+    "summary": "Adjust color scale and width of score distribution chart",
+    "features": [
+      "score_distribution_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Tuned bar chart colors and safe integer bounds."
+  },
+  {
+    "sha": "7884778416980f97acf4939c721c38ed5b56841e",
+    "kind": "merge",
+    "summary": "Merge pull request #21 from Nathaniel-Wu/master",
+    "features": [
+      "game_critic_average",
+      "score_distribution_chart",
+      "gaussian_distribution_curve"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #21 incorporating critic score average and distribution charts into master."
+  },
+  {
+    "sha": "ef483b3016f2966a0fe39a43a8d428bc7aaa7d7a",
+    "kind": "feature",
+    "summary": "Enhance blocklist to handle multiple page types, bump to 0.9.10",
+    "features": [
+      "comment_block_user"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by Nathaniel_Wu: restructured blocklist handling across topics, genes, and qa with URL matching; bumped to 0.9.10."
+  },
+  {
+    "sha": "ce8f071889d1182572ea99ecd105048d757ec362",
+    "kind": "feature",
+    "summary": "Add user blocking on trade and battle pages, consolidate Filter calls",
+    "features": [
+      "comment_block_user"
+    ],
+    "status": "reviewed",
+    "notes": "Added FilterBattle() to hide trade and battle listings created by blocked users."
+  },
+  {
+    "sha": "366ad542d611736368c0949ee3149204882ddf1a",
+    "kind": "refactor",
+    "summary": "Optimize Filter helper with case-insensitive lowercase array lookup",
+    "features": [
+      "comment_block_user"
+    ],
+    "status": "reviewed",
+    "notes": "Pre-computed userListLowerCase and used Array.find() for O(1)/O(N) match."
+  },
+  {
+    "sha": "4d75cf6225fcb33a5555a7fa670f8aefabb3351b",
+    "kind": "merge",
+    "summary": "Merge pull request #6 from Nathaniel-Wu/blocklist-enhancement",
+    "features": [
+      "comment_block_user"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #6 blocklist enhancement."
+  },
+  {
+    "sha": "f800ba6be191c61374205fa8fcb0f29292f74976",
+    "kind": "fix",
+    "summary": "Fix selector to hide table row tr on battle page for blocked users",
+    "features": [
+      "comment_block_user"
+    ],
+    "status": "reviewed",
+    "notes": "Targeted $(el).parents('tr').hide() on table-based battle list."
+  },
+  {
+    "sha": "7cf586b95297638dd83b1854d07fbd3573354e2b",
+    "kind": "fix",
+    "summary": "Fix secondary replies on Q&A pages not getting blocked",
+    "features": [
+      "comment_block_user"
+    ],
+    "status": "reviewed",
+    "notes": "Added filter rule for ul.sonlist .content>.psnnode in Q&A pages."
+  },
+  {
+    "sha": "c87810317db3d049829572204bb40d5eb252813d",
+    "kind": "fix",
+    "summary": "Use DOM remove() instead of hide() to prevent blocked comments showing in sub-replies",
+    "features": [
+      "comment_block_user"
+    ],
+    "status": "reviewed",
+    "notes": "Changed $(el).parents(parent).hide() to .remove() so DOM elements do not linger and show up in reply trees."
+  },
+  {
+    "sha": "91bc742d39a2da181748e39bf25f13e627ee0006",
+    "kind": "refactor",
+    "summary": "Unify Filter() syntax with custom psnInfoGetter and userNameChecker callbacks",
+    "features": [
+      "comment_block_user"
+    ],
+    "status": "reviewed",
+    "notes": "Abstracted Filter() to accept flexible extractor and checker lambdas."
+  },
+  {
+    "sha": "84bc87ba4a42de97d664b5a003540884da22f4e1",
+    "kind": "fix",
+    "summary": "Run critic average before comment blocking to maintain accurate statistics",
+    "features": [
+      "comment_block_user",
+      "game_critic_average"
+    ],
+    "status": "reviewed",
+    "notes": "Invoked showCriticAverage() before blocking comments so blocked users' ratings are still counted in game score statistics."
+  },
+  {
+    "sha": "752683122a1a01136a366f7d7a033e35a194d235",
+    "kind": "fix",
+    "summary": "Completely hide secondary reply list container when all comments inside are blocked",
+    "features": [
+      "comment_block_user"
+    ],
+    "status": "reviewed",
+    "notes": "Added check: if parent sonlist has no remaining children after removing blocked items, remove the entire sonlist."
+  },
+  {
+    "sha": "c35f21ea195b849fdcac2cffe93caaf85478c152",
+    "kind": "merge",
+    "summary": "Merge pull request #23 from Nathaniel-Wu/master",
+    "features": [
+      "comment_block_user",
+      "game_critic_average"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #23 comprehensive blocklist upgrade."
+  },
+  {
+    "sha": "4f3b6543e597ad2b50b2da737c55b8b650f8268f",
+    "kind": "fix",
+    "summary": "Fix Backspace history back navigation on single game page, bump to 0.9.11",
+    "features": [
+      "game_page_default_my_trophies"
+    ],
+    "status": "reviewed",
+    "notes": "Checked pageshow persisted property and window.history state to avoid infinite redirect loop breaking browser Back button; bumped to 0.9.11."
+  },
+  {
+    "sha": "9ae24f68d14635b3a28ade76365a878787146575",
+    "kind": "chore",
+    "summary": "Code style cleanup in game page redirect handler",
+    "features": [
+      "game_page_default_my_trophies"
+    ],
+    "status": "reviewed",
+    "notes": "Formatted spaces around logical OR and conditions."
+  },
+  {
+    "sha": "7c3d9e87b84d9674c4a722f0893becffee193147",
+    "kind": "docs",
+    "summary": "Update README install count to 637",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated install badge and footnote numbers."
+  },
+  {
+    "sha": "7fa4049a17605712272dbfa19b5b0c98a233ad46",
+    "kind": "docs",
+    "summary": "Add footnote reference to critic average in README",
+    "features": [
+      "game_critic_average"
+    ],
+    "status": "reviewed",
+    "notes": "Linked critic score average to footnote 2."
+  },
+  {
+    "sha": "1cdbb117c09c715151f2127a3b30cffc6951e1b8",
+    "kind": "feature",
+    "summary": "Add sort trophy tips by likes (thumbs-up) count",
+    "features": [
+      "sort_tips_by_likes"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by Jiangyu-Wang: added sortTipsByLikes() button on trophy tips, re-ordering DOM nodes based on parsed like count."
+  },
+  {
+    "sha": "09b7ccac11ad3b49091a7ace70260d6a27d961f2",
+    "kind": "fix",
+    "summary": "Support legacy HTML layout in trophy tips sorting",
+    "features": [
+      "sort_tips_by_likes"
+    ],
+    "status": "reviewed",
+    "notes": "Checked for .post vs .list container structure to maintain compatibility with older P9 pages."
+  },
+  {
+    "sha": "80872d465df0ab7798073af513132bf16aae3320",
+    "kind": "fix",
+    "summary": "Handle missing like count on older pages, defaulting to 0",
+    "features": [
+      "sort_tips_by_likes"
+    ],
+    "status": "reviewed",
+    "notes": "Fallback order: likeStr ? likeStr : 0."
+  },
+  {
+    "sha": "473e8bbfd2cfd487fcbf7c0bfaa2d7d4d6c605b1",
+    "kind": "style",
+    "summary": "Add cursor: pointer to scroll-to-bottom button",
+    "features": [
+      "smooth_scroll_to_bottom"
+    ],
+    "status": "reviewed",
+    "notes": "Added cursor: pointer on #scrollbottom button."
+  },
+  {
+    "sha": "0ae72149aab08bb4212e6a5b81020d7326073a84",
+    "kind": "merge",
+    "summary": "Merge pull request #28 from Jiangyu-Wang/master",
+    "features": [
+      "sort_tips_by_likes",
+      "smooth_scroll_to_bottom"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #28 adding tips sorting by likes."
+  },
+  {
+    "sha": "9ea73eebc5f21c78c3dd4df9f5f8c3eecc0c2847",
+    "kind": "feature",
+    "summary": "Allow clicking score bar chart columns or X-axis labels to filter reviews, bump to 0.9.12",
+    "features": [
+      "score_distribution_chart",
+      "filter_reviews_by_score"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by Nathaniel_Wu: required Highcharts customEvents.js; bound click event on columns/labels to toggle visibility of comments with matching score; bumped to 0.9.12."
+  },
+  {
+    "sha": "c84ac1d02664ddcdd68e83d8cb418a6dc068bbcc",
+    "kind": "merge",
+    "summary": "Merge pull request #7 from Nathaniel-Wu/game-critic-average",
+    "features": [
+      "filter_reviews_by_score",
+      "score_distribution_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #7 interactive score review filtering."
+  },
+  {
+    "sha": "39796ac46d581983c9c81938b38a3b91684bdb30",
+    "kind": "feature",
+    "summary": "Add average score trend over time chart and p9TimeTextParser, bump to 0.9.13",
+    "features": [
+      "score_trend_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Added p9TimeTextParser() parsing relative ('x小时前', 'x天前') and absolute date formats; added Highcharts line chart showing moving average score over time; bumped to 0.9.13."
+  },
+  {
+    "sha": "c0e9696b3bb11a4934332716c0e1d0e6cf52b0b0",
+    "kind": "merge",
+    "summary": "Merge pull request #8 from Nathaniel-Wu/game-critic-average",
+    "features": [
+      "score_trend_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #8 score trend line chart."
+  },
+  {
+    "sha": "0258791af6e68ba8eddcf69781a51338370cde20",
+    "kind": "fix",
+    "summary": "Update pointFormatter in score trend chart tooltip",
+    "features": [
+      "score_trend_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Fixed Highcharts tooltip configuration using pointFormatter."
+  },
+  {
+    "sha": "73144a27c74a424c07359cfcde148644d1ea60de",
+    "kind": "style",
+    "summary": "Add subtitle hint explaining click-to-filter on score chart",
+    "features": [
+      "score_distribution_chart",
+      "filter_reviews_by_score"
+    ],
+    "status": "reviewed",
+    "notes": "Added subtitle: '点击分数柱或横坐标数字隐藏相应评论'."
+  },
+  {
+    "sha": "d459a2acff0e44b9617ce0228580929bc4933108",
+    "kind": "fix",
+    "summary": "Improve date parser in p9TimeTextParser for various P9 timestamp formats",
+    "features": [
+      "score_trend_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Extracted date_string_to_array helper and handled hyphen/space/colon delimiters."
+  },
+  {
+    "sha": "30ad07612d0d7b5d557d5ebce3a8ca6cf169442a",
+    "kind": "refactor",
+    "summary": "Remove customEvents.js dependency by implementing native Highcharts label click handler",
+    "features": [
+      "score_distribution_chart",
+      "filter_reviews_by_score"
+    ],
+    "status": "reviewed",
+    "notes": "Removed @require customEvents.js CDN script and replaced with native SVG node click listeners."
+  },
+  {
+    "sha": "a535c11cda89d1cd38906a7e16ce3567f6b52da7",
+    "kind": "chore",
+    "summary": "Fix typo in function name relative_description_to_offset",
+    "features": [
+      "score_trend_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Renamed off_set to offset in p9TimeTextParser helper."
+  },
+  {
+    "sha": "f5fce0dd311e56c3864cff828accfc91f194e7bd",
+    "kind": "merge",
+    "summary": "Merge pull request #27 from Nathaniel-Wu/master",
+    "features": [
+      "filter_reviews_by_score",
+      "score_trend_chart",
+      "sort_tips_by_likes"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #27 review filtering, score trend chart, and tips sorting."
+  },
+  {
+    "sha": "9d8f9741877fb7df14324d40518d8a1f1b5f5778",
+    "kind": "refactor",
+    "summary": "Code formatting in p9TimeTextParser and tips sorting",
+    "features": [
+      "score_trend_chart",
+      "sort_tips_by_likes"
+    ],
+    "status": "reviewed",
+    "notes": "Formatted spaces around operators."
+  },
+  {
+    "sha": "3688044f8f36801e94edf14d55e4c58e892fc5e7",
+    "kind": "style",
+    "summary": "Set score chart background color to transparent",
+    "features": [
+      "score_distribution_chart",
+      "score_trend_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Set backgroundColor: 'rgba(0,0,0,0)' for seamless dark mode blending."
+  },
+  {
+    "sha": "42082a3674b1c292ac5c99d185f49ae8b5685204",
+    "kind": "fix",
+    "summary": "Fix label.onclick execution and child nodes traversal, bump to 0.9.13.1",
+    "features": [
+      "filter_reviews_by_score"
+    ],
+    "status": "reviewed",
+    "notes": "Iterated over chart.xAxis[0].labelGroup.element.childNodes to bind click handlers reliably; bumped to 0.9.13.1."
+  },
+  {
+    "sha": "bd1c03458732b41b72a8a570be3bf13190aa1e87",
+    "kind": "merge",
+    "summary": "Merge pull request #29 from Nathaniel-Wu/master",
+    "features": [
+      "filter_reviews_by_score"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #29 label click handler fix."
+  },
+  {
+    "sha": "6cbfa7a7abdcfe75d79b878cf80ebcc2676455d4",
+    "kind": "feature",
+    "summary": "Restyle tips sorting button and credit author in README",
+    "features": [
+      "sort_tips_by_likes"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by Jiangyu-Wang: added clean CSS button style for tips sorting and updated README with feature link."
+  },
+  {
+    "sha": "a5a3b4c8b2174893d32677fad5437071af63b26b",
+    "kind": "docs",
+    "summary": "Add JayusTree (Jiangyu-Wang) author credit in README",
+    "features": [
+      "sort_tips_by_likes"
+    ],
+    "status": "reviewed",
+    "notes": "Added footnote credit for JayusTree."
+  },
+  {
+    "sha": "a3e042890975e9fcee297e92b7ec9e14d764bde8",
+    "kind": "docs",
+    "summary": "Fix README link for trophy tips example",
+    "features": [
+      "sort_tips_by_likes"
+    ],
+    "status": "reviewed",
+    "notes": "Updated example URL from game to specific trophy page."
+  },
+  {
+    "sha": "e89973b12bd0c4ed1c5cc1e79fed94476423affb",
+    "kind": "chore",
+    "summary": "Bump version to 0.9.14 in package.json and psnineplus.js",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Bumped version to 0.9.14."
+  },
+  {
+    "sha": "3c07228341e7a9f6c55791fbb6b56327f6c3fc09",
+    "kind": "docs",
+    "summary": "Update README footnote reference for tips sorting",
+    "features": [
+      "sort_tips_by_likes"
+    ],
+    "status": "reviewed",
+    "notes": "Added footnote 3 reference."
+  },
+  {
+    "sha": "e2c3b031b1df25b27184eec9bf2c83f0cca78526",
+    "kind": "feature",
+    "summary": "Add restore default sorting toggle to trophy tips, add JayusTree to authors",
+    "features": [
+      "sort_tips_by_likes"
+    ],
+    "status": "reviewed",
+    "notes": "Allowed toggling between sort by likes and restore default chronological order; added JayusTree to @author."
+  },
+  {
+    "sha": "598b4ec8a0145fa77464f59c486f2f6eed03e711",
+    "kind": "style",
+    "summary": "Change button text and color when tips are sorted by likes",
+    "features": [
+      "sort_tips_by_likes"
+    ],
+    "status": "reviewed",
+    "notes": "Updated button text and blue background (#3498db) when active."
+  },
+  {
+    "sha": "169b7cf6bf4770be5dd1241c6e8e4eb6419c8b50",
+    "kind": "fix",
+    "summary": "Fix button active style not toggling on unearned trophies filter",
+    "features": [
+      "unearned_trophy_filter"
+    ],
+    "status": "reviewed",
+    "notes": "Tracked ungetIsHidden boolean state to accurately toggle button styling."
+  },
+  {
+    "sha": "208db205460a6545c270461e426bdc746632ebf5",
+    "kind": "refactor",
+    "summary": "Rename ungetIsHidden variable to onlyUngetIsShown for clarity",
+    "features": [
+      "unearned_trophy_filter"
+    ],
+    "status": "reviewed",
+    "notes": "Renamed state variable for better code readability."
+  },
+  {
+    "sha": "1738ee33cac5a3d9f525c51124097f78bcca8c2d",
+    "kind": "merge",
+    "summary": "Merge pull request #30 from Jiangyu-Wang/master",
+    "features": [
+      "sort_tips_by_likes",
+      "unearned_trophy_filter"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #30 restoring default tips order and toggle style fixes."
+  },
+  {
+    "sha": "a5d94e0e90e7d8da2a417c2614aad25e5e50a24f",
+    "kind": "docs",
+    "summary": "Update README install badge to 675",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated install badge count."
+  },
+  {
+    "sha": "01ca2e63c9bbd7e5d71ff62936436931da3e163e",
+    "kind": "refactor",
+    "summary": "Extract addEarnedTrophiesSummary into dedicated helper function",
+    "features": [
+      "trophy_summary_list"
+    ],
+    "status": "reviewed",
+    "notes": "Modularized trophy summary bar chart logic into a reusable function."
+  },
+  {
+    "sha": "7e4ca463c28ee14663516856388bc148c5a067f9",
+    "kind": "refactor",
+    "summary": "Unify button styling across features with addButtonStyle helper",
+    "features": [
+      "unearned_trophy_filter",
+      "sort_tips_by_likes"
+    ],
+    "status": "reviewed",
+    "notes": "Created reusable addButtonStyle(id, backgroundColor, padding, margin) utility."
+  },
+  {
+    "sha": "b5eb9ad1caf76cbe31629bff977b08114f263747",
+    "kind": "fix",
+    "summary": "Fix DOM insertion when .alert-error has multiple matches (Issue #33), bump to 0.9.15",
+    "features": [
+      "unearned_trophy_filter"
+    ],
+    "status": "reviewed",
+    "notes": "Changed insertAfter('.alert-error') to .get(0) to target only the first alert element; bumped to 0.9.15."
+  },
+  {
+    "sha": "f2439b47a05bc8e064cfb2fdf4f18c178019e227",
+    "kind": "style",
+    "summary": "Set fixed width 111px and center alignment for trophy filter button",
+    "features": [
+      "unearned_trophy_filter"
+    ],
+    "status": "reviewed",
+    "notes": "Added width: 111px and textAlign: center for visual consistency."
+  },
+  {
+    "sha": "3ecfde9f32a95abd10c0b35c9fbb48ad612c99c9",
+    "kind": "fix",
+    "summary": "Fix image preview hover handler losing this context, bump to 0.9.16",
+    "features": [
+      "hover_image_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Restored standard function(i, url) in jQuery .html() handler; bumped to 0.9.16."
+  },
+  {
+    "sha": "cde0a6d76f50c84514d83b2e0a63add65c7db586",
+    "kind": "docs",
+    "summary": "Update README install badge to 699",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Updated install count."
+  },
+  {
+    "sha": "3ee346e2e659abdea9ecf416e4074107f0823bb9",
+    "kind": "fix",
+    "summary": "Support trailing slash in trophy page URL for tips sorting button, bump to 0.9.16.1",
+    "features": [
+      "sort_tips_by_likes"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by Nathaniel_Wu: updated URL regex to match /trophy/\\d+($|\\/$); bumped to 0.9.16.1."
+  },
+  {
+    "sha": "8983c45893fba4f9a5f269bb6628db80552d1c23",
+    "kind": "merge",
+    "summary": "Merge pull request #34 from Nathaniel-Wu/master",
+    "features": [
+      "sort_tips_by_likes"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #34 trailing slash fix."
+  },
+  {
+    "sha": "bb41569afc163ca1dfffbc58afb59f37555ab634",
+    "kind": "feature",
+    "summary": "Add auto night mode switching based on sunset/sunrise time, bump to 0.9.17",
+    "features": [
+      "auto_night_mode",
+      "dark_theme",
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by Nathaniel_Wu: added autoNightMode setting; toggles night mode automatically between sunset (19:00) and sunrise (07:00); bumped to 0.9.17."
+  },
+  {
+    "sha": "fd657e5d790db1ba99204258b010f3fee25e529c",
+    "kind": "fix",
+    "summary": "Fix night-to-day transition not switching off when daytime arrives",
+    "features": [
+      "auto_night_mode",
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Added else toggleNightMode() call to ensure day mode is properly restored."
+  },
+  {
+    "sha": "f4c93e8cf20d7b619cb8f2e4251e8390f3389021",
+    "kind": "merge",
+    "summary": "Merge pull request #35 from Nathaniel-Wu/master",
+    "features": [
+      "auto_night_mode",
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #35 auto night mode."
+  },
+  {
+    "sha": "5ecb5eec5b5fa2a516d2f9f601acc9bf04af5b1a",
+    "kind": "chore",
+    "summary": "Create GitHub Actions workflow for script compression",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Added .github/workflow/main.yml for compressing script on PR."
+  },
+  {
+    "sha": "dfddd3458af7ece090ec8faaefcf59e085f51481",
+    "kind": "test",
+    "summary": "Trigger test commit for compression workflow",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Added newline to test workflow."
+  },
+  {
+    "sha": "7962f741a6c758568047009693851c9a0f85373c",
+    "kind": "chore",
+    "summary": "Remove test whitespace in psnineplus.js",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Removed trailing test line."
+  },
+  {
+    "sha": "a422ef3f0349ccf436f0302a29e0647e5614f4e5",
+    "kind": "merge",
+    "summary": "Merge pull request #37 from swsoyee/workflow",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Merged GitHub Actions compression workflow."
+  },
+  {
+    "sha": "dc171dc2cd61ae400eed4e8afbff39aa8a961fe7",
+    "kind": "chore",
+    "summary": "Rename workflow directory to .github/workflows/",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Corrected directory name from workflow to workflows."
+  },
+  {
+    "sha": "815c3a00d67d27dec7e1d3c94229b816abf4c65a",
+    "kind": "fix",
+    "summary": "Fix game page redirect when URL contains hash selector, bump to 0.9.17.1",
+    "features": [
+      "game_page_default_my_trophies"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by Nathaniel_Wu: supported hash anchor (#\\d+) in redirect URL check; bumped to 0.9.17.1."
+  },
+  {
+    "sha": "56ab8dc6c701f3c9aa796a949d1dc6ddc8008360",
+    "kind": "merge",
+    "summary": "Merge pull request #39 from Nathaniel-Wu/master",
+    "features": [
+      "game_page_default_my_trophies"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #39 URL hash redirect fix."
+  },
+  {
+    "sha": "c330d0ffce9bf15cbe597971b66568c723e26c81",
+    "kind": "feature",
+    "summary": "Remove News tab restore option, bump to 0.9.18",
+    "features": [
+      "remove_nav_news_entry",
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Historical removal: removed addNews option and header manipulation code completely; bumped to 0.9.18."
+  },
+  {
+    "sha": "987cf06fbd69d92cb9c8d6a9db4c8d6b14278019",
+    "kind": "docs",
+    "summary": "Remove News tab feature description from README",
+    "features": [
+      "remove_nav_news_entry"
+    ],
+    "status": "reviewed",
+    "notes": "Deleted News tab bullet point from README."
+  },
+  {
+    "sha": "123532ca8e634d52ca521e12f1873082f703afd1",
+    "kind": "docs",
+    "summary": "Switch install count badge to dynamic JSON endpoint in README",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Used shields.io dynamic/json badge fetching real-time download stats from GreasyFork."
+  },
+  {
+    "sha": "351a9433190da2fbc3876d57bfc515e7ed389856",
+    "kind": "docs",
+    "summary": "Fix typo in dynamic badge URL in README",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Fixed URL query param encoding in badge link."
+  },
+  {
+    "sha": "54e8ef156bbb63e0a1222fada2e265ae11e36609",
+    "kind": "feature",
+    "summary": "Add option to show images inline in posts instead of hover preview, bump to 0.9.18.1",
+    "features": [
+      "inline_images_in_posts",
+      "hover_image_preview",
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by Nathaniel_Wu: added showImagesInPosts setting; when enabled, converts external image links directly into embedded <img> tags inside post content; when disabled, keeps hover preview; bumped to 0.9.18.1."
+  },
+  {
+    "sha": "ab563f10a47caa2234a1ba3d802d394501b7fb9e",
+    "kind": "merge",
+    "summary": "Merge pull request #40 from Nathaniel-Wu/master",
+    "features": [
+      "inline_images_in_posts",
+      "hover_image_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #40 inline images in posts option."
+  },
+  {
+    "sha": "8f68a2ca6a6fdd6a7c8e06f63775a3be46e5b6bc",
+    "kind": "feature",
+    "summary": "Add keyword blocklist filtering (blockWordsList)",
+    "features": [
+      "keyword_blocklist",
+      "comment_block_user"
+    ],
+    "status": "reviewed",
+    "notes": "Added blockWordsList setting; iterated over comments and titles to hide elements containing blocked keywords."
+  },
+  {
+    "sha": "4b8776d28b47254ad97f9d15dd0a4b154b6e53ae",
+    "kind": "chore",
+    "summary": "Bump version to 0.9.19",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Bumped package.json and userscript version to 0.9.19."
+  },
+  {
+    "sha": "7212939718bd467e68bf33724eaf74d51779d8d6",
+    "kind": "merge",
+    "summary": "Merge pull request #41 from swsoyee/feat-filter-block-word",
+    "features": [
+      "keyword_blocklist"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #41 keyword blocklist."
+  },
+  {
+    "sha": "301a66979a7922f8431a31c9154cab7bf45207c8",
+    "kind": "docs",
+    "summary": "Update README description for keyword filter",
+    "features": [
+      "keyword_blocklist"
+    ],
+    "status": "reviewed",
+    "notes": "Updated README copy with keyword blocking details."
+  },
+  {
+    "sha": "8768b3920dbdf53acd173067fcac4ed6fac3f88e",
+    "kind": "docs",
+    "summary": "Fix contributor section heading typo in README",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Fixed typo: changed 共享者 to 贡献者."
+  },
+  {
+    "sha": "32ff1df447e31713dcc33151d2b208145cf3af24",
+    "kind": "style",
+    "summary": "Update main.css dark theme to v1.9 with refined colors",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Updated main.css with refined dark colors for tables, nav, and badges."
+  },
+  {
+    "sha": "c1bca6d450854fd2836f8787ac64ec0bac1964d3",
+    "kind": "chore",
+    "summary": "Remove standalone night-mode-css.js userscript",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Historical removal: removed outdated separate night-mode-css.js script to consolidate night mode into psnineplus.js."
+  },
+  {
+    "sha": "756796180e7936febb478bd01f8e27a3f9624841",
+    "kind": "style",
+    "summary": "Synchronize dark mode CSS in psnineplus.js and bump to 0.9.20",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Minified and updated nightModeStyle in psnineplus.js; bumped to 0.9.20."
+  },
+  {
+    "sha": "91b932aaa4dd8b8dba8c71ff361f4928d32de0a7",
+    "kind": "docs",
+    "summary": "Update README shields badges style to flat-square",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Modernized README badge visual style."
+  },
+  {
+    "sha": "ddf223df6341197f092522bb4e6bded4a48da49d",
+    "kind": "docs",
+    "summary": "Update README install badge URL",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Refreshed badge link."
+  },
+  {
+    "sha": "d836d37490e9f9528c51f70551c3c2deb470a387",
+    "kind": "feature",
+    "summary": "Add hot tag indicator on popular posts and questions, bump to 0.9.21",
+    "features": [
+      "show_hot_tag"
+    ],
+    "status": "reviewed",
+    "notes": "Added addHotTag() function: checked reply count, appended red 'hot' badge when replies exceeded threshold; bumped to 0.9.21."
+  },
+  {
+    "sha": "55a14601de320e34153b62816e624beb539b9160",
+    "kind": "feature",
+    "summary": "Replace Q&A title color with status badge icons, bump to 0.9.22",
+    "features": [
+      "qa_status_icon",
+      "qa_title_color"
+    ],
+    "status": "reviewed",
+    "notes": "Replaced text colorization with SVG icon badges (.fa-check-circle for solved questions, coin icon for bounty); bumped to 0.9.22."
+  },
+  {
+    "sha": "16fd8cad0ad31a872235a93a29253f79054018c3",
+    "kind": "style",
+    "summary": "Use font-awesome coins SVG icon instead of dollar mark in Q&A, bump to 0.9.23",
+    "features": [
+      "qa_status_icon"
+    ],
+    "status": "reviewed",
+    "notes": "Added inline SVG background for .fa-coins; bumped to 0.9.23."
+  },
+  {
+    "sha": "fbea76c4a45f21490e13c3a2ac606e44dba0a20b",
+    "kind": "fix",
+    "summary": "Fix optional chaining compatibility error on older browsers in Windows, bump to 0.9.24",
+    "features": [
+      "show_hot_tag"
+    ],
+    "status": "reviewed",
+    "notes": "Removed optional chaining (?.) operator in replyCount matching to ensure compatibility with older JS engines; bumped to 0.9.24."
+  },
+  {
+    "sha": "761a2d89602dbf1ac622dd278aa65cba02545e4d",
+    "kind": "fix",
+    "summary": "Provide native fallback for GM_addStyle in GreaseMonkey 4.0+, bump to 0.9.24.1",
+    "features": [
+      "gm_compatibility",
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Critical GM compatibility: defined fallback GM_addStyle(css) using document.createElement('style') and document.head.appendChild() when GM_addStyle is undefined; bumped to 0.9.24.1."
+  },
+  {
+    "sha": "c521e35293f67db16278138c0b4d36e5d955d7c1",
+    "kind": "style",
+    "summary": "Move Q&A status icon to the left of question title",
+    "features": [
+      "qa_status_icon"
+    ],
+    "status": "reviewed",
+    "notes": "Changed float to left with margin-right: 3px for question status icons."
+  },
+  {
+    "sha": "cc25c723c9ac90bd34145bc273dd429954b0fea0",
+    "kind": "refactor",
+    "summary": "Scope Q&A item selector to .list > li",
+    "features": [
+      "qa_status_icon"
+    ],
+    "status": "reviewed",
+    "notes": "Tightened jQuery selector to prevent styling non-question list items."
+  },
+  {
+    "sha": "8513ba27c053c76ff78830e2897cdd7f09c95387",
+    "kind": "experiment",
+    "summary": "Experiment with @run-at document-start and repeatUntilSuccessful to avoid dark mode flash",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Added @run-at document-start and retry poller repeatUntilSuccessful; resulted in timing conflicts with page load."
+  },
+  {
+    "sha": "ddd7b2c2808aeea4b606d91a0bf67ca411edc63d",
+    "kind": "merge",
+    "summary": "Merge pull request #43 from Nathaniel-Wu/master",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Merged document-start experiment PR #43."
+  },
+  {
+    "sha": "1897ab604e9aab01081affe30d115edc67e49a04",
+    "kind": "merge",
+    "summary": "Merge branch master into refine-qa-index",
+    "features": [
+      "dark_theme",
+      "qa_status_icon"
+    ],
+    "status": "reviewed",
+    "notes": "Merged master changes into feature branch."
+  },
+  {
+    "sha": "ab3b0059a9655cfbfe56dbd220a3327ead5f57a7",
+    "kind": "revert",
+    "summary": "Revert commit 1897ab60 due to document-start conflicts",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Reverted branch merge due to runtime conflicts."
+  },
+  {
+    "sha": "a4d90d1ef70f363e90bf4407af4cba6474609553",
+    "kind": "revert",
+    "summary": "Revert PR #43 document-start changes",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Reverted commit 8513ba27 restoring standard page execution timing."
+  },
+  {
+    "sha": "be0ddee471b17422867a4762d7ed3d96a6463a95",
+    "kind": "merge",
+    "summary": "Merge pull request #45 from swsoyee/revert-43-master",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #45 reverting experimental document-start change."
+  },
+  {
+    "sha": "5d128de38bc75842fbcfde0700a5bc2b9adde42b",
+    "kind": "merge",
+    "summary": "Merge branch master into refine-qa-index",
+    "features": [
+      "qa_status_icon"
+    ],
+    "status": "reviewed",
+    "notes": "Synchronized clean master into QA index branch."
+  },
+  {
+    "sha": "51d814e419621048d2929178d79336dc43dbad55",
+    "kind": "chore",
+    "summary": "Bump version to 0.9.24.3",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Bumped version to 0.9.24.3."
+  },
+  {
+    "sha": "b970da56d5cf18d104a4222ecc40b48377905b09",
+    "kind": "merge",
+    "summary": "Merge pull request #44 from swsoyee/refine-qa-index",
+    "features": [
+      "qa_status_icon"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #44 QA status icon display."
+  },
+  {
+    "sha": "ec1a1645732df21ef9f053b2030b29f75569ec1a",
+    "kind": "fix",
+    "summary": "Adjust hot tag background color in dark mode (Issue #46)",
+    "features": [
+      "show_hot_tag",
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Used dynamic body background color for hot tag in dark mode to ensure contrast."
+  },
+  {
+    "sha": "c0f7d105e1816010df0293bd92a7ab49673f01e8",
+    "kind": "feature",
+    "summary": "Add configurable hot tag reply count threshold in settings, bump to 0.9.25",
+    "features": [
+      "show_hot_tag",
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Added hotTagThreshold setting (default 20); added numeric input in settings UI; bumped to 0.9.25."
+  },
+  {
+    "sha": "1a2e8b4b5336acb989913c46dc1907dfe65f8415",
+    "kind": "feature",
+    "summary": "Add trophy guide referenced trophy earned indicator check",
+    "features": [
+      "trophy_guide_reference_mark"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by aesct: parsed trophy links in topic guide posts, fetched user's earned trophy list via XHR, and marked earned trophies with checkmark."
+  },
+  {
+    "sha": "3ad4d68e20abe1608c72d8c1b5c7847df1436eaf",
+    "kind": "refactor",
+    "summary": "Use const and Set in trophy guide earned marker",
+    "features": [
+      "trophy_guide_reference_mark"
+    ],
+    "status": "reviewed",
+    "notes": "Cleaned up cookie parser and used Set for O(1) trophy ID lookups."
+  },
+  {
+    "sha": "21754779afea7b199299d25595dba66d3bda57b1",
+    "kind": "feature",
+    "summary": "Add SVG checkmark icon for earned trophies in topic guides",
+    "features": [
+      "trophy_guide_reference_mark"
+    ],
+    "status": "reviewed",
+    "notes": "Injected .fa-check-circle SVG icon styling next to referenced trophy links."
+  },
+  {
+    "sha": "b3ee91d9939f147a28936b0ecdf6265eb4d6ff34",
+    "kind": "docs",
+    "summary": "Update README with topic trophy earned indicator and bump version to 0.9.26",
+    "features": [
+      "trophy_guide_reference_mark"
+    ],
+    "status": "reviewed",
+    "notes": "Documented trophy guide earned indicator in README; bumped version to 0.9.26."
+  },
+  {
+    "sha": "6c017a7bac3b7f12343de20ffe9be6b097e76d7f",
+    "kind": "fix",
+    "summary": "Only execute trophy guide indicator when user is logged in",
+    "features": [
+      "trophy_guide_reference_mark"
+    ],
+    "status": "reviewed",
+    "notes": "Guarded execution with psnidCookie check."
+  },
+  {
+    "sha": "c0057fd10c3133c8a2fd26b0c36bc15f193d3cc2",
+    "kind": "feature",
+    "summary": "Add multi-choice enum setting UI and support SYSTEM / TIME / OFF auto night mode, bump to 0.9.25.1",
+    "features": [
+      "auto_night_mode",
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by Nathaniel_Wu: extended settings architecture to support enum values ({ value, enum: ['SYSTEM', 'TIME', 'OFF'] }); supported matchMedia('(prefers-color-scheme: dark)') for SYSTEM mode; bumped to 0.9.25.1."
+  },
+  {
+    "sha": "301b32e131d39359741049f2ef8c99dd40c4f7fc",
+    "kind": "merge",
+    "summary": "Merge pull request #49 from Nathaniel-Wu/master",
+    "features": [
+      "auto_night_mode",
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #49 multi-choice setting and system dark mode detection."
+  },
+  {
+    "sha": "cc7fe0b8d93197e2a32a28e37e87c4c0abf423a3",
+    "kind": "merge",
+    "summary": "Merge branch master into pr/48",
+    "features": [
+      "auto_night_mode",
+      "trophy_guide_reference_mark"
+    ],
+    "status": "reviewed",
+    "notes": "Merged master into aesct's topic trophy guide branch."
+  },
+  {
+    "sha": "2d57e948bf72026cefc8f10afe7530d587dab72e",
+    "kind": "merge",
+    "summary": "Merge pull request #48 from aesct/better_trophy",
+    "features": [
+      "trophy_guide_reference_mark"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #48 better trophy guide reference marking."
+  },
+  {
+    "sha": "a922b99fa23a5c294341cf578fa2cb343f6d72ec",
+    "kind": "fix",
+    "summary": "Fix browser CORS violation on XHR request in trophy guide, bump to 0.9.26.1",
+    "features": [
+      "trophy_guide_reference_mark"
+    ],
+    "status": "reviewed",
+    "notes": "Fixed request origin protocol and URL to match current page origin, avoiding browser CORS errors; bumped to 0.9.26.1."
+  },
+  {
+    "sha": "9278504656128ab0093ce9b18966c8fc17e9a3ff",
+    "kind": "merge",
+    "summary": "Merge pull request #50 from Nathaniel-Wu/master",
+    "features": [
+      "trophy_guide_reference_mark"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #50 CORS fix."
+  },
+  {
+    "sha": "f7def57e305b02db99c315e6c2b4c02c72853bc4",
+    "kind": "chore",
+    "summary": "Bump version to 0.9.27",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Bumped version to 0.9.27."
+  },
+  {
+    "sha": "b90b98c3a6dd8fef86a500d058109b2dc25d5628",
+    "kind": "fix",
+    "summary": "Parse numeric setting values to float/int to prevent storing numbers as strings, bump to 0.9.28",
+    "features": [
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by Nathaniel_Wu: parsed filterNonePlatinumAlpha and hotTagThreshold with parseFloat/parseInt when saving settings; bumped to 0.9.28."
+  },
+  {
+    "sha": "8d1315b18bd0408558091dbadf1f500351edcd4a",
+    "kind": "merge",
+    "summary": "Merge pull request #52 from Nathaniel-Wu/master",
+    "features": [
+      "settings_panel"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #52 setting numbers parser fix."
+  },
+  {
+    "sha": "8ac68f9837792ef8bfd19835cae9c2fa5aa3dc7a",
+    "kind": "fix",
+    "summary": "Only append checkmark icon to the first anchor link in trophy reference",
+    "features": [
+      "trophy_guide_reference_mark"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by aesct: used .slice(0, 1) so multiple nested anchors in a trophy block don't receive duplicate icons."
+  },
+  {
+    "sha": "6e19027832534ce30e26d50d0f77a570d419d7d7",
+    "kind": "chore",
+    "summary": "Bump version to 0.9.29",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Bumped version to 0.9.29."
+  },
+  {
+    "sha": "37774d27acd6dbc63930d4cf39cff342120a7438",
+    "kind": "merge",
+    "summary": "Merge pull request #53 from aesct/xiaofix",
+    "features": [
+      "trophy_guide_reference_mark"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #53 single mark fix."
+  },
+  {
+    "sha": "6ebdbedcef4fa64572686f8aa9c853102861f56b",
+    "kind": "fix",
+    "summary": "Inject dark mode CSS immediately on document-start, bump to 0.9.30",
+    "features": [
+      "dark_theme",
+      "auto_night_mode"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by Nathaniel_Wu: set @run-at document-start; checked dark mode setting synchronously from localStorage and appended nightModeStyle before DOM parses to completely eliminate white flash; bumped to 0.9.30."
+  },
+  {
+    "sha": "99fc5afe7d4494386ab7581c70e27c63e88cc398",
+    "kind": "fix",
+    "summary": "Re-append nightModeStyle to ensure correct stylesheet cascade order",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Appended nightModeStyle to document.head when document is ready so plugin CSS overrides native styles."
+  },
+  {
+    "sha": "1febb9cf54e00be702f9faf513ff46007b602405",
+    "kind": "fix",
+    "summary": "Fix redirect check on psngame pages when user is not logged in",
+    "features": [
+      "game_page_default_my_trophies"
+    ],
+    "status": "reviewed",
+    "notes": "Changed condition to !backTrigger.persisted && psnidCookie to avoid redirection when logged out."
+  },
+  {
+    "sha": "aab88d67c148fecc3d808a1abd5de84c43bc1148",
+    "kind": "fix",
+    "summary": "Guard nightModeStyle append when dark mode is disabled",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Added if (nightModeStyle) check to avoid null reference error when dark mode is off."
+  },
+  {
+    "sha": "2ed011eec3cd6971dfa981f4bb924833e9eeb534",
+    "kind": "fix",
+    "summary": "Defer non-critical DOM operations until DOMContentLoaded",
+    "features": [
+      "dark_theme",
+      "auto_night_mode"
+    ],
+    "status": "reviewed",
+    "notes": "Separated early CSS injection from DOM manipulation by attaching onDOMContentReady listener."
+  },
+  {
+    "sha": "bb67ba390beb40356bf682ffbf82d7763692359f",
+    "kind": "merge",
+    "summary": "Merge pull request #55 from Nathaniel-Wu/master",
+    "features": [
+      "dark_theme",
+      "auto_night_mode",
+      "game_page_default_my_trophies"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #55 document-start early CSS injection and deferred execution."
+  },
+  {
+    "sha": "ba431bbce05cc0b9ed922af0ffb0e0ba81ed768f",
+    "kind": "feature",
+    "summary": "Prepare comment trend data aggregation structures",
+    "features": [
+      "comment_trend_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Added comment_trend array to track weekly rating/review volume over time."
+  },
+  {
+    "sha": "318768653d623c675fd2f80d4944dba279ff0567",
+    "kind": "feature",
+    "summary": "Add comment trend volume chart with weekOfYear calculation, bump to 0.9.31",
+    "features": [
+      "comment_trend_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by Nathaniel_Wu: implemented ISO 8601 weekOfYear helper; rendered dual-axis Highcharts graph showing score average and weekly rating volume; bumped to 0.9.31."
+  },
+  {
+    "sha": "e28049cda34e0055a6969f033f9daf5a4fbd0cc6",
+    "kind": "style",
+    "summary": "Update chart series label to '周增评分次数'",
+    "features": [
+      "comment_trend_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Clarified chart series title in Highcharts tooltip."
+  },
+  {
+    "sha": "2761020ae23923686c19bbdfeb3540db7a761522",
+    "kind": "merge",
+    "summary": "Merge pull request #56 from Nathaniel-Wu/game-critic-average",
+    "features": [
+      "comment_trend_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #56 comment trend chart."
+  },
+  {
+    "sha": "027d7817fd2249a8e6e76a3a0ab96ef266f0cbc6",
+    "kind": "fix",
+    "summary": "Fix DOMContentLoaded compatibility when document is already loaded, bump to 0.9.32",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Checked if (document.readyState == 'loading') before adding event listener; if already interactive/complete, ran immediately; bumped to 0.9.32."
+  },
+  {
+    "sha": "74b4f6d3fed51062d258be60fe664b8f09456d7e",
+    "kind": "merge",
+    "summary": "Merge pull request #58 from Nathaniel-Wu/master",
+    "features": [
+      "dark_theme"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #58 document.readyState compatibility fix."
+  },
+  {
+    "sha": "a75998924edafb93728437f75cf49cf386fb90f0",
+    "kind": "fix",
+    "summary": "Add word-wrap: break-word to live preview container",
+    "features": [
+      "bbcode_live_preview"
+    ],
+    "status": "reviewed",
+    "notes": "Added word-wrap and word-break CSS rules to #preview container."
+  },
+  {
+    "sha": "026b0ff31bca68399f66e4a2f5284ae837227c0a",
+    "kind": "feature",
+    "summary": "Forbid submitting gene when character count exceeds limit (Issue #59), bump to 0.9.33",
+    "features": [
+      "forbid_gene_over_limit",
+      "gene_word_count"
+    ],
+    "status": "reviewed",
+    "notes": "Disabled submit button and displayed red alert warning when gene text exceeded maximum allowable characters; bumped to 0.9.33."
+  },
+  {
+    "sha": "7a7527b351305f2ba55a21f6f53c7a5fb78beb98",
+    "kind": "chore",
+    "summary": "Update admin list with new moderator IDs, bump to 0.9.34",
+    "features": [
+      "specific_id_highlight"
+    ],
+    "status": "reviewed",
+    "notes": "Added monica_zjl and other moderators to highlightSpecificID list; bumped to 0.9.34."
+  },
+  {
+    "sha": "728fa197e62b1abad20ddd89e4221126c04f1c55",
+    "kind": "merge",
+    "summary": "Merge pull request #60 from Nathaniel-Wu/master",
+    "features": [
+      "specific_id_highlight"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #60 admin list update."
+  },
+  {
+    "sha": "0857e7dac214421a3f184466a3b01bb0882dbe45",
+    "kind": "refactor",
+    "summary": "Update Highcharts invocation to modern Highcharts.chart API",
+    "features": [
+      "price_trend_chart",
+      "trophy_ratio_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Replaced legacy jQuery plugin syntax $('#id').highcharts(...) with official Highcharts.chart('id', options)."
+  },
+  {
+    "sha": "a24c6a9aea6c750a3f8ad8d4d299ebfe769c78b8",
+    "kind": "chore",
+    "summary": "Bump version to 0.9.35 in psnineplus.js",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Bumped version to 0.9.35."
+  },
+  {
+    "sha": "f6417ccc0371cb6234e0e5b85a738f1ac93c76b6",
+    "kind": "merge",
+    "summary": "Merge pull request #61 from swsoyee/mordom0404",
+    "features": [
+      "price_trend_chart",
+      "trophy_ratio_chart"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #61 modern Highcharts API update."
+  },
+  {
+    "sha": "00f5e4912a4a663a5b0e458acec75347a484e36e",
+    "kind": "feature",
+    "summary": "Add real-time currency exchange rates via open API, bump to 0.9.36",
+    "features": [
+      "realtime_exchange_rates",
+      "foreign_currency_cny"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by Nathaniel_Wu: added retrieveRealTimeExchangeRate() fetching live rates from api.exchangeratesapi.io; cached rates and recalculated prices dynamically; bumped to 0.9.36."
+  },
+  {
+    "sha": "211dfe25d5f09c834260502a57bb867045e166d9",
+    "kind": "fix",
+    "summary": "Fix discount parser error on 100% off (free) items",
+    "features": [
+      "discount_highlight"
+    ],
+    "status": "reviewed",
+    "notes": "Handled 100% off free games gracefully without regex parsing errors."
+  },
+  {
+    "sha": "de458059ce14f71ddb40dcc5752385f8ceed0858",
+    "kind": "chore",
+    "summary": "Omit extra CNY conversion tags on domestic (国服) store pages",
+    "features": [
+      "foreign_currency_cny"
+    ],
+    "status": "reviewed",
+    "notes": "Skipped currency conversion tag insertion when region is 国服."
+  },
+  {
+    "sha": "a4830e013401b8fdf53bca0c5a735996e13bf070",
+    "kind": "merge",
+    "summary": "Merge pull request #62 from Nathaniel-Wu/master",
+    "features": [
+      "realtime_exchange_rates",
+      "foreign_currency_cny"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #62 real-time exchange rates."
+  },
+  {
+    "sha": "4c54723120572d3d99b5834c1f461a698c8fd424",
+    "kind": "fix",
+    "summary": "Ensure converted price tags are inserted after exchange rates resolve",
+    "features": [
+      "realtime_exchange_rates",
+      "foreign_currency_cny"
+    ],
+    "status": "reviewed",
+    "notes": "Synchronized tag insertion callback to avoid race condition where tags render before rates load."
+  },
+  {
+    "sha": "acfbe0a8c90df19fe471b0d814f041af74681e70",
+    "kind": "chore",
+    "summary": "Bump version to 0.9.37",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Bumped version to 0.9.37."
+  },
+  {
+    "sha": "fd51e488aad361e3b2046b23a6d22739c6ab5018",
+    "kind": "merge",
+    "summary": "Merge pull request #63 from Nathaniel-Wu/master",
+    "features": [
+      "realtime_exchange_rates",
+      "foreign_currency_cny"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #63 exchange rate callback synchronization."
+  },
+  {
+    "sha": "e3b5d446fa6cf09bcd544fae2793c1e5161ac647",
+    "kind": "feature",
+    "summary": "Display converted prices on sales and event campaign pages, bump to 0.9.38",
+    "features": [
+      "sales_page_currency_conversion",
+      "foreign_currency_cny"
+    ],
+    "status": "reviewed",
+    "notes": "Extended live exchange rate conversion to sales and event pages; bumped to 0.9.38."
+  },
+  {
+    "sha": "9b43c726495a77d7f89c50e5f9a01a3262a55554",
+    "kind": "docs",
+    "summary": "Update README description for sales page price conversion",
+    "features": [
+      "sales_page_currency_conversion"
+    ],
+    "status": "reviewed",
+    "notes": "Refreshed feature bullets and footnotes in README."
+  },
+  {
+    "sha": "8fef41dc8b043b62736280942b1a0b765ee406cc",
+    "kind": "feature",
+    "summary": "Add sort trophies by timestamp (chronological and reverse) on game page",
+    "features": [
+      "sort_trophies_by_timestamp"
+    ],
+    "status": "reviewed",
+    "notes": "Contributed by Nathaniel_Wu: added sort-by-timestamp toggle button on user's game trophy list, allowing sorting trophies by unlocked date."
+  },
+  {
+    "sha": "0ece5b82fa58638567180b1906b89708a1094247",
+    "kind": "docs",
+    "summary": "Update README with trophy timestamp sorting feature",
+    "features": [
+      "sort_trophies_by_timestamp"
+    ],
+    "status": "reviewed",
+    "notes": "Documented trophy timestamp sorting in README."
+  },
+  {
+    "sha": "d3cd2bbea624d528b96d4b0a05806f0e83414453",
+    "kind": "fix",
+    "summary": "Fix region query string extraction in currency conversion",
+    "features": [
+      "foreign_currency_cny"
+    ],
+    "status": "reviewed",
+    "notes": "Fixed URL region param parsing regex."
+  },
+  {
+    "sha": "f34576162a4763a28d041ac4b1133e21ee22318d",
+    "kind": "chore",
+    "summary": "Use global flag in regex and remove hover class on dropdown menu",
+    "features": [
+      "foreign_currency_cny"
+    ],
+    "status": "reviewed",
+    "notes": "Added /g flag to clean region parameter; ensured dropdown menu closes properly."
+  },
+  {
+    "sha": "2ebb95642627e9bdac200e4b7452d6431263de43",
+    "kind": "feature",
+    "summary": "Add toggle switch UI component for currency display switching",
+    "features": [
+      "toggle_switch_button",
+      "foreign_currency_cny"
+    ],
+    "status": "reviewed",
+    "notes": "Replaced text button with an iOS-style toggle switch (<label class='switch'><input type='checkbox'>) for toggling between original currency and CNY."
+  },
+  {
+    "sha": "7c719c68e5b3b4e5c8c64c36e1f739733672deed",
+    "kind": "style",
+    "summary": "Adjust toggle switch dimensions and label alignment",
+    "features": [
+      "toggle_switch_button"
+    ],
+    "status": "reviewed",
+    "notes": "Adjusted switch width, height, and margin."
+  },
+  {
+    "sha": "3974cc342e87d0fa0da9896d8f7051b1c93fbbb8",
+    "kind": "refactor",
+    "summary": "Add reusable .switch CSS styles and consolidate campaign toggle buttons",
+    "features": [
+      "toggle_switch_button",
+      "historic_low_filter"
+    ],
+    "status": "reviewed",
+    "notes": "Defined GM_addStyle for .switch, .slider, and input:checked; applied toggle switch to only-show-historic-low on campaign pages."
+  },
+  {
+    "sha": "b0f1556f19fa243dd662353d16a68ac5b16bde56",
+    "kind": "merge",
+    "summary": "Merge pull request #64 from Nathaniel-Wu/master",
+    "features": [
+      "sales_page_currency_conversion",
+      "sort_trophies_by_timestamp",
+      "toggle_switch_button"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #64 sales page currency conversion, trophy timestamp sorting, and switch toggles."
+  },
+  {
+    "sha": "796a5390fabb9f8762a7d3dacbd6bf3b37c5c162",
+    "kind": "refactor",
+    "summary": "Refactor onlyShowHistoricLow button style to match switch toggle",
+    "features": [
+      "historic_low_filter",
+      "toggle_switch_button"
+    ],
+    "status": "reviewed",
+    "notes": "Renamed internal function to showBest() and updated button design."
+  },
+  {
+    "sha": "3eaa882de12d7aa8306c82e7b908aeb26feba117",
+    "kind": "refactor",
+    "summary": "Standardize toggle switch component naming and click handlers",
+    "features": [
+      "toggle_switch_button"
+    ],
+    "status": "reviewed",
+    "notes": "Refactored toggle event listeners and clean button labels."
+  },
+  {
+    "sha": "91e1dcef11803922dcce084914b83ff11cf4c0ee",
+    "kind": "refactor",
+    "summary": "Update unearned trophies filter to modern switch toggle button",
+    "features": [
+      "unearned_trophy_filter",
+      "toggle_switch_button"
+    ],
+    "status": "reviewed",
+    "notes": "Applied standardized switch toggle style to trophy filter button in dropmenu."
+  },
+  {
+    "sha": "c9fcfa0f4feb364dace4f4418593fe4436a63663",
+    "kind": "chore",
+    "summary": "Bump version to 0.9.39 and refine toggle button colors",
+    "features": [
+      "toggle_switch_button"
+    ],
+    "status": "reviewed",
+    "notes": "Updated version to 0.9.39 in package.json and psnineplus.js."
+  },
+  {
+    "sha": "bf337df6c2def5eb6d3d606a026e653fec859e32",
+    "kind": "merge",
+    "summary": "Merge pull request #66 from swsoyee/change-switch-button-style",
+    "features": [
+      "toggle_switch_button",
+      "unearned_trophy_filter",
+      "historic_low_filter"
+    ],
+    "status": "reviewed",
+    "notes": "Merged PR #66 unified switch button styling."
+  },
+  {
+    "sha": "bea4097d7f1e72a4817e774e75f65100f679b129",
+    "kind": "docs",
+    "summary": "Add QQ feedback chat group QR code to README",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Added feedback section and QQ group QR image."
+  },
+  {
+    "sha": "d8d67b487e3ba2a1d02b2768bdc7137cdda0f69a",
+    "kind": "docs",
+    "summary": "Fix QQ chat group image URL link in README",
+    "features": [],
+    "status": "reviewed",
+    "notes": "Used raw.githubusercontent.com URL for QQ group image."
+  },
+  {
+    "sha": "bd9c8c3adb7879e42fd8cd203abca26f15513715",
+    "kind": "fix",
+    "summary": "Fix currency conversion on single game discount pages with query parameters, bump to 0.9.40",
+    "features": [
+      "foreign_currency_cny"
+    ],
+    "status": "reviewed",
+    "notes": "Updated URL regex match to /dd($|\\?)/ so currency conversion handles single game pages with query parameters; bumped version to 0.9.40."
+  }
+]

@@ -1,0 +1,642 @@
+[
+  {
+    "id": "G01",
+    "name": "手动深色主题",
+    "module": "global",
+    "behavior": "v2 data-theme 与旧站样式",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "G02",
+    "name": "跟随系统主题",
+    "module": "global",
+    "behavior": "监听系统主题变化",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "G03",
+    "name": "按时间切换主题",
+    "module": "global",
+    "behavior": "跨午夜时间区间与运行中刷新",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "G04",
+    "name": "刮刮条显示",
+    "module": "global",
+    "behavior": "悬浮、键盘、触屏显隐",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "G05",
+    "name": "自动签到",
+    "module": "global",
+    "behavior": "每账号每日去重，仅启用后运行",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "G06",
+    "name": "回到页底",
+    "module": "global",
+    "behavior": "滚动至回复或分页位置",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "G07",
+    "name": "插件设置",
+    "module": "core",
+    "behavior": "页内入口、保存、取消、恢复默认、导入导出",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "G08",
+    "name": "裸文本链接识别",
+    "module": "global",
+    "behavior": "跳过链接、代码与输入区域",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "G09",
+    "name": "D7VG 旧链接修复",
+    "module": "global",
+    "behavior": "只替换确切旧域名",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "G10",
+    "name": "站内 HTTPS",
+    "module": "global",
+    "behavior": "按设置升级准确主机链接",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "G11",
+    "name": "机因问答默认最新",
+    "module": "global",
+    "behavior": "列表入口与目标页 query 保留",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C01",
+    "name": "楼主徽标",
+    "module": "community",
+    "behavior": "可靠识别主题/机因/交易发起者",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C02",
+    "name": "指定用户高亮",
+    "module": "community",
+    "behavior": "大小写不敏感、可配置颜色",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C03",
+    "name": "楼层编号",
+    "module": "community",
+    "behavior": "主楼及子楼，不改原节点身份",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C04",
+    "name": "回复内容回溯",
+    "module": "community",
+    "behavior": "寻找被 @ 用户最近的先前回复",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C05",
+    "name": "回溯完整内容与跳转",
+    "module": "community",
+    "behavior": "短摘要、完整预览与定位原回复",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C06",
+    "name": "回复控件可见性",
+    "module": "community",
+    "behavior": "桌面悬浮、键盘与触屏始终可用",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C07",
+    "name": "热门标签",
+    "module": "community",
+    "behavior": "按评论/答案数量和可配置阈值",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C08",
+    "name": "用户黑名单",
+    "module": "community",
+    "behavior": "各类帖子、通知、约战、Tips 和子评论",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C09",
+    "name": "关键词过滤",
+    "module": "community",
+    "behavior": "可揭示内容，非法正则保护",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C10",
+    "name": "头像个人卡片",
+    "module": "community",
+    "behavior": "延迟获取、缓存、触屏按钮替代",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C11",
+    "name": "问答状态与悬赏",
+    "module": "community",
+    "behavior": "已解决/未回答/解决中及悬赏数标识",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C12",
+    "name": "载入全部问答答案",
+    "module": "paging",
+    "behavior": "分页顺序正确、去重、限流",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C13",
+    "name": "问答答案最新优先",
+    "module": "community",
+    "behavior": "反转实际答案，保留子回复归属",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C14",
+    "name": "展开问答隐藏回复",
+    "module": "community",
+    "behavior": "适配站点已加载与折叠节点",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C15",
+    "name": "二级回复倒序",
+    "module": "community",
+    "behavior": "Tips/评论/留言，避免重复翻转",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C16",
+    "name": "视口内展开子评论",
+    "module": "community",
+    "behavior": "有界触发，不无限重试点击",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C17",
+    "name": "机因字数统计",
+    "module": "editor",
+    "behavior": "600 字提示与超限反馈",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C18",
+    "name": "BBCode 实时预览",
+    "module": "editor",
+    "behavior": "引用/黑条/图片/粗体/删除线/居中/颜色/链接",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C19",
+    "name": "攻略中我的奖杯",
+    "module": "trophies",
+    "behavior": "同一游戏请求去重，显示已获状态",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C20",
+    "name": "列表自动翻页",
+    "module": "paging",
+    "behavior": "机因/问答/主题/交易，追加后增强",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "C21",
+    "name": "个人主页全部游戏",
+    "module": "paging",
+    "behavior": "滚动或按钮载入个人游戏后续页",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "T01",
+    "name": "奖杯类型统计",
+    "module": "trophies",
+    "behavior": "白金/金/银/铜计数和占比",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "T02",
+    "name": "奖杯稀有度统计",
+    "module": "trophies",
+    "behavior": "0–5/5–10/10–20/20–50/50–100 边界",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "T03",
+    "name": "获得时间曲线",
+    "module": "trophies",
+    "behavior": "已获累计数、完成率、缺失时间处理",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "T04",
+    "name": "已获/未获图标汇总",
+    "module": "trophies",
+    "behavior": "图标、各类型计数、未知状态区分",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "T05",
+    "name": "汇总 Tips 标记与预览",
+    "module": "trophies",
+    "behavior": "有 Tips 视觉提示，标题详情与跳转",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "T06",
+    "name": "奖杯汇总折叠",
+    "module": "trophies",
+    "behavior": "默认折叠设置及手动展开",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "T07",
+    "name": "奖杯图表折叠",
+    "module": "trophies",
+    "behavior": "默认折叠设置及手动展开",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "T08",
+    "name": "获得时间排序",
+    "module": "trophies",
+    "behavior": "最新/最早/XMB，未知排最后",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "T09",
+    "name": "原序/类型/稀有度排序",
+    "module": "trophies",
+    "behavior": "双向排序，DLC 分组不混排",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "T10",
+    "name": "获得状态筛选",
+    "module": "trophies",
+    "behavior": "已获/未获，保留内联 Tips 归属",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "T11",
+    "name": "内联展开单个 Tips",
+    "module": "trophies",
+    "behavior": "按需请求、失败重试、状态显示、内容过滤",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "T12",
+    "name": "批量全部/未获 Tips",
+    "module": "trophies",
+    "behavior": "原隐藏入口替为明确操作，队列可停止",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "T13",
+    "name": "Tips 顶数排序",
+    "module": "trophies",
+    "behavior": "热度排序及恢复原顺序",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "T14",
+    "name": "Tips 输入框缩放",
+    "module": "trophies",
+    "behavior": "垂直调整，移动端尺寸",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "P01",
+    "name": "无白金游戏降低透明度",
+    "module": "games",
+    "behavior": "仅明确无白金，透明度设置",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "P02",
+    "name": "游戏封面完成度提示",
+    "module": "games",
+    "behavior": "本地缓存优先、按需获取",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "P03",
+    "name": "游戏列表按难度排序",
+    "module": "games",
+    "behavior": "空值置后、双向稳定排序",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "P04",
+    "name": "我的游戏进度缓存",
+    "module": "games",
+    "behavior": "按账号隔离，进度/白金与页记录",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "P05",
+    "name": "进度后台增量刷新",
+    "module": "games",
+    "behavior": "有变化快刷、无变化延迟及缺页补全",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "P06",
+    "name": "列表背景进度与徽章",
+    "module": "games",
+    "behavior": "游戏列表/个人主页，动态追加可用",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "P07",
+    "name": "白金封面修饰",
+    "module": "games",
+    "behavior": "光晕及触摸友好的静态反馈",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "P08",
+    "name": "未注册主页同步入口",
+    "module": "games",
+    "behavior": "仅添加手动等级/游戏同步链接",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "P09",
+    "name": "游戏页转到我的奖杯",
+    "module": "games",
+    "behavior": "保留 query/hash，可设置关闭",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "P10",
+    "name": "元数据关联游戏版本",
+    "module": "games",
+    "behavior": "关联游戏页面中的版本关系",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "P11",
+    "name": "搜索关联游戏版本",
+    "module": "games",
+    "behavior": "标准化精确标题匹配与缓存",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "P12",
+    "name": "跨版本奖杯 Tips",
+    "module": "games",
+    "behavior": "先验证对应奖杯，不能盲拼序号",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "P13",
+    "name": "子页面版本导航",
+    "module": "games",
+    "behavior": "排名/评论/问答/主题/约战/游列路径保留",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "P14",
+    "name": "PSPC 与 PS5 封面修正",
+    "module": "games",
+    "behavior": "平台标识补全与局部自然宽高比",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "B01",
+    "name": "隐藏约战发起人头像",
+    "module": "battle",
+    "behavior": "按设置作用于头像列",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "B02",
+    "name": "约战列表我的进度",
+    "module": "battle",
+    "behavior": "账号进度缓存、渐变背景",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "B03",
+    "name": "约战游戏监控",
+    "module": "battle",
+    "behavior": "游戏页及列表行增加/移除、状态同步",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "B04",
+    "name": "导航招募提醒",
+    "module": "battle",
+    "behavior": "本地监控游戏与公开列表求交集，桌面/手机菜单",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "B05",
+    "name": "约战信息缓存",
+    "module": "battle",
+    "behavior": "刷新间隔、无监控不请求、失败保留旧缓存",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "R01",
+    "name": "测评均分",
+    "module": "reviews",
+    "behavior": "有效评分的已载入样本，显示样本数量",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "R02",
+    "name": "评分分布",
+    "module": "reviews",
+    "behavior": "1–10 分直方图，最高计数高亮",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "R03",
+    "name": "按分数过滤评论",
+    "module": "reviews",
+    "behavior": "点击柱/刻度、隐藏无评分，与黑名单叠加",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "R04",
+    "name": "正态参考曲线",
+    "module": "reviews",
+    "behavior": "可开关，零方差不产生 NaN",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "R05",
+    "name": "累计均分趋势",
+    "module": "reviews",
+    "behavior": "按可信时间累计，缺失时间单独说明",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "R06",
+    "name": "每周评分热度",
+    "module": "reviews",
+    "behavior": "ISO 周跨年及空周补零",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "D01",
+    "name": "普通/Plus 价格历史",
+    "module": "deals",
+    "behavior": "双序列、促销起止和原价恢复",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "D02",
+    "name": "数折人民币换算",
+    "module": "deals",
+    "behavior": "HKD/USD/GBP/JPY，标注汇率日期与来源",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "D03",
+    "name": "活动人民币切换",
+    "module": "deals",
+    "behavior": "保留原价，可在人民币/原币种间切换",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "D04",
+    "name": "折扣幅度着色",
+    "module": "deals",
+    "behavior": "连续区间而非只识别20/50/80/100",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "D05",
+    "name": "数折与活动只看史低",
+    "module": "deals",
+    "behavior": "显式史低标记，筛选可复原",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "X01",
+    "name": "v2 导航与布局",
+    "module": "core",
+    "behavior": "新旧 selector 适配，不重排站点内容",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "X02",
+    "name": "iOS Safari Stay",
+    "module": "core",
+    "behavior": "同步/异步GM、触控、单文件、16px表单、安全区域",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "X03",
+    "name": "动态内容幂等增强",
+    "module": "core",
+    "behavior": "局部观察与清理，避免监听/请求/徽标重复",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  },
+  {
+    "id": "X04",
+    "name": "旧配置迁移",
+    "module": "core",
+    "behavior": "坏 JSON 不崩溃，类型校验、旧枚举与数字转换",
+    "status": "planned",
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+  }
+]

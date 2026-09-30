@@ -1,0 +1,12 @@
+psnine_next is a reimplementation of the behavior of psnine-enhanced-version.
+
+Upstream: https://github.com/swsoyee/psnine-enhanced-version
+Fork and v2 adaptation: https://github.com/ToJ112/psnine-enhanced-version
+Original license: MIT, Copyright (c) 2019 InfinityLoop
+Original credited contributors include InfinityLoop, mordom0404,
+Nathaniel_Wu and JayusTree. See the source repositories' history for all
+contributors and docs/history/manifest.json for audited revisions.
+
+Third-party site names and data remain the property of their owners.
+Historical commit patches are retained for provenance and analysis;
+the original MIT notice applies to upstream source in those patches.
