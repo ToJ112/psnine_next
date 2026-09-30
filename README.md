@@ -2,7 +2,7 @@
 
 PSNINE 增强用户脚本的新实现。源码按功能维护，发布为一个自包含 `.user.js`，面向桌面 **Tampermonkey（篡改猴）** 与 iOS/iPadOS Safari **Stay**。
 
-本仓库为私有仓库，不依赖公开 CDN 或私有 raw URL 自动更新。
+本仓库已公开。[直接获取安装脚本](https://raw.githubusercontent.com/ToJ112/psnine_next/main/dist/psnine_next.user.js)，无需登录 GitHub；脚本不依赖运行时 CDN。
 
 ## 设计与来源
 
@@ -21,7 +21,7 @@ PSNINE 增强用户脚本的新实现。源码按功能维护，发布为一个�
 - Stay：将完整文件保存到 iPhone/iPad 的“文件”，在 Stay 中本地导入并激活，允许 Safari 扩展访问 PSNINE。
 - 页面右下角的设置按钮可调整功能、导入/导出设置。第一次使用时请停用旧版增强脚本，避免两套脚本同时修改同一页面。
 
-私有仓库的匿名 raw 链接不适合作为自动更新地址；当前使用本地文件导入。详见 [安装与兼容说明](docs/compatibility.md)。当前版本通过 149 项单元/DOM 测试、10 项浏览器测试及 26 个公开页面回放案例。详见 [验证记录](docs/validation.md)；Tampermonkey 与 iPhone Stay 尚未进行实际安装及沙箱验证。
+也可使用上面的公开脚本链接安装或下载后导入；当前脚本未配置专用自动更新地址。详见 [安装与兼容说明](docs/compatibility.md)。当前版本通过 149 项单元/DOM 测试、10 项浏览器测试及 26 个公开页面回放案例。详见 [验证记录](docs/validation.md)；Tampermonkey 与 iPhone Stay 尚未进行实际安装及沙箱验证。
 
 ## 开发
 

@@ -2,7 +2,7 @@
 
 - Codex is the coordinator and reviewer. Gemini subagents implement production code.
 - Gemini must use `gemini-3.8-flash-high` with reasoning effort `high`.
-- This is a new private repository; preserve the audited upstream MIT attribution.
+- This repository is public at the user's request; preserve the audited upstream MIT attribution.
 - Read `docs/implementation-plan.md` and the feature catalog before implementation.
 - Multiple contributors share this checkout. Modify only assigned files and never revert another contributor's edits.
 - Deliver a self-contained browser userscript. Do not execute authenticated PSNINE actions during development.

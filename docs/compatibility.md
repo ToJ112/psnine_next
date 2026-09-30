@@ -4,11 +4,11 @@
 
 发布文件为 `dist/psnine_next.user.js`。源码目录中的 TypeScript 不需要安装。完整脚本应以 `// ==UserScript==` 开头，不能只复制其中一段。
 
-**桌面 Tampermonkey**：从私有仓库下载文件后导入，或在“添加新脚本”中以完整文件内容替换模板并保存；启用脚本，打开 `https://psnine.com/`。在网页中的 P9 Next 设置入口调整功能。
+**桌面 Tampermonkey**：打开[公开安装脚本链接](https://raw.githubusercontent.com/ToJ112/psnine_next/main/dist/psnine_next.user.js)，由管理器接管安装；也可下载文件后导入，或在“添加新脚本”中以完整文件内容替换模板并保存。启用脚本，打开 `https://psnine.com/`，在网页中的 P9 Next 设置入口调整功能。
 
 **iPhone/iPad Stay**：将该文件保存到“文件”，通过 Stay 的本地文件导入功能导入并在资料库中激活。也可以使用 Stay 的直接编辑方式粘贴完整内容。到 Safari 扩展设置启用 Stay，并允许它访问 PSNINE；刷新网站后使用网页内设置入口。[Stay 官方使用说明](https://github.com/shenruisi/Stay#使用方式)
 
-因为仓库私有，匿名 raw 链接可能无法下载；本地文件导入或完整复制不受这个限制。设置和进度默认保存在当前设备，导出设置可用于另一个设备，账号 Cookie 不导出。
+仓库已公开，无需登录 GitHub。Stay 也可使用上述公开链接从脚本地址导入；本地文件导入或完整复制仍可用。当前脚本未配置专用自动更新地址，可用最新文件覆盖更新。设置和进度默认保存在当前设备，导出设置可用于另一个设备，账号 Cookie 不导出。
 
 ## 兼容设计
 
