@@ -287,6 +287,103 @@ button[data-psnine-next].psnine-btn-danger {
   vertical-align: middle;
 }
 
+/* Trophy Overview Panel & Native Sort Dropdown */
+#psnine-trophy-stats-panel .psnine-trophy-overview-top {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+#psnine-trophy-header-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+#psnine-trophy-header-title .psnine-trophy-title-text {
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+}
+#psnine-trophy-header-counts {
+  white-space: nowrap;
+  font-size: 12px;
+  color: #666;
+  font-weight: normal;
+}
+#psnine-trophy-completion-badge {
+  font-size: 11px;
+  font-weight: normal;
+  line-height: 1.4;
+}
+#psnine-trophy-stats-panel .psnine-trophy-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font-size: 12px;
+}
+#psnine-trophy-stats-panel .psnine-trophy-action-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+#psnine-trophy-stats-panel .psnine-trophy-toolbar button {
+  padding: 4px 10px;
+  font-size: 12px;
+  line-height: 1.4;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] {
+  position: relative;
+}
+ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > a[data-psnine-trophy-sort-trigger="true"] {
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+}
+ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > ul[data-psnine-trophy-sort-menu="true"] {
+  display: none;
+  max-width: calc(100vw - 24px);
+  box-sizing: border-box;
+}
+ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"]:not([data-psnine-dropdown-state="closed"]).hover > ul[data-psnine-trophy-sort-menu="true"],
+ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"].psnine-dropdown-open > ul[data-psnine-trophy-sort-menu="true"],
+ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"][data-psnine-dropdown-state="open"] > ul[data-psnine-trophy-sort-menu="true"] {
+  display: block !important;
+}
+ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"][data-psnine-dropdown-state="closed"] > ul[data-psnine-trophy-sort-menu="true"] {
+  display: none !important;
+}
+ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > ul[data-psnine-trophy-sort-menu="true"] > li > a {
+  color: #dbe4ee !important;
+}
+ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > ul[data-psnine-trophy-sort-menu="true"] > li[data-psnine-sort-item] > a {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > ul[data-psnine-trophy-sort-menu="true"] > li > a:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff !important;
+  text-decoration: none;
+}
+ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > ul[data-psnine-trophy-sort-menu="true"] > li > a.current,
+ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > ul[data-psnine-trophy-sort-menu="true"] > li > a[data-psnine-sort-active="true"] {
+  background-color: rgba(56, 144, 255, 0.24) !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  text-decoration: none;
+}
+ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > ul[data-psnine-trophy-sort-menu="true"] > li > a:focus-visible {
+  outline: 2px solid #3890ff;
+  outline-offset: -2px;
+}
+
 /* Spoiler Bar (.mark) Light Mode Rules (G04) */
 .mark {
   background-color: #2c3e50 !important;

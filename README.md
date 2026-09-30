@@ -4,6 +4,8 @@ PSNINE 增强用户脚本的新实现。源码按功能维护，发布为一个�
 
 本仓库已公开。[直接获取安装脚本](https://raw.githubusercontent.com/ToJ112/psnine_next/main/dist/psnine_next.user.js)，无需登录 GitHub；脚本不依赖运行时 CDN。
 
+版本 `1.0.1`：奖杯排序复用页面原有菜单，保留 XMB、类型、完美率原生链接；时间排序（个人页）及反向排序放入同一菜单。“奖杯概览”只保留统计、筛选与 Tips 操作。
+
 ## 设计与来源
 
 - [完整实现方案](docs/implementation-plan.md)
@@ -21,7 +23,7 @@ PSNINE 增强用户脚本的新实现。源码按功能维护，发布为一个�
 - Stay：将完整文件保存到 iPhone/iPad 的“文件”，在 Stay 中本地导入并激活，允许 Safari 扩展访问 PSNINE。
 - 页面右下角的设置按钮可调整功能、导入/导出设置。第一次使用时请停用旧版增强脚本，避免两套脚本同时修改同一页面。
 
-也可使用上面的公开脚本链接安装或下载后导入；当前脚本未配置专用自动更新地址。详见 [安装与兼容说明](docs/compatibility.md)。当前版本通过 149 项单元/DOM 测试、10 项浏览器测试及 26 个公开页面回放案例。详见 [验证记录](docs/validation.md)；Tampermonkey 与 iPhone Stay 尚未进行实际安装及沙箱验证。
+也可使用上面的公开脚本链接安装或下载后导入；当前脚本未配置专用自动更新地址。详见 [安装与兼容说明](docs/compatibility.md)。当前版本通过 151 项单元/DOM 测试、16 项浏览器测试及 26 个公开页面回放案例。详见 [验证记录](docs/validation.md)；Tampermonkey 与 iPhone Stay 尚未进行实际安装及沙箱验证。
 
 ## 开发
 

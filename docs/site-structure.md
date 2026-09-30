@@ -10,7 +10,7 @@
 |游戏列表|普通 `table`（不一定有 `.list`）、`td.pd1015.title.lh180`、`.text-platinum`、`td.twoge em`|按真实游戏链接辨认；末页可能只有一行，不能依赖类名或最少行数|
 |奖杯列表|`tr.trophy[id]`、首格 `td.t1..t4`、`img.imgbg`、末格 `.twoge`|行 ID 是分组内序号，真实 trophyId 要从 `/trophy/46507001` 取|
 |个人奖杯页|`?psnid=…`、`img.imgbg.earned`、时间 `em.alert-success` 的 `tips` 年份|公开版没有个人获得状态；个人版比公开版多一格|
-|DLC|每 DLC 独立 `table.list`|排序不能混到同一 tbody|
+|DLC|XMB 页面按本体/DLC 分为独立 `table.list`；原站类型/完美率可能展平为单表|插件本地排序保留当前已有分组，原生导航遵循站点返回结构|
 |个人主页|游戏行 `td.pd15`、`div.progress > div`、`span.text-platinum`|此处白金为个人获得数；进度可能只写在样式 width 中。样本官方完成度 38%，19/32 是奖杯数量比，18.63% 是游戏稀有度，不能互换|
 |Tips/测评|`ul.list > li > .ml64`、第一条 `.meta.pb10` 作者头、第二条 `.meta` 时间、`.content.pb10`、`.sonlistmark > .sonlist`|日期不能从作者头取；评分和顶数只读当前主评论，不能混入子评论|
 |主题/机因详情|`.post > .ml64 > .meta` 与 `.content.pb10`|与 ul.list 的评论不同|
@@ -18,6 +18,14 @@
 |历史数折|日期示例 `20年10月14日 ~ 20年10月28日`|当前公开历史含多年以前记录，不代表今日促销|
 |约战|多个 `table.list`、封面 `td.pdd15 a[href*="/psngame/"]`、标题 `td.pd15 > p > a[href*="/battle/"]`、描述 `td.pd15 > span.font12`|封面和作者头像链接可能没有文字，标题不能取其 textContent|
 |游戏版本元数据|`.min-inner > ul.darklist > li`，平台在 `span.r`|封面与标题可重复链接同一版本；样本 46507 关联 42152 (PS4)、42066 (PS5)。奖杯页 12518001 的父游戏 12518 指向元数据 10999，不能假设 ID 相同|
+
+## 奖杯原生排序（1.0.1 复核）
+
+- 选择器：`ul.dropmenu > li.dropdown > a.arr-down` 为触发器，同一 `li` 下的 `ul` 包含三个原生链接。
+- `ob=trophyid` 为 XMB 序号升序；`ob=type` 为白金、金、银、铜；`ob=rarity` 为完美率低到高。选择链接后由站点 GET 刷新，个人页链接保留 `psnid` 与 `psngamelang`。
+- 原菜单没有获得时间和反向排序；测试 `ob=time/date/timestamp` 会回退 XMB，不能把这些参数当作可用接口。
+- `p9base100801.css` 通过 `.dropdown.hover ul` 展开，`p9base081704.js` 用 jQuery hover 增删 `.hover`。补充点击/键盘控制时需处理站点残留 hover 状态，保证选择后、Escape 和外部点击能关闭菜单。
+- DLC 结构取决于站点排序：公开 GET [10547 的 XMB 页](https://psnine.com/psngame/10547?ob=trophyid) 返回 2 个 `table.list`（14+2 个奖杯），[完美率页](https://psnine.com/psngame/10547?ob=rarity) 和[类型页](https://psnine.com/psngame/10547?ob=type) 均返回 1 个表、16 个奖杯。插件保留原生导航，不承诺还原服务端已移除的 DLC 分组。
 
 ## 外部接口
 

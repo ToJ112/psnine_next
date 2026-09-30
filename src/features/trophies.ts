@@ -9,8 +9,8 @@
  * T05: 汇总 Tips 标记与预览 (悬浮/点击安全DOM展示名称描述与跳转)
  * T06: 奖杯汇总折叠 (默认折叠偏好与手动展开切换)
  * T07: 奖杯图表折叠 (默认折叠偏好与手动展开切换)
- * T08: 获得时间排序 (持久data-psnine-orig-seq，最新/最早/XMB恢复，DLC分组独立且Tips跟随)
- * T09: 原序/类型/稀有度双向排序 (稀有度与类型双向翻转，DLC 分组不混排)
+ * T08: 获得时间排序 (个人页原生排序菜单内补充最新/最早，持久data-psnine-orig-seq恢复页面初始顺序，DLC分组独立且Tips跟随)
+ * T09: 原序/类型/稀有度排序 (保留原生XMB/类型/完美率链接，菜单内补充反向排序与恢复页面初始顺序，DLC 分组不混排)
  * T10: 获得状态筛选 (全部/已获/未获，setHidden多原因隔离，保留内联 Tips 归属)
  * T11: 内联展开单个 Tips (http.document安全DOM保留链接/图片/剧透刮刮条，黑名单大小写忽略，屏蔽词正则与可揭示button，重试与setHidden)
  * T12: 批量全部/未获 Tips (支持全展与仅未获、公开页禁用未获并提示、AbortController支持随时打断无假错误)
@@ -97,7 +97,7 @@ export function parseRarityPercent(td: Element | null): number {
 
 /**
  * Parses all trophy rows from trophy list tables.
- * Accurately reads persistent data-psnine-orig-seq to guarantee original XMB order restoration (T08).
+ * Accurately reads persistent data-psnine-orig-seq to guarantee page initial order restoration (T08).
  */
 export function parseTrophyRows(doc: ParentNode, isPersonalPage: boolean): TrophyItem[] {
   const items: TrophyItem[] = [];
@@ -287,16 +287,18 @@ export function calculateTrophyStats(items: TrophyItem[]): TrophyStats {
 /**
  * Sorts trophies strictly WITHIN their DLC table group, keeping inline tips attached (T08, T09).
  */
+export type TrophySortMode = 'initial' | 'xmb' | 'time-desc' | 'time-asc' | 'rarity-asc' | 'rarity-desc' | 'type-desc' | 'type-asc';
+
 export function sortTrophiesInTable(
   table: HTMLElement,
   trophies: TrophyItem[],
-  mode: 'xmb' | 'time-desc' | 'time-asc' | 'rarity-asc' | 'rarity-desc' | 'type-desc' | 'type-asc'
+  mode: TrophySortMode
 ): void {
   const tableTrophies = trophies.filter(t => t.table === table);
   const tbody = table.querySelector('tbody') || table;
 
   const sorted = [...tableTrophies].sort((a, b) => {
-    if (mode === 'xmb') {
+    if (mode === 'initial' || mode === 'xmb') {
       return a.originalIndex - b.originalIndex;
     }
     if (mode === 'time-desc') {
@@ -328,12 +330,29 @@ export function sortTrophiesInTable(
     return 0;
   });
 
+  const desiredNodes: HTMLElement[] = [];
   sorted.forEach((item) => {
-    tbody.appendChild(item.row);
-    const tipRow = table.querySelector(`tr.psnine-inline-tip-row[data-for-trophy="${item.trophyId}"]`);
+    desiredNodes.push(item.row);
+    const tipRow = table.querySelector(`tr.psnine-inline-tip-row[data-for-trophy="${item.trophyId}"]`) as HTMLElement | null;
     if (tipRow) {
-      tbody.appendChild(tipRow);
+      desiredNodes.push(tipRow);
     }
+  });
+
+  const desiredSet = new Set<Element>(desiredNodes);
+  const currentNodes = Array.from(tbody.children).filter(el => desiredSet.has(el));
+  const alreadyOrdered =
+    currentNodes.length === desiredNodes.length &&
+    desiredNodes.every((node, idx) => currentNodes[idx] === node) &&
+    sorted.every((item) => {
+      const tipRow = table.querySelector(`tr.psnine-inline-tip-row[data-for-trophy="${item.trophyId}"]`);
+      return !tipRow || item.row.nextElementSibling === tipRow;
+    });
+
+  if (alreadyOrdered) return;
+
+  desiredNodes.forEach((node) => {
+    tbody.appendChild(node);
   });
 }
 
@@ -729,12 +748,303 @@ export const mountTrophies: Mount = async (ctx: Context) => {
 
       const isPersonalPage = url.searchParams.has('psnid');
       let currentFilterStatus: TrophyEarnedStatus | 'all' = 'all';
-      let currentTypeSort: 'desc' | 'asc' | null = null;
-      let currentRaritySort: 'asc' | 'desc' | null = null;
-      let timeSortState = 0;
+      let currentSortMode: TrophySortMode | null = null;
+      let cleanupNativeSortDropdown: (() => void) | null = null;
       let isSummaryFolded = settings.foldTrophySummary;
       let isChartFolded = settings.foldTrophyChart;
       let isBatchRunning = false;
+
+      const applyActiveSortToTables = (mode: TrophySortMode) => {
+        doc.querySelectorAll('table.list').forEach((tbl) => {
+          sortTrophiesInTable(tbl as HTMLElement, currentTrophies, mode);
+        });
+      };
+
+      const ensureNativeSortDropdown = () => {
+        const candidates = Array.from(doc.querySelectorAll('ul.dropmenu > li.dropdown'));
+        let targetDropdown: {
+          dropdownLi: HTMLElement;
+          trigger: HTMLAnchorElement;
+          submenu: HTMLUListElement;
+        } | null = null;
+
+        for (const li of candidates) {
+          const dropdownLi = li as HTMLElement;
+          const trigger = dropdownLi.querySelector(':scope > a') as HTMLAnchorElement | null;
+          const submenu = dropdownLi.querySelector(':scope > ul') as HTMLUListElement | null;
+          if (!trigger || !submenu) continue;
+
+          const nativeLinks = Array.from(submenu.querySelectorAll(':scope > li > a')) as HTMLAnchorElement[];
+          const obs = new Set<string>();
+          for (const a of nativeLinks) {
+            if (a.hasAttribute('data-psnine-sort')) continue;
+            const rawHref = a.getAttribute('href') || '';
+            if (!rawHref || rawHref.startsWith('javascript:')) continue;
+            try {
+              const u = new URL(rawHref, url.href);
+              if (u.origin !== url.origin || u.pathname !== url.pathname) continue;
+              const ob = u.searchParams.get('ob');
+              if (ob === 'trophyid' || ob === 'type' || ob === 'rarity') {
+                obs.add(ob);
+              }
+            } catch {
+              // ignore malformed href
+            }
+          }
+          if (obs.has('trophyid') && obs.has('type') && obs.has('rarity')) {
+            targetDropdown = { dropdownLi, trigger, submenu };
+            break;
+          }
+        }
+
+        if (!targetDropdown) return;
+        const { dropdownLi, trigger, submenu } = targetDropdown;
+
+        if (
+          dropdownLi.getAttribute('data-psnine-trophy-sort-dropdown') === 'true' &&
+          submenu.querySelector('[data-psnine-sort="initial"]')
+        ) {
+          return;
+        }
+
+        cleanupNativeSortDropdown?.();
+
+        const origHadHover = dropdownLi.classList.contains('hover');
+        const origDropdownAttr = dropdownLi.getAttribute('data-psnine-trophy-sort-dropdown');
+        const origTriggerAttr = trigger.getAttribute('data-psnine-trophy-sort-trigger');
+        const origAriaHaspopup = trigger.getAttribute('aria-haspopup');
+        const origAriaExpanded = trigger.getAttribute('aria-expanded');
+        const origTriggerText = trigger.textContent;
+        const origMenuAttr = submenu.getAttribute('data-psnine-trophy-sort-menu');
+        const origNativeLinks = Array.from(submenu.querySelectorAll(':scope > li > a')) as HTMLAnchorElement[];
+        const origCurrentNativeLinks = new Set<HTMLAnchorElement>(
+          origNativeLinks.filter(a => a.classList.contains('current'))
+        );
+
+        dropdownLi.setAttribute('data-psnine-trophy-sort-dropdown', 'true');
+        trigger.setAttribute('data-psnine-trophy-sort-trigger', 'true');
+        trigger.setAttribute('aria-haspopup', 'menu');
+        trigger.setAttribute('aria-expanded', 'false');
+        submenu.setAttribute('data-psnine-trophy-sort-menu', 'true');
+
+        let isDropdownOpen = false;
+        const setDropdownOpen = (open: boolean, restoreFocus = false) => {
+          isDropdownOpen = open;
+          if (open) {
+            dropdownLi.classList.add('psnine-dropdown-open', 'hover');
+            dropdownLi.setAttribute('data-psnine-dropdown-open', 'true');
+            dropdownLi.setAttribute('data-psnine-dropdown-state', 'open');
+            trigger.setAttribute('aria-expanded', 'true');
+          } else {
+            dropdownLi.classList.remove('psnine-dropdown-open', 'hover');
+            dropdownLi.removeAttribute('data-psnine-dropdown-open');
+            dropdownLi.setAttribute('data-psnine-dropdown-state', 'closed');
+            trigger.setAttribute('aria-expanded', 'false');
+            if (restoreFocus) {
+              trigger.focus();
+            }
+          }
+        };
+
+        const extraItems: Array<{ mode: TrophySortMode; label: string }> = [
+          ...(isPersonalPage
+            ? [
+                { mode: 'time-desc' as const, label: '获得时间（新→旧）' },
+                { mode: 'time-asc' as const, label: '获得时间（旧→新）' }
+              ]
+            : []),
+          { mode: 'type-asc', label: '类型（铜→白金）' },
+          { mode: 'rarity-desc', label: '完美率（高→低）' },
+          { mode: 'initial', label: '页面初始顺序' }
+        ];
+
+        const createdLis: HTMLLIElement[] = [];
+        const itemCleanups: Array<() => void> = [];
+
+        const selectLocalSort = (mode: TrophySortMode, label: string, restoreFocus: boolean) => {
+          currentSortMode = mode;
+          trigger.textContent = label;
+          submenu.querySelectorAll(':scope > li > a').forEach((el) => {
+            if (el.getAttribute('data-psnine-sort') === mode) {
+              el.classList.add('current');
+              el.setAttribute('data-psnine-sort-active', 'true');
+            } else {
+              el.classList.remove('current');
+              el.removeAttribute('data-psnine-sort-active');
+            }
+          });
+          applyActiveSortToTables(mode);
+          setDropdownOpen(false, restoreFocus);
+        };
+
+        for (const item of extraItems) {
+          const li = doc.createElement('li');
+          li.setAttribute('data-psnine-next', 'true');
+          li.setAttribute('data-psnine-sort-item', item.mode);
+
+          const a = doc.createElement('a');
+          a.href = 'javascript:void(0)';
+          a.setAttribute('data-psnine-next', 'true');
+          a.setAttribute('data-psnine-sort', item.mode);
+          a.textContent = item.label;
+
+          const onItemClick = (e: MouseEvent) => {
+            e.preventDefault();
+            e.stopPropagation();
+            selectLocalSort(item.mode, item.label, false);
+          };
+          const onItemKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              e.stopPropagation();
+              selectLocalSort(item.mode, item.label, true);
+            }
+          };
+
+          a.addEventListener('click', onItemClick);
+          a.addEventListener('keydown', onItemKeyDown);
+          itemCleanups.push(() => {
+            a.removeEventListener('click', onItemClick);
+            a.removeEventListener('keydown', onItemKeyDown);
+          });
+
+          li.appendChild(a);
+          submenu.appendChild(li);
+          createdLis.push(li);
+        }
+
+        const onTriggerClick = (e: MouseEvent) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setDropdownOpen(!isDropdownOpen);
+        };
+
+        const onTriggerKeyDown = (e: KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            e.stopPropagation();
+            setDropdownOpen(!isDropdownOpen);
+          } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            e.stopPropagation();
+            setDropdownOpen(true);
+            const firstLink = submenu.querySelector(':scope > li > a') as HTMLElement | null;
+            firstLink?.focus();
+          } else if (e.key === 'Escape') {
+            if (isDropdownOpen || dropdownLi.classList.contains('hover')) {
+              e.preventDefault();
+              e.stopPropagation();
+              setDropdownOpen(false, true);
+            }
+          }
+        };
+
+        const onDropdownKeyDown = (e: KeyboardEvent) => {
+          if (e.key === 'Escape') {
+            if (isDropdownOpen || dropdownLi.classList.contains('hover') || dropdownLi.contains(doc.activeElement)) {
+              e.preventDefault();
+              e.stopPropagation();
+              setDropdownOpen(false, true);
+            }
+          } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+            const links = Array.from(submenu.querySelectorAll(':scope > li > a')) as HTMLElement[];
+            const idx = links.indexOf(doc.activeElement as HTMLElement);
+            if (idx !== -1 && links.length > 0) {
+              e.preventDefault();
+              e.stopPropagation();
+              const nextIdx = e.key === 'ArrowDown'
+                ? (idx + 1) % links.length
+                : (idx - 1 + links.length) % links.length;
+              links[nextIdx]?.focus();
+            }
+          }
+        };
+
+        const onDropdownPointerEnter = (e: PointerEvent) => {
+          if (e.pointerType === 'mouse' && !isDropdownOpen && dropdownLi.getAttribute('data-psnine-dropdown-state') === 'closed') {
+            dropdownLi.removeAttribute('data-psnine-dropdown-state');
+          }
+        };
+
+        const onDropdownFocusOut = (e: FocusEvent) => {
+          const nextTarget = e.relatedTarget as Node | null;
+          if (nextTarget && !dropdownLi.contains(nextTarget)) {
+            setDropdownOpen(false, false);
+          } else if (
+            !nextTarget &&
+            doc.activeElement &&
+            doc.activeElement !== doc.body &&
+            !dropdownLi.contains(doc.activeElement)
+          ) {
+            setDropdownOpen(false, false);
+          }
+        };
+
+        const onDocClick = (e: MouseEvent) => {
+          if (!isDropdownOpen && !dropdownLi.classList.contains('hover')) return;
+          const target = e.target as Node | null;
+          if (target && !dropdownLi.contains(target)) {
+            setDropdownOpen(false, false);
+          }
+        };
+
+        const onDocKeyDown = (e: KeyboardEvent) => {
+          if (e.key !== 'Escape') return;
+          if (dropdownLi.contains(doc.activeElement)) {
+            e.preventDefault();
+            setDropdownOpen(false, true);
+          } else if (isDropdownOpen || dropdownLi.classList.contains('hover')) {
+            setDropdownOpen(false, false);
+          }
+        };
+
+        trigger.addEventListener('click', onTriggerClick);
+        trigger.addEventListener('keydown', onTriggerKeyDown);
+        dropdownLi.addEventListener('keydown', onDropdownKeyDown);
+        dropdownLi.addEventListener('pointerenter', onDropdownPointerEnter);
+        dropdownLi.addEventListener('focusout', onDropdownFocusOut);
+        doc.addEventListener('click', onDocClick);
+        doc.addEventListener('keydown', onDocKeyDown);
+
+        cleanupNativeSortDropdown = () => {
+          trigger.removeEventListener('click', onTriggerClick);
+          trigger.removeEventListener('keydown', onTriggerKeyDown);
+          dropdownLi.removeEventListener('keydown', onDropdownKeyDown);
+          dropdownLi.removeEventListener('pointerenter', onDropdownPointerEnter);
+          dropdownLi.removeEventListener('focusout', onDropdownFocusOut);
+          doc.removeEventListener('click', onDocClick);
+          doc.removeEventListener('keydown', onDocKeyDown);
+          itemCleanups.forEach(fn => fn());
+          createdLis.forEach(li => li.remove());
+
+          dropdownLi.classList.remove('psnine-dropdown-open');
+          if (origHadHover) dropdownLi.classList.add('hover');
+          else dropdownLi.classList.remove('hover');
+          dropdownLi.removeAttribute('data-psnine-dropdown-open');
+          dropdownLi.removeAttribute('data-psnine-dropdown-state');
+
+          if (origDropdownAttr === null) dropdownLi.removeAttribute('data-psnine-trophy-sort-dropdown');
+          else dropdownLi.setAttribute('data-psnine-trophy-sort-dropdown', origDropdownAttr);
+
+          if (origTriggerAttr === null) trigger.removeAttribute('data-psnine-trophy-sort-trigger');
+          else trigger.setAttribute('data-psnine-trophy-sort-trigger', origTriggerAttr);
+
+          if (origAriaHaspopup === null) trigger.removeAttribute('aria-haspopup');
+          else trigger.setAttribute('aria-haspopup', origAriaHaspopup);
+
+          if (origAriaExpanded === null) trigger.removeAttribute('aria-expanded');
+          else trigger.setAttribute('aria-expanded', origAriaExpanded);
+
+          trigger.textContent = origTriggerText;
+          origNativeLinks.forEach((a) => {
+            if (origCurrentNativeLinks.has(a)) a.classList.add('current');
+            else a.classList.remove('current');
+          });
+
+          if (origMenuAttr === null) submenu.removeAttribute('data-psnine-trophy-sort-menu');
+          else submenu.setAttribute('data-psnine-trophy-sort-menu', origMenuAttr);
+        };
+      };
 
       let currentTrophies: TrophyItem[] = [];
       let lastStatsKey = '';
@@ -828,6 +1138,8 @@ export const mountTrophies: Mount = async (ctx: Context) => {
         currentTrophies = parseTrophyRows(doc, isPersonalPage);
         if (currentTrophies.length === 0) return;
 
+        ensureNativeSortDropdown();
+
         const stats = calculateTrophyStats(currentTrophies);
 
         if (initialBuild || !mainPanel?.hasChildNodes()) {
@@ -835,47 +1147,47 @@ export const mountTrophies: Mount = async (ctx: Context) => {
           lastTrophiesKey = currentTrophies.map(t => `${t.trophyId}:${t.status}:${t.tipsCount}`).join(',');
 
           mainPanel!.innerHTML = `
-            <div data-psnine-next="true" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
-              <div data-psnine-next="true" id="psnine-trophy-header-title" style="font-weight:600;font-size:13px;display:flex;align-items:center;gap:6px;">
-                <span>🏆 奖杯统计与交互控制</span>
-                <span id="psnine-trophy-header-counts" style="font-size:11px;color:#666;font-weight:normal;">[白${stats.platinum} 金${stats.gold} 银${stats.silver} 铜${stats.bronze}]</span>
+            <div data-psnine-next="true" class="psnine-trophy-overview-top" style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
+              <div data-psnine-next="true" id="psnine-trophy-header-title" style="font-weight:600;font-size:13px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;">
+                <span class="psnine-trophy-title-text" style="white-space:nowrap;font-size:14px;">奖杯概览</span>
+                <span id="psnine-trophy-header-counts" style="white-space:nowrap;font-size:12px;color:#666;font-weight:normal;">[白${stats.platinum} 金${stats.gold} 银${stats.silver} 铜${stats.bronze}]</span>
                 ${isPersonalPage ? `
-                  <span class="alert-success pd5" id="psnine-trophy-completion-badge" style="border-radius:4px;font-size:11px;padding:2px 6px;background:#28a745;color:#fff;">
+                  <span class="alert-success pd5" id="psnine-trophy-completion-badge" style="border-radius:4px;font-size:11px;padding:2px 6px;background:#28a745;color:#fff;font-weight:normal;">
                     已获 ${stats.earnedCount} / 未获 ${stats.unearnedCount} (奖杯数量占比: ${((stats.earnedCount / stats.total) * 100).toFixed(1)}%)
                   </span>
                 ` : `
-                  <span id="psnine-trophy-completion-badge" style="font-size:11px;color:#888;">(公开奖杯列表: 共 ${stats.total} 个)</span>
+                  <span id="psnine-trophy-completion-badge" style="font-size:11px;color:#888;font-weight:normal;">(公开奖杯列表: 共 ${stats.total} 个)</span>
                 `}
               </div>
 
               <!-- Action Toolbar -->
-              <div data-psnine-next="true" style="display:flex;flex-wrap:wrap;gap:6px;font-size:12px;">
-                <button type="button" id="psnine-toggle-summary-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #ccc;background:transparent;cursor:pointer;">
-                  ${isSummaryFolded ? '展开图标汇总' : '折叠图标汇总'}
-                </button>
-                <button type="button" id="psnine-toggle-charts-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #ccc;background:transparent;cursor:pointer;">
-                  ${isChartFolded ? '展开图表' : '折叠图表'}
-                </button>
-                <button type="button" id="psnine-sort-xmb-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #ccc;background:transparent;cursor:pointer;">原序</button>
-                <button type="button" id="psnine-sort-time-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #ccc;background:transparent;cursor:pointer;">时间三态</button>
-                <button type="button" id="psnine-sort-rarity-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #ccc;background:transparent;cursor:pointer;">稀有度(双向)</button>
-                <button type="button" id="psnine-sort-type-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #ccc;background:transparent;cursor:pointer;">类型(双向)</button>
-
-                ${isPersonalPage ? `
-                  <button type="button" id="psnine-filter-status-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #3890ff;background:rgba(56,144,255,0.1);color:#0056b3;cursor:pointer;font-weight:500;">
-                    筛选: ${currentFilterStatus === 'all' ? '全部' : currentFilterStatus === 'unearned' ? '仅未获' : '仅已获'}
+              <div data-psnine-next="true" class="psnine-trophy-toolbar" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:12px;">
+                <div data-psnine-next="true" class="psnine-trophy-action-group" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;">
+                  <button type="button" id="psnine-toggle-summary-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid #ccc;background:transparent;cursor:pointer;">
+                    ${isSummaryFolded ? '展开图标汇总' : '折叠图标汇总'}
                   </button>
-                ` : ''}
+                  <button type="button" id="psnine-toggle-charts-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid #ccc;background:transparent;cursor:pointer;">
+                    ${isChartFolded ? '展开图表' : '折叠图表'}
+                  </button>
+                </div>
 
-                <button type="button" id="psnine-batch-load-all-tips-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #17a2b8;background:rgba(23,162,184,0.1);color:#117a8b;cursor:pointer;">
-                  展开所有Tips
-                </button>
-                <button type="button" id="psnine-batch-load-unearned-tips-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #17a2b8;background:rgba(23,162,184,0.1);color:#117a8b;cursor:pointer;${!isPersonalPage ? 'opacity:0.5;cursor:not-allowed;' : ''}" ${!isPersonalPage ? 'disabled title="公开页面无法确认获得状态，请访问个人奖杯页使用此功能"' : ''}>
-                  展开未获Tips
-                </button>
-                <button type="button" id="psnine-stop-batch-tips-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #e03131;background:rgba(224,49,49,0.1);color:#c92a2a;cursor:pointer;display:none;">
-                  停止加载
-                </button>
+                <div data-psnine-next="true" class="psnine-trophy-action-group" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;">
+                  ${isPersonalPage ? `
+                    <button type="button" id="psnine-filter-status-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid #3890ff;background:rgba(56,144,255,0.1);color:#0056b3;cursor:pointer;font-weight:500;">
+                      筛选: ${currentFilterStatus === 'all' ? '全部' : currentFilterStatus === 'unearned' ? '仅未获' : '仅已获'}
+                    </button>
+                  ` : ''}
+
+                  <button type="button" id="psnine-batch-load-all-tips-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid #17a2b8;background:rgba(23,162,184,0.1);color:#117a8b;cursor:pointer;">
+                    展开所有Tips
+                  </button>
+                  <button type="button" id="psnine-batch-load-unearned-tips-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid #17a2b8;background:rgba(23,162,184,0.1);color:#117a8b;cursor:pointer;${!isPersonalPage ? 'opacity:0.5;cursor:not-allowed;' : ''}" ${!isPersonalPage ? 'disabled title="公开页面无法确认获得状态，请访问个人奖杯页使用此功能"' : ''}>
+                    展开未获Tips
+                  </button>
+                  <button type="button" id="psnine-stop-batch-tips-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid #e03131;background:rgba(224,49,49,0.1);color:#c92a2a;cursor:pointer;display:none;">
+                    停止加载
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -907,26 +1219,6 @@ export const mountTrophies: Mount = async (ctx: Context) => {
             const c = doc.getElementById('psnine-trophy-charts-container');
             if (c) c.style.display = isChartFolded ? 'none' : 'block';
             doc.getElementById('psnine-toggle-charts-btn')!.textContent = isChartFolded ? '展开图表' : '折叠图表';
-          };
-
-          // T08 & T09 Sort Bindings
-          doc.getElementById('psnine-sort-xmb-btn')!.onclick = () => {
-            doc.querySelectorAll('table.list').forEach(tbl => sortTrophiesInTable(tbl as HTMLElement, currentTrophies, 'xmb'));
-          };
-          doc.getElementById('psnine-sort-time-btn')!.onclick = () => {
-            timeSortState = (timeSortState + 1) % 3;
-            const mode = timeSortState === 1 ? 'time-desc' : timeSortState === 2 ? 'time-asc' : 'xmb';
-            doc.querySelectorAll('table.list').forEach(tbl => sortTrophiesInTable(tbl as HTMLElement, currentTrophies, mode));
-          };
-          doc.getElementById('psnine-sort-rarity-btn')!.onclick = () => {
-            currentRaritySort = currentRaritySort === 'asc' ? 'desc' : 'asc';
-            const mode = currentRaritySort === 'asc' ? 'rarity-asc' : 'rarity-desc';
-            doc.querySelectorAll('table.list').forEach(tbl => sortTrophiesInTable(tbl as HTMLElement, currentTrophies, mode));
-          };
-          doc.getElementById('psnine-sort-type-btn')!.onclick = () => {
-            currentTypeSort = currentTypeSort === 'desc' ? 'asc' : 'desc';
-            const mode = currentTypeSort === 'desc' ? 'type-desc' : 'type-asc';
-            doc.querySelectorAll('table.list').forEach(tbl => sortTrophiesInTable(tbl as HTMLElement, currentTrophies, mode));
           };
 
           // T10 Filter Binding
@@ -1013,24 +1305,24 @@ export const mountTrophies: Mount = async (ctx: Context) => {
           }
         } else {
           // Dynamic onContent update without innerHTML destruction
-          const badge = doc.getElementById('psnine-trophy-completion-badge');
-          if (badge) {
-            if (isPersonalPage) {
-              badge.textContent = `已获 ${stats.earnedCount} / 未获 ${stats.unearnedCount} (奖杯数量占比: ${((stats.earnedCount / stats.total) * 100).toFixed(1)}%)`;
-            } else {
-              badge.textContent = `(公开奖杯列表: 共 ${stats.total} 个)`;
-            }
-          }
-
-          const headerCounts = doc.getElementById('psnine-trophy-header-counts');
-          if (headerCounts) {
-            headerCounts.textContent = `[白${stats.platinum} 金${stats.gold} 银${stats.silver} 铜${stats.bronze}]`;
-          }
-
-          // Charts update only when data changed (preserves focus and open details)
+          // Charts & header counts update only when data changed (preserves focus and open details)
           const statsKey = `${stats.total}:${stats.platinum}:${stats.gold}:${stats.silver}:${stats.bronze}:${stats.earnedCount}:${stats.unearnedCount}:${stats.timeCurve.length}`;
           if (statsKey !== lastStatsKey) {
             lastStatsKey = statsKey;
+            const badge = doc.getElementById('psnine-trophy-completion-badge');
+            if (badge) {
+              if (isPersonalPage) {
+                badge.textContent = `已获 ${stats.earnedCount} / 未获 ${stats.unearnedCount} (奖杯数量占比: ${((stats.earnedCount / stats.total) * 100).toFixed(1)}%)`;
+              } else {
+                badge.textContent = `(公开奖杯列表: 共 ${stats.total} 个)`;
+              }
+            }
+
+            const headerCounts = doc.getElementById('psnine-trophy-header-counts');
+            if (headerCounts) {
+              headerCounts.textContent = `[白${stats.platinum} 金${stats.gold} 银${stats.silver} 铜${stats.bronze}]`;
+            }
+
             const chartsContainer = doc.getElementById('psnine-trophy-charts-container');
             if (chartsContainer) {
               const wasDetailsOpen = chartsContainer.querySelector('details')?.open;
@@ -1050,6 +1342,10 @@ export const mountTrophies: Mount = async (ctx: Context) => {
             if (chipsContainer) {
               buildIconChips(chipsContainer, currentTrophies);
             }
+          }
+
+          if (currentSortMode !== null) {
+            applyActiveSortToTables(currentSortMode);
           }
 
           // Apply current filter state to new rows
@@ -1377,6 +1673,8 @@ export const mountTrophies: Mount = async (ctx: Context) => {
 
       return () => {
         isActive = false;
+        cleanupNativeSortDropdown?.();
+        cleanupNativeSortDropdown = null;
         pageAbortController.abort();
         batchAbortController?.abort();
         activeManualControllers.forEach(ctrl => ctrl.abort());

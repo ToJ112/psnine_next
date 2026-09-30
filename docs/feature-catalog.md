@@ -45,8 +45,8 @@
 |T05|汇总 Tips 标记与预览|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
 |T06|奖杯汇总折叠|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
 |T07|奖杯图表折叠|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
-|T08|获得时间排序|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
-|T09|原序/类型/稀有度排序|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
+|T08|获得时间排序|[trophies](../src/features/trophies.ts)|补充在个人页的原生排序菜单中；公开页不显示，无原菜单时跳过。|
+|T09|原序/类型/稀有度排序|[trophies](../src/features/trophies.ts)|保留原生 XMB/类型/完美率链接；菜单内补充反向和页面初始顺序，本地排序保持现有 DLC 分组与 Tips 归属。|
 |T10|获得状态筛选|[trophies](../src/features/trophies.ts)|明确恢复历史已移除的获得状态筛选，非 v2 原有插件能力。|
 |T11|内联展开单个 Tips|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
 |T12|批量全部/未获 Tips|[trophies](../src/features/trophies.ts)|显式按钮、限速、可取消；异常后允许重试。|

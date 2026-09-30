@@ -1613,7 +1613,7 @@
     "id": "T08",
     "name": "获得时间排序",
     "module": "trophies",
-    "behavior": "最新/最早/XMB，未知排最后",
+    "behavior": "个人奖杯页原生排序菜单内补充获得时间最新/最早，未知排最后",
     "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
@@ -1635,16 +1635,17 @@
     ],
     "test_files": [
       "tests/trophies.test.ts",
-      "tests/trophies-regression.test.ts"
+      "tests/trophies-regression.test.ts",
+      "tests/trophy-menu.smoke.spec.ts"
     ],
     "verification_scope": "code_review_and_module_regression",
-    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
+    "verification_note": "保留原生排序链接；仅在可靠原菜单内补充选项，公开页不显示个人时间排序。"
   },
   {
     "id": "T09",
     "name": "原序/类型/稀有度排序",
     "module": "trophies",
-    "behavior": "双向排序，DLC 分组不混排",
+    "behavior": "复用原生 XMB/类型/完美率链接，菜单内补充反向排序与恢复页面初始顺序；DLC 分组不混排",
     "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
@@ -1690,10 +1691,11 @@
     ],
     "test_files": [
       "tests/trophies.test.ts",
-      "tests/trophies-regression.test.ts"
+      "tests/trophies-regression.test.ts",
+      "tests/trophy-menu.smoke.spec.ts"
     ],
     "verification_scope": "code_review_and_module_regression",
-    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
+    "verification_note": "原生链接节点、URL 参数及导航语义保留；页面初始顺序与真实 XMB 明确区分，无原菜单时不新建排序栏。"
   },
   {
     "id": "T10",

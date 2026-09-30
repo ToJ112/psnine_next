@@ -16,5 +16,10 @@ export default defineConfig({
       name: 'webkit-mobile',
       use: { ...devices['iPhone 14'] }, // 390px viewport, WebKit
     },
+    {
+      name: 'chromium-touch-menu',
+      testMatch: '**/trophy-menu.smoke.spec.ts',
+      use: { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } },
+    },
   ],
 });

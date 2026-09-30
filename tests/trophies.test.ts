@@ -156,6 +156,17 @@ describe('Trophies Feature Module (T01 - T14 + C19) - Followup Verification', ()
       document.body.innerHTML = `
         <div class="min-inner">
           <div class="box pd10">
+            <ul class="dropmenu">
+              <li><em>排序</em></li>
+              <li class="dropdown">
+                <a href="javascript:void(0)" class="arr-down">XMB</a>
+                <ul>
+                  <li><a href="?psnid=test_user&ob=trophyid&psngamelang=zh-Hans" class="current">XMB</a></li>
+                  <li><a href="?psnid=test_user&ob=type&psngamelang=zh-Hans">类型</a></li>
+                  <li><a href="?psnid=test_user&ob=rarity&psngamelang=zh-Hans">完美率</a></li>
+                </ul>
+              </li>
+            </ul>
             <table class="list">
               <tr id="trophy-1" class="trophy">
                 <td class="t1"><a href="/trophy/46507001"><img class="imgbg earned" src="t1.png" /></a></td>
@@ -240,10 +251,19 @@ describe('Trophies Feature Module (T01 - T14 + C19) - Followup Verification', ()
       toggleChartBtn.click();
       expect(document.getElementById('psnine-trophy-charts-container')?.style.display).toBe('none');
 
-      // T08 & T09: Sort rarity toggle
-      const sortRarityBtn = document.getElementById('psnine-sort-rarity-btn') as HTMLElement;
-      sortRarityBtn.click(); // asc (3.6% then 50%)
+      // Header simplified to 奖杯概览 & duplicate sort buttons removed
+      expect(document.getElementById('psnine-trophy-header-title')?.textContent).toContain('奖杯概览');
+      expect(document.querySelectorAll('#psnine-sort-xmb-btn, #psnine-sort-time-btn, #psnine-sort-rarity-btn, #psnine-sort-type-btn').length).toBe(0);
+
+      // T08 & T09: Sort via native dropdown menu items
+      const sortRarityDescItem = document.querySelector('[data-psnine-sort="rarity-desc"]') as HTMLElement;
+      expect(sortRarityDescItem).not.toBeNull();
+      sortRarityDescItem.click(); // desc (50% then 3.6%)
       const table = document.querySelector('table.list')!;
+      expect(table.querySelector('tbody')?.children[0].id).toBe('trophy-2');
+
+      const sortInitialItem = document.querySelector('[data-psnine-sort="initial"]') as HTMLElement;
+      sortInitialItem.click(); // restore initial order (trophy-1 then trophy-2)
       expect(table.querySelector('tbody')?.children[0].id).toBe('trophy-1');
 
       // T10: Filter

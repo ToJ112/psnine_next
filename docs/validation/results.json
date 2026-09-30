@@ -1,6 +1,6 @@
 {
   "date": "2026-09-30",
-  "release_version": "1.0.0",
+  "release_version": "1.0.1",
   "node": "24.19.0",
   "dependencies": {
     "typescript": "5.9.3",
@@ -11,22 +11,22 @@
   },
   "artifact": {
     "path": "dist/psnine_next.user.js",
-    "bytes": 325314,
-    "sha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa"
+    "bytes": 340267,
+    "sha256": "0a467b57ad543d950cbdbaf9d571243911f73f85b2bf21a2b66434335de403de"
   },
   "requirements": 80,
   "typecheck": "passed",
-  "clean_install": "npm ci passed",
+  "clean_install": "npm ci passed for 1.0.0; dependency resolutions unchanged in 1.0.1",
   "unit": {
     "files": 17,
-    "passed": 149,
+    "passed": 151,
     "failed": 0,
     "skipped": 0
   },
   "browser": {
-    "startTime": "2026-09-30T06:56:24.361Z",
-    "duration": 16735.41,
-    "expected": 10,
+    "startTime": "2026-09-30T09:48:09.651Z",
+    "duration": 52367.255,
+    "expected": 16,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
@@ -38,7 +38,7 @@
       "webkit"
     ],
     "cases": 26,
-    "interaction_cases": 8,
+    "interaction_cases": 10,
     "script_errors": 0,
     "enhancement_overflows": 0,
     "unsettled_mutations": 0
@@ -67,5 +67,21 @@
     "iOS_Stay": "not_performed"
   },
   "legacy_huodong": "fixture_only; live route returned 404",
-  "format_cleanup": "Source/test diff -w empty; bundled lines equal after rstrip; browser and public replay rerun on final hash."
+  "baseline_checks_reused": {
+    "release_version": "1.0.0",
+    "commit": "2af8b897cfa617e2b3b4e002d54700a331aa3d07",
+    "checks": [
+      "clean_install",
+      "audit",
+      "history"
+    ],
+    "reason": "Dependency resolutions and history evidence unchanged; package version fields only were updated."
+  },
+  "validated_changes": [
+    "native trophy sorting links and query parameters preserved",
+    "local sort label and single selected item",
+    "touch close and keyboard focus lifecycle",
+    "existing DLC groups and inline Tips preserved during local sorting",
+    "dynamic sort and DOM settlement"
+  ]
 }

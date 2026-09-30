@@ -3,8 +3,10 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { chromium, webkit } from 'playwright';
 import { JSDOM } from 'jsdom';
-// Pass a directory of saved public HTML/CSS snapshots. No live website requests are permitted.
+// Pass saved public HTML/CSS directory, then optional comma-separated page names.
+// No live website requests are permitted.
 const base = path.resolve(process.argv[2] || '.audit-cache/live');
+const selectedPages = new Set((process.argv[3] || '').split(',').filter(Boolean));
 const output = path.resolve('.audit-cache/final-page-replay');
 await fs.mkdir(output, {recursive:true});
 const script = await fs.readFile('dist/psnine_next.user.js','utf8');
@@ -32,7 +34,7 @@ for (const [name,url] of cases) {
 const summary=[];
 for (const [engine,launcher] of [['chromium',chromium],['webkit',webkit]]) {
  const browser=await launcher.launch({headless:true});
- for (const [name,url] of cases.filter(([name])=>!['game-meta-46507','trophy-game','trophy-game-meta'].includes(name))) {
+ for (const [name,url] of cases.filter(([name])=>!['game-meta-46507','trophy-game','trophy-game-meta'].includes(name) && (!selectedPages.size || selectedPages.has(name)))) {
   const ctx=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
   const page=await ctx.newPage();
   // Keep time-dependent public fixtures deterministic while letting timers advance normally.
@@ -54,26 +56,45 @@ for (const [engine,launcher] of [['chromium',chromium],['webkit',webkit]]) {
    await route.fulfill({status:404,contentType:'text/html; charset=utf-8',body:'<!doctype html><title>Fixture not provided</title>'});
   });
   await page.goto('https://psnine.com'+url,{waitUntil:'domcontentloaded'});
-  await page.evaluate(()=>{window.__mutations=0;new MutationObserver(ms=>window.__mutations+=ms.length).observe(document.body,{subtree:true,childList:true});});
+  await page.evaluate(()=>{
+    window.__mutations=0;
+    new MutationObserver(ms=>window.__mutations+=ms.length).observe(document.body,{subtree:true,childList:true});
+    window.__nativeSortLinks=[...document.querySelectorAll('ul.dropmenu > li.dropdown > ul > li > a')]
+      .filter(a=>['trophyid','type','rarity'].includes(new URL(a.href,location.href).searchParams.get('ob')))
+      .map(node=>({node,href:node.getAttribute('href')}));
+  });
   await page.addScriptTag({content:script});
   await page.waitForTimeout(1800);
   const checks={};
-  if (['home','game-personal','reviews','deals'].includes(name)) {
+  if (['home','game','game-personal','reviews','deals'].includes(name)) {
   await page.locator('#psnine-settings-gear').click();
   checks.settings=await page.locator('.psnine-settings-dialog').evaluate(n=>({fields:n.querySelectorAll('input,select,textarea').length,width:n.getBoundingClientRect().width,withinViewport:n.getBoundingClientRect().left>=0&&n.getBoundingClientRect().right<=innerWidth}));
   await page.keyboard.press('Escape');
   checks.settingsCloses=await page.locator('.psnine-settings-dialog').count()===0;
-  if(name==='game-personal'){
+  if(name==='game' || name==='game-personal'){
     const order=()=>page.locator('tr.trophy').evaluateAll(rs=>rs.map(r=>r.id).join(','));
     const original=await order();
-    await page.locator('#psnine-sort-rarity-btn').click();await page.waitForTimeout(150);
+    const trigger=page.locator('[data-psnine-trophy-sort-trigger]');
+    const menu=page.locator('[data-psnine-trophy-sort-menu]');
+    checks.noDuplicateSortToolbar=await page.locator('#psnine-sort-xmb-btn, #psnine-sort-time-btn, #psnine-sort-type-btn, #psnine-sort-rarity-btn').count()===0;
+    checks.timeOptions=await page.locator('[data-psnine-sort="time-desc"], [data-psnine-sort="time-asc"]').count()===(name==='game-personal'?2:0);
+    await trigger.tap();
+    checks.touchMenuOpens=await menu.isVisible() && await trigger.getAttribute('aria-expanded')==='true';
+    checks.menuWithinViewport=await menu.evaluate(n=>{const r=n.getBoundingClientRect();return r.left>=0 && r.right<=innerWidth;});
+    await page.screenshot({path:path.join(output,`${engine}-${name}-sort-menu.png`),fullPage:false});
+    await page.locator('[data-psnine-sort="type-asc"]').tap();await page.waitForTimeout(150);
     checks.sortChanged=original!==await order();
-    await page.locator('#psnine-sort-xmb-btn').click();await page.waitForTimeout(150);
+    checks.menuClosesAfterChoice=!(await menu.isVisible());
+    await trigger.tap();
+    await page.locator('[data-psnine-sort="initial"]').tap();await page.waitForTimeout(150);
     checks.originalRestored=original===await order();
-    await page.locator('#psnine-filter-status-btn').click();await page.waitForTimeout(100);
-    checks.unearnedFilter=await page.locator('tr.trophy').evaluateAll(rs=>({hidden:rs.filter(r=>r.hidden).length,visible:rs.filter(r=>!r.hidden).length}));
-    await page.locator('#psnine-filter-status-btn').click();await page.locator('#psnine-filter-status-btn').click();
-    checks.filterRestored=await page.locator('tr.trophy').evaluateAll(rs=>rs.every(r=>!r.hidden));
+    checks.nativeLinksPreserved=await page.evaluate(()=>window.__nativeSortLinks.length===3 && window.__nativeSortLinks.every(({node,href})=>node.isConnected && node.getAttribute('href')===href));
+    if(name==='game-personal'){
+      await page.locator('#psnine-filter-status-btn').click();await page.waitForTimeout(100);
+      checks.unearnedFilter=await page.locator('tr.trophy').evaluateAll(rs=>({hidden:rs.filter(r=>r.hidden).length,visible:rs.filter(r=>!r.hidden).length}));
+      await page.locator('#psnine-filter-status-btn').click();await page.locator('#psnine-filter-status-btn').click();
+      checks.filterRestored=await page.locator('tr.trophy').evaluateAll(rs=>rs.every(r=>!r.hidden));
+    }
   }
   if(name==='deals'){
     await page.locator('#psnine-toggle-best-deal-btn').click();

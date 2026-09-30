@@ -42,6 +42,17 @@ describe('Trophies Last-Mile Regression Suite', () => {
       document.body.innerHTML = `
         <div class="min-inner">
           <div class="box pd10">
+            <ul class="dropmenu">
+              <li><em>排序</em></li>
+              <li class="dropdown">
+                <a href="javascript:void(0)" class="arr-down">XMB</a>
+                <ul>
+                  <li><a href="?psnid=test_user&ob=trophyid&psngamelang=zh-Hans" class="current">XMB</a></li>
+                  <li><a href="?psnid=test_user&ob=type&psngamelang=zh-Hans">类型</a></li>
+                  <li><a href="?psnid=test_user&ob=rarity&psngamelang=zh-Hans">完美率</a></li>
+                </ul>
+              </li>
+            </ul>
             <table class="list">
               <tbody>
                 <tr id="trophy-1" class="trophy">
@@ -128,9 +139,10 @@ describe('Trophies Last-Mile Regression Suite', () => {
       // Pre-pended row got maxSeq + 1 (2), preserving original sequence logic
       expect(newRow.getAttribute('data-psnine-orig-seq')).toBe('2');
 
-      // Click restore XMB order: new row (origSeq=2) must sort to the end of original items!
-      const xmbBtn = document.getElementById('psnine-sort-xmb-btn') as HTMLElement;
-      xmbBtn.click();
+      // Click restore initial order via native dropdown: new row (origSeq=2) must sort to the end of original items!
+      const initialItem = document.querySelector('[data-psnine-sort="initial"]') as HTMLElement;
+      expect(initialItem).not.toBeNull();
+      initialItem.click();
       const rowsAfterXmb = Array.from(tbody.querySelectorAll('tr.trophy'));
       expect(rowsAfterXmb[0].id).toBe('trophy-1');
       expect(rowsAfterXmb[1].id).toBe('trophy-2');
@@ -512,6 +524,286 @@ describe('Trophies Last-Mile Regression Suite', () => {
       expect(mockHttpDocument).toHaveBeenCalledTimes(2);
 
       if (cleanup) cleanup();
+    });
+  });
+
+  describe('6. Native ul.dropmenu Sort Menu, Non-XMB Initial Order, DLC/Tips Co-movement, Keyboard & Cleanup', () => {
+    it('preserves native links, distinguishes initial order from XMB, keeps DLC and inline tips grouped, supports keyboard/Escape, settles observer, and restores on cleanup', async () => {
+      const mockWin = makeWindowWithUrl('https://psnine.com/psngame/46507?psnid=toonn95&ob=rarity&psngamelang=zh-Hans');
+      document.cookie = '__Psnine_psnid=toonn95; path=/';
+
+      // Initial order on this ?ob=rarity page is #2 (3.6%), #1 (15.0%), #3 (50.0%) - NOT XMB (#1, #2, #3)
+      document.body.innerHTML = `
+        <div class="min-inner">
+          <div class="box">
+            <ul class="dropmenu">
+              <li><em>排序</em></li>
+              <li class="dropdown">
+                <a href="javascript:void(0)" class="arr-down">完美率</a>
+                <ul>
+                  <li><a href="?psnid=toonn95&ob=trophyid&psngamelang=zh-Hans">XMB</a></li>
+                  <li><a href="?psnid=toonn95&ob=type&psngamelang=zh-Hans">类型</a></li>
+                  <li><a href="?psnid=toonn95&ob=rarity&psngamelang=zh-Hans" class="current">完美率</a></li>
+                </ul>
+              </li>
+            </ul>
+            <table class="list" id="base-table">
+              <tbody>
+                <tr id="2" class="trophy">
+                  <td class="t4"><a href="/trophy/46507002"><img class="imgbg earned" src="t2.png" /></a></td>
+                  <td><p><a href="/trophy/46507002">铜杯罕见</a></p></td>
+                  <td><em class="alert-success pd5 r" tips="2025年">01-10<br>10:00</em></td>
+                  <td class="twoge">3.60%</td>
+                </tr>
+                <tr id="1" class="trophy">
+                  <td class="t1"><a href="/trophy/46507001"><img class="imgbg earned" src="t1.png" /></a></td>
+                  <td><p><a href="/trophy/46507001">白金奖杯</a></p></td>
+                  <td><em class="alert-success pd5 r" tips="2026年">05-20<br>12:00</em></td>
+                  <td class="twoge">15.00%</td>
+                </tr>
+                <tr id="3" class="trophy">
+                  <td class="t2"><a href="/trophy/46507003"><img class="imgbg" src="t3.png" /></a></td>
+                  <td><p><a href="/trophy/46507003">金杯未获</a></p></td>
+                  <td></td>
+                  <td class="twoge">50.00%</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="list" id="dlc-table">
+              <tbody>
+                <tr id="101" class="trophy">
+                  <td class="t4"><a href="/trophy/46507101"><img class="imgbg" src="d1.png" /></a></td>
+                  <td><p><a href="/trophy/46507101">DLC铜杯</a></p></td>
+                  <td></td>
+                  <td class="twoge">8.00%</td>
+                </tr>
+                <tr id="102" class="trophy">
+                  <td class="t2"><a href="/trophy/46507102"><img class="imgbg earned" src="d2.png" /></a></td>
+                  <td><p><a href="/trophy/46507102">DLC金杯</a></p></td>
+                  <td><em class="alert-success pd5 r" tips="2026年">02-01<br>09:00</em></td>
+                  <td class="twoge">25.00%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      const origLinks = Array.from(document.querySelectorAll('ul.dropmenu > li.dropdown > ul > li > a')) as HTMLAnchorElement[];
+      const origHrefs = origLinks.map(a => a.getAttribute('href'));
+
+      const store = createStore();
+      const http = createHttpClient();
+      const ctx = createContext({
+        document,
+        window: mockWin,
+        settings: { ...defaultSettings },
+        store,
+        http
+      });
+
+      const cleanup = await mountTrophies(ctx);
+
+      const trigger = document.querySelector('[data-psnine-trophy-sort-trigger]') as HTMLAnchorElement;
+      const menu = document.querySelector('[data-psnine-trophy-sort-menu]') as HTMLUListElement;
+      expect(trigger).not.toBeNull();
+      expect(menu).not.toBeNull();
+      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+
+      // Only missing directions + time + initial added (5 items on personal page)
+      const addedItems = Array.from(menu.querySelectorAll('a[data-psnine-sort]')).map(a => a.getAttribute('data-psnine-sort'));
+      expect(addedItems).toEqual(['time-desc', 'time-asc', 'type-asc', 'rarity-desc', 'initial']);
+
+      // Attach an inline tip row to trophy #1 (46507001) to verify co-movement
+      const baseTbody = document.querySelector('#base-table tbody')!;
+      const tipRow = document.createElement('tr');
+      tipRow.className = 'psnine-inline-tip-row';
+      tipRow.setAttribute('data-psnine-next', 'true');
+      tipRow.setAttribute('data-for-trophy', '46507001');
+      document.getElementById('1')!.after(tipRow);
+
+      // Keyboard open + Escape close + focus restoration
+      trigger.focus();
+      trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+      expect(trigger.getAttribute('aria-expanded')).toBe('true');
+
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true }));
+      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(document.activeElement).toBe(trigger);
+
+      // Tab / focus moving outside dropdown silently closes menu and external Escape neither steals focus nor calls preventDefault
+      trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+      expect(trigger.getAttribute('aria-expanded')).toBe('true');
+      const outsideBtn = document.getElementById('psnine-toggle-summary-btn') as HTMLButtonElement;
+      outsideBtn.focus();
+      trigger.dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: outsideBtn }));
+      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(document.activeElement).toBe(outsideBtn);
+
+      const extEscEvent = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true });
+      outsideBtn.dispatchEvent(extEscEvent);
+      expect(extEscEvent.defaultPrevented).toBe(false);
+      expect(document.activeElement).toBe(outsideBtn);
+
+      // Select time-desc: #1 (2026-05) -> #2 (2025-01) -> #3 (unearned last)
+      const timeDescLink = menu.querySelector('[data-psnine-sort="time-desc"]') as HTMLAnchorElement;
+      timeDescLink.click();
+      expect(trigger.textContent).toBe('获得时间（新→旧）');
+      expect(menu.querySelectorAll('a.current').length).toBe(1);
+      expect(timeDescLink.classList.contains('current')).toBe(true);
+
+      expect(Array.from(baseTbody.querySelectorAll('tr.trophy')).map(r => r.id)).toEqual(['1', '2', '3']);
+      expect(document.getElementById('1')!.nextElementSibling).toBe(tipRow);
+      // DLC table sorted independently without mixing into base table
+      const dlcTbody = document.querySelector('#dlc-table tbody')!;
+      expect(Array.from(dlcTbody.querySelectorAll('tr.trophy')).map(r => r.id)).toEqual(['102', '101']);
+
+      // Select initial: restores page load order (#2, #1, #3), NOT XMB (#1, #2, #3)
+      const initialLink = menu.querySelector('[data-psnine-sort="initial"]') as HTMLAnchorElement;
+      initialLink.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+      expect(trigger.textContent).toBe('页面初始顺序');
+      expect(Array.from(baseTbody.querySelectorAll('tr.trophy')).map(r => r.id)).toEqual(['2', '1', '3']);
+      expect(document.getElementById('1')!.nextElementSibling).toBe(tipRow);
+
+      // Native links are still the exact same DOM nodes with original hrefs and unintercepted click
+      const currentFirstThree = Array.from(menu.querySelectorAll(':scope > li > a')).slice(0, 3);
+      expect(currentFirstThree).toEqual(origLinks);
+      expect(currentFirstThree.map(a => a.getAttribute('href'))).toEqual(origHrefs);
+      let nativeClickDefaultPreventedByPlugin = true;
+      document.addEventListener('click', (e) => {
+        nativeClickDefaultPreventedByPlugin = e.defaultPrevented;
+        e.preventDefault(); // prevent JSDOM navigation warning after verifying plugin did not intercept
+      }, { once: true });
+      const nativeClickEvent = new MouseEvent('click', { bubbles: true, cancelable: true });
+      origLinks[0].dispatchEvent(nativeClickEvent);
+      expect(nativeClickDefaultPreventedByPlugin).toBe(false);
+
+      // Dynamic row append under active rarity-desc maintains sort & settles without observer loop
+      (menu.querySelector('[data-psnine-sort="rarity-desc"]') as HTMLElement).click();
+      expect(Array.from(baseTbody.querySelectorAll('tr.trophy')).map(r => r.id)).toEqual(['3', '1', '2']);
+
+      const dynRow = document.createElement('tr');
+      dynRow.id = '4';
+      dynRow.className = 'trophy';
+      dynRow.innerHTML = `
+        <td class="t3"><a href="/trophy/46507004"><img class="imgbg" src="t4.png" /></a></td>
+        <td><p><a href="/trophy/46507004">动态银杯</a></p></td>
+        <td></td>
+        <td class="twoge">30.00%</td>
+      `;
+      baseTbody.appendChild(dynRow);
+      await new Promise(r => setTimeout(r, 120));
+
+      expect(Array.from(baseTbody.querySelectorAll('tr.trophy')).map(r => r.id)).toEqual(['3', '4', '1', '2']);
+      expect(menu.querySelectorAll('a[data-psnine-sort]').length).toBe(5);
+
+      let extraMutations = 0;
+      const obs = new MutationObserver(ms => { extraMutations += ms.length; });
+      obs.observe(document.body, { childList: true, subtree: true });
+      await new Promise(r => setTimeout(r, 150));
+      obs.disconnect();
+      expect(extraMutations).toBe(0);
+
+      // Open menu first, then call cleanup while open: must remove .hover/.psnine-dropdown-open, restore trigger/menu/current, and unbind listeners
+      trigger.click();
+      const dropdownLi = trigger.parentElement as HTMLElement;
+      expect(dropdownLi.classList.contains('hover')).toBe(true);
+      expect(dropdownLi.classList.contains('psnine-dropdown-open')).toBe(true);
+      expect(trigger.getAttribute('aria-expanded')).toBe('true');
+
+      if (cleanup) cleanup();
+      expect(dropdownLi.classList.contains('hover')).toBe(false);
+      expect(dropdownLi.classList.contains('psnine-dropdown-open')).toBe(false);
+      expect(dropdownLi.hasAttribute('data-psnine-trophy-sort-dropdown')).toBe(false);
+      expect(menu.hasAttribute('data-psnine-trophy-sort-menu')).toBe(false);
+      expect(menu.querySelectorAll('[data-psnine-sort-item]').length).toBe(0);
+      expect(trigger.hasAttribute('data-psnine-trophy-sort-trigger')).toBe(false);
+      expect(trigger.hasAttribute('aria-haspopup')).toBe(false);
+      expect(trigger.hasAttribute('aria-expanded')).toBe(false);
+      expect(trigger.textContent).toBe('完美率');
+      expect(origLinks[2].classList.contains('current')).toBe(true);
+
+      // Verify click and keydown listeners on trigger are unbound after cleanup
+      trigger.click();
+      trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+      expect(dropdownLi.classList.contains('hover')).toBe(false);
+      expect(dropdownLi.classList.contains('psnine-dropdown-open')).toBe(false);
+      expect(trigger.hasAttribute('aria-expanded')).toBe(false);
+    });
+
+    it('hides time sort options on public page and skips enhancement when native sort menu is missing or from another path', async () => {
+      const publicWin = makeWindowWithUrl('https://psnine.com/psngame/46507');
+      document.body.innerHTML = `
+        <div class="min-inner">
+          <div class="box">
+            <ul class="dropmenu">
+              <li class="dropdown">
+                <a href="javascript:void(0)" class="arr-down">语言</a>
+                <ul>
+                  <li><a href="/psngame/46507/rank?ob=trophyid">异路径</a></li>
+                  <li><a href="/psngame/46507/rank?ob=type">异路径2</a></li>
+                  <li><a href="/psngame/46507/rank?ob=rarity">异路径3</a></li>
+                </ul>
+              </li>
+              <li class="dropdown" id="real-sort-dropdown">
+                <a href="javascript:void(0)" class="arr-down">XMB</a>
+                <ul>
+                  <li><a href="?ob=trophyid" class="current">XMB</a></li>
+                  <li><a href="?ob=type">类型</a></li>
+                  <li><a href="?ob=rarity">完美率</a></li>
+                </ul>
+              </li>
+            </ul>
+            <table class="list">
+              <tbody>
+                <tr id="1" class="trophy">
+                  <td class="t1"><a href="/trophy/46507001">白金</a></td>
+                  <td class="twoge">3.6%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      const ctx = createContext({
+        document,
+        window: publicWin,
+        settings: { ...defaultSettings },
+        store: createStore(),
+        http: createHttpClient()
+      });
+
+      const cleanup = await mountTrophies(ctx);
+
+      const realDropdown = document.getElementById('real-sort-dropdown')!;
+      expect(realDropdown.getAttribute('data-psnine-trophy-sort-dropdown')).toBe('true');
+      expect(realDropdown.querySelectorAll('[data-psnine-sort="time-desc"], [data-psnine-sort="time-asc"]').length).toBe(0);
+      expect(Array.from(realDropdown.querySelectorAll('a[data-psnine-sort]')).map(a => a.getAttribute('data-psnine-sort'))).toEqual([
+        'type-asc',
+        'rarity-desc',
+        'initial'
+      ]);
+      if (cleanup) cleanup();
+
+      // Now test with NO valid sort menu at all: must not create fallback buttons
+      document.body.innerHTML = `
+        <div class="min-inner">
+          <div class="box">
+            <table class="list">
+              <tbody>
+                <tr id="1" class="trophy">
+                  <td class="t1"><a href="/trophy/46507001">白金</a></td>
+                  <td class="twoge">3.6%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+      const cleanup2 = await mountTrophies(ctx);
+      expect(document.querySelectorAll('[data-psnine-trophy-sort-trigger], [data-psnine-sort], #psnine-sort-xmb-btn').length).toBe(0);
+      if (cleanup2) cleanup2();
     });
   });
 });
