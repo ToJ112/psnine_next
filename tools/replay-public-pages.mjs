@@ -3,11 +3,12 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { chromium, webkit } from 'playwright';
 import { JSDOM } from 'jsdom';
-// Pass saved public HTML/CSS directory, then optional comma-separated page names.
+// Pass saved public HTML/CSS directory, optional comma-separated page names, then light/dark.
 // No live website requests are permitted.
 const base = path.resolve(process.argv[2] || '.audit-cache/live');
 const selectedPages = new Set((process.argv[3] || '').split(',').filter(Boolean));
-const output = path.resolve('.audit-cache/final-page-replay');
+const colorScheme = process.argv[4] === 'dark' ? 'dark' : 'light';
+const output = path.resolve(colorScheme === 'dark' ? '.audit-cache/dark-page-replay' : '.audit-cache/final-page-replay');
 await fs.mkdir(output, {recursive:true});
 const script = await fs.readFile('dist/psnine_next.user.js','utf8');
 const bundleSha256 = createHash('sha256').update(script).digest('hex');
@@ -35,7 +36,7 @@ const summary=[];
 for (const [engine,launcher] of [['chromium',chromium],['webkit',webkit]]) {
  const browser=await launcher.launch({headless:true});
  for (const [name,url] of cases.filter(([name])=>!['game-meta-46507','trophy-game','trophy-game-meta'].includes(name) && (!selectedPages.size || selectedPages.has(name)))) {
-  const ctx=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+  const ctx=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,colorScheme});
   const page=await ctx.newPage();
   // Keep time-dependent public fixtures deterministic while letting timers advance normally.
   await page.clock.setFixedTime(new Date('2026-09-30T06:00:00Z'));
@@ -66,9 +67,26 @@ for (const [engine,launcher] of [['chromium',chromium],['webkit',webkit]]) {
   await page.addScriptTag({content:script});
   await page.waitForTimeout(1800);
   const checks={};
+  checks.themeApplied=await page.evaluate(dark=>(document.documentElement.dataset.theme==='dark')===dark,colorScheme==='dark');
+  const darkReadability=colorScheme==='dark'?await page.evaluate(()=>{
+    const parse=c=>{const v=c.match(/[\d.]+/g)?.map(Number)||[0,0,0];return [v[0],v[1],v[2],v[3]??1];};
+    const luminance=rgb=>rgb.slice(0,3).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
+    const selectors=['.inav','.box .text-strong','#psnine-trophy-header-counts','#psnine-score-dist-container > div > div','#psnine-fx-status','.content table.tbl td'];
+    return selectors.flatMap(selector=>{
+      const el=document.querySelector(selector);if(!el)return [];
+      const foreground=parse(getComputedStyle(el).color);const layers=[];
+      for(let n=el;n;n=n.parentElement)layers.push(parse(getComputedStyle(n).backgroundColor));
+      const background=layers.reverse().reduce((base,c)=>c.slice(0,3).map((v,i)=>v*c[3]+base[i]*(1-c[3])),[255,255,255]);
+      const fg=foreground.slice(0,3).map((v,i)=>v*foreground[3]+background[i]*(1-foreground[3]));
+      const a=luminance(fg),b=luminance(background);return [{selector,contrast:(Math.max(a,b)+.05)/(Math.min(a,b)+.05),backgroundLuminance:b}];
+    });
+  }):[];
+  if(colorScheme==='dark')checks.darkTextReadable=darkReadability.filter(r=>r.selector!=='.inav').every(r=>r.contrast>=4.5);
+  if(colorScheme==='dark')checks.noBrightNavigation=darkReadability.filter(r=>r.selector==='.inav').every(r=>r.backgroundLuminance<.2);
   if (['home','game','game-personal','reviews','deals'].includes(name)) {
   await page.locator('#psnine-settings-gear').click();
   checks.settings=await page.locator('.psnine-settings-dialog').evaluate(n=>({fields:n.querySelectorAll('input,select,textarea').length,width:n.getBoundingClientRect().width,withinViewport:n.getBoundingClientRect().left>=0&&n.getBoundingClientRect().right<=innerWidth}));
+  if(name==='game-personal')await page.screenshot({path:path.join(output,`${engine}-${name}-settings.png`),fullPage:false});
   await page.keyboard.press('Escape');
   checks.settingsCloses=await page.locator('.psnine-settings-dialog').count()===0;
   if(name==='game' || name==='game-personal'){
@@ -114,12 +132,12 @@ for (const [engine,launcher] of [['chromium',chromium],['webkit',webkit]]) {
   }));
   info.mutationDelta-=first;
   await page.screenshot({path:path.join(output,`${engine}-${name}.png`),fullPage:false});
-  summary.push({bundleSha256,engine,name,url,errors,checks,requestCount:requests.length,...info});
+  summary.push({bundleSha256,engine,name,url,colorScheme,darkReadability,errors,checks,requestCount:requests.length,...info});
   await ctx.close();
  }
  await browser.close();
 }
 await fs.writeFile(path.join(output,'summary.json'),JSON.stringify(summary,null,2));
 const failures=summary.filter(r=>r.errors.length || r.overflow.length || r.mutationDelta !== 0 || Object.values(r.checks).some(v=>v===false) || (r.checks.settings && !r.checks.settings.withinViewport));
-console.log(JSON.stringify({bundleSha256,cases:summary.length,interactionCases:summary.filter(r=>Object.keys(r.checks).length).length,failures:failures.map(r=>({engine:r.engine,name:r.name,errors:r.errors,overflow:r.overflow,mutationDelta:r.mutationDelta,checks:r.checks})),output},null,2));
+console.log(JSON.stringify({bundleSha256,colorScheme,cases:summary.length,interactionCases:summary.filter(r=>r.checks.settings).length,failures:failures.map(r=>({engine:r.engine,name:r.name,errors:r.errors,overflow:r.overflow,mutationDelta:r.mutationDelta,checks:r.checks})),output},null,2));
 if(failures.length)process.exitCode=1;

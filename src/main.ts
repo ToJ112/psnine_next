@@ -54,9 +54,13 @@ if (typeof window !== 'undefined' && window.__psnine_next_initialized__) {
         } else {
           isDark = Boolean(s.nightMode);
         }
+      } else {
+        // default SYSTEM: first run without mirror also evaluates system dark preference
+        isDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
       }
     } catch {
-      // Storage restricted, continue with default light theme styles
+      // Storage restricted, fall back to default SYSTEM evaluation via matchMedia
+      isDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
     }
 
     // Step B: Inject styles if container exists
@@ -68,21 +72,40 @@ if (typeof window !== 'undefined' && window.__psnine_next_initialized__) {
     }
 
     try {
-      if (isDark && !document.getElementById('nightModeStyle')) {
-        const style = document.createElement('style');
-        style.id = 'nightModeStyle';
-        style.setAttribute('data-psnine-next', 'theme');
-        style.textContent = DARK_THEME_STYLES;
-        container.appendChild(style);
-        document.documentElement?.setAttribute('data-theme', 'dark');
-      }
-
+      // CSS injection order: core styles first, dark theme styles second
       if (!document.getElementById('psnineCoreStyles')) {
         const coreStyle = document.createElement('style');
         coreStyle.id = 'psnineCoreStyles';
         coreStyle.setAttribute('data-psnine-next', 'core-styles');
         coreStyle.textContent = CORE_STYLES;
         container.appendChild(coreStyle);
+      }
+
+      if (isDark) {
+        if (!document.getElementById('nightModeStyle')) {
+          const style = document.createElement('style');
+          style.id = 'nightModeStyle';
+          style.setAttribute('data-psnine-next', 'theme');
+          style.textContent = DARK_THEME_STYLES;
+          container.appendChild(style);
+        }
+        if (document.documentElement?.getAttribute('data-theme') !== 'dark') {
+          document.documentElement?.setAttribute('data-theme', 'dark');
+        }
+        if (document.body && document.body.getAttribute('data-theme') !== 'dark') {
+          document.body.setAttribute('data-theme', 'dark');
+        }
+      } else {
+        const staleStyle = document.getElementById('nightModeStyle');
+        if (staleStyle) {
+          staleStyle.remove();
+        }
+        if (document.documentElement?.hasAttribute('data-theme')) {
+          document.documentElement.removeAttribute('data-theme');
+        }
+        if (document.body?.hasAttribute('data-theme')) {
+          document.body.removeAttribute('data-theme');
+        }
       }
 
       if (typeof window !== 'undefined') {

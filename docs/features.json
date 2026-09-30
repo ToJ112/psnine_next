@@ -57,10 +57,11 @@
       "src/styles/index.ts"
     ],
     "test_files": [
-      "tests/global.test.ts"
+      "tests/global.test.ts",
+      "tests/theme-settings.smoke.spec.ts"
     ],
     "verification_scope": "code_review_and_module_regression",
-    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
+    "verification_note": "通过单一外观选择进入浅色或深色；兼容旧 nightMode/autoNightMode 配置，保存和刷新由浏览器回归覆盖。"
   },
   {
     "id": "G02",
@@ -89,10 +90,11 @@
       "src/styles/index.ts"
     ],
     "test_files": [
-      "tests/global.test.ts"
+      "tests/global.test.ts",
+      "tests/theme-settings.smoke.spec.ts"
     ],
     "verification_scope": "code_review_and_module_regression",
-    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
+    "verification_note": "跟随系统偏好及 change 事件；首次启动和刷新时均检查主题，不依赖手工注入测试 CSS。"
   },
   {
     "id": "G03",
@@ -121,10 +123,11 @@
       "src/styles/index.ts"
     ],
     "test_files": [
-      "tests/global.test.ts"
+      "tests/global.test.ts",
+      "tests/theme-settings.smoke.spec.ts"
     ],
     "verification_scope": "code_review_and_module_regression",
-    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
+    "verification_note": "定时模式才显示时段设置，底层配置保持兼容。"
   },
   {
     "id": "G04",
@@ -359,10 +362,11 @@
       "tests/core/http.test.ts",
       "tests/core/settings-ui.test.ts",
       "tests/core/dom.test.ts",
-      "tests/browser.smoke.spec.ts"
+      "tests/browser.smoke.spec.ts",
+      "tests/theme-settings.smoke.spec.ts"
     ],
     "verification_scope": "code_review_and_module_regression",
-    "verification_note": "设置导入导出仅含设置，不同步 Cookie 或个人进度；移动浏览器回归不等于管理器沙箱实测。"
+    "verification_note": "手机设置按功能折叠，底部仅保存/取消；主题设置统一选择，开关固定宽度。设置导入导出不含 Cookie 或进度缓存。"
   },
   {
     "id": "G08",

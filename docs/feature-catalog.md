@@ -6,9 +6,9 @@
 
 |编号|功能|实现文件|验证范围/限制|
 |---|---|---|---|
-|G01|手动深色主题|[global](../src/features/global.ts)|代码审阅、关联模块回归|
-|G02|跟随系统主题|[global](../src/features/global.ts)|代码审阅、关联模块回归|
-|G03|按时间切换主题|[global](../src/features/global.ts)|代码审阅、关联模块回归|
+|G01|手动深色主题|[global](../src/features/global.ts)|单一外观选择浅色/深色，覆盖保存、刷新与旧配置映射。|
+|G02|跟随系统主题|[global](../src/features/global.ts)|实际系统偏好变化驱动主题；浏览器使用发布脚本验证。|
+|G03|按时间切换主题|[global](../src/features/global.ts)|选择定时后才显示开始/结束小时，兼容旧配置。|
 |G04|刮刮条显示|[global](../src/features/global.ts)|代码审阅、关联模块回归|
 |G05|自动签到|[global](../src/features/global.ts)|默认关闭；仅用模拟签到按钮验证去重与启用条件，本次未发起真实签到。|
 |G06|回到页底|[global](../src/features/global.ts)|代码审阅、关联模块回归|

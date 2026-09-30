@@ -45,16 +45,20 @@ export function applyTheme(ctx: Context): void {
       styleEl.textContent = DARK_THEME_STYLES;
       (doc.head || doc.documentElement).appendChild(styleEl);
     }
-    doc.documentElement.setAttribute('data-theme', 'dark');
-    if (doc.body) {
+    if (doc.documentElement.getAttribute('data-theme') !== 'dark') {
+      doc.documentElement.setAttribute('data-theme', 'dark');
+    }
+    if (doc.body && doc.body.getAttribute('data-theme') !== 'dark') {
       doc.body.setAttribute('data-theme', 'dark');
     }
   } else {
     if (styleEl) {
       styleEl.remove();
     }
-    doc.documentElement.removeAttribute('data-theme');
-    if (doc.body) {
+    if (doc.documentElement.hasAttribute('data-theme')) {
+      doc.documentElement.removeAttribute('data-theme');
+    }
+    if (doc.body && doc.body.hasAttribute('data-theme')) {
       doc.body.removeAttribute('data-theme');
     }
   }
@@ -303,6 +307,36 @@ export function applyNewestDefaultSort(ctx: Context): void {
 export const mountGlobal: Mount = (ctx: Context): Cleanup => {
   applyTheme(ctx);
 
+  let themeObserver: MutationObserver | null = null;
+  if (typeof MutationObserver !== 'undefined' && ctx.document.documentElement) {
+    themeObserver = new MutationObserver(() => {
+      const shouldBeDark = isDarkActive(ctx);
+      const htmlTheme = ctx.document.documentElement.getAttribute('data-theme');
+      const bodyTheme = ctx.document.body ? ctx.document.body.getAttribute('data-theme') : null;
+      const hasStyle = Boolean(ctx.document.getElementById('nightModeStyle'));
+
+      if (shouldBeDark) {
+        if (htmlTheme !== 'dark' || (ctx.document.body && bodyTheme !== 'dark') || !hasStyle) {
+          applyTheme(ctx);
+        }
+      } else {
+        if (htmlTheme !== null || bodyTheme !== null || hasStyle) {
+          applyTheme(ctx);
+        }
+      }
+    });
+    themeObserver.observe(ctx.document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+    if (ctx.document.body) {
+      themeObserver.observe(ctx.document.body, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
+    }
+  }
+
   let mediaWatcher: MediaQueryList | null = null;
   const onMediaChange = () => applyTheme(ctx);
 
@@ -334,6 +368,10 @@ export const mountGlobal: Mount = (ctx: Context): Cleanup => {
 
   return () => {
     unsubs();
+    if (themeObserver) {
+      themeObserver.disconnect();
+      themeObserver = null;
+    }
     ctx.window.clearInterval(timer);
     if (mediaWatcher) {
       if (mediaWatcher.removeEventListener) {

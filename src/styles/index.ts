@@ -12,36 +12,54 @@ export const ICONS = {
 };
 
 export const CORE_STYLES = `
-/* psnine_next Core Base Styles */
+/* psnine_next Core Base Tokens & Styles */
+:root {
+  --p9n-bg: #f4f6fa;
+  --p9n-surface: #ffffff;
+  --p9n-surface-alt: #f8fafc;
+  --p9n-text: #1f2937;
+  --p9n-muted: #5f6b7a;
+  --p9n-border: #ccd6dd;
+  --p9n-link: #1966c2;
+  --p9n-primary: #1d4ed8;
+}
+
 [data-psnine-next] {
   box-sizing: border-box;
 }
 
-/* Explicit high-contrast button styling avoiding white-on-white collisions */
-[data-psnine-next] button,
-button[data-psnine-next],
-.psnine-btn {
-  color: #2c3e50 !important;
-  background-color: #ffffff !important;
-  border: 1px solid #ccd6dd !important;
+/* Base button styling */
+.psnine-btn,
+[data-psnine-next] button:where(:not(.psnine-settings-close)),
+button[data-psnine-next]:where(:not(.psnine-settings-close)) {
+  color: var(--p9n-text);
+  background-color: var(--p9n-surface);
+  border: 1px solid var(--p9n-border);
   padding: 6px 14px;
   font-size: 14px;
   border-radius: 6px;
   cursor: pointer;
   touch-action: manipulation;
+  box-sizing: border-box;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.psnine-btn.psnine-btn-primary,
 [data-psnine-next] button.psnine-btn-primary,
 button[data-psnine-next].psnine-btn-primary {
   color: #ffffff !important;
-  background-color: #3498db !important;
-  border-color: #3498db !important;
+  background-color: var(--p9n-primary) !important;
+  border-color: var(--p9n-primary) !important;
 }
 
+.psnine-btn.psnine-btn-danger,
 [data-psnine-next] button.psnine-btn-danger,
 button[data-psnine-next].psnine-btn-danger {
   color: #e74c3c !important;
-  background-color: #ffffff !important;
+  background-color: var(--p9n-surface) !important;
   border-color: #e74c3c !important;
 }
 
@@ -53,7 +71,7 @@ button[data-psnine-next].psnine-btn-danger {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: #3498db !important;
+  background: var(--p9n-primary) !important;
   color: #ffffff !important;
   border: none !important;
   cursor: pointer;
@@ -65,7 +83,7 @@ button[data-psnine-next].psnine-btn-danger {
   touch-action: manipulation;
 }
 #psnine-scrollbottom:hover {
-  background: #2980b9 !important;
+  filter: brightness(1.1);
 }
 
 /* Settings Gear Button */
@@ -94,116 +112,209 @@ button[data-psnine-next].psnine-btn-danger {
 /* Settings Modal Backdrop & Dialog */
 .psnine-modal-backdrop {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
   z-index: 100000;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
-  overflow-y: auto;
-}
-.psnine-settings-dialog {
-  background: #ffffff;
-  color: #2c3e50;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 600px;
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  box-sizing: border-box;
   overflow: hidden;
 }
+.psnine-settings-dialog {
+  background: var(--p9n-surface);
+  color: var(--p9n-text);
+  border: 1px solid var(--p9n-border);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 540px;
+  max-height: calc(100vh - 24px);
+  max-height: calc(100dvh - 24px);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+  box-sizing: border-box;
+}
 .psnine-settings-header {
-  padding: 16px 20px;
-  border-bottom: 1px solid #e1e8ed;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--p9n-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex: 0 0 auto;
 }
 .psnine-settings-header h2 {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
+  color: var(--p9n-text);
 }
 .psnine-settings-close {
-  background: none !important;
+  background: transparent !important;
   border: none !important;
   cursor: pointer;
-  color: #7f8c8d !important;
+  color: var(--p9n-muted) !important;
   padding: 8px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: 44px;
   min-height: 44px;
+  border-radius: 6px;
+}
+.psnine-settings-close:hover {
+  color: var(--p9n-text) !important;
+  background: rgba(128, 128, 128, 0.15) !important;
 }
 .psnine-settings-body {
-  padding: 20px;
+  padding: 14px 16px;
   overflow-y: auto;
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
+}
+.psnine-settings-section {
+  border-bottom: 1px solid var(--p9n-border);
+  margin-bottom: 8px;
+}
+.psnine-settings-section[open] {
+  margin-bottom: 12px;
+}
+.psnine-settings-summary {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--p9n-link);
+  padding: 10px 0;
+  cursor: pointer;
+  user-select: none;
+}
+.psnine-settings-summary:hover {
+  color: var(--p9n-text);
+}
+.psnine-settings-summary:focus {
+  outline: none;
+}
+.psnine-settings-summary:focus-visible {
+  outline: 2px solid var(--p9n-link);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.psnine-settings-section-body {
+  padding: 2px 0 8px 0;
 }
 .psnine-settings-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid #f0f3f5;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--p9n-border);
   min-height: 44px;
+  box-sizing: border-box;
+  gap: 12px;
 }
-.psnine-settings-row label {
+.psnine-settings-row > .psnine-settings-label,
+.psnine-settings-row > label:where(:not(.psnine-switch)) {
   font-size: 14px;
   font-weight: 500;
-  flex: 1;
-  padding-right: 12px;
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--p9n-text);
+  padding-right: 8px;
+  line-height: 1.4;
 }
 .psnine-settings-row input[type="text"],
 .psnine-settings-row input[type="number"],
 .psnine-settings-row select,
 .psnine-settings-row textarea {
-  font-size: 16px; /* Prevents auto-zoom on iOS Safari */
-  padding: 8px 12px;
-  border: 1px solid #ccd6dd;
+  font-size: 16px !important;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--p9n-border);
   border-radius: 6px;
-  background: #fff;
-  color: #2c3e50;
-  max-width: 200px;
-  min-height: 38px;
+  background: var(--p9n-surface);
+  color: var(--p9n-text);
   box-sizing: border-box;
+  max-width: 220px;
+}
+#psnine-setting-theme-mode {
+  font-size: 16px !important;
+  min-height: 40px;
+  padding: 8px 12px;
+  background: var(--p9n-surface);
+  color: var(--p9n-text);
+  border: 1px solid var(--p9n-border);
+  border-radius: 6px;
+}
+.psnine-settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 0;
+}
+.psnine-settings-memory-warning {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
 }
 .psnine-settings-footer {
-  padding: 14px 20px;
-  border-top: 1px solid #e1e8ed;
+  padding: 12px 16px;
+  border-top: 1px solid var(--p9n-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #f8fafc;
-  flex-wrap: wrap;
-  gap: 8px;
+  background: var(--p9n-surface-alt);
+  flex: 0 0 auto;
+  gap: 12px;
+}
+.psnine-settings-footer .psnine-btn {
+  min-height: 44px !important;
+  min-width: 80px;
+  padding: 8px 18px !important;
+  font-size: 16px !important;
+  font-weight: 500;
+  border-radius: 8px !important;
 }
 
 /* iOS-Style Toggle Switch */
 .psnine-switch {
   position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 28px;
-  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  width: 48px !important;
+  height: 44px !important;
+  flex: 0 0 48px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+  cursor: pointer;
+  touch-action: manipulation;
 }
 .psnine-switch input {
+  position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
+  margin: 0;
 }
 .psnine-slider {
   position: absolute;
   cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #ccc;
-  transition: .3s;
+  top: 8px;
+  left: 0;
+  width: 48px;
+  height: 28px;
+  background-color: var(--p9n-border);
+  transition: background-color 0.25s ease;
   border-radius: 28px;
+  box-sizing: border-box;
 }
 .psnine-slider:before {
   position: absolute;
@@ -212,29 +323,33 @@ button[data-psnine-next].psnine-btn-danger {
   width: 22px;
   left: 3px;
   bottom: 3px;
-  background-color: white;
-  transition: .3s;
+  background-color: #ffffff;
+  transition: transform 0.25s ease;
   border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 .psnine-switch input:checked + .psnine-slider {
   background-color: #2ecc71;
 }
 .psnine-switch input:checked + .psnine-slider:before {
-  transform: translateX(22px);
+  transform: translateX(20px);
+}
+.psnine-switch input:focus-visible + .psnine-slider {
+  outline: 2px solid var(--p9n-link);
+  outline-offset: 2px;
 }
 
 /* Floor Number & Author Badges */
 .psnine-floor-badge {
   display: inline-block;
   font-size: 12px;
-  color: #7f8c8d;
+  color: var(--p9n-muted);
   margin-right: 6px;
   user-select: none;
 }
 .psnine-author-badge {
   display: inline-block;
-  background: #3498db;
+  background: var(--p9n-link);
   color: #ffffff;
   padding: 1px 6px;
   font-size: 11px;
@@ -248,7 +363,7 @@ button[data-psnine-next].psnine-btn-danger {
   margin-top: 8px;
   padding: 8px 12px;
   background: rgba(0, 0, 0, 0.04);
-  border-left: 3px solid #3498db;
+  border-left: 3px solid var(--p9n-link);
   border-radius: 4px;
   font-size: 13px;
 }
@@ -257,11 +372,11 @@ button[data-psnine-next].psnine-btn-danger {
   align-items: center;
   gap: 6px;
   font-weight: 600;
-  color: #34495e;
+  color: var(--p9n-text);
   margin-bottom: 4px;
 }
 .psnine-traceback-content {
-  color: #555;
+  color: var(--p9n-muted);
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -311,7 +426,7 @@ button[data-psnine-next].psnine-btn-danger {
 #psnine-trophy-header-counts {
   white-space: nowrap;
   font-size: 12px;
-  color: #666;
+  color: var(--p9n-muted);
   font-weight: normal;
 }
 #psnine-trophy-completion-badge {
@@ -392,88 +507,500 @@ ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > ul[data-psn
   cursor: pointer;
   user-select: none;
   padding: 1px 4px;
-  }
+}
 .mark.unmasked,
 .mark.pinned {
   color: #ffffff !important;
   user-select: text;
 }
+.mark strong,
+.mark b,
+.mark em,
+.mark i,
+.mark a,
+.mark a:visited,
+.mark span,
+.mark [style*="color"],
+.mark * {
+  color: inherit !important;
+  background-color: transparent !important;
+}
 `;
 
 export const DARK_THEME_STYLES = `
-/* psnine_next Dark Theme */
-body.bg, body[data-theme="dark"], html[data-theme="dark"] body {
-  background: #2b2b2b !important;
-  color: #bbb !important;
+/* psnine_next Dark Theme Tokens */
+html[data-theme="dark"],
+body[data-theme="dark"],
+html[data-theme="dark"] body {
+  --p9n-bg: #10151d;
+  --p9n-surface: #1a222d;
+  --p9n-surface-alt: #202c3a;
+  --p9n-text: #e6ebf2;
+  --p9n-muted: #a8b3c2;
+  --p9n-border: #3b4859;
+  --p9n-link: #91bdff;
+  --p9n-primary: #1d4ed8;
 }
-.box, .content, .header, .footer, .list li, .sonlist li, .dropdown ul, table.list {
-  background-color: #2b2b2b !important;
-  color: #bbb !important;
-  border-color: #444 !important;
+
+/* Page Background & Base Text (scoped with html[data-theme="dark"]) */
+html[data-theme="dark"] body.bg,
+html[data-theme="dark"] body[data-theme="dark"],
+html[data-theme="dark"] body,
+body[data-theme="dark"] {
+  background-color: #10151d !important;
+  color: #e6ebf2 !important;
 }
-.box .post, td, th {
-  border-bottom: 1px solid #3a3a3a !important;
+
+/* Structural Panels & Containers */
+html[data-theme="dark"] .box,
+html[data-theme="dark"] .content,
+html[data-theme="dark"] .header,
+html[data-theme="dark"] .footer,
+html[data-theme="dark"] .dropdown ul,
+html[data-theme="dark"] .mobile-nav-panel {
+  background-color: #1a222d !important;
+  color: #e6ebf2 !important;
+  border-color: #3b4859 !important;
 }
-.list li:hover {
-  background-color: #353535 !important;
+
+/* Navigation (.inav) */
+html[data-theme="dark"] .inav {
+  background-color: #1a222d !important;
+  color: #e6ebf2 !important;
+  border-color: #3b4859 !important;
 }
-a {
-  color: #64a5ff !important;
+html[data-theme="dark"] .inav li a {
+  color: #91bdff !important;
 }
-a:visited {
-  color: #9b72cf !important;
+html[data-theme="dark"] .inav li.current,
+html[data-theme="dark"] .inav li.current a {
+  background-color: #202c3a !important;
+  color: #e6ebf2 !important;
 }
-.psnnode {
-  background-color: #4f4f4f !important;
-  color: #ddd !important;
+
+/* Pagination (.page li a) */
+html[data-theme="dark"] .page li a {
+  background-color: #202c3a !important;
+  color: #91bdff !important;
+  border-color: #3b4859 !important;
 }
-/* Spoiler Bar (.mark) Dark Mode Rules (G04): no unconditional :hover; JS controls unmask */
-.mark {
-  background-color: #555555 !important;
-  color: #555555 !important;
+html[data-theme="dark"] .page li.current a {
+  background-color: #1d4ed8 !important;
+  color: #ffffff !important;
+  border-color: #1d4ed8 !important;
+}
+
+/* Lists and Tables */
+html[data-theme="dark"] .list,
+html[data-theme="dark"] table.list,
+html[data-theme="dark"] .sonlist {
+  background-color: #1a222d !important;
+  color: #e6ebf2 !important;
+  border-color: #3b4859 !important;
+}
+html[data-theme="dark"] .list li,
+html[data-theme="dark"] .sonlist li,
+html[data-theme="dark"] table.list tr,
+html[data-theme="dark"] table.list td:where(:not(.t1):not(.t2):not(.t3):not(.t4)),
+html[data-theme="dark"] table.list th,
+html[data-theme="dark"] .box .post {
+  background-color: transparent !important;
+  color: #e6ebf2 !important;
+  border-bottom: 1px solid #3b4859 !important;
+}
+html[data-theme="dark"] .list li:hover,
+html[data-theme="dark"] table.list tr:hover {
+  background-color: #202c3a !important;
+}
+
+/* Trophy Grade Cell Backgrounds (preserve t1/t2/t3/t4 grade colors) */
+html[data-theme="dark"] table.list td.t1,
+html[data-theme="dark"] .t1 {
+  background-color: #3b4d71 !important;
+}
+html[data-theme="dark"] table.list td.t2,
+html[data-theme="dark"] .t2 {
+  background-color: #5c4528 !important;
+}
+html[data-theme="dark"] table.list td.t3,
+html[data-theme="dark"] .t3 {
+  background-color: #4a4f57 !important;
+}
+html[data-theme="dark"] table.list td.t4,
+html[data-theme="dark"] .t4 {
+  background-color: #5a3826 !important;
+}
+html[data-theme="dark"] table.list td.t1 a,
+html[data-theme="dark"] table.list td.t2 a,
+html[data-theme="dark"] table.list td.t3 a,
+html[data-theme="dark"] table.list td.t4 a {
+  color: #ffffff !important;
+}
+
+/* Known pale yellow inline table in .content (.tbl) */
+html[data-theme="dark"] .content table.tbl,
+html[data-theme="dark"] .content table.tbl tr,
+html[data-theme="dark"] .content table.tbl td,
+html[data-theme="dark"] .content table.tbl th,
+html[data-theme="dark"] table.tbl,
+html[data-theme="dark"] table.tbl tr,
+html[data-theme="dark"] table.tbl td,
+html[data-theme="dark"] table.tbl th {
+  background-color: #1a222d !important;
+  color: #e6ebf2 !important;
+  border-color: #3b4859 !important;
+}
+
+/* Typography */
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] .text-strong,
+html[data-theme="dark"] strong:where(:not([class*="alert-"]):not([class*="alert-"] *)),
+html[data-theme="dark"] b:where(:not([class*="alert-"]):not([class*="alert-"] *)) {
+  color: #e6ebf2 !important;
+}
+html[data-theme="dark"] em:where(:not([class*="alert-"]):not([class*="alert-"] *)) {
+  color: #a8b3c2 !important;
+}
+
+/* Generic links: Exclude semantic grade text, buttons, and inline-colored links (D04 discounts) */
+html[data-theme="dark"] a:where(:not(.btn):not(.text-platinum):not(.text-gold):not(.text-silver):not(.text-bronze):not([style*="color"])) {
+  color: #91bdff !important;
+}
+html[data-theme="dark"] a:visited:where(:not(.btn):not(.text-platinum):not(.text-gold):not(.text-silver):not(.text-bronze):not([style*="color"])) {
+  color: #c4b5fd !important;
+}
+
+/* Semantic Trophy Rarity Colors */
+html[data-theme="dark"] .text-platinum,
+html[data-theme="dark"] a.text-platinum {
+  color: #70b8ff !important;
+}
+html[data-theme="dark"] .text-gold,
+html[data-theme="dark"] a.text-gold {
+  color: #ffd166 !important;
+}
+html[data-theme="dark"] .text-silver,
+html[data-theme="dark"] a.text-silver {
+  color: #d1d5db !important;
+}
+html[data-theme="dark"] .text-bronze,
+html[data-theme="dark"] a.text-bronze {
+  color: #f4a261 !important;
+}
+
+html[data-theme="dark"] .psnnode {
+  background-color: #202c3a !important;
+  color: #e6ebf2 !important;
+}
+
+/* Form Controls (exclude color and checkbox) */
+html[data-theme="dark"] input[type="text"],
+html[data-theme="dark"] input[type="number"],
+html[data-theme="dark"] input[type="search"],
+html[data-theme="dark"] input[type="password"],
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select {
+  background-color: #10151d !important;
+  color: #e6ebf2 !important;
+  border: 1px solid #3b4859 !important;
+}
+
+/* Spoiler Bar (.mark) Dark Mode Rules (G04) */
+html[data-theme="dark"] .mark {
+  background-color: #3b4859 !important;
+  color: #3b4859 !important;
   cursor: pointer;
   user-select: none;
   border-radius: 2px;
   padding: 1px 4px;
 }
-.mark.unmasked,
-.mark.pinned {
+html[data-theme="dark"] .mark.unmasked,
+html[data-theme="dark"] .mark.pinned {
   color: #ffffff !important;
   user-select: text;
 }
-.psnine-settings-dialog {
-  background: #333333 !important;
-  color: #eeeeee !important;
-}
-.psnine-settings-header, .psnine-settings-footer {
-  border-color: #444 !important;
-  background: #2a2a2a !important;
-}
-.psnine-settings-row {
-  border-color: #3e3e3e !important;
-}
-.psnine-settings-row input, .psnine-settings-row select, .psnine-settings-row textarea {
-  background: #222 !important;
-  color: #eee !important;
-  border-color: #555 !important;
+html[data-theme="dark"] .mark strong,
+html[data-theme="dark"] .mark b,
+html[data-theme="dark"] .mark em,
+html[data-theme="dark"] .mark i,
+html[data-theme="dark"] .mark a,
+html[data-theme="dark"] .mark a:visited,
+html[data-theme="dark"] .mark span,
+html[data-theme="dark"] .mark [style*="color"],
+html[data-theme="dark"] .mark * {
+  color: inherit !important;
+  background-color: transparent !important;
 }
 
-/* Dark mode button contrast */
-[data-psnine-next] button,
-button[data-psnine-next],
-.psnine-btn {
-  color: #eeeeee !important;
-  background-color: #3d3d3d !important;
-  border-color: #555555 !important;
+/* Semantic Alert Badges in Dark Mode (Tips, Like counts, Status markers) */
+html[data-theme="dark"] .alert-success,
+html[data-theme="dark"] em.alert-success,
+html[data-theme="dark"] span.alert-success {
+  background-color: #1e4620 !important;
+  color: #75b798 !important;
+  border-color: #2b6a38 !important;
+}
+html[data-theme="dark"] .alert-info,
+html[data-theme="dark"] em.alert-info,
+html[data-theme="dark"] span.alert-info {
+  background-color: #0d3c61 !important;
+  color: #6ea8fe !important;
+  border-color: #1a5c96 !important;
+}
+html[data-theme="dark"] .alert-warning,
+html[data-theme="dark"] em.alert-warning,
+html[data-theme="dark"] span.alert-warning {
+  background-color: #4d3800 !important;
+  color: #ffda6a !important;
+  border-color: #7a5a00 !important;
+}
+html[data-theme="dark"] .alert-danger,
+html[data-theme="dark"] .alert-error,
+html[data-theme="dark"] em.alert-danger,
+html[data-theme="dark"] em.alert-error,
+html[data-theme="dark"] span.alert-danger,
+html[data-theme="dark"] span.alert-error {
+  background-color: #491217 !important;
+  color: #ea868f !important;
+  border-color: #721c24 !important;
 }
 
-.psnine-traceback-card {
+/* Ensure b/em/strong inside alert badges inherit high-contrast badge text */
+html[data-theme="dark"] [class*="alert-"] b,
+html[data-theme="dark"] [class*="alert-"] em,
+html[data-theme="dark"] [class*="alert-"] strong,
+html[data-theme="dark"] .alert-success b,
+html[data-theme="dark"] .alert-success em,
+html[data-theme="dark"] .alert-success strong,
+html[data-theme="dark"] .alert-info b,
+html[data-theme="dark"] .alert-info em,
+html[data-theme="dark"] .alert-info strong,
+html[data-theme="dark"] .alert-warning b,
+html[data-theme="dark"] .alert-warning em,
+html[data-theme="dark"] .alert-warning strong,
+html[data-theme="dark"] .alert-danger b,
+html[data-theme="dark"] .alert-danger em,
+html[data-theme="dark"] .alert-danger strong,
+html[data-theme="dark"] .alert-error b,
+html[data-theme="dark"] .alert-error em,
+html[data-theme="dark"] .alert-error strong {
+  color: inherit !important;
+}
+
+/* Plugin inline completion badges */
+html[data-theme="dark"] #psnine-trophy-completion-badge.alert-success {
+  background-color: #28a745 !important;
+  color: #ffffff !important;
+}
+html[data-theme="dark"] #psnine-trophy-completion-badge.alert-success * {
+  color: inherit !important;
+}
+
+/* Settings Modal Dark Mode */
+html[data-theme="dark"] .psnine-settings-dialog {
+  background: #1a222d !important;
+  color: #e6ebf2 !important;
+  border-color: #3b4859 !important;
+}
+html[data-theme="dark"] .psnine-settings-header {
+  border-color: #3b4859 !important;
+  background: #1a222d !important;
+}
+html[data-theme="dark"] .psnine-settings-footer {
+  border-color: #3b4859 !important;
+  background: #10151d !important;
+}
+html[data-theme="dark"] .psnine-settings-section {
+  border-color: #3b4859 !important;
+}
+html[data-theme="dark"] .psnine-settings-summary {
+  color: #91bdff !important;
+}
+html[data-theme="dark"] .psnine-settings-summary:hover {
+  color: #e6ebf2 !important;
+}
+html[data-theme="dark"] .psnine-settings-summary:focus-visible {
+  outline: 2px solid #91bdff !important;
+  outline-offset: 2px;
+}
+html[data-theme="dark"] .psnine-settings-row {
+  border-color: #3b4859 !important;
+}
+html[data-theme="dark"] .psnine-settings-row > .psnine-settings-label,
+html[data-theme="dark"] .psnine-settings-row > label:where(:not(.psnine-switch)) {
+  color: #e6ebf2 !important;
+}
+html[data-theme="dark"] .psnine-settings-row input,
+html[data-theme="dark"] .psnine-settings-row select,
+html[data-theme="dark"] .psnine-settings-row textarea {
+  background: #10151d !important;
+  color: #e6ebf2 !important;
+  border-color: #3b4859 !important;
+}
+html[data-theme="dark"] .psnine-settings-memory-warning {
+  background: #332701 !important;
+  color: #ffd875 !important;
+  border-color: #665005 !important;
+}
+
+/* Generic Button Contrast in Dark Mode (Exclude custom status/chip/filter buttons) */
+html[data-theme="dark"] [data-psnine-next] button:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(.psnine-filtered-tip-btn)),
+html[data-theme="dark"] button[data-psnine-next]:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(.psnine-filtered-tip-btn)),
+html[data-theme="dark"] .psnine-btn:where(:not(.psnine-btn-primary):not(.psnine-btn-danger)) {
+  color: #e6ebf2 !important;
+  background-color: #202c3a !important;
+  border-color: #3b4859 !important;
+}
+html[data-theme="dark"] .psnine-btn.psnine-btn-primary,
+html[data-theme="dark"] [data-psnine-next] button.psnine-btn-primary,
+html[data-theme="dark"] button[data-psnine-next].psnine-btn-primary {
+  color: #ffffff !important;
+  background-color: #1d4ed8 !important;
+  border-color: #1d4ed8 !important;
+}
+html[data-theme="dark"] .psnine-btn.psnine-btn-danger,
+html[data-theme="dark"] [data-psnine-next] button.psnine-btn-danger,
+html[data-theme="dark"] button[data-psnine-next].psnine-btn-danger {
+  color: #ff6b6b !important;
+  background-color: #202c3a !important;
+  border-color: #ff6b6b !important;
+}
+html[data-theme="dark"] .psnine-settings-close {
+  color: #a8b3c2 !important;
+  background: transparent !important;
+}
+html[data-theme="dark"] .psnine-settings-close:hover {
+  color: #e6ebf2 !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Custom Status & Filter Buttons in Dark Mode */
+/* 1. Trophy Icon Chip (Preserve earned green border) */
+html[data-theme="dark"] .psnine-trophy-icon-chip {
+  background-color: transparent !important;
+}
+html[data-theme="dark"] .psnine-trophy-icon-chip[style*="#28a745"],
+html[data-theme="dark"] .psnine-trophy-icon-chip[style*="rgb(40, 167, 69)"] {
+  border-color: #28a745 !important;
+}
+
+/* 2. Review Score Filter Chip (Preserve selected orange status) */
+html[data-theme="dark"] .psnine-score-filter-chip {
+  background-color: #202c3a !important;
+  border: 1px solid #3b4859 !important;
+  color: #a8b3c2 !important;
+}
+html[data-theme="dark"] .psnine-score-filter-chip[style*="#ff9800"],
+html[data-theme="dark"] .psnine-score-filter-chip[style*="rgb(255, 152, 0)"] {
+  background-color: #ff9800 !important;
+  border-color: #ff9800 !important;
+  color: #ffffff !important;
+}
+html[data-theme="dark"] #psnine-clear-score-filter-btn {
+  border-color: #ff9800 !important;
+  background-color: rgba(255, 152, 0, 0.15) !important;
+  color: #ffb74d !important;
+}
+
+/* 3. Deal Best Only Toggle Button (Preserve active red state) */
+html[data-theme="dark"] #psnine-toggle-best-deal-btn {
+  background-color: #202c3a !important;
+  border: 1px solid #3b4859 !important;
+  color: #e6ebf2 !important;
+}
+html[data-theme="dark"] #psnine-toggle-best-deal-btn[style*="#da314b"],
+html[data-theme="dark"] #psnine-toggle-best-deal-btn[style*="rgb(218, 49, 75)"] {
+  background-color: #da314b !important;
+  border-color: #da314b !important;
+  color: #ffffff !important;
+}
+
+/* 4. Deal CNY Toggle Button (Preserve active green state) */
+html[data-theme="dark"] #psnine-toggle-cny-btn {
+  background-color: rgba(40, 167, 69, 0.15) !important;
+  border: 1px solid #28a745 !important;
+  color: #51cf66 !important;
+}
+
+/* 5. Battle Bell Monitor Button (Preserve active amber/gold state) */
+html[data-theme="dark"] .psnine-battle-bell-btn {
+  background-color: #202c3a !important;
+  border: 1px solid #3b4859 !important;
+  color: #a8b3c2 !important;
+}
+html[data-theme="dark"] .psnine-battle-bell-btn[style*="245, 159, 0"],
+html[data-theme="dark"] .psnine-battle-bell-btn[style*="#f59f00"] {
+  background-color: rgba(245, 159, 0, 0.2) !important;
+  border-color: #f59f00 !important;
+  color: #fbbf24 !important;
+}
+
+/* 6. Filtered Tip Button */
+html[data-theme="dark"] .psnine-filtered-tip-btn {
+  background-color: #202c3a !important;
+  border: 1px dashed #3b4859 !important;
+  color: #a8b3c2 !important;
+}
+
+/* Toggle Switch Slider in Dark Mode */
+html[data-theme="dark"] .psnine-slider {
+  background-color: #3b4859 !important;
+}
+html[data-theme="dark"] .psnine-switch input:checked + .psnine-slider {
+  background-color: #2ecc71 !important;
+}
+
+/* Traceback in Dark Mode */
+html[data-theme="dark"] .psnine-traceback-card {
   background: rgba(255, 255, 255, 0.06) !important;
 }
-.psnine-traceback-header {
-  color: #9ac8eb !important;
+html[data-theme="dark"] .psnine-traceback-header {
+  color: #91bdff !important;
 }
-.psnine-traceback-content {
-  color: #bbb !important;
+html[data-theme="dark"] .psnine-traceback-content {
+  color: #a8b3c2 !important;
+}
+
+/* Plugin Panels & Low Contrast Container Fixes */
+html[data-theme="dark"] #psnine-trophy-stats-panel,
+html[data-theme="dark"] #psnine-trophy-preview-card,
+html[data-theme="dark"] #psnine-enhanced-reviews-panel,
+html[data-theme="dark"] #psnine-deals-controls-bar,
+html[data-theme="dark"] #psnine-price-chart-container,
+html[data-theme="dark"] #psnine-game-variants-section,
+html[data-theme="dark"] #psnine-cross-version-tips-section {
+  background-color: #1a222d !important;
+  color: #e6ebf2 !important;
+  border-color: #3b4859 !important;
+}
+
+/* Muted labels & counts in plugin panels */
+html[data-theme="dark"] #psnine-trophy-header-counts,
+html[data-theme="dark"] #psnine-fx-status,
+html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color:#666"],
+html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color: #666"],
+html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color:#888"],
+html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color: #888"],
+html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color:#555"],
+html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color: #555"],
+html[data-theme="dark"] #psnine-trophy-preview-card [style*="color:#666"],
+html[data-theme="dark"] #psnine-trophy-preview-card [style*="color: #666"],
+html[data-theme="dark"] #psnine-enhanced-reviews-panel [style*="color:#666"],
+html[data-theme="dark"] #psnine-enhanced-reviews-panel [style*="color: #666"],
+html[data-theme="dark"] #psnine-enhanced-reviews-panel [style*="color:#888"],
+html[data-theme="dark"] #psnine-enhanced-reviews-panel [style*="color: #888"],
+html[data-theme="dark"] #psnine-deals-controls-bar [style*="color:#666"],
+html[data-theme="dark"] #psnine-deals-controls-bar [style*="color: #666"],
+html[data-theme="dark"] #psnine-price-chart-container [style*="color:#666"],
+html[data-theme="dark"] #psnine-price-chart-container [style*="color: #666"],
+html[data-theme="dark"] #psnine-price-chart-container [style*="color:#888"],
+html[data-theme="dark"] #psnine-price-chart-container [style*="color: #888"],
+html[data-theme="dark"] #psnine-game-variants-section [style*="color:#666"],
+html[data-theme="dark"] #psnine-game-variants-section [style*="color: #666"],
+html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color:#666"],
+html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"] {
+  color: #a8b3c2 !important;
 }
 `;

@@ -39,7 +39,7 @@ const MOCK_HTML = `<!DOCTYPE html>
           <span class="r"><a class="r" href="#reply">回复</a></span>
         </div>
         <div class="content pb10">
-          欢迎查阅本攻略！注意以下剧情剧透：<span class="mark">诸神黄昏的最终敌人是奥丁</span>。
+          欢迎查阅本攻略！注意以下剧情剧透：<span class="mark">诸神黄昏的最终敌人是<strong>奥丁</strong><em>（剧透）</em><a href="/topic/54321" style="color:red">详情</a></span>。
         </div>
       </div>
     </div>
@@ -102,7 +102,7 @@ test.describe('psnine_next Browser Smoke & DOM Stability Tests', () => {
     await gearBtn.click();
     const dialog = page.locator('.psnine-settings-dialog');
     await expect(dialog).toBeVisible();
-    await expect(dialog.locator('h2')).toContainText('PSNINE 增强插件设置');
+    await expect(dialog.locator('h2')).toHaveText('PSNINE 设置');
 
     // Verify button contrast
     const saveBtn = dialog.locator('button:has-text("保存配置")');
@@ -121,43 +121,51 @@ test.describe('psnine_next Browser Smoke & DOM Stability Tests', () => {
 
     const mark = page.locator('.mark').first();
     await expect(mark).toBeVisible();
+    const expectNestedColor = async (color: string) => {
+      const nestedColors = await mark.locator('strong, em, a').evaluateAll(els => els.map(el => getComputedStyle(el).color));
+      expect(nestedColors).toEqual([color, color, color]);
+    };
 
     // In light theme: masked text color matches background color (invisible)
     const lightBg = await mark.evaluate((el) => window.getComputedStyle(el).backgroundColor);
     const lightColor = await mark.evaluate((el) => window.getComputedStyle(el).color);
     expect(lightColor).toBe(lightBg);
+    await expectNestedColor(lightBg);
 
     // Unmask via click/tap: text becomes white (#ffffff)
-    await mark.click();
+    await mark.click({ position: { x: 2, y: 2 } });
     await expect(mark).toHaveClass(/unmasked/);
     const unmaskedColor = await mark.evaluate((el) => window.getComputedStyle(el).color);
     expect(unmaskedColor).toBe('rgb(255, 255, 255)');
+    await expectNestedColor(unmaskedColor);
 
     // Toggle back to masked
-    await mark.click();
+    await mark.click({ position: { x: 2, y: 2 } });
     await expect(mark).not.toHaveClass(/unmasked/);
 
-    // Switch to dark theme
-    await page.evaluate(() => {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      const style = document.createElement('style');
-      style.id = 'nightModeStyle';
-      style.textContent = `
-        .mark { background-color: rgb(85, 85, 85) !important; color: rgb(85, 85, 85) !important; }
-        .mark.unmasked, .mark.pinned { color: rgb(255, 255, 255) !important; }
-      `;
-      document.head.appendChild(style);
-    });
+    // Exercise the shipped theme handler, not a test-supplied replacement stylesheet.
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 
     const darkBg = await mark.evaluate((el) => window.getComputedStyle(el).backgroundColor);
     const darkColor = await mark.evaluate((el) => window.getComputedStyle(el).color);
     expect(darkColor).toBe(darkBg);
+    await expectNestedColor(darkBg);
 
     // Unmask in dark mode
-    await mark.click();
+    await mark.click({ position: { x: 2, y: 2 } });
     await expect(mark).toHaveClass(/unmasked/);
     const darkUnmaskedColor = await mark.evaluate((el) => window.getComputedStyle(el).color);
     expect(darkUnmaskedColor).toBe('rgb(255, 255, 255)');
+    await expectNestedColor(darkUnmaskedColor);
+
+    await page.emulateMedia({ colorScheme: 'light' });
+    await expect(page.locator('#nightModeStyle')).toHaveCount(0);
+    await mark.click({ position: { x: 2, y: 2 } });
+    const restoredBg = await mark.evaluate((el) => window.getComputedStyle(el).backgroundColor);
+    const restoredColor = await mark.evaluate((el) => window.getComputedStyle(el).color);
+    expect(restoredColor).toBe(restoredBg);
+    await expectNestedColor(restoredBg);
   });
 
   test('lifecycle test: BFCache persisted navigation preserves state without duplicate listeners', async ({ page }) => {

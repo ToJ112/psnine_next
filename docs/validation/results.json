@@ -1,6 +1,6 @@
 {
   "date": "2026-09-30",
-  "release_version": "1.0.1",
+  "release_version": "1.0.2",
   "node": "24.19.0",
   "dependencies": {
     "typescript": "5.9.3",
@@ -11,27 +11,28 @@
   },
   "artifact": {
     "path": "dist/psnine_next.user.js",
-    "bytes": 340267,
-    "sha256": "0a467b57ad543d950cbdbaf9d571243911f73f85b2bf21a2b66434335de403de"
+    "bytes": 367614,
+    "sha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae"
   },
   "requirements": 80,
   "typecheck": "passed",
-  "clean_install": "npm ci passed for 1.0.0; dependency resolutions unchanged in 1.0.1",
+  "clean_install": "npm ci passed for 1.0.0; dependency resolutions unchanged in 1.0.2",
   "unit": {
     "files": 17,
-    "passed": 151,
+    "passed": 163,
     "failed": 0,
     "skipped": 0
   },
   "browser": {
-    "startTime": "2026-09-30T09:48:09.651Z",
-    "duration": 52367.255,
-    "expected": 16,
+    "startTime": "2026-09-30T13:23:14.247Z",
+    "duration": 75141.874,
+    "expected": 22,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
   },
   "public_page_replay": {
+    "color_scheme": "light",
     "pages": 13,
     "engines": [
       "chromium",
@@ -78,10 +79,25 @@
     "reason": "Dependency resolutions and history evidence unchanged; package version fields only were updated."
   },
   "validated_changes": [
-    "native trophy sorting links and query parameters preserved",
-    "local sort label and single selected item",
-    "touch close and keyboard focus lifecycle",
-    "existing DLC groups and inline Tips preserved during local sorting",
-    "dynamic sort and DOM settlement"
-  ]
+    "compact mobile settings switches and collapsible sections with reachable footer",
+    "single appearance choice with save, reload, system changes and conditional schedule inputs",
+    "late native theme attributes reconciled and observer disconnected on cleanup",
+    "dark navigation, statistics, tables and controls with measured text contrast",
+    "trophy, discount and filter-state semantic colors preserved",
+    "nested spoiler text masked and revealed using actual shipped theme CSS",
+    "native trophy sorting, touch and keyboard regressions retained"
+  ],
+  "dark_page_replay": {
+    "color_scheme": "dark",
+    "pages": 13,
+    "engines": [
+      "chromium",
+      "webkit"
+    ],
+    "cases": 26,
+    "interaction_cases": 10,
+    "script_errors": 0,
+    "enhancement_overflows": 0,
+    "unsettled_mutations": 0
+  }
 }

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PSNINE Next (PSN中文网功能增强)
 // @namespace    https://github.com/ToJ112/psnine_next
-// @version      1.0.1
+// @version      1.0.2
 // @description  现代化重构版 PSN中文网功能增强脚本，深度适配桌面 Tampermonkey 与 iOS Safari Stay
 // @author       ToJ112, swsoyee, InfinityLoop, mordom0404, Nathaniel-Wu, JayusTree, aesct
 // @match        https://psnine.com/*
@@ -854,36 +854,54 @@
     close: `<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M18 6L6 18M6 6l12 12"/></svg>`
   };
   var CORE_STYLES = `
-/* psnine_next Core Base Styles */
+/* psnine_next Core Base Tokens & Styles */
+:root {
+  --p9n-bg: #f4f6fa;
+  --p9n-surface: #ffffff;
+  --p9n-surface-alt: #f8fafc;
+  --p9n-text: #1f2937;
+  --p9n-muted: #5f6b7a;
+  --p9n-border: #ccd6dd;
+  --p9n-link: #1966c2;
+  --p9n-primary: #1d4ed8;
+}
+
 [data-psnine-next] {
   box-sizing: border-box;
 }
 
-/* Explicit high-contrast button styling avoiding white-on-white collisions */
-[data-psnine-next] button,
-button[data-psnine-next],
-.psnine-btn {
-  color: #2c3e50 !important;
-  background-color: #ffffff !important;
-  border: 1px solid #ccd6dd !important;
+/* Base button styling */
+.psnine-btn,
+[data-psnine-next] button:where(:not(.psnine-settings-close)),
+button[data-psnine-next]:where(:not(.psnine-settings-close)) {
+  color: var(--p9n-text);
+  background-color: var(--p9n-surface);
+  border: 1px solid var(--p9n-border);
   padding: 6px 14px;
   font-size: 14px;
   border-radius: 6px;
   cursor: pointer;
   touch-action: manipulation;
+  box-sizing: border-box;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.psnine-btn.psnine-btn-primary,
 [data-psnine-next] button.psnine-btn-primary,
 button[data-psnine-next].psnine-btn-primary {
   color: #ffffff !important;
-  background-color: #3498db !important;
-  border-color: #3498db !important;
+  background-color: var(--p9n-primary) !important;
+  border-color: var(--p9n-primary) !important;
 }
 
+.psnine-btn.psnine-btn-danger,
 [data-psnine-next] button.psnine-btn-danger,
 button[data-psnine-next].psnine-btn-danger {
   color: #e74c3c !important;
-  background-color: #ffffff !important;
+  background-color: var(--p9n-surface) !important;
   border-color: #e74c3c !important;
 }
 
@@ -895,7 +913,7 @@ button[data-psnine-next].psnine-btn-danger {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: #3498db !important;
+  background: var(--p9n-primary) !important;
   color: #ffffff !important;
   border: none !important;
   cursor: pointer;
@@ -907,7 +925,7 @@ button[data-psnine-next].psnine-btn-danger {
   touch-action: manipulation;
 }
 #psnine-scrollbottom:hover {
-  background: #2980b9 !important;
+  filter: brightness(1.1);
 }
 
 /* Settings Gear Button */
@@ -936,116 +954,209 @@ button[data-psnine-next].psnine-btn-danger {
 /* Settings Modal Backdrop & Dialog */
 .psnine-modal-backdrop {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
   z-index: 100000;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
-  overflow-y: auto;
-}
-.psnine-settings-dialog {
-  background: #ffffff;
-  color: #2c3e50;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 600px;
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  box-sizing: border-box;
   overflow: hidden;
 }
+.psnine-settings-dialog {
+  background: var(--p9n-surface);
+  color: var(--p9n-text);
+  border: 1px solid var(--p9n-border);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 540px;
+  max-height: calc(100vh - 24px);
+  max-height: calc(100dvh - 24px);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+  box-sizing: border-box;
+}
 .psnine-settings-header {
-  padding: 16px 20px;
-  border-bottom: 1px solid #e1e8ed;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--p9n-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex: 0 0 auto;
 }
 .psnine-settings-header h2 {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
+  color: var(--p9n-text);
 }
 .psnine-settings-close {
-  background: none !important;
+  background: transparent !important;
   border: none !important;
   cursor: pointer;
-  color: #7f8c8d !important;
+  color: var(--p9n-muted) !important;
   padding: 8px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: 44px;
   min-height: 44px;
+  border-radius: 6px;
+}
+.psnine-settings-close:hover {
+  color: var(--p9n-text) !important;
+  background: rgba(128, 128, 128, 0.15) !important;
 }
 .psnine-settings-body {
-  padding: 20px;
+  padding: 14px 16px;
   overflow-y: auto;
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
+}
+.psnine-settings-section {
+  border-bottom: 1px solid var(--p9n-border);
+  margin-bottom: 8px;
+}
+.psnine-settings-section[open] {
+  margin-bottom: 12px;
+}
+.psnine-settings-summary {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--p9n-link);
+  padding: 10px 0;
+  cursor: pointer;
+  user-select: none;
+}
+.psnine-settings-summary:hover {
+  color: var(--p9n-text);
+}
+.psnine-settings-summary:focus {
+  outline: none;
+}
+.psnine-settings-summary:focus-visible {
+  outline: 2px solid var(--p9n-link);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.psnine-settings-section-body {
+  padding: 2px 0 8px 0;
 }
 .psnine-settings-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid #f0f3f5;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--p9n-border);
   min-height: 44px;
+  box-sizing: border-box;
+  gap: 12px;
 }
-.psnine-settings-row label {
+.psnine-settings-row > .psnine-settings-label,
+.psnine-settings-row > label:where(:not(.psnine-switch)) {
   font-size: 14px;
   font-weight: 500;
-  flex: 1;
-  padding-right: 12px;
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--p9n-text);
+  padding-right: 8px;
+  line-height: 1.4;
 }
 .psnine-settings-row input[type="text"],
 .psnine-settings-row input[type="number"],
 .psnine-settings-row select,
 .psnine-settings-row textarea {
-  font-size: 16px; /* Prevents auto-zoom on iOS Safari */
-  padding: 8px 12px;
-  border: 1px solid #ccd6dd;
+  font-size: 16px !important;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--p9n-border);
   border-radius: 6px;
-  background: #fff;
-  color: #2c3e50;
-  max-width: 200px;
-  min-height: 38px;
+  background: var(--p9n-surface);
+  color: var(--p9n-text);
   box-sizing: border-box;
+  max-width: 220px;
+}
+#psnine-setting-theme-mode {
+  font-size: 16px !important;
+  min-height: 40px;
+  padding: 8px 12px;
+  background: var(--p9n-surface);
+  color: var(--p9n-text);
+  border: 1px solid var(--p9n-border);
+  border-radius: 6px;
+}
+.psnine-settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 0;
+}
+.psnine-settings-memory-warning {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
 }
 .psnine-settings-footer {
-  padding: 14px 20px;
-  border-top: 1px solid #e1e8ed;
+  padding: 12px 16px;
+  border-top: 1px solid var(--p9n-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #f8fafc;
-  flex-wrap: wrap;
-  gap: 8px;
+  background: var(--p9n-surface-alt);
+  flex: 0 0 auto;
+  gap: 12px;
+}
+.psnine-settings-footer .psnine-btn {
+  min-height: 44px !important;
+  min-width: 80px;
+  padding: 8px 18px !important;
+  font-size: 16px !important;
+  font-weight: 500;
+  border-radius: 8px !important;
 }
 
 /* iOS-Style Toggle Switch */
 .psnine-switch {
   position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 28px;
-  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  width: 48px !important;
+  height: 44px !important;
+  flex: 0 0 48px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+  cursor: pointer;
+  touch-action: manipulation;
 }
 .psnine-switch input {
+  position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
+  margin: 0;
 }
 .psnine-slider {
   position: absolute;
   cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #ccc;
-  transition: .3s;
+  top: 8px;
+  left: 0;
+  width: 48px;
+  height: 28px;
+  background-color: var(--p9n-border);
+  transition: background-color 0.25s ease;
   border-radius: 28px;
+  box-sizing: border-box;
 }
 .psnine-slider:before {
   position: absolute;
@@ -1054,29 +1165,33 @@ button[data-psnine-next].psnine-btn-danger {
   width: 22px;
   left: 3px;
   bottom: 3px;
-  background-color: white;
-  transition: .3s;
+  background-color: #ffffff;
+  transition: transform 0.25s ease;
   border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 .psnine-switch input:checked + .psnine-slider {
   background-color: #2ecc71;
 }
 .psnine-switch input:checked + .psnine-slider:before {
-  transform: translateX(22px);
+  transform: translateX(20px);
+}
+.psnine-switch input:focus-visible + .psnine-slider {
+  outline: 2px solid var(--p9n-link);
+  outline-offset: 2px;
 }
 
 /* Floor Number & Author Badges */
 .psnine-floor-badge {
   display: inline-block;
   font-size: 12px;
-  color: #7f8c8d;
+  color: var(--p9n-muted);
   margin-right: 6px;
   user-select: none;
 }
 .psnine-author-badge {
   display: inline-block;
-  background: #3498db;
+  background: var(--p9n-link);
   color: #ffffff;
   padding: 1px 6px;
   font-size: 11px;
@@ -1090,7 +1205,7 @@ button[data-psnine-next].psnine-btn-danger {
   margin-top: 8px;
   padding: 8px 12px;
   background: rgba(0, 0, 0, 0.04);
-  border-left: 3px solid #3498db;
+  border-left: 3px solid var(--p9n-link);
   border-radius: 4px;
   font-size: 13px;
 }
@@ -1099,11 +1214,11 @@ button[data-psnine-next].psnine-btn-danger {
   align-items: center;
   gap: 6px;
   font-weight: 600;
-  color: #34495e;
+  color: var(--p9n-text);
   margin-bottom: 4px;
 }
 .psnine-traceback-content {
-  color: #555;
+  color: var(--p9n-muted);
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -1153,7 +1268,7 @@ button[data-psnine-next].psnine-btn-danger {
 #psnine-trophy-header-counts {
   white-space: nowrap;
   font-size: 12px;
-  color: #666;
+  color: var(--p9n-muted);
   font-weight: normal;
 }
 #psnine-trophy-completion-badge {
@@ -1234,429 +1349,502 @@ ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > ul[data-psn
   cursor: pointer;
   user-select: none;
   padding: 1px 4px;
-  }
+}
 .mark.unmasked,
 .mark.pinned {
   color: #ffffff !important;
   user-select: text;
 }
+.mark strong,
+.mark b,
+.mark em,
+.mark i,
+.mark a,
+.mark a:visited,
+.mark span,
+.mark [style*="color"],
+.mark * {
+  color: inherit !important;
+  background-color: transparent !important;
+}
 `;
   var DARK_THEME_STYLES = `
-/* psnine_next Dark Theme */
-body.bg, body[data-theme="dark"], html[data-theme="dark"] body {
-  background: #2b2b2b !important;
-  color: #bbb !important;
+/* psnine_next Dark Theme Tokens */
+html[data-theme="dark"],
+body[data-theme="dark"],
+html[data-theme="dark"] body {
+  --p9n-bg: #10151d;
+  --p9n-surface: #1a222d;
+  --p9n-surface-alt: #202c3a;
+  --p9n-text: #e6ebf2;
+  --p9n-muted: #a8b3c2;
+  --p9n-border: #3b4859;
+  --p9n-link: #91bdff;
+  --p9n-primary: #1d4ed8;
 }
-.box, .content, .header, .footer, .list li, .sonlist li, .dropdown ul, table.list {
-  background-color: #2b2b2b !important;
-  color: #bbb !important;
-  border-color: #444 !important;
+
+/* Page Background & Base Text (scoped with html[data-theme="dark"]) */
+html[data-theme="dark"] body.bg,
+html[data-theme="dark"] body[data-theme="dark"],
+html[data-theme="dark"] body,
+body[data-theme="dark"] {
+  background-color: #10151d !important;
+  color: #e6ebf2 !important;
 }
-.box .post, td, th {
-  border-bottom: 1px solid #3a3a3a !important;
+
+/* Structural Panels & Containers */
+html[data-theme="dark"] .box,
+html[data-theme="dark"] .content,
+html[data-theme="dark"] .header,
+html[data-theme="dark"] .footer,
+html[data-theme="dark"] .dropdown ul,
+html[data-theme="dark"] .mobile-nav-panel {
+  background-color: #1a222d !important;
+  color: #e6ebf2 !important;
+  border-color: #3b4859 !important;
 }
-.list li:hover {
-  background-color: #353535 !important;
+
+/* Navigation (.inav) */
+html[data-theme="dark"] .inav {
+  background-color: #1a222d !important;
+  color: #e6ebf2 !important;
+  border-color: #3b4859 !important;
 }
-a {
-  color: #64a5ff !important;
+html[data-theme="dark"] .inav li a {
+  color: #91bdff !important;
 }
-a:visited {
-  color: #9b72cf !important;
+html[data-theme="dark"] .inav li.current,
+html[data-theme="dark"] .inav li.current a {
+  background-color: #202c3a !important;
+  color: #e6ebf2 !important;
 }
-.psnnode {
-  background-color: #4f4f4f !important;
-  color: #ddd !important;
+
+/* Pagination (.page li a) */
+html[data-theme="dark"] .page li a {
+  background-color: #202c3a !important;
+  color: #91bdff !important;
+  border-color: #3b4859 !important;
 }
-/* Spoiler Bar (.mark) Dark Mode Rules (G04): no unconditional :hover; JS controls unmask */
-.mark {
-  background-color: #555555 !important;
-  color: #555555 !important;
+html[data-theme="dark"] .page li.current a {
+  background-color: #1d4ed8 !important;
+  color: #ffffff !important;
+  border-color: #1d4ed8 !important;
+}
+
+/* Lists and Tables */
+html[data-theme="dark"] .list,
+html[data-theme="dark"] table.list,
+html[data-theme="dark"] .sonlist {
+  background-color: #1a222d !important;
+  color: #e6ebf2 !important;
+  border-color: #3b4859 !important;
+}
+html[data-theme="dark"] .list li,
+html[data-theme="dark"] .sonlist li,
+html[data-theme="dark"] table.list tr,
+html[data-theme="dark"] table.list td:where(:not(.t1):not(.t2):not(.t3):not(.t4)),
+html[data-theme="dark"] table.list th,
+html[data-theme="dark"] .box .post {
+  background-color: transparent !important;
+  color: #e6ebf2 !important;
+  border-bottom: 1px solid #3b4859 !important;
+}
+html[data-theme="dark"] .list li:hover,
+html[data-theme="dark"] table.list tr:hover {
+  background-color: #202c3a !important;
+}
+
+/* Trophy Grade Cell Backgrounds (preserve t1/t2/t3/t4 grade colors) */
+html[data-theme="dark"] table.list td.t1,
+html[data-theme="dark"] .t1 {
+  background-color: #3b4d71 !important;
+}
+html[data-theme="dark"] table.list td.t2,
+html[data-theme="dark"] .t2 {
+  background-color: #5c4528 !important;
+}
+html[data-theme="dark"] table.list td.t3,
+html[data-theme="dark"] .t3 {
+  background-color: #4a4f57 !important;
+}
+html[data-theme="dark"] table.list td.t4,
+html[data-theme="dark"] .t4 {
+  background-color: #5a3826 !important;
+}
+html[data-theme="dark"] table.list td.t1 a,
+html[data-theme="dark"] table.list td.t2 a,
+html[data-theme="dark"] table.list td.t3 a,
+html[data-theme="dark"] table.list td.t4 a {
+  color: #ffffff !important;
+}
+
+/* Known pale yellow inline table in .content (.tbl) */
+html[data-theme="dark"] .content table.tbl,
+html[data-theme="dark"] .content table.tbl tr,
+html[data-theme="dark"] .content table.tbl td,
+html[data-theme="dark"] .content table.tbl th,
+html[data-theme="dark"] table.tbl,
+html[data-theme="dark"] table.tbl tr,
+html[data-theme="dark"] table.tbl td,
+html[data-theme="dark"] table.tbl th {
+  background-color: #1a222d !important;
+  color: #e6ebf2 !important;
+  border-color: #3b4859 !important;
+}
+
+/* Typography */
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] .text-strong,
+html[data-theme="dark"] strong:where(:not([class*="alert-"]):not([class*="alert-"] *)),
+html[data-theme="dark"] b:where(:not([class*="alert-"]):not([class*="alert-"] *)) {
+  color: #e6ebf2 !important;
+}
+html[data-theme="dark"] em:where(:not([class*="alert-"]):not([class*="alert-"] *)) {
+  color: #a8b3c2 !important;
+}
+
+/* Generic links: Exclude semantic grade text, buttons, and inline-colored links (D04 discounts) */
+html[data-theme="dark"] a:where(:not(.btn):not(.text-platinum):not(.text-gold):not(.text-silver):not(.text-bronze):not([style*="color"])) {
+  color: #91bdff !important;
+}
+html[data-theme="dark"] a:visited:where(:not(.btn):not(.text-platinum):not(.text-gold):not(.text-silver):not(.text-bronze):not([style*="color"])) {
+  color: #c4b5fd !important;
+}
+
+/* Semantic Trophy Rarity Colors */
+html[data-theme="dark"] .text-platinum,
+html[data-theme="dark"] a.text-platinum {
+  color: #70b8ff !important;
+}
+html[data-theme="dark"] .text-gold,
+html[data-theme="dark"] a.text-gold {
+  color: #ffd166 !important;
+}
+html[data-theme="dark"] .text-silver,
+html[data-theme="dark"] a.text-silver {
+  color: #d1d5db !important;
+}
+html[data-theme="dark"] .text-bronze,
+html[data-theme="dark"] a.text-bronze {
+  color: #f4a261 !important;
+}
+
+html[data-theme="dark"] .psnnode {
+  background-color: #202c3a !important;
+  color: #e6ebf2 !important;
+}
+
+/* Form Controls (exclude color and checkbox) */
+html[data-theme="dark"] input[type="text"],
+html[data-theme="dark"] input[type="number"],
+html[data-theme="dark"] input[type="search"],
+html[data-theme="dark"] input[type="password"],
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select {
+  background-color: #10151d !important;
+  color: #e6ebf2 !important;
+  border: 1px solid #3b4859 !important;
+}
+
+/* Spoiler Bar (.mark) Dark Mode Rules (G04) */
+html[data-theme="dark"] .mark {
+  background-color: #3b4859 !important;
+  color: #3b4859 !important;
   cursor: pointer;
   user-select: none;
   border-radius: 2px;
   padding: 1px 4px;
 }
-.mark.unmasked,
-.mark.pinned {
+html[data-theme="dark"] .mark.unmasked,
+html[data-theme="dark"] .mark.pinned {
   color: #ffffff !important;
   user-select: text;
 }
-.psnine-settings-dialog {
-  background: #333333 !important;
-  color: #eeeeee !important;
-}
-.psnine-settings-header, .psnine-settings-footer {
-  border-color: #444 !important;
-  background: #2a2a2a !important;
-}
-.psnine-settings-row {
-  border-color: #3e3e3e !important;
-}
-.psnine-settings-row input, .psnine-settings-row select, .psnine-settings-row textarea {
-  background: #222 !important;
-  color: #eee !important;
-  border-color: #555 !important;
+html[data-theme="dark"] .mark strong,
+html[data-theme="dark"] .mark b,
+html[data-theme="dark"] .mark em,
+html[data-theme="dark"] .mark i,
+html[data-theme="dark"] .mark a,
+html[data-theme="dark"] .mark a:visited,
+html[data-theme="dark"] .mark span,
+html[data-theme="dark"] .mark [style*="color"],
+html[data-theme="dark"] .mark * {
+  color: inherit !important;
+  background-color: transparent !important;
 }
 
-/* Dark mode button contrast */
-[data-psnine-next] button,
-button[data-psnine-next],
-.psnine-btn {
-  color: #eeeeee !important;
-  background-color: #3d3d3d !important;
-  border-color: #555555 !important;
+/* Semantic Alert Badges in Dark Mode (Tips, Like counts, Status markers) */
+html[data-theme="dark"] .alert-success,
+html[data-theme="dark"] em.alert-success,
+html[data-theme="dark"] span.alert-success {
+  background-color: #1e4620 !important;
+  color: #75b798 !important;
+  border-color: #2b6a38 !important;
+}
+html[data-theme="dark"] .alert-info,
+html[data-theme="dark"] em.alert-info,
+html[data-theme="dark"] span.alert-info {
+  background-color: #0d3c61 !important;
+  color: #6ea8fe !important;
+  border-color: #1a5c96 !important;
+}
+html[data-theme="dark"] .alert-warning,
+html[data-theme="dark"] em.alert-warning,
+html[data-theme="dark"] span.alert-warning {
+  background-color: #4d3800 !important;
+  color: #ffda6a !important;
+  border-color: #7a5a00 !important;
+}
+html[data-theme="dark"] .alert-danger,
+html[data-theme="dark"] .alert-error,
+html[data-theme="dark"] em.alert-danger,
+html[data-theme="dark"] em.alert-error,
+html[data-theme="dark"] span.alert-danger,
+html[data-theme="dark"] span.alert-error {
+  background-color: #491217 !important;
+  color: #ea868f !important;
+  border-color: #721c24 !important;
 }
 
-.psnine-traceback-card {
+/* Ensure b/em/strong inside alert badges inherit high-contrast badge text */
+html[data-theme="dark"] [class*="alert-"] b,
+html[data-theme="dark"] [class*="alert-"] em,
+html[data-theme="dark"] [class*="alert-"] strong,
+html[data-theme="dark"] .alert-success b,
+html[data-theme="dark"] .alert-success em,
+html[data-theme="dark"] .alert-success strong,
+html[data-theme="dark"] .alert-info b,
+html[data-theme="dark"] .alert-info em,
+html[data-theme="dark"] .alert-info strong,
+html[data-theme="dark"] .alert-warning b,
+html[data-theme="dark"] .alert-warning em,
+html[data-theme="dark"] .alert-warning strong,
+html[data-theme="dark"] .alert-danger b,
+html[data-theme="dark"] .alert-danger em,
+html[data-theme="dark"] .alert-danger strong,
+html[data-theme="dark"] .alert-error b,
+html[data-theme="dark"] .alert-error em,
+html[data-theme="dark"] .alert-error strong {
+  color: inherit !important;
+}
+
+/* Plugin inline completion badges */
+html[data-theme="dark"] #psnine-trophy-completion-badge.alert-success {
+  background-color: #28a745 !important;
+  color: #ffffff !important;
+}
+html[data-theme="dark"] #psnine-trophy-completion-badge.alert-success * {
+  color: inherit !important;
+}
+
+/* Settings Modal Dark Mode */
+html[data-theme="dark"] .psnine-settings-dialog {
+  background: #1a222d !important;
+  color: #e6ebf2 !important;
+  border-color: #3b4859 !important;
+}
+html[data-theme="dark"] .psnine-settings-header {
+  border-color: #3b4859 !important;
+  background: #1a222d !important;
+}
+html[data-theme="dark"] .psnine-settings-footer {
+  border-color: #3b4859 !important;
+  background: #10151d !important;
+}
+html[data-theme="dark"] .psnine-settings-section {
+  border-color: #3b4859 !important;
+}
+html[data-theme="dark"] .psnine-settings-summary {
+  color: #91bdff !important;
+}
+html[data-theme="dark"] .psnine-settings-summary:hover {
+  color: #e6ebf2 !important;
+}
+html[data-theme="dark"] .psnine-settings-summary:focus-visible {
+  outline: 2px solid #91bdff !important;
+  outline-offset: 2px;
+}
+html[data-theme="dark"] .psnine-settings-row {
+  border-color: #3b4859 !important;
+}
+html[data-theme="dark"] .psnine-settings-row > .psnine-settings-label,
+html[data-theme="dark"] .psnine-settings-row > label:where(:not(.psnine-switch)) {
+  color: #e6ebf2 !important;
+}
+html[data-theme="dark"] .psnine-settings-row input,
+html[data-theme="dark"] .psnine-settings-row select,
+html[data-theme="dark"] .psnine-settings-row textarea {
+  background: #10151d !important;
+  color: #e6ebf2 !important;
+  border-color: #3b4859 !important;
+}
+html[data-theme="dark"] .psnine-settings-memory-warning {
+  background: #332701 !important;
+  color: #ffd875 !important;
+  border-color: #665005 !important;
+}
+
+/* Generic Button Contrast in Dark Mode (Exclude custom status/chip/filter buttons) */
+html[data-theme="dark"] [data-psnine-next] button:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(.psnine-filtered-tip-btn)),
+html[data-theme="dark"] button[data-psnine-next]:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(.psnine-filtered-tip-btn)),
+html[data-theme="dark"] .psnine-btn:where(:not(.psnine-btn-primary):not(.psnine-btn-danger)) {
+  color: #e6ebf2 !important;
+  background-color: #202c3a !important;
+  border-color: #3b4859 !important;
+}
+html[data-theme="dark"] .psnine-btn.psnine-btn-primary,
+html[data-theme="dark"] [data-psnine-next] button.psnine-btn-primary,
+html[data-theme="dark"] button[data-psnine-next].psnine-btn-primary {
+  color: #ffffff !important;
+  background-color: #1d4ed8 !important;
+  border-color: #1d4ed8 !important;
+}
+html[data-theme="dark"] .psnine-btn.psnine-btn-danger,
+html[data-theme="dark"] [data-psnine-next] button.psnine-btn-danger,
+html[data-theme="dark"] button[data-psnine-next].psnine-btn-danger {
+  color: #ff6b6b !important;
+  background-color: #202c3a !important;
+  border-color: #ff6b6b !important;
+}
+html[data-theme="dark"] .psnine-settings-close {
+  color: #a8b3c2 !important;
+  background: transparent !important;
+}
+html[data-theme="dark"] .psnine-settings-close:hover {
+  color: #e6ebf2 !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Custom Status & Filter Buttons in Dark Mode */
+/* 1. Trophy Icon Chip (Preserve earned green border) */
+html[data-theme="dark"] .psnine-trophy-icon-chip {
+  background-color: transparent !important;
+}
+html[data-theme="dark"] .psnine-trophy-icon-chip[style*="#28a745"],
+html[data-theme="dark"] .psnine-trophy-icon-chip[style*="rgb(40, 167, 69)"] {
+  border-color: #28a745 !important;
+}
+
+/* 2. Review Score Filter Chip (Preserve selected orange status) */
+html[data-theme="dark"] .psnine-score-filter-chip {
+  background-color: #202c3a !important;
+  border: 1px solid #3b4859 !important;
+  color: #a8b3c2 !important;
+}
+html[data-theme="dark"] .psnine-score-filter-chip[style*="#ff9800"],
+html[data-theme="dark"] .psnine-score-filter-chip[style*="rgb(255, 152, 0)"] {
+  background-color: #ff9800 !important;
+  border-color: #ff9800 !important;
+  color: #ffffff !important;
+}
+html[data-theme="dark"] #psnine-clear-score-filter-btn {
+  border-color: #ff9800 !important;
+  background-color: rgba(255, 152, 0, 0.15) !important;
+  color: #ffb74d !important;
+}
+
+/* 3. Deal Best Only Toggle Button (Preserve active red state) */
+html[data-theme="dark"] #psnine-toggle-best-deal-btn {
+  background-color: #202c3a !important;
+  border: 1px solid #3b4859 !important;
+  color: #e6ebf2 !important;
+}
+html[data-theme="dark"] #psnine-toggle-best-deal-btn[style*="#da314b"],
+html[data-theme="dark"] #psnine-toggle-best-deal-btn[style*="rgb(218, 49, 75)"] {
+  background-color: #da314b !important;
+  border-color: #da314b !important;
+  color: #ffffff !important;
+}
+
+/* 4. Deal CNY Toggle Button (Preserve active green state) */
+html[data-theme="dark"] #psnine-toggle-cny-btn {
+  background-color: rgba(40, 167, 69, 0.15) !important;
+  border: 1px solid #28a745 !important;
+  color: #51cf66 !important;
+}
+
+/* 5. Battle Bell Monitor Button (Preserve active amber/gold state) */
+html[data-theme="dark"] .psnine-battle-bell-btn {
+  background-color: #202c3a !important;
+  border: 1px solid #3b4859 !important;
+  color: #a8b3c2 !important;
+}
+html[data-theme="dark"] .psnine-battle-bell-btn[style*="245, 159, 0"],
+html[data-theme="dark"] .psnine-battle-bell-btn[style*="#f59f00"] {
+  background-color: rgba(245, 159, 0, 0.2) !important;
+  border-color: #f59f00 !important;
+  color: #fbbf24 !important;
+}
+
+/* 6. Filtered Tip Button */
+html[data-theme="dark"] .psnine-filtered-tip-btn {
+  background-color: #202c3a !important;
+  border: 1px dashed #3b4859 !important;
+  color: #a8b3c2 !important;
+}
+
+/* Toggle Switch Slider in Dark Mode */
+html[data-theme="dark"] .psnine-slider {
+  background-color: #3b4859 !important;
+}
+html[data-theme="dark"] .psnine-switch input:checked + .psnine-slider {
+  background-color: #2ecc71 !important;
+}
+
+/* Traceback in Dark Mode */
+html[data-theme="dark"] .psnine-traceback-card {
   background: rgba(255, 255, 255, 0.06) !important;
 }
-.psnine-traceback-header {
-  color: #9ac8eb !important;
+html[data-theme="dark"] .psnine-traceback-header {
+  color: #91bdff !important;
 }
-.psnine-traceback-content {
-  color: #bbb !important;
+html[data-theme="dark"] .psnine-traceback-content {
+  color: #a8b3c2 !important;
+}
+
+/* Plugin Panels & Low Contrast Container Fixes */
+html[data-theme="dark"] #psnine-trophy-stats-panel,
+html[data-theme="dark"] #psnine-trophy-preview-card,
+html[data-theme="dark"] #psnine-enhanced-reviews-panel,
+html[data-theme="dark"] #psnine-deals-controls-bar,
+html[data-theme="dark"] #psnine-price-chart-container,
+html[data-theme="dark"] #psnine-game-variants-section,
+html[data-theme="dark"] #psnine-cross-version-tips-section {
+  background-color: #1a222d !important;
+  color: #e6ebf2 !important;
+  border-color: #3b4859 !important;
+}
+
+/* Muted labels & counts in plugin panels */
+html[data-theme="dark"] #psnine-trophy-header-counts,
+html[data-theme="dark"] #psnine-fx-status,
+html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color:#666"],
+html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color: #666"],
+html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color:#888"],
+html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color: #888"],
+html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color:#555"],
+html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color: #555"],
+html[data-theme="dark"] #psnine-trophy-preview-card [style*="color:#666"],
+html[data-theme="dark"] #psnine-trophy-preview-card [style*="color: #666"],
+html[data-theme="dark"] #psnine-enhanced-reviews-panel [style*="color:#666"],
+html[data-theme="dark"] #psnine-enhanced-reviews-panel [style*="color: #666"],
+html[data-theme="dark"] #psnine-enhanced-reviews-panel [style*="color:#888"],
+html[data-theme="dark"] #psnine-enhanced-reviews-panel [style*="color: #888"],
+html[data-theme="dark"] #psnine-deals-controls-bar [style*="color:#666"],
+html[data-theme="dark"] #psnine-deals-controls-bar [style*="color: #666"],
+html[data-theme="dark"] #psnine-price-chart-container [style*="color:#666"],
+html[data-theme="dark"] #psnine-price-chart-container [style*="color: #666"],
+html[data-theme="dark"] #psnine-price-chart-container [style*="color:#888"],
+html[data-theme="dark"] #psnine-price-chart-container [style*="color: #888"],
+html[data-theme="dark"] #psnine-game-variants-section [style*="color:#666"],
+html[data-theme="dark"] #psnine-game-variants-section [style*="color: #666"],
+html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color:#666"],
+html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"] {
+  color: #a8b3c2 !important;
 }
 `;
-
-  // src/core/settings-ui.ts
-  function mountSettingsUI(ctx) {
-    const { document: doc, window: win, store } = ctx;
-    let previouslyFocused = null;
-    let modalBackdrop = null;
-    let gearBtn = doc.getElementById("psnine-settings-gear");
-    if (!gearBtn) {
-      gearBtn = doc.createElement("button");
-      gearBtn.id = "psnine-settings-gear";
-      gearBtn.setAttribute("data-psnine-next", "gear");
-      gearBtn.setAttribute("type", "button");
-      gearBtn.setAttribute("title", "PSNINE \u589E\u5F3A\u8BBE\u7F6E");
-      gearBtn.setAttribute("aria-label", "PSNINE \u589E\u5F3A\u8BBE\u7F6E");
-      gearBtn.innerHTML = ICONS.gear;
-      (doc.body || doc.documentElement).appendChild(gearBtn);
-    }
-    const injectNavMenu = () => {
-      const targets = doc.querySelectorAll(".user-menu-list, .mobile-nav-panel nav, .nav-user .dropdown ul, .header .dropdown ul");
-      targets.forEach((target) => {
-        if (!target.querySelector("#psnine-nav-settings-link")) {
-          const item = doc.createElement("li");
-          item.id = "psnine-nav-settings-link";
-          item.setAttribute("data-psnine-next", "nav-link");
-          const btn = doc.createElement("button");
-          btn.setAttribute("type", "button");
-          btn.style.cssText = "background:none; border:none; color:inherit; font:inherit; cursor:pointer; padding:6px 12px; width:100%; text-align:left; display:flex; align-items:center; gap:6px;";
-          btn.innerHTML = `${ICONS.gear} <span>\u63D2\u4EF6\u8BBE\u7F6E</span>`;
-          btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            openSettingsModal();
-          });
-          item.appendChild(btn);
-          target.appendChild(item);
-        }
-      });
-    };
-    injectNavMenu();
-    ctx.onContent(() => injectNavMenu());
-    const closeSettingsModal = () => {
-      if (modalBackdrop) {
-        modalBackdrop.remove();
-        modalBackdrop = null;
-        if (previouslyFocused && typeof previouslyFocused.focus === "function") {
-          previouslyFocused.focus();
-        }
-      }
-    };
-    const openSettingsModal = () => {
-      if (modalBackdrop) return;
-      previouslyFocused = doc.activeElement;
-      modalBackdrop = doc.createElement("div");
-      modalBackdrop.className = "psnine-modal-backdrop";
-      modalBackdrop.setAttribute("data-psnine-next", "modal");
-      modalBackdrop.addEventListener("click", (e) => {
-        if (e.target === modalBackdrop) {
-          closeSettingsModal();
-        }
-      });
-      const dialog = doc.createElement("div");
-      dialog.className = "psnine-settings-dialog";
-      dialog.setAttribute("role", "dialog");
-      dialog.setAttribute("aria-modal", "true");
-      dialog.setAttribute("aria-labelledby", "psnine-settings-title");
-      const header = doc.createElement("div");
-      header.className = "psnine-settings-header";
-      header.innerHTML = `
-      <h2 id="psnine-settings-title">PSNINE \u589E\u5F3A\u63D2\u4EF6\u8BBE\u7F6E (Next)</h2>
-      <button class="psnine-settings-close" type="button" aria-label="\u5173\u95ED\u8BBE\u7F6E\u9762\u677F">${ICONS.close}</button>
-    `;
-      const closeBtn = header.querySelector(".psnine-settings-close");
-      closeBtn.addEventListener("click", closeSettingsModal);
-      const body = doc.createElement("div");
-      body.className = "psnine-settings-body";
-      if (store.backend === "MEMORY") {
-        const banner = doc.createElement("div");
-        banner.className = "psnine-settings-memory-warning";
-        banner.setAttribute("data-psnine-next", "memory-warning");
-        banner.style.cssText = "background:#fff3cd; color:#856404; border:1px solid #ffeeba; padding:8px 12px; margin-bottom:12px; border-radius:4px; font-size:13px;";
-        banner.textContent = "\u63D0\u793A\uFF1A\u5F53\u524D\u8FD0\u884C\u5728\u5185\u5B58\u4E34\u65F6\u5B58\u50A8\u6A21\u5F0F\uFF08\u6301\u4E45\u5316\u5B58\u50A8\u53D7\u9650\uFF09\uFF0C\u9875\u9762\u5237\u65B0\u540E\u4FEE\u6539\u7684\u8BBE\u7F6E\u53EF\u80FD\u4F1A\u4E22\u5931\u3002";
-        body.appendChild(banner);
-      }
-      const current = { ...ctx.settings };
-      let idCounter = 0;
-      const createRow = (label, inputEl, inputId) => {
-        const row = doc.createElement("div");
-        row.className = "psnine-settings-row";
-        const lbl = doc.createElement("label");
-        lbl.htmlFor = inputId;
-        lbl.textContent = label;
-        row.appendChild(lbl);
-        row.appendChild(inputEl);
-        return row;
-      };
-      const createSectionHeader = (title) => {
-        const h3 = doc.createElement("h3");
-        h3.style.cssText = "font-size:15px; margin:16px 0 6px 0; color:#3498db; border-bottom:1px solid #e1e8ed; padding-bottom:4px;";
-        h3.textContent = title;
-        return h3;
-      };
-      const createSwitch = (key, label) => {
-        const id = `psnine-setting-${key}-${++idCounter}`;
-        const wrapper = doc.createElement("label");
-        wrapper.className = "psnine-switch";
-        wrapper.htmlFor = id;
-        const checkbox = doc.createElement("input");
-        checkbox.id = id;
-        checkbox.type = "checkbox";
-        checkbox.checked = Boolean(current[key]);
-        checkbox.addEventListener("change", () => {
-          current[key] = checkbox.checked;
-        });
-        const slider = doc.createElement("span");
-        slider.className = "psnine-slider";
-        wrapper.appendChild(checkbox);
-        wrapper.appendChild(slider);
-        return createRow(label, wrapper, id);
-      };
-      const createNumberInput = (key, label, min = 0, max = 9999, step = 1) => {
-        const id = `psnine-setting-${key}-${++idCounter}`;
-        const input = doc.createElement("input");
-        input.id = id;
-        input.type = "number";
-        input.min = String(min);
-        input.max = String(max);
-        input.step = String(step);
-        input.value = String(current[key] ?? 0);
-        input.addEventListener("change", () => {
-          const val = parseFloat(input.value);
-          if (!isNaN(val)) {
-            current[key] = val;
-          }
-        });
-        return createRow(label, input, id);
-      };
-      const createTextInput = (key, label) => {
-        const id = `psnine-setting-${key}-${++idCounter}`;
-        const input = doc.createElement("input");
-        input.id = id;
-        input.type = "text";
-        const rawVal = current[key];
-        input.value = Array.isArray(rawVal) ? rawVal.join(", ") : String(rawVal ?? "");
-        input.addEventListener("change", () => {
-          if (Array.isArray(current[key])) {
-            current[key] = input.value.split(",").map((s) => s.trim()).filter(Boolean);
-          } else {
-            current[key] = input.value;
-          }
-        });
-        return createRow(label, input, id);
-      };
-      const createColorInput = (key, label) => {
-        const id = `psnine-setting-${key}-${++idCounter}`;
-        const input = doc.createElement("input");
-        input.id = id;
-        input.type = "text";
-        input.style.width = "120px";
-        input.value = String(current[key] ?? "");
-        input.addEventListener("change", () => {
-          current[key] = input.value;
-        });
-        return createRow(label, input, id);
-      };
-      const createSelect = (key, label, options) => {
-        const id = `psnine-setting-${key}-${++idCounter}`;
-        const select = doc.createElement("select");
-        select.id = id;
-        for (const opt of options) {
-          const optionEl = doc.createElement("option");
-          optionEl.value = opt.value;
-          optionEl.textContent = opt.label;
-          if (String(current[key]) === opt.value) {
-            optionEl.selected = true;
-          }
-          select.appendChild(optionEl);
-        }
-        select.addEventListener("change", () => {
-          current[key] = select.value;
-        });
-        return createRow(label, select, id);
-      };
-      body.appendChild(createSectionHeader("1. \u5916\u89C2\u4E3B\u9898\u4E0E\u57FA\u7840"));
-      body.appendChild(createSwitch("nightMode", "\u6DF1\u8272\u6A21\u5F0F\u624B\u52A8\u5F00\u5173"));
-      body.appendChild(createSelect("autoNightMode", "\u81EA\u52A8\u6DF1\u8272\u6A21\u5F0F", [
-        { label: "\u8DDF\u968F\u7CFB\u7EDF (SYSTEM)", value: "SYSTEM" },
-        { label: "\u5B9A\u65F6\u5207\u6362 (TIME)", value: "TIME" },
-        { label: "\u5173\u95ED (OFF)", value: "OFF" }
-      ]));
-      body.appendChild(createNumberInput("nightStart", "\u6DF1\u8272\u6A21\u5F0F\u5F00\u59CB\u5C0F\u65F6 (0~23)", 0, 23));
-      body.appendChild(createNumberInput("nightEnd", "\u6DF1\u8272\u6A21\u5F0F\u7ED3\u675F\u5C0F\u65F6 (0~23)", 0, 23));
-      body.appendChild(createSwitch("hoverUnmark", "\u9ED1\u6761\u5267\u900F\u60AC\u6D6E/\u70B9\u51FB\u53CD\u767D"));
-      body.appendChild(createSectionHeader("2. \u793E\u533A\u4E92\u52A8\u4E0E\u56DE\u5E16"));
-      body.appendChild(createSwitch("replyTraceback", "\u697C\u5C42 @\u56DE\u590D\u5185\u5BB9\u56DE\u6EAF"));
-      body.appendChild(createSwitch("showReplyControls", "\u697C\u5C42\u56DE\u590D\u6309\u94AE\u5E38\u663E (\u5173\u95ED\u5219\u60AC\u6D6E\u663E\u793A)"));
-      body.appendChild(createSwitch("hoverHomepage", "\u5934\u50CF\u60AC\u6D6E/\u8F7B\u89E6\u5C55\u793A\u7528\u6237\u5361\u7247"));
-      body.appendChild(createColorInput("highlightBack", "\u697C\u4E3B\u9AD8\u4EAE\u80CC\u666F\u989C\u8272"));
-      body.appendChild(createColorInput("highlightFront", "\u697C\u4E3B\u9AD8\u4EAE\u6587\u5B57\u989C\u8272"));
-      body.appendChild(createTextInput("highlightSpecificID", "\u7279\u522B\u5173\u6CE8/\u7BA1\u7406\u9AD8\u4EAE\u7528\u6237ID (\u9017\u53F7\u5206\u9694)"));
-      body.appendChild(createColorInput("highlightSpecificBack", "\u7279\u5B9A\u7528\u6237\u9AD8\u4EAE\u80CC\u666F\u989C\u8272"));
-      body.appendChild(createColorInput("highlightSpecificFront", "\u7279\u5B9A\u7528\u6237\u9AD8\u4EAE\u6587\u5B57\u989C\u8272"));
-      body.appendChild(createNumberInput("hotTagThreshold", "\u70ED\u95E8\u8BDD\u9898\u56DE\u5E16\u9608\u503C", 1, 999));
-      body.appendChild(createSwitch("expandCollapsedSubcomments", "\u89C6\u53E3\u5185\u81EA\u52A8\u5C55\u5F00\u5B50\u8BC4\u8BBA"));
-      body.appendChild(createSectionHeader("3. \u95EE\u7B54\u4E13\u533A"));
-      body.appendChild(createSwitch("newQaStatus", "\u95EE\u7B54\u72B6\u6001\u56FE\u6807\u4E0E\u94DC\u677F\u60AC\u8D4F\u5C55\u793A"));
-      body.appendChild(createSwitch("showHiddenQASubReply", "\u5C55\u5F00\u95EE\u7B54\u6298\u53E0\u7684\u5B50\u56DE\u590D"));
-      body.appendChild(createSwitch("listQAAnswersByNew", "\u95EE\u7B54\u7B54\u6848\u6309\u6700\u65B0\u4F18\u5148\u6392\u5E8F"));
-      body.appendChild(createSwitch("showAllQAAnswers", "\u5168\u91CF\u8F7D\u5165\u6240\u6709\u95EE\u7B54\u56DE\u7B54"));
-      body.appendChild(createSectionHeader("4. \u5C4F\u853D\u4E0E\u8FC7\u6EE4"));
-      body.appendChild(createTextInput("blockList", "\u7528\u6237\u9ED1\u540D\u5355\u5217\u8868 (\u9017\u53F7\u5206\u9694)"));
-      body.appendChild(createTextInput("blockWordsList", "\u5173\u952E\u8BCD\u5C4F\u853D\u5217\u8868 (\u9017\u53F7\u5206\u9694)"));
-      body.appendChild(createSwitch("blockWordsRegex", "\u5C4F\u853D\u8BCD\u542F\u7528\u6B63\u5219\u8868\u8FBE\u5F0F"));
-      body.appendChild(createSectionHeader("5. \u6E38\u620F\u3001\u5956\u676F\u4E0E\u7EA6\u6218"));
-      body.appendChild(createSwitch("redirectToMine", "\u6E38\u620F\u9875\u81EA\u52A8\u8DF3\u8F6C\u81F3\u6211\u7684\u5956\u676F"));
-      body.appendChild(createNumberInput("filterNonePlatinumAlpha", "\u65E0\u767D\u91D1\u6E38\u620F\u5361\u7247\u900F\u660E\u5EA6 (0~1)", 0, 1, 0.05));
-      body.appendChild(createSwitch("platinumGlow", "\u767D\u91D1\u5956\u676F\u53D1\u5149\u5149\u6655\u7279\u6548"));
-      body.appendChild(createSwitch("foldTrophySummary", "\u9ED8\u8BA4\u6298\u53E0\u5956\u676F\u6C47\u603B\u5217\u8868"));
-      body.appendChild(createSwitch("foldTrophyChart", "\u9ED8\u8BA4\u6298\u53E0\u5956\u676F\u7EDF\u8BA1\u56FE\u8868"));
-      body.appendChild(createSwitch("referGameVariants", "\u5173\u8054\u6E38\u620F\u591A\u7248\u672C\u4FE1\u606F"));
-      body.appendChild(createSwitch("preferSearchForFindingVariants", "\u4F18\u5148\u641C\u7D22\u67E5\u627E\u540C\u6B3E\u7248\u672C"));
-      body.appendChild(createSwitch("removeHeaderInBattle", "\u7EA6\u6218\u9875\u9762\u9690\u85CF\u53D1\u8D77\u4EBA\u5934\u50CF"));
-      body.appendChild(createSwitch("showGameProgressInBattle", "\u7EA6\u6218\u9875\u9762\u5C55\u793A\u6211\u7684\u6E38\u620F\u5B8C\u6210\u5EA6"));
-      body.appendChild(createNumberInput("BattleInfoUpdateInterval", "\u7EA6\u6218\u4FE1\u606F\u5237\u65B0\u95F4\u9694 (\u6BEB\u79D2)", 6e4, 864e5, 6e4));
-      body.appendChild(createSectionHeader("6. \u7FFB\u9875\u4E0E\u81EA\u52A8\u5316"));
-      body.appendChild(createNumberInput("autoPaging", "\u5217\u8868\u81EA\u52A8\u5411\u540E\u7FFB\u9875\u6570 (0 \u4E3A\u5173\u95ED)", 0, 50));
-      body.appendChild(createSwitch("autoPagingInHomepage", "\u4E2A\u4EBA\u4E3B\u9875\u6E38\u620F\u5217\u8868\u81EA\u52A8\u7FFB\u9875"));
-      body.appendChild(createSwitch("listPostsByNew", "\u673A\u56E0\u5217\u8868\u9ED8\u8BA4\u6309\u6700\u65B0\u6392\u5E8F"));
-      body.appendChild(createSwitch("autoCheckIn", "\u6BCF\u65E5\u6253\u5F00\u7F51\u7AD9\u81EA\u52A8\u7B7E\u5230\u6253\u5361"));
-      body.appendChild(createSectionHeader("7. \u94FE\u63A5\u4FEE\u590D\u4E0E\u6570\u6298\u6C47\u7387"));
-      body.appendChild(createSwitch("fixTextLinks", "\u7EAF\u6587\u672C\u94FE\u63A5\u81EA\u52A8\u8F6C\u6362\u4E3A\u53EF\u70B9\u51FB\u8D85\u94FE\u63A5"));
-      body.appendChild(createSwitch("fixD7VGLinks", "\u65E7\u7248 D7VG \u57DF\u540D\u94FE\u63A5\u81EA\u52A8\u4FEE\u590D"));
-      body.appendChild(createSwitch("fixHTTPLinks", "\u7AD9\u5185\u94FE\u63A5\u81EA\u52A8\u5347\u7EA7\u81F3 HTTPS"));
-      body.appendChild(createSwitch("currencyConversion", "\u6570\u6298\u5916\u5E01\u6298\u7B97\u4EBA\u6C11\u5E01\u5C55\u793A"));
-      body.appendChild(createTextInput("exchangeRateDate", "\u6C47\u7387\u6709\u6548\u57FA\u51C6\u65E5\u671F (\u624B\u586B\uFF0C\u5982 2026-09-30)"));
-      const ratesId = `psnine-setting-exchangeRates-${++idCounter}`;
-      const ratesInput = doc.createElement("textarea");
-      ratesInput.id = ratesId;
-      ratesInput.style.cssText = "font-size:14px; width:200px; height:60px; font-family:monospace;";
-      ratesInput.value = JSON.stringify(current.exchangeRates || {}, null, 2);
-      ratesInput.addEventListener("change", () => {
-        try {
-          const parsed = JSON.parse(ratesInput.value);
-          if (typeof parsed === "object" && parsed !== null) {
-            current.exchangeRates = parsed;
-          }
-        } catch {
-        }
-      });
-      body.appendChild(createRow("\u81EA\u5B9A\u4E49\u6C47\u7387\u8868 (JSON \u683C\u5F0F)", ratesInput, ratesId));
-      const footer = doc.createElement("div");
-      footer.className = "psnine-settings-footer";
-      const saveBtn = doc.createElement("button");
-      saveBtn.className = "psnine-btn psnine-btn-primary";
-      saveBtn.type = "button";
-      saveBtn.textContent = "\u4FDD\u5B58\u914D\u7F6E";
-      saveBtn.addEventListener("click", async () => {
-        const validated = validateSettings(current);
-        await store.set(SETTINGS_KEY, validated);
-        Object.assign(ctx.settings, validated);
-        closeSettingsModal();
-        win.location.reload();
-      });
-      const cancelBtn = doc.createElement("button");
-      cancelBtn.className = "psnine-btn";
-      cancelBtn.type = "button";
-      cancelBtn.textContent = "\u53D6\u6D88";
-      cancelBtn.addEventListener("click", closeSettingsModal);
-      const resetBtn = doc.createElement("button");
-      resetBtn.className = "psnine-btn psnine-btn-danger";
-      resetBtn.type = "button";
-      resetBtn.textContent = "\u6062\u590D\u9ED8\u8BA4";
-      resetBtn.addEventListener("click", async () => {
-        if (win.confirm("\u786E\u5B9A\u5C06\u6240\u6709\u8BBE\u7F6E\u6062\u590D\u4E3A\u9ED8\u8BA4\u503C\u5417\uFF1F")) {
-          await store.set(SETTINGS_KEY, defaultSettings);
-          Object.assign(ctx.settings, defaultSettings);
-          closeSettingsModal();
-          win.location.reload();
-        }
-      });
-      const exportBtn = doc.createElement("button");
-      exportBtn.className = "psnine-btn";
-      exportBtn.type = "button";
-      exportBtn.textContent = "\u5BFC\u51FA\u914D\u7F6E";
-      exportBtn.addEventListener("click", () => {
-        const jsonStr = JSON.stringify(ctx.settings, null, 2);
-        const blob = new Blob([jsonStr], { type: "application/json" });
-        const blobUrl = URL.createObjectURL(blob);
-        const a = doc.createElement("a");
-        a.href = blobUrl;
-        a.download = `psnine-settings-${(/* @__PURE__ */ new Date()).toISOString().slice(0, 10)}.json`;
-        a.click();
-        URL.revokeObjectURL(blobUrl);
-      });
-      const importBtn = doc.createElement("button");
-      importBtn.className = "psnine-btn";
-      importBtn.type = "button";
-      importBtn.textContent = "\u5BFC\u5165\u914D\u7F6E";
-      importBtn.addEventListener("click", () => {
-        const input = doc.createElement("input");
-        input.type = "file";
-        input.accept = ".json,application/json";
-        input.addEventListener("change", async () => {
-          const file = input.files?.[0];
-          if (file) {
-            try {
-              const text = await file.text();
-              const parsed = JSON.parse(text);
-              const validated = validateSettings(parsed);
-              await store.set(SETTINGS_KEY, validated);
-              Object.assign(ctx.settings, validated);
-              win.alert("\u914D\u7F6E\u5BFC\u5165\u6210\u529F\uFF01\u9875\u9762\u5373\u5C06\u5237\u65B0\u3002");
-              win.location.reload();
-            } catch {
-              win.alert("\u914D\u7F6E\u6587\u4EF6\u683C\u5F0F\u9519\u8BEF\uFF0C\u65E0\u6CD5\u89E3\u6790\uFF01");
-            }
-          }
-        });
-        input.click();
-      });
-      footer.appendChild(saveBtn);
-      footer.appendChild(cancelBtn);
-      footer.appendChild(exportBtn);
-      footer.appendChild(importBtn);
-      footer.appendChild(resetBtn);
-      dialog.appendChild(header);
-      dialog.appendChild(body);
-      dialog.appendChild(footer);
-      modalBackdrop.appendChild(dialog);
-      (doc.body || doc.documentElement).appendChild(modalBackdrop);
-      const onKeyDown = (e) => {
-        if (e.key === "Escape") {
-          closeSettingsModal();
-          doc.removeEventListener("keydown", onKeyDown);
-        }
-      };
-      doc.addEventListener("keydown", onKeyDown);
-      closeBtn.focus();
-    };
-    gearBtn.addEventListener("click", openSettingsModal);
-  }
 
   // src/features/global.ts
   function isDarkActive(ctx) {
@@ -1691,16 +1879,20 @@ button[data-psnine-next],
         styleEl.textContent = DARK_THEME_STYLES;
         (doc.head || doc.documentElement).appendChild(styleEl);
       }
-      doc.documentElement.setAttribute("data-theme", "dark");
-      if (doc.body) {
+      if (doc.documentElement.getAttribute("data-theme") !== "dark") {
+        doc.documentElement.setAttribute("data-theme", "dark");
+      }
+      if (doc.body && doc.body.getAttribute("data-theme") !== "dark") {
         doc.body.setAttribute("data-theme", "dark");
       }
     } else {
       if (styleEl) {
         styleEl.remove();
       }
-      doc.documentElement.removeAttribute("data-theme");
-      if (doc.body) {
+      if (doc.documentElement.hasAttribute("data-theme")) {
+        doc.documentElement.removeAttribute("data-theme");
+      }
+      if (doc.body && doc.body.hasAttribute("data-theme")) {
         doc.body.removeAttribute("data-theme");
       }
     }
@@ -1883,6 +2075,34 @@ button[data-psnine-next],
   }
   var mountGlobal = (ctx) => {
     applyTheme(ctx);
+    let themeObserver = null;
+    if (typeof MutationObserver !== "undefined" && ctx.document.documentElement) {
+      themeObserver = new MutationObserver(() => {
+        const shouldBeDark = isDarkActive(ctx);
+        const htmlTheme = ctx.document.documentElement.getAttribute("data-theme");
+        const bodyTheme = ctx.document.body ? ctx.document.body.getAttribute("data-theme") : null;
+        const hasStyle = Boolean(ctx.document.getElementById("nightModeStyle"));
+        if (shouldBeDark) {
+          if (htmlTheme !== "dark" || ctx.document.body && bodyTheme !== "dark" || !hasStyle) {
+            applyTheme(ctx);
+          }
+        } else {
+          if (htmlTheme !== null || bodyTheme !== null || hasStyle) {
+            applyTheme(ctx);
+          }
+        }
+      });
+      themeObserver.observe(ctx.document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-theme"]
+      });
+      if (ctx.document.body) {
+        themeObserver.observe(ctx.document.body, {
+          attributes: true,
+          attributeFilter: ["data-theme"]
+        });
+      }
+    }
     let mediaWatcher = null;
     const onMediaChange = () => applyTheme(ctx);
     if (typeof ctx.window.matchMedia === "function") {
@@ -1909,6 +2129,10 @@ button[data-psnine-next],
     });
     return () => {
       unsubs();
+      if (themeObserver) {
+        themeObserver.disconnect();
+        themeObserver = null;
+      }
       ctx.window.clearInterval(timer);
       if (mediaWatcher) {
         if (mediaWatcher.removeEventListener) {
@@ -1919,6 +2143,499 @@ button[data-psnine-next],
       }
     };
   };
+
+  // src/core/settings-ui.ts
+  function resolveThemeMode(s) {
+    if (s.autoNightMode === "SYSTEM") return "SYSTEM";
+    if (s.autoNightMode === "TIME") return "TIME";
+    if (s.autoNightMode === "OFF") {
+      return s.nightMode ? "DARK" : "LIGHT";
+    }
+    return s.nightMode ? "DARK" : "SYSTEM";
+  }
+  function mountSettingsUI(ctx) {
+    const { document: doc, window: win, store } = ctx;
+    let previouslyFocused = null;
+    let modalBackdrop = null;
+    let onKeyDownHandler = null;
+    let isSaving = false;
+    let gearBtn = doc.getElementById("psnine-settings-gear");
+    if (!gearBtn) {
+      gearBtn = doc.createElement("button");
+      gearBtn.id = "psnine-settings-gear";
+      gearBtn.setAttribute("data-psnine-next", "gear");
+      gearBtn.setAttribute("type", "button");
+      gearBtn.setAttribute("title", "PSNINE \u8BBE\u7F6E");
+      gearBtn.setAttribute("aria-label", "PSNINE \u8BBE\u7F6E");
+      gearBtn.innerHTML = ICONS.gear;
+      (doc.body || doc.documentElement).appendChild(gearBtn);
+    }
+    const injectNavMenu = () => {
+      const targets = doc.querySelectorAll(".user-menu-list, .mobile-nav-panel nav, .nav-user .dropdown ul, .header .dropdown ul");
+      targets.forEach((target) => {
+        if (!target.querySelector("#psnine-nav-settings-link")) {
+          const item = doc.createElement("li");
+          item.id = "psnine-nav-settings-link";
+          item.setAttribute("data-psnine-next", "nav-link");
+          const btn = doc.createElement("button");
+          btn.setAttribute("type", "button");
+          btn.className = "psnine-nav-settings-btn";
+          btn.style.cssText = "background:none; border:none; color:inherit; font:inherit; cursor:pointer; padding:6px 12px; width:100%; text-align:left; display:flex; align-items:center; gap:6px;";
+          btn.innerHTML = `${ICONS.gear} <span>\u63D2\u4EF6\u8BBE\u7F6E</span>`;
+          btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            openSettingsModal();
+          });
+          item.appendChild(btn);
+          target.appendChild(item);
+        }
+      });
+    };
+    injectNavMenu();
+    ctx.onContent(() => injectNavMenu());
+    const closeSettingsModal = (force = false) => {
+      if (isSaving && !force) return;
+      if (modalBackdrop) {
+        if (onKeyDownHandler) {
+          doc.removeEventListener("keydown", onKeyDownHandler);
+          onKeyDownHandler = null;
+        }
+        modalBackdrop.remove();
+        modalBackdrop = null;
+        if (previouslyFocused && typeof previouslyFocused.focus === "function") {
+          try {
+            previouslyFocused.focus();
+          } catch {
+          }
+        }
+      }
+    };
+    const openSettingsModal = () => {
+      if (modalBackdrop) return;
+      isSaving = false;
+      previouslyFocused = doc.activeElement;
+      modalBackdrop = doc.createElement("div");
+      modalBackdrop.className = "psnine-modal-backdrop";
+      modalBackdrop.setAttribute("data-psnine-next", "modal");
+      modalBackdrop.addEventListener("click", (e) => {
+        if (isSaving) return;
+        if (e.target === modalBackdrop) {
+          closeSettingsModal();
+        }
+      });
+      const dialog = doc.createElement("div");
+      dialog.className = "psnine-settings-dialog";
+      dialog.setAttribute("role", "dialog");
+      dialog.setAttribute("aria-modal", "true");
+      dialog.setAttribute("aria-labelledby", "psnine-settings-title");
+      const header = doc.createElement("div");
+      header.className = "psnine-settings-header";
+      header.innerHTML = `
+      <h2 id="psnine-settings-title">PSNINE \u8BBE\u7F6E</h2>
+      <button class="psnine-settings-close" type="button" aria-label="\u5173\u95ED\u8BBE\u7F6E\u9762\u677F">${ICONS.close}</button>
+    `;
+      const closeBtn = header.querySelector(".psnine-settings-close");
+      closeBtn.addEventListener("click", () => {
+        if (isSaving) return;
+        closeSettingsModal();
+      });
+      const body = doc.createElement("div");
+      body.className = "psnine-settings-body";
+      if (store.backend === "MEMORY") {
+        const banner = doc.createElement("div");
+        banner.className = "psnine-settings-memory-warning";
+        banner.setAttribute("data-psnine-next", "memory-warning");
+        banner.textContent = "\u63D0\u793A\uFF1A\u5F53\u524D\u8FD0\u884C\u5728\u5185\u5B58\u4E34\u65F6\u5B58\u50A8\u6A21\u5F0F\uFF08\u6301\u4E45\u5316\u5B58\u50A8\u53D7\u9650\uFF09\uFF0C\u9875\u9762\u5237\u65B0\u540E\u4FEE\u6539\u7684\u8BBE\u7F6E\u53EF\u80FD\u4F1A\u4E22\u5931\u3002";
+        body.appendChild(banner);
+      }
+      const current = { ...ctx.settings };
+      let idCounter = 0;
+      const createRow = (label, inputEl, inputId) => {
+        const row = doc.createElement("div");
+        row.className = "psnine-settings-row";
+        const lbl = doc.createElement("label");
+        lbl.className = "psnine-settings-label";
+        lbl.htmlFor = inputId;
+        lbl.textContent = label;
+        row.appendChild(lbl);
+        row.appendChild(inputEl);
+        return row;
+      };
+      const createSection = (title, defaultOpen = false) => {
+        const details = doc.createElement("details");
+        details.className = "psnine-settings-section";
+        if (defaultOpen) {
+          details.open = true;
+        }
+        const summary = doc.createElement("summary");
+        summary.className = "psnine-settings-summary";
+        summary.textContent = title;
+        details.appendChild(summary);
+        const sectionBody = doc.createElement("div");
+        sectionBody.className = "psnine-settings-section-body";
+        details.appendChild(sectionBody);
+        return { details, body: sectionBody };
+      };
+      const createSwitch = (key, label) => {
+        const id = `psnine-setting-${key}-${++idCounter}`;
+        const wrapper = doc.createElement("label");
+        wrapper.className = "psnine-switch";
+        wrapper.htmlFor = id;
+        const checkbox = doc.createElement("input");
+        checkbox.id = id;
+        checkbox.type = "checkbox";
+        checkbox.checked = Boolean(current[key]);
+        checkbox.addEventListener("change", () => {
+          current[key] = checkbox.checked;
+        });
+        const slider = doc.createElement("span");
+        slider.className = "psnine-slider";
+        wrapper.appendChild(checkbox);
+        wrapper.appendChild(slider);
+        return createRow(label, wrapper, id);
+      };
+      const createNumberInput = (key, label, min = 0, max = 9999, step = 1) => {
+        const id = `psnine-setting-${key}-${++idCounter}`;
+        const input = doc.createElement("input");
+        input.id = id;
+        input.type = "number";
+        input.min = String(min);
+        input.max = String(max);
+        input.step = String(step);
+        input.value = String(current[key] ?? 0);
+        input.addEventListener("change", () => {
+          const val = parseFloat(input.value);
+          if (!isNaN(val)) {
+            current[key] = val;
+          }
+        });
+        return createRow(label, input, id);
+      };
+      const createTextInput = (key, label) => {
+        const id = `psnine-setting-${key}-${++idCounter}`;
+        const input = doc.createElement("input");
+        input.id = id;
+        input.type = "text";
+        const rawVal = current[key];
+        input.value = Array.isArray(rawVal) ? rawVal.join(", ") : String(rawVal ?? "");
+        input.addEventListener("change", () => {
+          if (Array.isArray(current[key])) {
+            current[key] = input.value.split(",").map((s) => s.trim()).filter(Boolean);
+          } else {
+            current[key] = input.value;
+          }
+        });
+        return createRow(label, input, id);
+      };
+      const createColorInput = (key, label) => {
+        const id = `psnine-setting-${key}-${++idCounter}`;
+        const input = doc.createElement("input");
+        input.id = id;
+        input.type = "text";
+        input.value = String(current[key] ?? "");
+        input.addEventListener("change", () => {
+          current[key] = input.value;
+        });
+        return createRow(label, input, id);
+      };
+      const s1 = createSection("1. \u5916\u89C2\u4E3B\u9898\u4E0E\u57FA\u7840", true);
+      const initialThemeMode = resolveThemeMode(current);
+      const themeSelect = doc.createElement("select");
+      themeSelect.id = "psnine-setting-theme-mode";
+      themeSelect.className = "psnine-settings-select";
+      const themeOptions = [
+        { label: "\u8DDF\u968F\u7CFB\u7EDF", value: "SYSTEM" },
+        { label: "\u6D45\u8272", value: "LIGHT" },
+        { label: "\u6DF1\u8272", value: "DARK" },
+        { label: "\u5B9A\u65F6", value: "TIME" }
+      ];
+      for (const opt of themeOptions) {
+        const optEl = doc.createElement("option");
+        optEl.value = opt.value;
+        optEl.textContent = opt.label;
+        if (initialThemeMode === opt.value) {
+          optEl.selected = true;
+        }
+        themeSelect.appendChild(optEl);
+      }
+      const startRow = createNumberInput("nightStart", "\u6DF1\u8272\u6A21\u5F0F\u5F00\u59CB\u5C0F\u65F6 (0~23)", 0, 23);
+      const endRow = createNumberInput("nightEnd", "\u6DF1\u8272\u6A21\u5F0F\u7ED3\u675F\u5C0F\u65F6 (0~23)", 0, 23);
+      const updateScheduleVisibility = (mode) => {
+        const isTime = mode === "TIME";
+        startRow.style.display = isTime ? "" : "none";
+        startRow.hidden = !isTime;
+        endRow.style.display = isTime ? "" : "none";
+        endRow.hidden = !isTime;
+      };
+      themeSelect.addEventListener("change", () => {
+        const mode = themeSelect.value;
+        if (mode === "SYSTEM") {
+          current.autoNightMode = "SYSTEM";
+          current.nightMode = false;
+        } else if (mode === "TIME") {
+          current.autoNightMode = "TIME";
+        } else if (mode === "DARK") {
+          current.autoNightMode = "OFF";
+          current.nightMode = true;
+        } else if (mode === "LIGHT") {
+          current.autoNightMode = "OFF";
+          current.nightMode = false;
+        }
+        updateScheduleVisibility(mode);
+      });
+      updateScheduleVisibility(initialThemeMode);
+      s1.body.appendChild(createRow("\u5916\u89C2", themeSelect, "psnine-setting-theme-mode"));
+      s1.body.appendChild(startRow);
+      s1.body.appendChild(endRow);
+      s1.body.appendChild(createSwitch("hoverUnmark", "\u9ED1\u6761\u5267\u900F\u60AC\u6D6E/\u70B9\u51FB\u53CD\u767D"));
+      body.appendChild(s1.details);
+      const s2 = createSection("2. \u793E\u533A\u4E92\u52A8\u4E0E\u56DE\u5E16", false);
+      s2.body.appendChild(createSwitch("replyTraceback", "\u697C\u5C42 @\u56DE\u590D\u5185\u5BB9\u56DE\u6EAF"));
+      s2.body.appendChild(createSwitch("showReplyControls", "\u697C\u5C42\u56DE\u590D\u6309\u94AE\u5E38\u663E (\u5173\u95ED\u5219\u60AC\u6D6E\u663E\u793A)"));
+      s2.body.appendChild(createSwitch("hoverHomepage", "\u5934\u50CF\u60AC\u6D6E/\u8F7B\u89E6\u5C55\u793A\u7528\u6237\u5361\u7247"));
+      s2.body.appendChild(createColorInput("highlightBack", "\u697C\u4E3B\u9AD8\u4EAE\u80CC\u666F\u989C\u8272"));
+      s2.body.appendChild(createColorInput("highlightFront", "\u697C\u4E3B\u9AD8\u4EAE\u6587\u5B57\u989C\u8272"));
+      s2.body.appendChild(createTextInput("highlightSpecificID", "\u7279\u522B\u5173\u6CE8/\u7BA1\u7406\u9AD8\u4EAE\u7528\u6237ID (\u9017\u53F7\u5206\u9694)"));
+      s2.body.appendChild(createColorInput("highlightSpecificBack", "\u7279\u5B9A\u7528\u6237\u9AD8\u4EAE\u80CC\u666F\u989C\u8272"));
+      s2.body.appendChild(createColorInput("highlightSpecificFront", "\u7279\u5B9A\u7528\u6237\u9AD8\u4EAE\u6587\u5B57\u989C\u8272"));
+      s2.body.appendChild(createNumberInput("hotTagThreshold", "\u70ED\u95E8\u8BDD\u9898\u56DE\u5E16\u9608\u503C", 1, 999));
+      s2.body.appendChild(createSwitch("expandCollapsedSubcomments", "\u89C6\u53E3\u5185\u81EA\u52A8\u5C55\u5F00\u5B50\u8BC4\u8BBA"));
+      body.appendChild(s2.details);
+      const s3 = createSection("3. \u95EE\u7B54\u4E13\u533A", false);
+      s3.body.appendChild(createSwitch("newQaStatus", "\u95EE\u7B54\u72B6\u6001\u56FE\u6807\u4E0E\u94DC\u677F\u60AC\u8D4F\u5C55\u793A"));
+      s3.body.appendChild(createSwitch("showHiddenQASubReply", "\u5C55\u5F00\u95EE\u7B54\u6298\u53E0\u7684\u5B50\u56DE\u590D"));
+      s3.body.appendChild(createSwitch("listQAAnswersByNew", "\u95EE\u7B54\u7B54\u6848\u6309\u6700\u65B0\u4F18\u5148\u6392\u5E8F"));
+      s3.body.appendChild(createSwitch("showAllQAAnswers", "\u5168\u91CF\u8F7D\u5165\u6240\u6709\u95EE\u7B54\u56DE\u7B54"));
+      body.appendChild(s3.details);
+      const s4 = createSection("4. \u5C4F\u853D\u4E0E\u8FC7\u6EE4", false);
+      s4.body.appendChild(createTextInput("blockList", "\u7528\u6237\u9ED1\u540D\u5355\u5217\u8868 (\u9017\u53F7\u5206\u9694)"));
+      s4.body.appendChild(createTextInput("blockWordsList", "\u5173\u952E\u8BCD\u5C4F\u853D\u5217\u8868 (\u9017\u53F7\u5206\u9694)"));
+      s4.body.appendChild(createSwitch("blockWordsRegex", "\u5C4F\u853D\u8BCD\u542F\u7528\u6B63\u5219\u8868\u8FBE\u5F0F"));
+      body.appendChild(s4.details);
+      const s5 = createSection("5. \u6E38\u620F\u3001\u5956\u676F\u4E0E\u7EA6\u6218", false);
+      s5.body.appendChild(createSwitch("redirectToMine", "\u6E38\u620F\u9875\u81EA\u52A8\u8DF3\u8F6C\u81F3\u6211\u7684\u5956\u676F"));
+      s5.body.appendChild(createNumberInput("filterNonePlatinumAlpha", "\u65E0\u767D\u91D1\u6E38\u620F\u5361\u7247\u900F\u660E\u5EA6 (0~1)", 0, 1, 0.05));
+      s5.body.appendChild(createSwitch("platinumGlow", "\u767D\u91D1\u5956\u676F\u53D1\u5149\u5149\u6655\u7279\u6548"));
+      s5.body.appendChild(createSwitch("foldTrophySummary", "\u9ED8\u8BA4\u6298\u53E0\u5956\u676F\u6C47\u603B\u5217\u8868"));
+      s5.body.appendChild(createSwitch("foldTrophyChart", "\u9ED8\u8BA4\u6298\u53E0\u5956\u676F\u7EDF\u8BA1\u56FE\u8868"));
+      s5.body.appendChild(createSwitch("referGameVariants", "\u5173\u8054\u6E38\u620F\u591A\u7248\u672C\u4FE1\u606F"));
+      s5.body.appendChild(createSwitch("preferSearchForFindingVariants", "\u4F18\u5148\u641C\u7D22\u67E5\u627E\u540C\u6B3E\u7248\u672C"));
+      s5.body.appendChild(createSwitch("removeHeaderInBattle", "\u7EA6\u6218\u9875\u9762\u9690\u85CF\u53D1\u8D77\u4EBA\u5934\u50CF"));
+      s5.body.appendChild(createSwitch("showGameProgressInBattle", "\u7EA6\u6218\u9875\u9762\u5C55\u793A\u6211\u7684\u6E38\u620F\u5B8C\u6210\u5EA6"));
+      s5.body.appendChild(createNumberInput("BattleInfoUpdateInterval", "\u7EA6\u6218\u4FE1\u606F\u5237\u65B0\u95F4\u9694 (\u6BEB\u79D2)", 6e4, 864e5, 6e4));
+      body.appendChild(s5.details);
+      const s6 = createSection("6. \u7FFB\u9875\u4E0E\u81EA\u52A8\u5316", false);
+      s6.body.appendChild(createNumberInput("autoPaging", "\u5217\u8868\u81EA\u52A8\u5411\u540E\u7FFB\u9875\u6570 (0 \u4E3A\u5173\u95ED)", 0, 50));
+      s6.body.appendChild(createSwitch("autoPagingInHomepage", "\u4E2A\u4EBA\u4E3B\u9875\u6E38\u620F\u5217\u8868\u81EA\u52A8\u7FFB\u9875"));
+      s6.body.appendChild(createSwitch("listPostsByNew", "\u673A\u56E0\u5217\u8868\u9ED8\u8BA4\u6309\u6700\u65B0\u6392\u5E8F"));
+      s6.body.appendChild(createSwitch("autoCheckIn", "\u6BCF\u65E5\u6253\u5F00\u7F51\u7AD9\u81EA\u52A8\u7B7E\u5230\u6253\u5361"));
+      body.appendChild(s6.details);
+      const s7 = createSection("7. \u94FE\u63A5\u4FEE\u590D\u4E0E\u6570\u6298\u6C47\u7387", false);
+      s7.body.appendChild(createSwitch("fixTextLinks", "\u7EAF\u6587\u672C\u94FE\u63A5\u81EA\u52A8\u8F6C\u6362\u4E3A\u53EF\u70B9\u51FB\u8D85\u94FE\u63A5"));
+      s7.body.appendChild(createSwitch("fixD7VGLinks", "\u65E7\u7248 D7VG \u57DF\u540D\u94FE\u63A5\u81EA\u52A8\u4FEE\u590D"));
+      s7.body.appendChild(createSwitch("fixHTTPLinks", "\u7AD9\u5185\u94FE\u63A5\u81EA\u52A8\u5347\u7EA7\u81F3 HTTPS"));
+      s7.body.appendChild(createSwitch("currencyConversion", "\u6570\u6298\u5916\u5E01\u6298\u7B97\u4EBA\u6C11\u5E01\u5C55\u793A"));
+      s7.body.appendChild(createTextInput("exchangeRateDate", "\u6C47\u7387\u6709\u6548\u57FA\u51C6\u65E5\u671F (\u624B\u586B\uFF0C\u5982 2026-09-30)"));
+      const ratesId = `psnine-setting-exchangeRates-${++idCounter}`;
+      const ratesInput = doc.createElement("textarea");
+      ratesInput.id = ratesId;
+      ratesInput.className = "psnine-settings-textarea";
+      ratesInput.value = JSON.stringify(current.exchangeRates || {}, null, 2);
+      ratesInput.addEventListener("change", () => {
+        try {
+          const parsed = JSON.parse(ratesInput.value);
+          if (typeof parsed === "object" && parsed !== null) {
+            current.exchangeRates = parsed;
+          }
+        } catch {
+        }
+      });
+      s7.body.appendChild(createRow("\u81EA\u5B9A\u4E49\u6C47\u7387\u8868 (JSON \u683C\u5F0F)", ratesInput, ratesId));
+      body.appendChild(s7.details);
+      const s8 = createSection("8. \u914D\u7F6E\u7BA1\u7406", false);
+      const manageActions = doc.createElement("div");
+      manageActions.className = "psnine-settings-actions";
+      const exportBtn = doc.createElement("button");
+      exportBtn.className = "psnine-btn";
+      exportBtn.type = "button";
+      exportBtn.textContent = "\u5BFC\u51FA\u914D\u7F6E";
+      exportBtn.addEventListener("click", () => {
+        const jsonStr = JSON.stringify(ctx.settings, null, 2);
+        const blob = new Blob([jsonStr], { type: "application/json" });
+        const blobUrl = URL.createObjectURL(blob);
+        const a = doc.createElement("a");
+        a.href = blobUrl;
+        a.download = `psnine-settings-${(/* @__PURE__ */ new Date()).toISOString().slice(0, 10)}.json`;
+        a.click();
+        URL.revokeObjectURL(blobUrl);
+      });
+      const importBtn = doc.createElement("button");
+      importBtn.className = "psnine-btn";
+      importBtn.type = "button";
+      importBtn.textContent = "\u5BFC\u5165\u914D\u7F6E";
+      importBtn.addEventListener("click", () => {
+        if (isSaving) return;
+        const input = doc.createElement("input");
+        input.type = "file";
+        input.accept = ".json,application/json";
+        input.addEventListener("change", async () => {
+          if (isSaving) return;
+          const file = input.files?.[0];
+          if (file) {
+            try {
+              const text = await file.text();
+              const parsed = JSON.parse(text);
+              const validated = validateSettings(parsed);
+              isSaving = true;
+              saveBtn.disabled = true;
+              cancelBtn.disabled = true;
+              closeBtn.disabled = true;
+              await store.set(SETTINGS_KEY, validated);
+              Object.assign(ctx.settings, validated);
+              try {
+                applyTheme(ctx);
+              } catch {
+              }
+              win.alert("\u914D\u7F6E\u5BFC\u5165\u6210\u529F\uFF01\u9875\u9762\u5373\u5C06\u5237\u65B0\u3002");
+              closeSettingsModal(true);
+              win.location.reload();
+            } catch {
+              isSaving = false;
+              saveBtn.disabled = false;
+              cancelBtn.disabled = false;
+              closeBtn.disabled = false;
+              win.alert("\u914D\u7F6E\u6587\u4EF6\u683C\u5F0F\u9519\u8BEF\uFF0C\u65E0\u6CD5\u89E3\u6790\uFF01");
+            }
+          }
+        });
+        input.click();
+      });
+      const resetBtn = doc.createElement("button");
+      resetBtn.className = "psnine-btn psnine-btn-danger";
+      resetBtn.type = "button";
+      resetBtn.textContent = "\u6062\u590D\u9ED8\u8BA4";
+      resetBtn.addEventListener("click", async () => {
+        if (isSaving) return;
+        if (win.confirm("\u786E\u5B9A\u5C06\u6240\u6709\u8BBE\u7F6E\u6062\u590D\u4E3A\u9ED8\u8BA4\u503C\u5417\uFF1F")) {
+          isSaving = true;
+          saveBtn.disabled = true;
+          cancelBtn.disabled = true;
+          closeBtn.disabled = true;
+          try {
+            await store.set(SETTINGS_KEY, defaultSettings);
+            Object.assign(ctx.settings, defaultSettings);
+            try {
+              applyTheme(ctx);
+            } catch {
+            }
+            closeSettingsModal(true);
+            win.location.reload();
+          } catch (err) {
+            isSaving = false;
+            saveBtn.disabled = false;
+            cancelBtn.disabled = false;
+            closeBtn.disabled = false;
+            win.alert("\u6062\u590D\u9ED8\u8BA4\u8BBE\u7F6E\u5931\u8D25\uFF0C\u8BF7\u91CD\u8BD5\uFF1A" + (err instanceof Error ? err.message : String(err)));
+          }
+        }
+      });
+      manageActions.appendChild(exportBtn);
+      manageActions.appendChild(importBtn);
+      manageActions.appendChild(resetBtn);
+      s8.body.appendChild(manageActions);
+      body.appendChild(s8.details);
+      const footer = doc.createElement("div");
+      footer.className = "psnine-settings-footer";
+      const saveBtn = doc.createElement("button");
+      saveBtn.className = "psnine-btn psnine-btn-primary";
+      saveBtn.type = "button";
+      saveBtn.textContent = "\u4FDD\u5B58\u914D\u7F6E";
+      const cancelBtn = doc.createElement("button");
+      cancelBtn.className = "psnine-btn";
+      cancelBtn.type = "button";
+      cancelBtn.textContent = "\u53D6\u6D88";
+      saveBtn.addEventListener("click", async () => {
+        if (isSaving) return;
+        isSaving = true;
+        saveBtn.disabled = true;
+        cancelBtn.disabled = true;
+        closeBtn.disabled = true;
+        const originalSaveText = saveBtn.textContent;
+        saveBtn.textContent = "\u4FDD\u5B58\u4E2D...";
+        try {
+          const validated = validateSettings(current);
+          await store.set(SETTINGS_KEY, validated);
+          Object.assign(ctx.settings, validated);
+          try {
+            applyTheme(ctx);
+          } catch {
+          }
+          closeSettingsModal(true);
+          win.location.reload();
+        } catch (err) {
+          isSaving = false;
+          saveBtn.disabled = false;
+          cancelBtn.disabled = false;
+          closeBtn.disabled = false;
+          saveBtn.textContent = originalSaveText;
+          win.alert("\u4FDD\u5B58\u8BBE\u7F6E\u5931\u8D25\uFF0C\u8BF7\u91CD\u8BD5\uFF1A" + (err instanceof Error ? err.message : String(err)));
+        }
+      });
+      cancelBtn.addEventListener("click", () => {
+        if (isSaving) return;
+        closeSettingsModal();
+      });
+      footer.appendChild(saveBtn);
+      footer.appendChild(cancelBtn);
+      dialog.appendChild(header);
+      dialog.appendChild(body);
+      dialog.appendChild(footer);
+      modalBackdrop.appendChild(dialog);
+      (doc.body || doc.documentElement).appendChild(modalBackdrop);
+      onKeyDownHandler = (e) => {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          if (isSaving) return;
+          closeSettingsModal();
+          return;
+        }
+        if (isSaving) {
+          e.preventDefault();
+          return;
+        }
+        if (e.key === "Tab") {
+          const focusable = Array.from(dialog.querySelectorAll(
+            'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), summary, [tabindex]:not([tabindex="-1"])'
+          )).filter((el) => {
+            return el.offsetWidth > 0 || el.offsetHeight > 0 || el.getClientRects().length > 0;
+          });
+          if (focusable.length === 0) {
+            e.preventDefault();
+            return;
+          }
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          if (e.shiftKey) {
+            if (doc.activeElement === first || !dialog.contains(doc.activeElement)) {
+              e.preventDefault();
+              last.focus();
+            }
+          } else {
+            if (doc.activeElement === last || !dialog.contains(doc.activeElement)) {
+              e.preventDefault();
+              first.focus();
+            }
+          }
+        }
+      };
+      doc.addEventListener("keydown", onKeyDownHandler);
+      closeBtn.focus();
+    };
+    if (!gearBtn.hasAttribute("data-psnine-bound")) {
+      gearBtn.setAttribute("data-psnine-bound", "true");
+      gearBtn.addEventListener("click", openSettingsModal);
+    }
+  }
 
   // src/core/dom.ts
   var REASONS_ATTR = "data-psnine-hidden-reasons";
@@ -4149,10 +4866,10 @@ button[data-psnine-next],
         pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
       }
       timeCurveHtml = `
-      <div data-psnine-next="true" style="padding:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(0,0,0,0.05);border-radius:6px;">
+      <div data-psnine-next="true" style="padding:10px;background:var(--p9n-surface-alt,#f8fafc);border:1px solid var(--p9n-border,#ccd6dd);border-radius:6px;color:var(--p9n-text,inherit);">
         <div style="font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;">
           <span>\u{1F4C8} \u5956\u676F\u83B7\u5F97\u65F6\u95F4\u79EF\u7D2F\u66F2\u7EBF (\u5DF2\u83B7: ${timeCurve[timeCurve.length - 1].cumCount}\u4E2A)</span>
-          <span style="font-size:11px;color:#888;">${timeCurve[0].dateStr} ~ ${timeCurve[timeCurve.length - 1].dateStr}</span>
+          <span style="font-size:11px;color:var(--p9n-muted,#5f6b7a);">${timeCurve[0].dateStr} ~ ${timeCurve[timeCurve.length - 1].dateStr}</span>
         </div>
         <svg viewBox="0 0 ${svgWidth} ${svgHeight}" data-psnine-next="true" style="width:100%;height:100px;font-family:inherit;">
           <line x1="${margin.left}" y1="${margin.top + innerH}" x2="${margin.left + innerW}" y2="${margin.top + innerH}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
@@ -4162,7 +4879,7 @@ button[data-psnine-next],
           ${pts.length > 1 ? `<polyline points="${pts.join(" ")}" fill="none" stroke="#28a745" stroke-width="2.5" />` : ""}
           ${pts.map((p) => `<circle cx="${p.split(",")[0]}" cy="${p.split(",")[1]}" r="4" fill="#28a745" />`).join("")}
         </svg>
-        <details style="margin-top:4px;font-size:11px;color:#666;">
+        <details style="margin-top:4px;font-size:11px;color:var(--p9n-muted,#5f6b7a);">
           <summary style="cursor:pointer;">\u67E5\u770B\u83B7\u5F97\u65F6\u95F4\u6570\u636E\u8868</summary>
           <div style="max-height:80px;overflow-y:auto;margin-top:4px;">
             <table style="width:100%;border-collapse:collapse;font-size:10px;">
@@ -4173,12 +4890,12 @@ button[data-psnine-next],
             </table>
           </div>
         </details>
-        ${missingTimeCount > 0 ? `<div style="font-size:10px;color:#888;text-align:right;margin-top:2px;">${missingTimeCount}\u4E2A\u5DF2\u83B7\u5956\u676F\u7F3A\u5931\u65F6\u95F4\u6233</div>` : ""}
+        ${missingTimeCount > 0 ? `<div style="font-size:10px;color:var(--p9n-muted,#5f6b7a);text-align:right;margin-top:2px;">${missingTimeCount}\u4E2A\u5DF2\u83B7\u5956\u676F\u7F3A\u5931\u65F6\u95F4\u6233</div>` : ""}
       </div>
     `;
     } else {
       timeCurveHtml = `
-      <div data-psnine-next="true" style="padding:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(0,0,0,0.05);border-radius:6px;font-size:12px;color:#888;">
+      <div data-psnine-next="true" style="padding:10px;background:var(--p9n-surface-alt,#f8fafc);border:1px solid var(--p9n-border,#ccd6dd);border-radius:6px;font-size:12px;color:var(--p9n-muted,#5f6b7a);">
         \u{1F4C8} \u6682\u65E0\u6709\u6548\u83B7\u5F97\u65F6\u95F4\u8BB0\u5F55\uFF08\u5DF2\u8F7D\u5165\u6837\u672C\uFF09
       </div>
     `;
@@ -4186,7 +4903,7 @@ button[data-psnine-next],
     return `
     <div data-psnine-next="true" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:12px;margin:8px 0;">
       <!-- Type Breakdown -->
-      <div data-psnine-next="true" style="padding:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(0,0,0,0.05);border-radius:6px;">
+      <div data-psnine-next="true" style="padding:10px;background:var(--p9n-surface-alt,#f8fafc);border:1px solid var(--p9n-border,#ccd6dd);border-radius:6px;color:var(--p9n-text,inherit);">
         <div style="font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;">
           <span>\u{1F3C6} \u5956\u676F\u7C7B\u578B\u6784\u6210 (\u5DF2\u8F7D\u5165: ${total})</span>
         </div>
@@ -4202,11 +4919,11 @@ button[data-psnine-next],
           <span style="color:#868e96;">\u94F6 ${silver}</span>
           <span style="color:#d9480f;">\u94DC ${bronze}</span>
         </div>
-        <div style="font-size:10px;color:#888;margin-top:4px;">*\u7EDF\u8BA1\u8303\u56F4\uFF1A\u5F53\u524D\u9875\u9762\u5DF2\u8F7D\u5165\u6837\u672C\uFF08\u4E0D\u4EE3\u8868\u7AD9\u70B9\u52A0\u6743\u603B\u8FDB\u5EA6\uFF09</div>
+        <div style="font-size:10px;color:var(--p9n-muted,#5f6b7a);margin-top:4px;">*\u7EDF\u8BA1\u8303\u56F4\uFF1A\u5F53\u524D\u9875\u9762\u5DF2\u8F7D\u5165\u6837\u672C\uFF08\u4E0D\u4EE3\u8868\u7AD9\u70B9\u52A0\u6743\u603B\u8FDB\u5EA6\uFF09</div>
       </div>
 
       <!-- Rarity Breakdown -->
-      <div data-psnine-next="true" style="padding:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(0,0,0,0.05);border-radius:6px;">
+      <div data-psnine-next="true" style="padding:10px;background:var(--p9n-surface-alt,#f8fafc);border:1px solid var(--p9n-border,#ccd6dd);border-radius:6px;color:var(--p9n-text,inherit);">
         <div style="font-size:12px;font-weight:600;margin-bottom:6px;">\u{1F4CA} \u7A00\u6709\u5EA6\u5206\u5E03</div>
         <svg viewBox="0 0 ${svgWidth} ${svgHeight}" data-psnine-next="true" style="width:100%;height:100px;font-family:inherit;">
           ${rarityBuckets.map((b, i) => {
@@ -4690,7 +5407,7 @@ button[data-psnine-next],
           mainPanel = doc.createElement("div");
           mainPanel.id = "psnine-trophy-stats-panel";
           mainPanel.setAttribute("data-psnine-next", "true");
-          mainPanel.style.cssText = "margin:12px 0;padding:12px;background:rgba(0,0,0,0.015);border:1px solid rgba(0,0,0,0.06);border-radius:8px;";
+          mainPanel.style.cssText = "margin:12px 0;padding:12px;background:var(--p9n-surface,#fff);border:1px solid var(--p9n-border,#ccd6dd);border-radius:8px;color:var(--p9n-text,inherit);";
           const target = doc.querySelector(".main, .box.pd10, .min-inner");
           const firstTbl = doc.querySelector("table.list");
           if (firstTbl && firstTbl.parentElement) {
@@ -4707,7 +5424,7 @@ button[data-psnine-next],
             chip.className = "psnine-trophy-icon-chip";
             chip.setAttribute("data-psnine-next", "true");
             chip.setAttribute("data-trophy-id", t.trophyId);
-            chip.style.cssText = `width:36px;height:36px;border-radius:4px;overflow:hidden;position:relative;cursor:pointer;padding:0;background:transparent;border:1px solid ${t.status === "earned" ? "#28a745" : "#ccc"};opacity:${t.status === "unearned" ? "0.6" : "1"};`;
+            chip.style.cssText = `width:36px;height:36px;border-radius:4px;overflow:hidden;position:relative;cursor:pointer;padding:0;background:transparent;border:1px solid ${t.status === "earned" ? "#28a745" : "var(--p9n-border,#ccd6dd)"};opacity:${t.status === "unearned" ? "0.6" : "1"};`;
             chip.title = `${t.name} (${t.type})${t.tipsCount > 0 ? ` | \u{1F4A1}${t.tipsCount}Tips` : ""}`;
             if (t.iconSrc) {
               const img = doc.createElement("img");
@@ -4731,7 +5448,7 @@ button[data-psnine-next],
                 titleLine.textContent = `${t.name} (${t.type}) - ${t.rarityPercent}%`;
                 previewCard.appendChild(titleLine);
                 const descLine = doc.createElement("div");
-                descLine.style.cssText = "color:#666;margin-bottom:4px;";
+                descLine.style.cssText = "color:var(--p9n-muted,#5f6b7a);margin-bottom:4px;";
                 descLine.textContent = t.description;
                 previewCard.appendChild(descLine);
                 const actionLine = doc.createElement("div");
@@ -4767,23 +5484,23 @@ button[data-psnine-next],
             <div data-psnine-next="true" class="psnine-trophy-overview-top" style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
               <div data-psnine-next="true" id="psnine-trophy-header-title" style="font-weight:600;font-size:13px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;">
                 <span class="psnine-trophy-title-text" style="white-space:nowrap;font-size:14px;">\u5956\u676F\u6982\u89C8</span>
-                <span id="psnine-trophy-header-counts" style="white-space:nowrap;font-size:12px;color:#666;font-weight:normal;">[\u767D${stats.platinum} \u91D1${stats.gold} \u94F6${stats.silver} \u94DC${stats.bronze}]</span>
+                <span id="psnine-trophy-header-counts" style="white-space:nowrap;font-size:12px;color:var(--p9n-muted,#5f6b7a);font-weight:normal;">[\u767D${stats.platinum} \u91D1${stats.gold} \u94F6${stats.silver} \u94DC${stats.bronze}]</span>
                 ${isPersonalPage ? `
                   <span class="alert-success pd5" id="psnine-trophy-completion-badge" style="border-radius:4px;font-size:11px;padding:2px 6px;background:#28a745;color:#fff;font-weight:normal;">
                     \u5DF2\u83B7 ${stats.earnedCount} / \u672A\u83B7 ${stats.unearnedCount} (\u5956\u676F\u6570\u91CF\u5360\u6BD4: ${(stats.earnedCount / stats.total * 100).toFixed(1)}%)
                   </span>
                 ` : `
-                  <span id="psnine-trophy-completion-badge" style="font-size:11px;color:#888;font-weight:normal;">(\u516C\u5F00\u5956\u676F\u5217\u8868: \u5171 ${stats.total} \u4E2A)</span>
+                  <span id="psnine-trophy-completion-badge" style="font-size:11px;color:var(--p9n-muted,#5f6b7a);font-weight:normal;">(\u516C\u5F00\u5956\u676F\u5217\u8868: \u5171 ${stats.total} \u4E2A)</span>
                 `}
               </div>
 
               <!-- Action Toolbar -->
               <div data-psnine-next="true" class="psnine-trophy-toolbar" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:12px;">
                 <div data-psnine-next="true" class="psnine-trophy-action-group" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;">
-                  <button type="button" id="psnine-toggle-summary-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid #ccc;background:transparent;cursor:pointer;">
+                  <button type="button" id="psnine-toggle-summary-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid var(--p9n-border,#ccd6dd);background:transparent;cursor:pointer;">
                     ${isSummaryFolded ? "\u5C55\u5F00\u56FE\u6807\u6C47\u603B" : "\u6298\u53E0\u56FE\u6807\u6C47\u603B"}
                   </button>
-                  <button type="button" id="psnine-toggle-charts-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid #ccc;background:transparent;cursor:pointer;">
+                  <button type="button" id="psnine-toggle-charts-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid var(--p9n-border,#ccd6dd);background:transparent;cursor:pointer;">
                     ${isChartFolded ? "\u5C55\u5F00\u56FE\u8868" : "\u6298\u53E0\u56FE\u8868"}
                   </button>
                 </div>
@@ -4812,10 +5529,10 @@ button[data-psnine-next],
               ${renderTrophyChartsSvg(stats)}
             </div>
 
-            <div data-psnine-next="true" id="psnine-trophy-icon-grid-wrapper" style="display:${isSummaryFolded ? "none" : "block"};margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.05);">
+            <div data-psnine-next="true" id="psnine-trophy-icon-grid-wrapper" style="display:${isSummaryFolded ? "none" : "block"};margin-top:8px;padding-top:8px;border-top:1px solid var(--p9n-border,#ccd6dd);">
               <div style="font-size:12px;font-weight:600;margin-bottom:6px;">\u{1F5BC}\uFE0F \u5956\u676F\u56FE\u6807\u6C47\u603B (\u70B9\u51FB\u5FEB\u901F\u5B9A\u4F4D):</div>
               <div id="psnine-trophy-icon-chips-container" data-psnine-next="true" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
-              <div id="psnine-trophy-preview-card" data-psnine-next="true" style="display:none;margin-top:6px;padding:6px 10px;background:rgba(0,0,0,0.03);border-radius:4px;font-size:12px;"></div>
+              <div id="psnine-trophy-preview-card" data-psnine-next="true" style="display:none;margin-top:6px;padding:6px 10px;background:var(--p9n-surface-alt,#f8fafc);border:1px solid var(--p9n-border,#ccd6dd);border-radius:4px;font-size:12px;color:var(--p9n-text,inherit);"></div>
             </div>
           `;
             const chipsContainer = doc.getElementById("psnine-trophy-icon-chips-container");
@@ -5008,10 +5725,10 @@ button[data-psnine-next],
           const td = doc.createElement("td");
           td.setAttribute("colspan", "4");
           td.setAttribute("data-psnine-next", "true");
-          td.style.cssText = "padding:10px 15px;background:rgba(0,0,0,0.02);border-bottom:1px solid rgba(0,0,0,0.08);";
+          td.style.cssText = "padding:10px 15px;background:var(--p9n-surface-alt,#f8fafc);border-bottom:1px solid var(--p9n-border,#ccd6dd);color:var(--p9n-text,inherit);";
           const loadingDiv = doc.createElement("div");
           loadingDiv.setAttribute("data-psnine-next", "true");
-          loadingDiv.style.cssText = "font-size:12px;color:#666;";
+          loadingDiv.style.cssText = "font-size:12px;color:var(--p9n-muted,#5f6b7a);";
           loadingDiv.textContent = `\u23F3 \u6B63\u5728\u52A0\u8F7D\u5956\u676F Tips (#${t.trophyId})...`;
           td.appendChild(loadingDiv);
           tipRow.appendChild(td);
@@ -5030,7 +5747,7 @@ button[data-psnine-next],
             if (tipNodes.length === 0) {
               const emptyMsg = doc.createElement("div");
               emptyMsg.setAttribute("data-psnine-next", "true");
-              emptyMsg.style.cssText = "font-size:12px;color:#888;";
+              emptyMsg.style.cssText = "font-size:12px;color:var(--p9n-muted,#5f6b7a);";
               emptyMsg.textContent = "\u6682\u65E0\u53EF\u7528 Tips";
               td.appendChild(emptyMsg);
               return;
@@ -5088,13 +5805,13 @@ button[data-psnine-next],
               }
               const itemDiv = doc.createElement("div");
               itemDiv.setAttribute("data-psnine-next", "true");
-              itemDiv.style.cssText = "margin-bottom:8px;padding-bottom:8px;border-bottom:1px dashed rgba(0,0,0,0.06);font-size:12px;";
+              itemDiv.style.cssText = "margin-bottom:8px;padding-bottom:8px;border-bottom:1px dashed var(--p9n-border,#ccd6dd);font-size:12px;";
               if (isBlockedAuthor || isBlockedWord) {
                 const placeholderBtn = doc.createElement("button");
                 placeholderBtn.type = "button";
                 placeholderBtn.setAttribute("data-psnine-next", "true");
                 placeholderBtn.className = "psnine-filtered-tip-btn";
-                placeholderBtn.style.cssText = "display:block;width:100%;text-align:left;padding:4px 8px;background:rgba(0,0,0,0.04);color:#888;font-size:11px;border-radius:3px;border:1px dashed #ccc;cursor:pointer;user-select:none;";
+                placeholderBtn.style.cssText = "display:block;width:100%;text-align:left;padding:4px 8px;background:var(--p9n-surface-alt,#f8fafc);color:var(--p9n-muted,#5f6b7a);font-size:11px;border-radius:3px;border:1px dashed var(--p9n-border,#ccd6dd);cursor:pointer;user-select:none;";
                 placeholderBtn.textContent = `\u{1F6AB} \u8BC4\u8BBA\u5DF2\u8FC7\u6EE4 (${isBlockedAuthor ? `\u9ED1\u540D\u5355\u7528\u6237 ${authorDisplay}` : `\u5C4F\u853D\u8BCD: ${blockedReasonWord}`}) - \u70B9\u51FB\u63ED\u793A\u5185\u5BB9`;
                 const hiddenBody = doc.createElement("div");
                 hiddenBody.setAttribute("data-psnine-next", "true");
@@ -5137,7 +5854,7 @@ button[data-psnine-next],
                 }
                 const metaLine = doc.createElement("div");
                 metaLine.setAttribute("data-psnine-next", "true");
-                metaLine.style.cssText = "display:flex;justify-content:space-between;color:#666;font-size:11px;margin-bottom:2px;";
+                metaLine.style.cssText = "display:flex;justify-content:space-between;color:var(--p9n-muted,#5f6b7a);font-size:11px;margin-bottom:2px;";
                 const authorSpan = doc.createElement("span");
                 authorSpan.style.cssText = "font-weight:500;color:#3890ff;";
                 authorSpan.textContent = authorDisplay;
@@ -5190,7 +5907,7 @@ button[data-psnine-next],
             const retryBtn = doc.createElement("button");
             retryBtn.type = "button";
             retryBtn.setAttribute("data-psnine-next", "true");
-            retryBtn.style.cssText = "margin-left:8px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;cursor:pointer;";
+            retryBtn.style.cssText = "margin-left:8px;padding:2px 6px;border:1px solid var(--p9n-border,#ccd6dd);border-radius:3px;cursor:pointer;";
             retryBtn.textContent = "\u91CD\u8BD5";
             retryBtn.onclick = () => {
               tipRow.remove();
@@ -7346,28 +8063,49 @@ button[data-psnine-next],
           } else {
             isDark = Boolean(s.nightMode);
           }
+        } else {
+          isDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
         }
       } catch {
+        isDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
       }
       const container = document.head || document.documentElement;
       if (!container) {
         return;
       }
       try {
-        if (isDark && !document.getElementById("nightModeStyle")) {
-          const style = document.createElement("style");
-          style.id = "nightModeStyle";
-          style.setAttribute("data-psnine-next", "theme");
-          style.textContent = DARK_THEME_STYLES;
-          container.appendChild(style);
-          document.documentElement?.setAttribute("data-theme", "dark");
-        }
         if (!document.getElementById("psnineCoreStyles")) {
           const coreStyle = document.createElement("style");
           coreStyle.id = "psnineCoreStyles";
           coreStyle.setAttribute("data-psnine-next", "core-styles");
           coreStyle.textContent = CORE_STYLES;
           container.appendChild(coreStyle);
+        }
+        if (isDark) {
+          if (!document.getElementById("nightModeStyle")) {
+            const style = document.createElement("style");
+            style.id = "nightModeStyle";
+            style.setAttribute("data-psnine-next", "theme");
+            style.textContent = DARK_THEME_STYLES;
+            container.appendChild(style);
+          }
+          if (document.documentElement?.getAttribute("data-theme") !== "dark") {
+            document.documentElement?.setAttribute("data-theme", "dark");
+          }
+          if (document.body && document.body.getAttribute("data-theme") !== "dark") {
+            document.body.setAttribute("data-theme", "dark");
+          }
+        } else {
+          const staleStyle = document.getElementById("nightModeStyle");
+          if (staleStyle) {
+            staleStyle.remove();
+          }
+          if (document.documentElement?.hasAttribute("data-theme")) {
+            document.documentElement.removeAttribute("data-theme");
+          }
+          if (document.body?.hasAttribute("data-theme")) {
+            document.body.removeAttribute("data-theme");
+          }
         }
         if (typeof window !== "undefined") {
           window.__psnine_next_early_styled__ = true;

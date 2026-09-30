@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { isDarkActive, applyTheme, enhanceMasks, fixLinks, handleAutoCheckIn, applyNewestDefaultSort } from '../src/features/global';
+import { isDarkActive, applyTheme, mountGlobal, enhanceMasks, fixLinks, handleAutoCheckIn, applyNewestDefaultSort } from '../src/features/global';
 import { createContext } from '../src/core/context';
 import { defaultSettings } from '../src/core/types';
 import { createStore } from '../src/core/store';
@@ -34,6 +34,62 @@ describe('Global features module', () => {
     expect(document.getElementById('nightModeStyle')).toBeNull();
     expect(document.documentElement.hasAttribute('data-theme')).toBe(false);
   });
+
+  it('reconciles late native v2 data-theme overrides in both DARK and LIGHT modes without observer loops, and stops after cleanup', async () => {
+    const store = createStore();
+    const http = createHttpClient();
+    const ctx = createContext({
+      document,
+      window,
+      settings: { ...defaultSettings, autoNightMode: 'OFF', nightMode: true },
+      store,
+      http,
+    });
+
+    const cleanup = mountGlobal(ctx) as () => void;
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+    expect(document.getElementById('nightModeStyle')).not.toBeNull();
+
+    let mutationCount = 0;
+    const counterObserver = new MutationObserver(() => {
+      mutationCount++;
+    });
+    counterObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    // Simulate native View/v2/js/main.js running later and setting dataset.theme = "light"
+    document.documentElement.dataset.theme = 'light';
+    await new Promise(r => setTimeout(r, 30));
+
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+    expect(document.getElementById('nightModeStyle')).not.toBeNull();
+    // 1 mutation from native script + 1 correction from plugin; must settle without looping
+    expect(mutationCount).toBeLessThanOrEqual(3);
+
+    // Switch plugin to explicit LIGHT mode
+    ctx.settings.nightMode = false;
+    applyTheme(ctx);
+    await new Promise(r => setTimeout(r, 20));
+    expect(document.documentElement.hasAttribute('data-theme')).toBe(false);
+    expect(document.getElementById('nightModeStyle')).toBeNull();
+
+    mutationCount = 0;
+    // Simulate native View/v2/js/main.js setting dataset.theme = "dark" from stale psnine-theme
+    document.documentElement.dataset.theme = 'dark';
+    await new Promise(r => setTimeout(r, 30));
+
+    expect(document.documentElement.hasAttribute('data-theme')).toBe(false);
+    expect(document.getElementById('nightModeStyle')).toBeNull();
+    expect(mutationCount).toBeLessThanOrEqual(3);
+
+    // After cleanup, observer must be disconnected and no longer intervene
+    cleanup();
+    counterObserver.disconnect();
+
+    document.documentElement.dataset.theme = 'dark';
+    await new Promise(r => setTimeout(r, 30));
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+  });
+
 
   it('unmasks spoiler bar on tap/click and keyboard Enter/Space', () => {
     document.body.innerHTML = `

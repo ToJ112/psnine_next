@@ -4,11 +4,13 @@
     "engine": "chromium",
     "name": "home",
     "url": "/",
-    "colorScheme": "light",
+    "colorScheme": "dark",
     "darkReadability": [],
     "errors": [],
     "checks": {
       "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -38,11 +40,19 @@
     "engine": "chromium",
     "name": "games",
     "url": "/psngame",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": ".box .text-strong",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
-      "themeApplied": true
+      "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true
     },
     "requestCount": 38,
     "characterSet": "UTF-8",
@@ -67,11 +77,29 @@
     "engine": "chromium",
     "name": "game",
     "url": "/psngame/46507",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": ".inav",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      },
+      {
+        "selector": ".box .text-strong",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      },
+      {
+        "selector": "#psnine-trophy-header-counts",
+        "contrast": 7.547550992532349,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
       "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -127,11 +155,29 @@
     "engine": "chromium",
     "name": "game-personal",
     "url": "/psngame/46507?psnid=toonn95",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": ".inav",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      },
+      {
+        "selector": ".box .text-strong",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      },
+      {
+        "selector": "#psnine-trophy-header-counts",
+        "contrast": 7.547550992532349,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
       "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -193,11 +239,13 @@
     "engine": "chromium",
     "name": "trophy",
     "url": "/trophy/12518001",
-    "colorScheme": "light",
+    "colorScheme": "dark",
     "darkReadability": [],
     "errors": [],
     "checks": {
-      "themeApplied": true
+      "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true
     },
     "requestCount": 39,
     "characterSet": "UTF-8",
@@ -223,11 +271,24 @@
     "engine": "chromium",
     "name": "reviews",
     "url": "/psngame/46507/comment",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": ".inav",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      },
+      {
+        "selector": ".box .text-strong",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
       "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -265,11 +326,19 @@
     "engine": "chromium",
     "name": "deals",
     "url": "/dd",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": "#psnine-fx-status",
+        "contrast": 7.547550992532349,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
       "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -310,11 +379,19 @@
     "engine": "chromium",
     "name": "deal-history",
     "url": "/dd/HP9000-CUSA10218_00-HRZCE00000000000",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": "#psnine-fx-status",
+        "contrast": 7.547550992532349,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
-      "themeApplied": true
+      "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true
     },
     "requestCount": 8,
     "characterSet": "UTF-8",
@@ -345,11 +422,13 @@
     "engine": "chromium",
     "name": "battle",
     "url": "/battle",
-    "colorScheme": "light",
+    "colorScheme": "dark",
     "darkReadability": [],
     "errors": [],
     "checks": {
-      "themeApplied": true
+      "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true
     },
     "requestCount": 55,
     "characterSet": "UTF-8",
@@ -398,11 +477,19 @@
     "engine": "chromium",
     "name": "profile",
     "url": "/psnid/toonn95",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": ".inav",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
-      "themeApplied": true
+      "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true
     },
     "requestCount": 41,
     "characterSet": "UTF-8",
@@ -427,11 +514,19 @@
     "engine": "chromium",
     "name": "topic",
     "url": "/topic/39074",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": ".content table.tbl td",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
-      "themeApplied": true
+      "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true
     },
     "requestCount": 39,
     "characterSet": "UTF-8",
@@ -455,11 +550,13 @@
     "engine": "chromium",
     "name": "qa",
     "url": "/qa",
-    "colorScheme": "light",
+    "colorScheme": "dark",
     "darkReadability": [],
     "errors": [],
     "checks": {
-      "themeApplied": true
+      "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true
     },
     "requestCount": 32,
     "characterSet": "UTF-8",
@@ -483,11 +580,19 @@
     "engine": "chromium",
     "name": "profile-games",
     "url": "/psnid/toonn95/psngame",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": ".inav",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
-      "themeApplied": true
+      "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true
     },
     "requestCount": 37,
     "characterSet": "UTF-8",
@@ -511,11 +616,13 @@
     "engine": "webkit",
     "name": "home",
     "url": "/",
-    "colorScheme": "light",
+    "colorScheme": "dark",
     "darkReadability": [],
     "errors": [],
     "checks": {
       "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -545,11 +652,19 @@
     "engine": "webkit",
     "name": "games",
     "url": "/psngame",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": ".box .text-strong",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
-      "themeApplied": true
+      "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true
     },
     "requestCount": 38,
     "characterSet": "UTF-8",
@@ -574,11 +689,29 @@
     "engine": "webkit",
     "name": "game",
     "url": "/psngame/46507",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": ".inav",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      },
+      {
+        "selector": ".box .text-strong",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      },
+      {
+        "selector": "#psnine-trophy-header-counts",
+        "contrast": 7.547550992532349,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
       "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -634,11 +767,29 @@
     "engine": "webkit",
     "name": "game-personal",
     "url": "/psngame/46507?psnid=toonn95",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": ".inav",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      },
+      {
+        "selector": ".box .text-strong",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      },
+      {
+        "selector": "#psnine-trophy-header-counts",
+        "contrast": 7.547550992532349,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
       "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -700,11 +851,13 @@
     "engine": "webkit",
     "name": "trophy",
     "url": "/trophy/12518001",
-    "colorScheme": "light",
+    "colorScheme": "dark",
     "darkReadability": [],
     "errors": [],
     "checks": {
-      "themeApplied": true
+      "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true
     },
     "requestCount": 39,
     "characterSet": "UTF-8",
@@ -730,11 +883,24 @@
     "engine": "webkit",
     "name": "reviews",
     "url": "/psngame/46507/comment",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": ".inav",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      },
+      {
+        "selector": ".box .text-strong",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
       "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -772,11 +938,19 @@
     "engine": "webkit",
     "name": "deals",
     "url": "/dd",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": "#psnine-fx-status",
+        "contrast": 7.547550992532349,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
       "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -817,11 +991,19 @@
     "engine": "webkit",
     "name": "deal-history",
     "url": "/dd/HP9000-CUSA10218_00-HRZCE00000000000",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": "#psnine-fx-status",
+        "contrast": 7.547550992532349,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
-      "themeApplied": true
+      "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true
     },
     "requestCount": 8,
     "characterSet": "UTF-8",
@@ -852,11 +1034,13 @@
     "engine": "webkit",
     "name": "battle",
     "url": "/battle",
-    "colorScheme": "light",
+    "colorScheme": "dark",
     "darkReadability": [],
     "errors": [],
     "checks": {
-      "themeApplied": true
+      "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true
     },
     "requestCount": 55,
     "characterSet": "UTF-8",
@@ -905,11 +1089,19 @@
     "engine": "webkit",
     "name": "profile",
     "url": "/psnid/toonn95",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": ".inav",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
-      "themeApplied": true
+      "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true
     },
     "requestCount": 41,
     "characterSet": "UTF-8",
@@ -934,11 +1126,19 @@
     "engine": "webkit",
     "name": "topic",
     "url": "/topic/39074",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": ".content table.tbl td",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
-      "themeApplied": true
+      "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true
     },
     "requestCount": 39,
     "characterSet": "UTF-8",
@@ -962,11 +1162,13 @@
     "engine": "webkit",
     "name": "qa",
     "url": "/qa",
-    "colorScheme": "light",
+    "colorScheme": "dark",
     "darkReadability": [],
     "errors": [],
     "checks": {
-      "themeApplied": true
+      "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true
     },
     "requestCount": 32,
     "characterSet": "UTF-8",
@@ -990,11 +1192,19 @@
     "engine": "webkit",
     "name": "profile-games",
     "url": "/psnid/toonn95/psngame",
-    "colorScheme": "light",
-    "darkReadability": [],
+    "colorScheme": "dark",
+    "darkReadability": [
+      {
+        "selector": ".inav",
+        "contrast": 13.375361079984712,
+        "backgroundLuminance": 0.015531285611919337
+      }
+    ],
     "errors": [],
     "checks": {
-      "themeApplied": true
+      "themeApplied": true,
+      "darkTextReadable": true,
+      "noBrightNavigation": true
     },
     "requestCount": 37,
     "characterSet": "UTF-8",
