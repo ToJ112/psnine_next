@@ -747,11 +747,9 @@ export const mountTrophies: Mount = async (ctx: Context) => {
       const activeManualControllers = new Map<string, AbortController>();
 
       const isPersonalPage = url.searchParams.has('psnid');
-      let currentFilterStatus: TrophyEarnedStatus | 'all' = 'all';
       let currentSortMode: TrophySortMode | null = null;
       let cleanupNativeSortDropdown: (() => void) | null = null;
-      let isSummaryFolded = settings.foldTrophySummary;
-      let isChartFolded = settings.foldTrophyChart;
+      let cleanupNativeFilterSync: (() => void) | null = null;
       let isBatchRunning = false;
 
       const applyActiveSortToTables = (mode: TrophySortMode) => {
@@ -1047,203 +1045,170 @@ export const mountTrophies: Mount = async (ctx: Context) => {
       };
 
       let currentTrophies: TrophyItem[] = [];
-      let lastStatsKey = '';
-      let lastTrophiesKey = '';
+      let observedOwnBtn: HTMLElement | null = null;
+      let observedUnownBtn: HTMLElement | null = null;
+      let nativeFilterClassObserver: MutationObserver | null = null;
+      let docFilterClickBound = false;
 
-      // Stable Panel Initialization
-      let mainPanel = doc.getElementById('psnine-trophy-stats-panel');
-      if (!mainPanel) {
-        mainPanel = doc.createElement('div');
-        mainPanel.id = 'psnine-trophy-stats-panel';
-        mainPanel.setAttribute('data-psnine-next', 'true');
-        mainPanel.className = 'psnine-trophy-panel';
+      const getNativeFilterControls = (): { ownBtn: HTMLElement | null; unownBtn: HTMLElement | null } => {
+        const ownBtn = doc.querySelector<HTMLElement>('ul.dropmenu .own, .o_btn.own, [onclick*="getOwn"]');
+        const unownBtn = doc.querySelector<HTMLElement>('ul.dropmenu .unown, .o_btn.unown, [onclick*="getUnOwn"]');
+        return { ownBtn, unownBtn };
+      };
 
-        const target = doc.querySelector('.main, .box.pd10, .min-inner');
-        const firstTbl = doc.querySelector('table.list');
-        if (firstTbl && firstTbl.parentElement) {
-          firstTbl.parentElement.insertBefore(mainPanel, firstTbl);
-        } else if (target) {
-          target.appendChild(mainPanel);
-        }
-      }
+      const getNativeFilterMode = (): 'all' | 'earned' | 'unearned' => {
+        const { ownBtn, unownBtn } = getNativeFilterControls();
+        if (ownBtn?.classList.contains('select')) return 'earned';
+        if (unownBtn?.classList.contains('select')) return 'unearned';
+        return 'all';
+      };
 
-      const buildIconChips = (chipsContainer: HTMLElement, trophies: TrophyItem[]) => {
-        chipsContainer.innerHTML = '';
-        trophies.forEach((t) => {
-          const chip = doc.createElement('button');
-          chip.type = 'button';
-          chip.className = 'psnine-trophy-icon-chip';
-          chip.setAttribute('data-psnine-next', 'true');
-          chip.setAttribute('data-trophy-id', t.trophyId);
-          chip.style.cssText = `width:36px;height:36px;border-radius:4px;overflow:hidden;position:relative;cursor:pointer;padding:0;background:transparent;border:1px solid ${t.status === 'earned' ? '#28a745' : 'var(--p9n-border,#ccd6dd)'};opacity:${t.status === 'unearned' ? '0.6' : '1'};`;
-          chip.title = `${t.name} (${t.type})${t.tipsCount > 0 ? ` | 💡${t.tipsCount}Tips` : ''}`;
+      const isTrophyRowEarned = (t: TrophyItem): boolean => {
+        return t.status === 'earned' || t.row.querySelector('.earned') !== null;
+      };
 
-          if (t.iconSrc) {
-            const img = doc.createElement('img');
-            img.src = t.iconSrc;
-            img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
-            chip.appendChild(img);
-          }
+      const isTrophyRowFilteredOut = (t: TrophyItem): boolean => {
+        const nativeMode = getNativeFilterMode();
+        const isEarned = isTrophyRowEarned(t);
+        const shouldHideByNativeMode =
+          (nativeMode === 'earned' && !isEarned) ||
+          (nativeMode === 'unearned' && isEarned);
+        return shouldHideByNativeMode || t.row.style.display === 'none' || t.row.hidden;
+      };
 
-          if (t.tipsCount > 0) {
-            const tipCountBadge = doc.createElement('span');
-            tipCountBadge.style.cssText = 'position:absolute;bottom:0;right:0;background:#ff9800;color:#fff;font-size:9px;padding:0 2px;border-radius:2px;';
-            tipCountBadge.textContent = String(t.tipsCount);
-            chip.appendChild(tipCountBadge);
-          }
+      const syncNativeFilter = () => {
+        if (!isActive) return;
+        const nativeMode = getNativeFilterMode();
 
-          chip.onclick = () => {
-            const previewCard = doc.getElementById('psnine-trophy-preview-card');
-            if (previewCard) {
-              previewCard.className = 'psnine-trophy-preview-card';
-              previewCard.style.display = 'block';
-              previewCard.innerHTML = '';
+        currentTrophies.forEach((t) => {
+          const isEarned = isTrophyRowEarned(t);
+          const shouldHideByNativeMode =
+            (nativeMode === 'earned' && !isEarned) ||
+            (nativeMode === 'unearned' && isEarned);
 
-              const titleLine = doc.createElement('div');
-              titleLine.style.cssText = 'font-weight:bold;margin-bottom:2px;';
-              titleLine.textContent = `${t.name} (${t.type}) - ${t.rarityPercent}%`;
-              previewCard.appendChild(titleLine);
-
-              const descLine = doc.createElement('div');
-              descLine.style.cssText = 'color:var(--p9n-muted,#5f6b7a);margin-bottom:4px;';
-              descLine.textContent = t.description;
-              previewCard.appendChild(descLine);
-
-              const actionLine = doc.createElement('div');
-              actionLine.style.cssText = 'font-size:11px;display:flex;gap:10px;align-items:center;';
-
-              const tipsSpan = doc.createElement('span');
-              tipsSpan.textContent = `Tips: ${t.tipsCount}条`;
-              actionLine.appendChild(tipsSpan);
-
-              const jumpA = doc.createElement('a');
-              jumpA.setAttribute('data-psnine-next', 'true');
-              jumpA.href = `#trophy-${t.trophyId}`;
-              jumpA.style.cssText = 'color:#3890ff;text-decoration:none;cursor:pointer;';
-              jumpA.textContent = '跳转至行 ↓';
-              jumpA.onclick = (e) => {
-                e.preventDefault();
-                t.row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              };
-              actionLine.appendChild(jumpA);
-
-              previewCard.appendChild(actionLine);
+          if (shouldHideByNativeMode) {
+            if (t.row.style.display !== 'none') {
+              t.row.style.display = 'none';
+              t.row.setAttribute('data-psnine-native-sync-hidden', 'true');
             }
-          };
+          } else if (t.row.getAttribute('data-psnine-native-sync-hidden') === 'true') {
+            t.row.removeAttribute('data-psnine-native-sync-hidden');
+            if (t.row.style.display === 'none') {
+              t.row.style.removeProperty('display');
+            }
+          }
 
-          chipsContainer.appendChild(chip);
+          const rowIsHidden = shouldHideByNativeMode || t.row.style.display === 'none' || t.row.hidden;
+          const tipRow = t.table.querySelector<HTMLElement>(`tr.psnine-inline-tip-row[data-for-trophy="${t.trophyId}"]`);
+          if (tipRow && isHiddenByReason(tipRow, 'trophy-status-filter') !== rowIsHidden) {
+            setHidden(tipRow, 'trophy-status-filter', rowIsHidden);
+          }
         });
       };
 
-      const enhanceTrophyPage = (initialBuild = false) => {
+      const onDocNativeFilterClick = (e: MouseEvent) => {
+        if (!isActive) return;
+        const target = e.target as Node | null;
+        if (!target) return;
+        const { ownBtn, unownBtn } = getNativeFilterControls();
+        const hitOwn = ownBtn ? (ownBtn === target || ownBtn.contains(target)) : false;
+        const hitUnown = unownBtn ? (unownBtn === target || unownBtn.contains(target)) : false;
+        if (!hitOwn && !hitUnown) return;
+        syncNativeFilter();
+        queueMicrotask(() => {
+          if (isActive) syncNativeFilter();
+        });
+      };
+
+      const ensureNativeFilterSync = () => {
+        if (!docFilterClickBound) {
+          doc.addEventListener('click', onDocNativeFilterClick);
+          docFilterClickBound = true;
+        }
+
+        const { ownBtn, unownBtn } = getNativeFilterControls();
+        if (ownBtn !== observedOwnBtn || unownBtn !== observedUnownBtn) {
+          nativeFilterClassObserver?.disconnect();
+          nativeFilterClassObserver = null;
+          observedOwnBtn = ownBtn;
+          observedUnownBtn = unownBtn;
+
+          if (ownBtn || unownBtn) {
+            nativeFilterClassObserver = new MutationObserver(() => {
+              if (isActive) syncNativeFilter();
+            });
+            if (ownBtn) {
+              nativeFilterClassObserver.observe(ownBtn, { attributes: true, attributeFilter: ['class'] });
+            }
+            if (unownBtn && unownBtn !== ownBtn) {
+              nativeFilterClassObserver.observe(unownBtn, { attributes: true, attributeFilter: ['class'] });
+            }
+          }
+        }
+
+        cleanupNativeFilterSync = () => {
+          if (docFilterClickBound) {
+            doc.removeEventListener('click', onDocNativeFilterClick);
+            docFilterClickBound = false;
+          }
+          nativeFilterClassObserver?.disconnect();
+          nativeFilterClassObserver = null;
+          observedOwnBtn = null;
+          observedUnownBtn = null;
+
+          doc.querySelectorAll<HTMLElement>('tr.psnine-inline-tip-row').forEach((tipRow) => {
+            if (isHiddenByReason(tipRow, 'trophy-status-filter')) {
+              setHidden(tipRow, 'trophy-status-filter', false);
+            }
+          });
+          doc.querySelectorAll<HTMLElement>('tr[data-psnine-native-sync-hidden="true"]').forEach((row) => {
+            row.removeAttribute('data-psnine-native-sync-hidden');
+            if (row.style.display === 'none') {
+              row.style.removeProperty('display');
+            }
+          });
+        };
+      };
+
+      const enhanceTrophyPage = () => {
         currentTrophies = parseTrophyRows(doc, isPersonalPage);
         if (currentTrophies.length === 0) return;
 
         ensureNativeSortDropdown();
+        ensureNativeFilterSync();
 
-        const stats = calculateTrophyStats(currentTrophies);
+        doc.getElementById('psnine-trophy-stats-panel')?.remove();
 
-        if (initialBuild || !mainPanel?.hasChildNodes()) {
-          lastStatsKey = `${stats.total}:${stats.platinum}:${stats.gold}:${stats.silver}:${stats.bronze}:${stats.earnedCount}:${stats.unearnedCount}:${stats.timeCurve.length}`;
-          lastTrophiesKey = currentTrophies.map(t => `${t.trophyId}:${t.status}:${t.tipsCount}`).join(',');
+        let tipsToolbar = doc.getElementById('psnine-trophy-tips-toolbar');
+        if (!tipsToolbar) {
+          tipsToolbar = doc.createElement('div');
+          tipsToolbar.id = 'psnine-trophy-tips-toolbar';
+          tipsToolbar.setAttribute('data-psnine-next', 'true');
+          tipsToolbar.className = 'psnine-trophy-toolbar';
 
-          mainPanel!.innerHTML = `
-            <div data-psnine-next="true" class="psnine-trophy-overview-top">
-              <div data-psnine-next="true" id="psnine-trophy-header-title" class="psnine-trophy-card-hd">
-                <span class="psnine-trophy-title-text">奖杯概览</span>
-                <span id="psnine-trophy-header-counts">[白${stats.platinum} 金${stats.gold} 银${stats.silver} 铜${stats.bronze}]</span>
-                ${isPersonalPage ? `
-                  <span class="psnine-trophy-completion" id="psnine-trophy-completion-badge">
-                    已获 ${stats.earnedCount} · 未获 ${stats.unearnedCount} · 数量占比 ${((stats.earnedCount / stats.total) * 100).toFixed(1)}%
-                  </span>
-                ` : `
-                  <span class="psnine-trophy-completion" id="psnine-trophy-completion-badge">公开奖杯列表 · 共 ${stats.total} 个</span>
-                `}
-              </div>
+          const target = doc.querySelector('.main, .box.pd10, .min-inner');
+          const firstTbl = doc.querySelector('table.list');
+          if (firstTbl && firstTbl.parentElement) {
+            firstTbl.parentElement.insertBefore(tipsToolbar, firstTbl);
+          } else if (target) {
+            target.appendChild(tipsToolbar);
+          }
+        }
 
-              <!-- Action Toolbar -->
-              <div data-psnine-next="true" class="psnine-trophy-toolbar">
-                <div data-psnine-next="true" class="psnine-trophy-action-group">
-                  <button type="button" id="psnine-toggle-summary-btn" class="psnine-trophy-pill-btn" data-psnine-next="true">
-                    ${isSummaryFolded ? '展开图标汇总' : '折叠图标汇总'}
-                  </button>
-                  <button type="button" id="psnine-toggle-charts-btn" class="psnine-trophy-pill-btn" data-psnine-next="true">
-                    ${isChartFolded ? '展开图表' : '折叠图表'}
-                  </button>
-                </div>
-
-                <div data-psnine-next="true" class="psnine-trophy-action-group">
-                  ${isPersonalPage ? `
-                    <button type="button" id="psnine-filter-status-btn" class="psnine-trophy-pill-btn${currentFilterStatus !== 'all' ? ' active' : ''}" data-psnine-next="true" aria-pressed="${currentFilterStatus !== 'all'}">
-                      筛选: ${currentFilterStatus === 'all' ? '全部' : currentFilterStatus === 'unearned' ? '仅未获' : '仅已获'}
-                    </button>
-                  ` : ''}
-
-                  <button type="button" id="psnine-batch-load-all-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true">
-                    展开所有Tips
-                  </button>
-                  <button type="button" id="psnine-batch-load-unearned-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true"${!isPersonalPage ? ' disabled title="公开页面无法确认获得状态，请访问个人奖杯页使用此功能"' : ''}>
-                    展开未获Tips
-                  </button>
-                  <button type="button" id="psnine-stop-batch-tips-btn" class="psnine-trophy-pill-btn danger" data-psnine-next="true" style="display:none;">
-                    停止加载
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div id="psnine-trophy-charts-container" data-psnine-next="true" style="display:${isChartFolded ? 'none' : 'block'};">
-              ${renderTrophyChartsSvg(stats)}
-            </div>
-
-            <div data-psnine-next="true" id="psnine-trophy-icon-grid-wrapper" class="psnine-trophy-icon-grid-wrapper" style="display:${isSummaryFolded ? 'none' : 'block'};">
-              <div class="psnine-trophy-icon-grid-title" style="font-size:12px;font-weight:600;margin-bottom:6px;">奖杯图标汇总 (点击快速定位):</div>
-              <div id="psnine-trophy-icon-chips-container" data-psnine-next="true" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
-              <div id="psnine-trophy-preview-card" class="psnine-trophy-preview-card" data-psnine-next="true" style="display:none;"></div>
+        if (!tipsToolbar.hasChildNodes()) {
+          tipsToolbar.innerHTML = `
+            <div data-psnine-next="true" class="psnine-trophy-action-group">
+              <button type="button" id="psnine-batch-load-all-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true">
+                展开所有Tips
+              </button>
+              <button type="button" id="psnine-batch-load-unearned-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true"${!isPersonalPage ? ' disabled title="公开页面无法确认获得状态，请访问个人奖杯页使用此功能"' : ''}>
+                展开未获Tips
+              </button>
+              <button type="button" id="psnine-stop-batch-tips-btn" class="psnine-trophy-pill-btn danger" data-psnine-next="true" style="display:none;">
+                停止加载
+              </button>
             </div>
           `;
-
-          const chipsContainer = doc.getElementById('psnine-trophy-icon-chips-container');
-          if (chipsContainer) {
-            buildIconChips(chipsContainer, currentTrophies);
-          }
-
-          // T06 & T07 Toggles
-          doc.getElementById('psnine-toggle-summary-btn')!.onclick = () => {
-            isSummaryFolded = !isSummaryFolded;
-            const w = doc.getElementById('psnine-trophy-icon-grid-wrapper');
-            if (w) w.style.display = isSummaryFolded ? 'none' : 'block';
-            doc.getElementById('psnine-toggle-summary-btn')!.textContent = isSummaryFolded ? '展开图标汇总' : '折叠图标汇总';
-          };
-          doc.getElementById('psnine-toggle-charts-btn')!.onclick = () => {
-            isChartFolded = !isChartFolded;
-            const c = doc.getElementById('psnine-trophy-charts-container');
-            if (c) c.style.display = isChartFolded ? 'none' : 'block';
-            doc.getElementById('psnine-toggle-charts-btn')!.textContent = isChartFolded ? '展开图表' : '折叠图表';
-          };
-
-          // T10 Filter Binding
-          const filterBtn = doc.getElementById('psnine-filter-status-btn');
-          if (filterBtn) {
-            filterBtn.onclick = () => {
-              if (currentFilterStatus === 'all') currentFilterStatus = 'unearned';
-              else if (currentFilterStatus === 'unearned') currentFilterStatus = 'earned';
-              else currentFilterStatus = 'all';
-
-              filterBtn.textContent = `筛选: ${currentFilterStatus === 'all' ? '全部' : currentFilterStatus === 'unearned' ? '仅未获' : '仅已获'}`;
-              filterBtn.classList.toggle('active', currentFilterStatus !== 'all');
-              filterBtn.setAttribute('aria-pressed', String(currentFilterStatus !== 'all'));
-
-              currentTrophies.forEach((t) => {
-                const hide = currentFilterStatus !== 'all' && t.status !== currentFilterStatus;
-                setHidden(t.row, 'trophy-status-filter', hide);
-                const tipRow = t.table.querySelector(`tr.psnine-inline-tip-row[data-for-trophy="${t.trophyId}"]`);
-                if (tipRow) {
-                  setHidden(tipRow as HTMLElement, 'trophy-status-filter', hide);
-                }
-              });
-            };
-          }
 
           // T12 Batch Tips Loading
           const runBatchQueue = async (unearnedOnly: boolean) => {
@@ -1306,62 +1271,11 @@ export const mountTrophies: Mount = async (ctx: Context) => {
               if (batchUnearnedBtn) batchUnearnedBtn.style.display = 'inline-block';
             };
           }
-        } else {
-          // Dynamic onContent update without innerHTML destruction
-          // Charts & header counts update only when data changed (preserves focus and open details)
-          const statsKey = `${stats.total}:${stats.platinum}:${stats.gold}:${stats.silver}:${stats.bronze}:${stats.earnedCount}:${stats.unearnedCount}:${stats.timeCurve.length}`;
-          if (statsKey !== lastStatsKey) {
-            lastStatsKey = statsKey;
-            const badge = doc.getElementById('psnine-trophy-completion-badge');
-            if (badge) {
-              badge.className = 'psnine-trophy-completion';
-              if (isPersonalPage) {
-                badge.textContent = `已获 ${stats.earnedCount} · 未获 ${stats.unearnedCount} · 数量占比 ${((stats.earnedCount / stats.total) * 100).toFixed(1)}%`;
-              } else {
-                badge.textContent = `公开奖杯列表 · 共 ${stats.total} 个`;
-              }
-            }
-
-            const headerCounts = doc.getElementById('psnine-trophy-header-counts');
-            if (headerCounts) {
-              headerCounts.textContent = `[白${stats.platinum} 金${stats.gold} 银${stats.silver} 铜${stats.bronze}]`;
-            }
-
-            const chartsContainer = doc.getElementById('psnine-trophy-charts-container');
-            if (chartsContainer) {
-              const wasDetailsOpen = chartsContainer.querySelector('details')?.open;
-              chartsContainer.innerHTML = renderTrophyChartsSvg(stats);
-              if (wasDetailsOpen) {
-                const d = chartsContainer.querySelector('details');
-                if (d) d.open = true;
-              }
-            }
-          }
-
-          // Chips update only when trophies count or IDs changed
-          const trophiesKey = currentTrophies.map(t => `${t.trophyId}:${t.status}:${t.tipsCount}`).join(',');
-          if (trophiesKey !== lastTrophiesKey) {
-            lastTrophiesKey = trophiesKey;
-            const chipsContainer = doc.getElementById('psnine-trophy-icon-chips-container');
-            if (chipsContainer) {
-              buildIconChips(chipsContainer, currentTrophies);
-            }
-          }
-
-          if (currentSortMode !== null) {
-            applyActiveSortToTables(currentSortMode);
-          }
-
-          // Apply current filter state to new rows
-          currentTrophies.forEach((t) => {
-            const hide = currentFilterStatus !== 'all' && t.status !== currentFilterStatus;
-            setHidden(t.row, 'trophy-status-filter', hide);
-            const tipRow = t.table.querySelector(`tr.psnine-inline-tip-row[data-for-trophy="${t.trophyId}"]`);
-            if (tipRow) {
-              setHidden(tipRow as HTMLElement, 'trophy-status-filter', hide);
-            }
-          });
+        } else if (currentSortMode !== null) {
+          applyActiveSortToTables(currentSortMode);
         }
+
+        syncNativeFilter();
 
         // T11 Single Tip Loader Binding
         currentTrophies.forEach((t) => {
@@ -1423,7 +1337,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
         tipRow.setAttribute('data-psnine-next', 'true');
         tipRow.setAttribute('data-for-trophy', t.trophyId);
 
-        if (currentFilterStatus !== 'all' && t.status !== currentFilterStatus) {
+        if (isTrophyRowFilteredOut(t)) {
           setHidden(tipRow, 'trophy-status-filter', true);
         }
 
@@ -1670,15 +1584,17 @@ export const mountTrophies: Mount = async (ctx: Context) => {
         }
       };
 
-      enhanceTrophyPage(true);
+      enhanceTrophyPage();
       const unsubscribe = onContent(() => {
-        if (isActive) enhanceTrophyPage(false);
+        if (isActive) enhanceTrophyPage();
       });
 
       return () => {
         isActive = false;
         cleanupNativeSortDropdown?.();
         cleanupNativeSortDropdown = null;
+        cleanupNativeFilterSync?.();
+        cleanupNativeFilterSync = null;
         pageAbortController.abort();
         batchAbortController?.abort();
         activeManualControllers.forEach(ctrl => ctrl.abort());

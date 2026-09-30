@@ -1,6 +1,6 @@
 {
   "name": "psnine_next",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Next-generation userscript for PSNINE, modernized in TypeScript and designed for desktop Tampermonkey and mobile Safari Stay userscripts",
   "private": true,
   "type": "module",

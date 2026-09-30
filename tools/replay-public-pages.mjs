@@ -71,7 +71,7 @@ for (const [engine,launcher] of [['chromium',chromium],['webkit',webkit]]) {
   const darkReadability=colorScheme==='dark'?await page.evaluate(()=>{
     const parse=c=>{const v=c.match(/[\d.]+/g)?.map(Number)||[0,0,0];return [v[0],v[1],v[2],v[3]??1];};
     const luminance=rgb=>rgb.slice(0,3).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
-    const selectors=['.inav','.box .text-strong','#psnine-trophy-header-counts','#psnine-score-dist-container > div > div','#psnine-fx-status','.content table.tbl td'];
+    const selectors=['.inav','.box .text-strong','#psnine-batch-load-all-tips-btn','#psnine-score-dist-container > div > div','#psnine-fx-status','.content table.tbl td'];
     return selectors.flatMap(selector=>{
       const el=document.querySelector(selector);if(!el)return [];
       const foreground=parse(getComputedStyle(el).color);const layers=[];
@@ -125,26 +125,9 @@ for (const [engine,launcher] of [['chromium',chromium],['webkit',webkit]]) {
     await page.locator('[data-psnine-sort="initial"]').tap();await page.waitForTimeout(150);
     checks.originalRestored=original===await order();
     checks.nativeLinksPreserved=await page.evaluate(()=>window.__nativeSortLinks.length===3 && window.__nativeSortLinks.every(({node,href})=>node.isConnected && node.getAttribute('href')===href));
-    if(name==='game-personal'){
-      const filterBefore=await page.locator('#psnine-filter-status-btn').evaluate(el=>getComputedStyle(el).borderTopColor);
-      await page.locator('#psnine-filter-status-btn').click();
-      await page.mouse.move(0,0);
-      // Wait for the CSS transition, and check the selected state without hover styling.
-      await page.waitForFunction(before=>{
-        const el=document.getElementById('psnine-filter-status-btn');
-        return el?.getAttribute('aria-pressed')==='true' && !el.matches(':hover') && getComputedStyle(el).borderTopColor!==before;
-      },filterBefore,{timeout:3000});
-      checks.activeFilterStyle=await page.locator('#psnine-filter-status-btn').evaluate((el,before)=>el.getAttribute('aria-pressed')==='true'&&!el.matches(':hover')&&getComputedStyle(el).borderTopColor!==before,filterBefore);
-      checks.unearnedFilter=await page.locator('tr.trophy').evaluateAll(rs=>({hidden:rs.filter(r=>r.hidden).length,visible:rs.filter(r=>!r.hidden).length}));
-      await page.locator('#psnine-filter-status-btn').click();await page.locator('#psnine-filter-status-btn').click();
-      await page.mouse.move(0,0);
-      await page.waitForFunction(before=>{
-        const el=document.getElementById('psnine-filter-status-btn');
-        return el?.getAttribute('aria-pressed')==='false' && !el.matches(':hover') && getComputedStyle(el).borderTopColor===before;
-      },filterBefore,{timeout:3000});
-      checks.filterStyleRestored=true;
-      checks.filterRestored=await page.locator('tr.trophy').evaluateAll(rs=>rs.every(r=>!r.hidden));
-    }
+    checks.noTrophyOverview=await page.locator('#psnine-trophy-stats-panel, #psnine-trophy-header-title, #psnine-filter-status-btn, #psnine-trophy-charts-container, #psnine-trophy-icon-grid-wrapper').count()===0;
+    checks.tipsToolbar=await page.locator('#psnine-trophy-tips-toolbar').isVisible();
+    checks.tipsActions=await page.locator('#psnine-batch-load-all-tips-btn').isEnabled() && (name==='game-personal' ? await page.locator('#psnine-batch-load-unearned-tips-btn').isEnabled() : await page.locator('#psnine-batch-load-unearned-tips-btn').isDisabled());
   }
   if(name==='deals'){
     await page.locator('#psnine-toggle-best-deal-btn').click();

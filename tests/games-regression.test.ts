@@ -5,10 +5,12 @@ import {
   syncUserGameProgress,
   parseGameRowProgress,
   extractElementProgressPercent,
+  hasOfficialGameProgress,
   mountGames,
   UserProgressData
 } from '../src/features/games';
 import { Context, defaultSettings, Store } from '../src/core/types';
+import { CORE_STYLES, DARK_THEME_STYLES } from '../src/styles/index';
 
 describe('Games Feature Module - Comprehensive Regressions', () => {
   beforeEach(() => {
@@ -756,6 +758,245 @@ describe('Games Feature Module - Comprehensive Regressions', () => {
       expect(savedCache?.games?.['3333'].percent).toBe(75);
 
       if (cleanup) cleanup();
+    });
+  });
+
+  describe('6. P06 Progress Colors, Official Bar Non-Duplication, Theme Tokens & Dynamic Rows', () => {
+    it('keeps official progress without duplicate badge or plugin gradient, and preserves custom native row background', async () => {
+      const now = Date.now();
+      const storeState: UserProgressData = {
+        userId: 'alice',
+        games: {
+          '101': { gameId: '101', percent: 38, platinum: false, updatedAt: now },
+          '102': { gameId: '102', percent: 42, platinum: false, updatedAt: now },
+          '103': { gameId: '103', percent: 75, platinum: false, updatedAt: now }
+        },
+        lastFullSync: now,
+        nextRefresh: now + 3600000,
+        refreshInterval: 3600000,
+        syncCursorPage: 1,
+        syncStatus: 'full'
+      };
+
+      const customGradient = 'linear-gradient(90deg, rgba(255, 0, 0, 0.1) 10%, transparent 10%)';
+      document.body.innerHTML = `
+        <table>
+          <tr id="row-101" style="background: ${customGradient}">
+            <td class="pd15"><a href="/psngame/101"><img src="c1.png" /></a></td>
+            <td><a href="/psngame/101">Game 101</a></td>
+            <td><div class="progress"><div style="width: 38%">38%</div></div></td>
+          </tr>
+          <tr id="row-102">
+            <td class="pd15"><a href="/psngame/102"><img src="c2.png" /></a></td>
+            <td><a href="/psngame/102">Game 102</a></td>
+            <td></td>
+          </tr>
+        </table>
+      `;
+
+      let onContentCb: (() => void) | null = null;
+      const ctx: Context = {
+        document,
+        window,
+        url: new URL('https://psnine.com/psnid/alice/psngame'),
+        settings: { ...defaultSettings },
+        store: {
+          get: vi.fn().mockResolvedValue(storeState),
+          set: vi.fn().mockResolvedValue(undefined),
+          remove: vi.fn()
+        },
+        http: { text: vi.fn(), document: vi.fn(), json: vi.fn() },
+        userId: 'alice',
+        onContent: vi.fn().mockImplementation((cb) => {
+          onContentCb = cb;
+          return () => { onContentCb = null; };
+        }),
+        report: vi.fn()
+      };
+
+      const cleanup = await mountGames(ctx);
+
+      const row101 = document.getElementById('row-101') as HTMLElement;
+      const row102 = document.getElementById('row-102') as HTMLElement;
+
+      // Row 101 has official progress: NO duplicate badge, native custom background preserved
+      expect(row101.querySelector('.psnine-game-list-progress-badge')).toBeNull();
+      expect(row101.querySelector('.progress > div')?.textContent).toBe('38%');
+      expect(row101.style.background).toContain('linear-gradient');
+
+      // Row 102 has no official bar: renders cached 42% badge and no plugin row gradient
+      const badge102 = row102.querySelector('.psnine-game-list-progress-badge');
+      expect(badge102).not.toBeNull();
+      expect(badge102?.textContent).toBe('42%');
+      expect(row102.style.background).toBe('');
+
+      // Dynamic update: website later supplies official 52% bar on row 102
+      row102.querySelector('td:last-child')!.innerHTML = '<div class="progress"><div style="width: 52%">52%</div></div>';
+      if (onContentCb) (onContentCb as () => void)();
+
+      expect(row102.querySelector('.psnine-game-list-progress-badge')).toBeNull();
+      expect(row102.querySelector('.progress > div')?.textContent).toBe('52%');
+
+      // Dynamic row addition without official bar
+      const tbody = document.querySelector('table tbody') || document.querySelector('table')!;
+      const tr103 = document.createElement('tr');
+      tr103.id = 'row-103';
+      tr103.innerHTML = '<td class="pd15"><a href="/psngame/103">Game 103</a></td><td></td>';
+      tbody.appendChild(tr103);
+      if (onContentCb) (onContentCb as () => void)();
+
+      expect(tr103.querySelector('.psnine-game-list-progress-badge')?.textContent).toBe('75%');
+
+      // Cleanup removes only plugin badge and keeps native custom style
+      if (cleanup) cleanup();
+      expect(document.querySelectorAll('.psnine-game-list-progress-badge').length).toBe(0);
+      expect(row101.style.background).toContain('linear-gradient');
+    });
+
+    it('preserves another user official progress without overlaying my cached progress', async () => {
+      const now = Date.now();
+      const myCache: UserProgressData = {
+        userId: 'alice',
+        games: {
+          '101': { gameId: '101', percent: 38, platinum: true, updatedAt: now },
+          '102': { gameId: '102', percent: 100, platinum: true, updatedAt: now }
+        },
+        lastFullSync: now,
+        nextRefresh: now + 3600000,
+        refreshInterval: 3600000,
+        syncCursorPage: 1,
+        syncStatus: 'full'
+      };
+
+      document.body.innerHTML = `
+        <table>
+          <tr id="other-row-101" style="background: linear-gradient(90deg, #111, #222)">
+            <td class="pd15"><a href="/psngame/101">Game 101</a></td>
+            <td><div class="progress"><div style="width: 5%">5%</div></div></td>
+          </tr>
+          <tr id="other-row-102">
+            <td class="pd15"><a href="/psngame/102">Game 102</a></td>
+            <td></td>
+          </tr>
+        </table>
+      `;
+
+      const ctx: Context = {
+        document,
+        window,
+        url: new URL('https://psnine.com/psnid/bob/psngame'),
+        settings: { ...defaultSettings },
+        store: {
+          get: vi.fn().mockResolvedValue(myCache),
+          set: vi.fn(),
+          remove: vi.fn()
+        },
+        http: { text: vi.fn(), document: vi.fn(), json: vi.fn() },
+        userId: 'alice',
+        onContent: vi.fn().mockReturnValue(() => {}),
+        report: vi.fn()
+      };
+
+      const cleanup = await mountGames(ctx);
+
+      expect(document.querySelectorAll('.psnine-game-list-progress-badge').length).toBe(0);
+      expect(document.querySelector('#other-row-101 .progress > div')?.textContent).toBe('5%');
+      expect((document.getElementById('other-row-101') as HTMLElement).style.background).toContain('linear-gradient');
+
+      if (cleanup) cleanup();
+    });
+
+    it('uses theme tokens for badge with contrast >= 4.5 in both light and dark modes', async () => {
+      const now = Date.now();
+      const storeState: UserProgressData = {
+        userId: 'alice',
+        games: {
+          '102': { gameId: '102', percent: 42, platinum: false, updatedAt: now }
+        },
+        lastFullSync: now,
+        nextRefresh: now + 3600000,
+        refreshInterval: 3600000,
+        syncCursorPage: 1,
+        syncStatus: 'full'
+      };
+
+      const styleEl = document.createElement('style');
+      styleEl.textContent = CORE_STYLES + '\n' + DARK_THEME_STYLES;
+      document.head.appendChild(styleEl);
+
+      document.body.innerHTML = `
+        <table>
+          <tr id="theme-row-102">
+            <td class="pd15"><a href="/psngame/102">Game 102</a></td>
+          </tr>
+        </table>
+      `;
+
+      const ctx: Context = {
+        document,
+        window,
+        url: new URL('https://psnine.com/psngame'),
+        settings: { ...defaultSettings },
+        store: {
+          get: vi.fn().mockResolvedValue(storeState),
+          set: vi.fn(),
+          remove: vi.fn()
+        },
+        http: { text: vi.fn(), document: vi.fn(), json: vi.fn() },
+        userId: 'alice',
+        onContent: vi.fn().mockReturnValue(() => {}),
+        report: vi.fn()
+      };
+
+      const cleanup = await mountGames(ctx);
+      const badge = document.querySelector('.psnine-game-list-progress-badge') as HTMLElement;
+      expect(badge).not.toBeNull();
+      expect(badge.getAttribute('style') || '').not.toContain('#0056b3');
+
+      expect(CORE_STYLES).toContain('.psnine-game-list-progress-badge');
+      expect(CORE_STYLES).toContain('var(--p9n-surface-alt');
+      expect(CORE_STYLES).toContain('var(--p9n-text');
+      expect(DARK_THEME_STYLES).toContain('html[data-theme="dark"] .psnine-game-list-progress-badge');
+
+      // Verify contrast calculation for light (#1f2937 on #f4f6fa) and dark (#e6ebf2 on #202c3a)
+      const calcContrast = (fg: [number, number, number], bg: [number, number, number]) => {
+        const lum = (rgb: [number, number, number]) =>
+          rgb.map(v => v / 255).map(v => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4))
+            .reduce((s, v, i) => s + v * [0.2126, 0.7152, 0.0722][i], 0);
+        const l1 = lum(fg);
+        const l2 = lum(bg);
+        return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+      };
+
+      expect(calcContrast([31, 41, 55], [244, 246, 250])).toBeGreaterThanOrEqual(4.5);
+      expect(calcContrast([230, 235, 242], [32, 44, 58])).toBeGreaterThanOrEqual(4.5);
+
+      if (cleanup) cleanup();
+      styleEl.remove();
+    });
+
+    it('excludes plugin nodes and their unmarked descendants when extracting progress percentage', () => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>
+          <a href="/psngame/46507">Balatro</a>
+          <span class="psnine-game-list-progress-badge" data-psnine-next="true">88%</span>
+          <div class="progress" data-psnine-next="true"><div style="width: 99%">99%</div></div>
+        </td>
+      `;
+
+      const unmarkedChildDiv = tr.querySelector('.progress > div');
+      expect(extractElementProgressPercent(unmarkedChildDiv)).toBeNull();
+      expect(hasOfficialGameProgress(tr)).toBe(false);
+      expect(parseGameRowProgress(tr)?.percent).toBeNull();
+
+      // Add real official progress bar alongside plugin nodes
+      const td = document.createElement('td');
+      td.innerHTML = '<div class="progress"><div style="width: 38%">38%</div></div>';
+      tr.appendChild(td);
+
+      expect(hasOfficialGameProgress(tr)).toBe(true);
+      expect(parseGameRowProgress(tr)?.percent).toBe(38);
     });
   });
 });

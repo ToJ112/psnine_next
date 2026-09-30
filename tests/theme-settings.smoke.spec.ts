@@ -120,14 +120,15 @@ test('settings switches stay compact, dark controls are readable, and modal fits
   expect(luminance(bodyColors.background)).toBeLessThan(0.1);
   const navColors = await colors(page.locator('.inav'));
   expect(luminance(navColors.background)).toBeLessThan(0.15);
-  const panelColors = await colors(page.locator('#psnine-trophy-stats-panel'));
-  const countsColors = await colors(page.locator('#psnine-trophy-header-counts'));
+  const panelColors = await colors(page.locator('.box').first());
+  const countsColors = await colors(page.locator('#psnine-batch-load-all-tips-btn'));
   expect(contrast(countsColors.color,panelColors.background)).toBeGreaterThanOrEqual(4.5);
   // Safari touch taps do not focus buttons; start with keyboard focus to test restoration.
   await page.locator('#psnine-settings-gear').focus();
   await page.locator('#psnine-settings-gear').press('Enter');
   const dialog=page.locator('.psnine-settings-dialog');
   await expect(dialog).toBeVisible();
+  await expect(page.locator('#psnine-setting-foldTrophySummary, #psnine-setting-foldTrophyChart')).toHaveCount(0);
   const geometry=await dialog.evaluate(el=> {
     const d=el.getBoundingClientRect();
     const footer=el.querySelector('.psnine-settings-footer')!.getBoundingClientRect();
@@ -257,15 +258,14 @@ for (const scheme of ['light','dark'] as const) {
     expect(floatingBoxes).toHaveLength(3);
     expect(floatingBoxes[0].top).toBeGreaterThanOrEqual(0);
     for(let i=1;i<floatingBoxes.length;i++) expect(floatingBoxes[i].top).toBeGreaterThanOrEqual(floatingBoxes[i-1].bottom+4);
-    const panel=page.locator('#psnine-trophy-stats-panel');
-    expect((await colors(panel)).background).toBe(native.background);
-    const action=panel.locator('.psnine-trophy-pill-btn').first();
+    const action=page.locator('#psnine-trophy-tips-toolbar .psnine-trophy-pill-btn').first();
+    expect((await colors(action)).background).toBe(native.background);
     expect((await action.boundingBox())!.height).toBeGreaterThanOrEqual(36);
     expect(parseFloat((await styleOf(action)).radius)).toBeGreaterThanOrEqual(12);
     await page.screenshot({path:testInfo.outputPath(`native-style-${scheme}.png`)});
     // Native variables may be changed by the site; plugin surfaces must follow without reinjection.
     await page.evaluate(()=>document.documentElement.style.setProperty('--c-card','#26364a'));
-    expect((await colors(panel)).background).toBe((await colors(page.locator('#native-icon-probe'))).background);
+    await expect(action).toHaveCSS('background-color',(await colors(page.locator('#native-icon-probe'))).background);
     await page.evaluate(()=>document.documentElement.style.removeProperty('--c-card'));
     const url=page.url();
     await entry.focus();

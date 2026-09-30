@@ -34,10 +34,33 @@ describe('Trophies Last-Mile Regression Suite', () => {
     clearCookies();
   });
 
-  describe('1. Real MutationObserver onContent Integration (Defect 5 & 6)', () => {
-    it('accurately handles append/prepend, preserves panel identity, assigns maxseq+1, and applies active filters', async () => {
+  describe('1. Real MutationObserver onContent Integration & Native Filter Sync (Defect 5 & 6)', () => {
+    it('accurately handles append/prepend, preserves tips toolbar identity, assigns maxseq+1, and syncs native filter with inline tips and dynamic rows', async () => {
       const mockWin = makeWindowWithUrl('https://psnine.com/psngame/46507?psnid=test_user');
       document.cookie = '__Psnine_psnid=test_user; path=/';
+
+      let nativeCalls = 0;
+      const runNativeFilter = (which: 'own' | 'unown') => {
+        nativeCalls++;
+        const btn = document.querySelector(`.${which}`) as HTMLElement;
+        const other = document.querySelector(`.${which === 'own' ? 'unown' : 'own'}`) as HTMLElement;
+        const wasSelected = btn.classList.contains('select');
+        if (wasSelected) {
+          btn.classList.remove('select');
+          document.querySelectorAll<HTMLElement>('tr.trophy').forEach(r => {
+            r.style.display = '';
+          });
+        } else {
+          btn.classList.add('select');
+          other?.classList.remove('select');
+          document.querySelectorAll<HTMLElement>('tr.trophy').forEach(r => {
+            const hasEarned = r.querySelector('.earned') !== null;
+            const show = which === 'own' ? hasEarned : !hasEarned;
+            r.style.display = show ? '' : 'none';
+          });
+        }
+      };
+
 
       document.body.innerHTML = `
         <div class="min-inner">
@@ -51,6 +74,10 @@ describe('Trophies Last-Mile Regression Suite', () => {
                   <li><a href="?psnid=test_user&ob=type&psngamelang=zh-Hans">类型</a></li>
                   <li><a href="?psnid=test_user&ob=rarity&psngamelang=zh-Hans">完美率</a></li>
                 </ul>
+              </li>
+              <li>
+                <button type="button" class="o_btn own" onclick="getOwn()">已获得</button>
+                <button type="button" class="o_btn unown" onclick="getUnOwn()">未获得</button>
               </li>
             </ul>
             <table class="list">
@@ -84,26 +111,56 @@ describe('Trophies Last-Mile Regression Suite', () => {
       const ctx = createContext({
         document,
         window: mockWin,
-        settings: { ...defaultSettings, foldTrophySummary: false, foldTrophyChart: false },
+        settings: { ...defaultSettings },
         store,
         http
       });
 
       const cleanup = await mountTrophies(ctx);
 
-      const panelBefore = document.getElementById('psnine-trophy-stats-panel')!;
-      expect(panelBefore).not.toBeNull();
-      let chips = panelBefore.querySelectorAll('.psnine-trophy-icon-chip');
-      expect(chips.length).toBe(2);
+      const toolbarBefore = document.getElementById('psnine-trophy-tips-toolbar')!;
+      expect(toolbarBefore).not.toBeNull();
+      expect(document.getElementById('psnine-trophy-stats-panel')).toBeNull();
+      expect(document.getElementById('psnine-filter-status-btn')).toBeNull();
 
-      // Filter: click to filter 'unearned'
-      const filterBtn = document.getElementById('psnine-filter-status-btn') as HTMLElement;
-      filterBtn.click(); // unearned
-      expect(isHiddenByReason(document.getElementById('trophy-1')!, 'trophy-status-filter')).toBe(true);
-      expect(isHiddenByReason(document.getElementById('trophy-2')!, 'trophy-status-filter')).toBe(false);
-
-      // Prepend a new row into table body
+      // Attach an inline tip row to trophy-1 (earned) and trophy-2 (unearned)
       const tbody = document.querySelector('table.list tbody')!;
+      const tipRow1 = document.createElement('tr');
+      tipRow1.className = 'psnine-inline-tip-row';
+      tipRow1.setAttribute('data-psnine-next', 'true');
+      tipRow1.setAttribute('data-for-trophy', '46507001');
+      document.getElementById('trophy-1')!.after(tipRow1);
+
+      const tipRow2 = document.createElement('tr');
+      tipRow2.className = 'psnine-inline-tip-row';
+      tipRow2.setAttribute('data-psnine-next', 'true');
+      tipRow2.setAttribute('data-for-trophy', '46507002');
+      document.getElementById('trophy-2')!.after(tipRow2);
+
+      const ownBtn = document.querySelector('.own') as HTMLElement;
+      const unownBtn = document.querySelector('.unown') as HTMLElement;
+      ownBtn.onclick = () => runNativeFilter('own');
+      unownBtn.onclick = () => runNativeFilter('unown');
+
+      // 1. Click native .own -> earned visible, unearned hidden + tipRow2 hidden
+      ownBtn.click();
+      expect(nativeCalls).toBe(1);
+      expect(document.getElementById('trophy-1')!.style.display).toBe('');
+      expect(document.getElementById('trophy-2')!.style.display).toBe('none');
+      expect(isHiddenByReason(tipRow1, 'trophy-status-filter')).toBe(false);
+      expect(isHiddenByReason(tipRow2, 'trophy-status-filter')).toBe(true);
+      // Native tr must NOT be locked by setHidden data-psnine-native-hidden
+      expect(document.getElementById('trophy-2')!.hasAttribute('data-psnine-native-hidden')).toBe(false);
+
+      // 2. Click native .unown -> unearned visible, earned hidden + tipRow1 hidden, tipRow2 visible
+      unownBtn.click();
+      expect(nativeCalls).toBe(2);
+      expect(document.getElementById('trophy-1')!.style.display).toBe('none');
+      expect(document.getElementById('trophy-2')!.style.display).toBe('');
+      expect(isHiddenByReason(tipRow1, 'trophy-status-filter')).toBe(true);
+      expect(isHiddenByReason(tipRow2, 'trophy-status-filter')).toBe(false);
+
+      // Prepend a new earned row into table body while .unown is active
       const newRow = document.createElement('tr');
       newRow.id = 'trophy-3';
       newRow.className = 'trophy';
@@ -121,23 +178,26 @@ describe('Trophies Last-Mile Regression Suite', () => {
       // Wait for real MutationObserver & flush
       await new Promise(r => setTimeout(r, 120));
 
-      // Panel identity preserved (not destroyed and recreated)
-      const panelAfter = document.getElementById('psnine-trophy-stats-panel');
-      expect(panelAfter).toBe(panelBefore);
+      // Toolbar identity preserved
+      const toolbarAfter = document.getElementById('psnine-trophy-tips-toolbar');
+      expect(toolbarAfter).toBe(toolbarBefore);
 
-      // Chips count updated from 2 to 3
-      chips = panelAfter!.querySelectorAll('.psnine-trophy-icon-chip');
-      expect(chips.length).toBe(3);
-
-      // Header typecounts updated (includes 金1)
-      const headerCounts = document.getElementById('psnine-trophy-header-counts');
-      expect(headerCounts?.textContent).toContain('金1');
-
-      // Filter state applied to newly added row: newRow is earned, so must be hidden!
-      expect(isHiddenByReason(newRow, 'trophy-status-filter')).toBe(true);
+      // Newly prepended earned row is synced to hidden while .unown.select is active
+      expect(newRow.style.display).toBe('none');
+      expect(newRow.getAttribute('data-psnine-native-sync-hidden')).toBe('true');
 
       // Pre-pended row got maxSeq + 1 (2), preserving original sequence logic
       expect(newRow.getAttribute('data-psnine-orig-seq')).toBe('2');
+
+      // 3. Click native .unown again -> restores all rows and inline tips
+      unownBtn.click();
+      expect(nativeCalls).toBe(3);
+      expect(document.getElementById('trophy-1')!.style.display).toBe('');
+      expect(document.getElementById('trophy-2')!.style.display).toBe('');
+      expect(newRow.style.display).toBe('');
+      expect(newRow.hasAttribute('data-psnine-native-sync-hidden')).toBe(false);
+      expect(isHiddenByReason(tipRow1, 'trophy-status-filter')).toBe(false);
+      expect(isHiddenByReason(tipRow2, 'trophy-status-filter')).toBe(false);
 
       // Click restore initial order via native dropdown: new row (origSeq=2) must sort to the end of original items!
       const initialItem = document.querySelector('[data-psnine-sort="initial"]') as HTMLElement;
@@ -634,7 +694,7 @@ describe('Trophies Last-Mile Regression Suite', () => {
       // Tab / focus moving outside dropdown silently closes menu and external Escape neither steals focus nor calls preventDefault
       trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
       expect(trigger.getAttribute('aria-expanded')).toBe('true');
-      const outsideBtn = document.getElementById('psnine-toggle-summary-btn') as HTMLButtonElement;
+      const outsideBtn = document.getElementById('psnine-batch-load-all-tips-btn') as HTMLButtonElement;
       outsideBtn.focus();
       trigger.dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: outsideBtn }));
       expect(trigger.getAttribute('aria-expanded')).toBe('false');
@@ -804,6 +864,103 @@ describe('Trophies Last-Mile Regression Suite', () => {
       const cleanup2 = await mountTrophies(ctx);
       expect(document.querySelectorAll('[data-psnine-trophy-sort-trigger], [data-psnine-sort], #psnine-sort-xmb-btn').length).toBe(0);
       if (cleanup2) cleanup2();
+    });
+  });
+
+  describe('7. Multi-DLC Native Filter Sync, Manual Tip Collapse Coexistence, Dynamic Native Controls & Cleanup', () => {
+    it('syncs inline tips across multiple DLC tables, preserves manual inline-tip-toggle reason, handles dynamic native control insertion, and cleans up hidden reasons', async () => {
+      const mockWin = makeWindowWithUrl('https://psnine.com/psngame/46507?psnid=toonn95');
+      document.cookie = '__Psnine_psnid=toonn95; path=/';
+
+      document.body.innerHTML = `
+        <div class="min-inner">
+          <div class="box">
+            <ul class="dropmenu" id="dropmenu-bar">
+              <li><em>排序</em></li>
+            </ul>
+            <table class="list" id="base-table">
+              <tbody>
+                <tr id="1" class="trophy">
+                  <td class="t1"><a href="/trophy/46507001"><img class="imgbg earned" src="t1.png" /></a></td>
+                  <td><p><a href="/trophy/46507001">本体已获</a></p></td>
+                  <td><em class="alert-success pd5 r" tips="2026年">05-20<br>12:00</em></td>
+                  <td class="twoge">15.00%</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="list" id="dlc-table">
+              <tbody>
+                <tr id="101" class="trophy">
+                  <td class="t4"><a href="/trophy/46507101"><img class="imgbg" src="d1.png" /></a></td>
+                  <td><p><a href="/trophy/46507101">DLC未获</a></p></td>
+                  <td></td>
+                  <td class="twoge">8.00%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      const ctx = createContext({
+        document,
+        window: mockWin,
+        settings: { ...defaultSettings },
+        store: createStore(),
+        http: createHttpClient()
+      });
+
+      const cleanup = await mountTrophies(ctx);
+
+      // Even without native .own/.unown controls initially, plugin does NOT render #psnine-filter-status-btn
+      expect(document.getElementById('psnine-filter-status-btn')).toBeNull();
+      expect(document.getElementById('psnine-trophy-tips-toolbar')).not.toBeNull();
+
+      // Attach inline tips to both base trophy (earned) and DLC trophy (unearned)
+      const baseTip = document.createElement('tr');
+      baseTip.className = 'psnine-inline-tip-row';
+      baseTip.setAttribute('data-psnine-next', 'true');
+      baseTip.setAttribute('data-for-trophy', '46507001');
+      document.getElementById('1')!.after(baseTip);
+
+      const dlcTip = document.createElement('tr');
+      dlcTip.className = 'psnine-inline-tip-row';
+      dlcTip.setAttribute('data-psnine-next', 'true');
+      dlcTip.setAttribute('data-for-trophy', '46507101');
+      document.getElementById('101')!.after(dlcTip);
+
+      // Unrelated bare .own element outside ul.dropmenu / .o_btn must NOT trigger trophy filtering
+      const unrelatedOwn = document.createElement('div');
+      unrelatedOwn.className = 'own select';
+      document.body.appendChild(unrelatedOwn);
+      unrelatedOwn.click();
+      expect(isHiddenByReason(dlcTip, 'trophy-status-filter')).toBe(false);
+      unrelatedOwn.remove();
+
+      // Dynamically inject native .own and .unown controls
+      const dropmenu = document.getElementById('dropmenu-bar')!;
+      const nativeLi = document.createElement('li');
+      nativeLi.innerHTML = `
+        <button type="button" class="o_btn own">已获得</button>
+        <button type="button" class="o_btn unown">未获得</button>
+      `;
+      dropmenu.appendChild(nativeLi);
+      await new Promise(r => setTimeout(r, 120));
+
+      const ownBtn = document.querySelector('.own') as HTMLElement;
+      const unownBtn = document.querySelector('.unown') as HTMLElement;
+
+      // Simulate native own selection via class change
+      ownBtn.classList.add('select');
+      document.getElementById('101')!.style.display = 'none';
+      await new Promise(r => setTimeout(r, 50));
+
+      expect(isHiddenByReason(baseTip, 'trophy-status-filter')).toBe(false);
+      expect(isHiddenByReason(dlcTip, 'trophy-status-filter')).toBe(true);
+
+      // Cleanup while filter is active must clear plugin trophy-status-filter reason on inline tips
+      if (cleanup) cleanup();
+      expect(isHiddenByReason(dlcTip, 'trophy-status-filter')).toBe(false);
     });
   });
 });

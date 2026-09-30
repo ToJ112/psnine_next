@@ -1,6 +1,6 @@
 {
   "date": "2026-09-30",
-  "release_version": "1.0.3",
+  "release_version": "1.0.4",
   "node": "24.19.0",
   "dependencies": {
     "typescript": "5.9.3",
@@ -11,22 +11,22 @@
   },
   "artifact": {
     "path": "dist/psnine_next.user.js",
-    "bytes": 376592,
-    "sha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f"
+    "bytes": 364924,
+    "sha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da"
   },
   "requirements": 80,
   "typecheck": "passed",
-  "clean_install": "npm ci passed for 1.0.0; dependency resolutions unchanged in 1.0.3",
+  "clean_install": "npm ci passed for 1.0.0; dependency resolutions unchanged in 1.0.4",
   "unit": {
     "files": 17,
-    "passed": 165,
+    "passed": 170,
     "failed": 0,
     "skipped": 0
   },
   "browser": {
-    "startTime": "2026-09-30T13:47:53.727Z",
-    "duration": 96227.82800000001,
-    "expected": 26,
+    "startTime": "2026-09-30T15:08:24.132Z",
+    "duration": 80118.659,
+    "expected": 34,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
@@ -79,12 +79,13 @@
     "reason": "Dependency resolutions and history evidence unchanged; package version fields only were updated."
   },
   "validated_changes": [
-    "native navigation links preserve site typography, spacing, borders, box sizing and keyboard access",
-    "theme tokens follow native site colors and radii, including dynamic variable changes",
-    "neutral trophy overview with outline controls, selected filter state and restoration",
-    "floating controls join the native floating layer without overlapping native buttons",
-    "light and dark mobile layout, dialog usability and all 1.0.2 regressions retained",
-    "native trophy sorting, touch and keyboard regressions retained"
+    "official game progress is retained without duplicate percentages or whole-row progress backgrounds",
+    "cached hints on rows without official progress remain readable across light/dark theme changes",
+    "dynamic official progress removes redundant cached hints and another profile never receives my progress overlay",
+    "native row backgrounds and the original cache merge lifecycle are preserved",
+    "trophy overview, charts, icon summary, duplicate filter and obsolete settings are absent by user request",
+    "compact Tips actions retained with native earned/unearned controls, inline Tips visibility and settled DOM mutations",
+    "native sorting, theme, navigation, settings and floating-control regressions retained"
   ],
   "dark_page_replay": {
     "color_scheme": "dark",
@@ -99,5 +100,19 @@
     "enhancement_overflows": 0,
     "unsettled_mutations": 0
   },
-  "execution_note": "An initial unrestricted unit run concurrent with three browser suites hit one 5s timeout. The full unit suite rerun with --maxWorkers=2 passed 165/165 without raising timeouts or changing assertions. Replay checks now wait for the CSS transition and remove hover before checking filter activation/restoration; no production change was needed for that sampling issue."
+  "execution_note": "New browser regressions reproduced duplicate profile percentages and the old overview against the 1.0.3 bundle. Final 1.0.4 unit, browser and both replay suites passed without retries. Login identity and progress caches are synthetic fixtures, not real account operations.",
+  "requirements_current": {
+    "historical_records": 80,
+    "implemented_or_native_integration": 73,
+    "removed_by_user_request": 7,
+    "removed_ids": [
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07"
+    ]
+  }
 }

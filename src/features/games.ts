@@ -209,8 +209,45 @@ export function isExplicitlyNoPlatinum(row: Element): boolean {
  * Extracts a valid percentage (0..100) from an element's style.width, style attribute, or text content.
  * Accepts anchored finite 0..100 values. Rejects values outside 0..100, NaNs, and infinities.
  */
+/**
+ * Checks whether an element or any of its ancestors is a plugin-injected node.
+ */
+function isPluginNode(el: Element | null): boolean {
+  for (let cur: Element | null = el; cur; cur = cur.parentElement) {
+    if (cur.hasAttribute('data-psnine-next') || (typeof cur.className === 'string' && cur.className.includes('psnine-'))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Recursively extracts text from a node, strictly excluding plugin-injected nodes and their descendants.
+ */
+function getTextExcludingPluginNodes(node: Node): string {
+  if (node.nodeType === Node.TEXT_NODE) {
+    return isPluginNode(node.parentElement) ? '' : (node.textContent || '');
+  }
+  if (node.nodeType === Node.ELEMENT_NODE) {
+    const el = node as Element;
+    if (isPluginNode(el)) {
+      return '';
+    }
+    let res = '';
+    node.childNodes.forEach((child) => {
+      res += getTextExcludingPluginNodes(child);
+    });
+    return res;
+  }
+  return '';
+}
+
+/**
+ * Extracts a valid percentage (0..100) from an element's style.width, style attribute, or text content.
+ * Accepts anchored finite 0..100 values. Rejects values outside 0..100, NaNs, infinities, and plugin-injected nodes.
+ */
 export function extractElementProgressPercent(el: Element | null): number | null {
-  if (!el) return null;
+  if (!el || isPluginNode(el)) return null;
   const htmlEl = el as HTMLElement;
 
   // 1. Check style.width (e.g. "38%", "38.5%")
@@ -239,8 +276,8 @@ export function extractElementProgressPercent(el: Element | null): number | null
     }
   }
 
-  // 3. Fallback to text content if official style was absent (e.g. "38%")
-  const text = el.textContent?.trim() || '';
+  // 3. Fallback to text content if official style was absent (e.g. "38%"), excluding plugin nodes
+  const text = getTextExcludingPluginNodes(el).trim();
   if (text) {
     const textM = text.match(/(?:^|\s)(\d{1,3})%(?:\s|$)/);
     if (textM) {
@@ -255,6 +292,18 @@ export function extractElementProgressPercent(el: Element | null): number | null
 }
 
 /**
+ * Checks whether a game row has an authentic, official progress bar with valid completion percent (0..100).
+ * Strictly ignores plugin-injected nodes and their descendants.
+ */
+export function hasOfficialGameProgress(tr: Element): boolean {
+  const progDiv = Array.from(tr.querySelectorAll('.progress-bar, .progress > div, div.progress')).find(el => !isPluginNode(el));
+  if (!progDiv) return false;
+  const innerBar = Array.from(progDiv.querySelectorAll('div')).find(el => !isPluginNode(el)) ?? null;
+  const pct = extractElementProgressPercent(innerBar) ?? extractElementProgressPercent(progDiv);
+  return pct !== null && Number.isFinite(pct) && pct >= 0 && pct <= 100;
+}
+
+/**
  * Parses game progress and explicit platinum earned from a profile game row (P05 shared parser).
  * ONLY reads official user completion from .progress-bar or div.progress.
  * NEVER confuses game rarity/difficulty (e.g. 18.63%完美) with user completion (Point 4).
@@ -266,16 +315,16 @@ export function parseGameRowProgress(tr: Element): { gameId: string; percent: nu
   if (!gid) return null;
 
   let percent: number | null = null;
-  // Strictly read user completion from .progress-bar or div.progress
-  const progDiv = tr.querySelector('.progress-bar, .progress > div, div.progress');
+  // Strictly read user completion from .progress-bar or div.progress excluding plugin nodes
+  const progDiv = Array.from(tr.querySelectorAll('.progress-bar, .progress > div, div.progress')).find(el => !isPluginNode(el));
   if (progDiv) {
-    const innerBar = progDiv.querySelector('div');
+    const innerBar = Array.from(progDiv.querySelectorAll('div')).find(el => !isPluginNode(el)) ?? null;
     percent = extractElementProgressPercent(innerBar) ?? extractElementProgressPercent(progDiv);
   }
 
   // Explicit platinum check (independent of percent >= 100)
   const platSpan = tr.querySelector('.text-platinum');
-  const platText = platSpan?.textContent?.trim() || '';
+  const platText = platSpan ? getTextExcludingPluginNodes(platSpan).trim() : '';
   const hasPlatImg = tr.querySelector('img.earned[src*="platinum"]') !== null;
   const isPlatEarned = hasPlatImg || (platSpan !== null && !platText.includes('白0') && (platText.includes('白1') || platText === '1'));
 
@@ -661,6 +710,11 @@ export const mountGames: Mount = async (ctx: Context) => {
   const isProfilePage = /^\/psnid\/[^/]+/.test(url.pathname);
   const isTrophyDetailPage = /^\/trophy\/\d+/.test(url.pathname);
 
+  const pathParts = url.pathname.split('/');
+  const profileId = isProfilePage ? (pathParts[2] || '') : '';
+  const isBareProfile = isProfilePage && (url.pathname === `/psnid/${profileId}` || url.pathname === `/psnid/${profileId}/`);
+  const isMyProfile = Boolean(userId && profileId && userId.toLowerCase() === profileId.toLowerCase());
+
   try {
     // P14: PSPC & PS5 cover natural aspect-ratio style
     const styleId = 'psnine-enhanced-games-style';
@@ -688,6 +742,25 @@ export const mountGames: Mount = async (ctx: Context) => {
           box-shadow: 0 0 10px rgba(56, 144, 255, 0.8), 0 0 20px rgba(56, 144, 255, 0.4) !important;
           border: 1px solid rgba(56, 144, 255, 0.6) !important;
           border-radius: 4px !important;
+        }
+        .psnine-game-list-progress-badge {
+          display: inline-block !important;
+          padding: 1px 6px !important;
+          font-size: 11px !important;
+          line-height: 1.4 !important;
+          font-weight: 500 !important;
+          border-radius: var(--p9n-radius-sm, 4px) !important;
+          background-color: var(--p9n-surface-alt, #f4f6fa) !important;
+          color: var(--p9n-text, #1f2937) !important;
+          border: 1px solid var(--p9n-border, #ccd6dd) !important;
+          margin-left: 6px !important;
+          vertical-align: middle !important;
+          box-sizing: border-box !important;
+        }
+        html[data-theme="dark"] .psnine-game-list-progress-badge {
+          background-color: var(--p9n-surface-alt, #202c3a) !important;
+          color: var(--p9n-text, #e6ebf2) !important;
+          border-color: var(--p9n-border, #3b4859) !important;
         }
       `;
       doc.head.appendChild(style);
@@ -730,28 +803,53 @@ export const mountGames: Mount = async (ctx: Context) => {
 
     // Helper: Refresh all badges and backgrounds dynamically
     const refreshGameListBadgesAndBackgrounds = () => {
+      // If viewing another user's profile, never overlay myProgress onto their game rows
+      if (isProfilePage && !isMyProfile) {
+        doc.querySelectorAll('.psnine-game-list-progress-badge').forEach(el => el.remove());
+        doc.querySelectorAll('.psnine-ondemand-progress-btn').forEach(el => el.remove());
+        return;
+      }
+
       doc.querySelectorAll('table tr').forEach((tr) => {
         const gameA = tr.querySelector('a[href*="/psngame/"]') as HTMLAnchorElement | null;
         if (!gameA) return;
         const gid = extractGameId(gameA.href || gameA.getAttribute('href') || '');
-        if (!gid || !myProgress.games[gid]) return;
+        if (!gid) return;
 
-        const rec = myProgress.games[gid];
         const row = tr as HTMLElement;
-        row.style.background = `linear-gradient(to right, rgba(56, 144, 255, 0.12) ${rec.percent}%, transparent ${rec.percent}%)`;
+        const hasOfficial = hasOfficialGameProgress(tr);
+
+        if (hasOfficial) {
+          // If the row has official valid progress, retain native progress and do NOT add plugin gradient or duplicate badge!
+          row.querySelector('.psnine-game-list-progress-badge')?.remove();
+          row.querySelector('.psnine-ondemand-progress-btn')?.remove();
+
+          const rec = myProgress.games[gid];
+          const parsed = parseGameRowProgress(tr);
+          const isPlat = parsed?.platinum ?? rec?.platinum ?? false;
+          if (settings.platinumGlow && isPlat) {
+            const coverImg = row.querySelector('img');
+            if (coverImg) coverImg.classList.add('psnine-platinum-glow');
+          }
+          return;
+        }
+
+        // For rows without official progress:
+        // If cached record exists, display readable neutral small badge (no whole-row gradient)
+        const rec = myProgress.games[gid];
+        if (!rec) return;
+
+        // Remove on-demand button if now resolved
+        row.querySelector('.psnine-ondemand-progress-btn')?.remove();
 
         let badge = row.querySelector('.psnine-game-list-progress-badge') as HTMLElement | null;
         if (!badge) {
           badge = doc.createElement('span');
           badge.className = 'psnine-game-list-progress-badge';
           badge.setAttribute('data-psnine-next', 'true');
-          badge.style.cssText = 'display:inline-block;padding:1px 5px;font-size:11px;border-radius:3px;background:rgba(56, 144, 255, 0.2);color:#0056b3;font-weight:500;margin-left:6px;';
           gameA.parentElement?.appendChild(badge);
         }
         badge.textContent = `${rec.percent}%`;
-
-        // Remove on-demand button if now resolved
-        row.querySelector('.psnine-ondemand-progress-btn')?.remove();
 
         if (settings.platinumGlow && rec.platinum) {
           const coverImg = row.querySelector('img');
@@ -762,10 +860,6 @@ export const mountGames: Mount = async (ctx: Context) => {
 
     // 2. Profile Page (P04, P05, P08)
     if (isProfilePage) {
-      const pathParts = url.pathname.split('/');
-      const profileId = pathParts[2] || '';
-      const isBareProfile = url.pathname === `/psnid/${profileId}` || url.pathname === `/psnid/${profileId}/`;
-      const isMyProfile = Boolean(userId && profileId && userId.toLowerCase() === profileId.toLowerCase());
 
       // P08: Mount sync links strictly in profile data area (NOT .nav-user)
       if (isBareProfile) {
@@ -850,11 +944,15 @@ export const mountGames: Mount = async (ctx: Context) => {
 
           // Use returned fresh cache for UI
           myProgress = freshCache;
-          if (isActive && !abortController.signal.aborted) {
-            refreshGameListBadgesAndBackgrounds();
-          }
         }
       }
+
+      if (isActive && !abortController.signal.aborted) {
+        refreshGameListBadgesAndBackgrounds();
+      }
+      subscriptions.push(onContent(() => {
+        if (isActive) refreshGameListBadgesAndBackgrounds();
+      }));
     }
 
     // 3. Game List Page (P01, P02, P03, P06)
@@ -1207,6 +1305,7 @@ export const mountGames: Mount = async (ctx: Context) => {
       isActive = false;
       abortController.abort();
       subscriptions.forEach(unsub => unsub());
+      doc.querySelectorAll('.psnine-game-list-progress-badge').forEach(el => el.remove());
     };
   } catch (err) {
     report('games', err);

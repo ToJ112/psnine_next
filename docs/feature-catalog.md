@@ -2,7 +2,7 @@
 
 从两个来源仓库的可获取历史中整理出 80 个独立验收点。实现、历史 SHA 和关联测试完整保存在 [features.json](features.json)。历史删除/实验项的取舍见 [迁移决策](migration-decisions.md)。
 
-以下“已实现”表示已接入代码；不代表每项都做过脚本管理器真机验证。关联测试按模块列出，个别功能还有模拟、历史夹具或站点数据限制。最终命令与浏览器结果见 [验证记录](validation.md)。
+1.0.4 按用户要求移除了 T01–T07 的整个奖杯概览，T10 改为复用原站筛选；保留全部 80 条历史映射，不再将已移除界面声明为支持。以下“已实现”表示已接入代码；不代表每项都做过脚本管理器真机验证。关联测试按模块列出，个别功能还有模拟、历史夹具或站点数据限制。最终命令与浏览器结果见 [验证记录](validation.md)。
 
 |编号|功能|实现文件|验证范围/限制|
 |---|---|---|---|
@@ -38,26 +38,26 @@
 |C19|攻略中我的奖杯|[trophies](../src/features/trophies.ts)|需已验证登录身份和个人奖杯响应；无法确认时显示未知。|
 |C20|列表自动翻页|[paging](../src/features/paging.ts)|追加当前同类列表；保留原分页，遇到未知结构或请求失败停止。|
 |C21|个人主页全部游戏|[paging](../src/features/paging.ts)|跟随主页实际“全部游戏”入口，再按分页上限分批载入。|
-|T01|奖杯类型统计|[trophies](../src/features/trophies.ts)|统计当前已载入奖杯；未知类型不伪造。|
-|T02|奖杯稀有度统计|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
-|T03|获得时间曲线|[trophies](../src/features/trophies.ts)|按可信获得时间统计；时间丢失不回填虚构时间。|
-|T04|已获/未获图标汇总|[trophies](../src/features/trophies.ts)|公开页未提供个人状态时为未知，不能全算未获得。|
-|T05|汇总 Tips 标记与预览|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
-|T06|奖杯汇总折叠|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
-|T07|奖杯图表折叠|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
+|T01|奖杯类型统计|[trophies](../src/features/trophies.ts)|**按用户要求移除（1.0.4）**：整个概览及相关设置已删除；历史证据保留。|
+|T02|奖杯稀有度统计|[trophies](../src/features/trophies.ts)|**按用户要求移除（1.0.4）**：整个概览及相关设置已删除；历史证据保留。|
+|T03|获得时间曲线|[trophies](../src/features/trophies.ts)|**按用户要求移除（1.0.4）**：整个概览及相关设置已删除；历史证据保留。|
+|T04|已获/未获图标汇总|[trophies](../src/features/trophies.ts)|**按用户要求移除（1.0.4）**：整个概览及相关设置已删除；历史证据保留。|
+|T05|汇总 Tips 标记与预览|[trophies](../src/features/trophies.ts)|**按用户要求移除（1.0.4）**：整个概览及相关设置已删除；历史证据保留。|
+|T06|奖杯汇总折叠|[trophies](../src/features/trophies.ts)|**按用户要求移除（1.0.4）**：整个概览及相关设置已删除；历史证据保留。|
+|T07|奖杯图表折叠|[trophies](../src/features/trophies.ts)|**按用户要求移除（1.0.4）**：整个概览及相关设置已删除；历史证据保留。|
 |T08|获得时间排序|[trophies](../src/features/trophies.ts)|补充在个人页的原生排序菜单中；公开页不显示，无原菜单时跳过。|
 |T09|原序/类型/稀有度排序|[trophies](../src/features/trophies.ts)|保留原生 XMB/类型/完美率链接；菜单内补充反向和页面初始顺序，本地排序保持现有 DLC 分组与 Tips 归属。|
-|T10|获得状态筛选|[trophies](../src/features/trophies.ts)|明确恢复历史已移除的获得状态筛选，非 v2 原有插件能力。|
+|T10|获得状态筛选|[trophies](../src/features/trophies.ts)|沿用原站已获得/未获得控件，仅同步内联 Tips 与动态行；不再添加独立筛选。|
 |T11|内联展开单个 Tips|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
 |T12|批量全部/未获 Tips|[trophies](../src/features/trophies.ts)|显式按钮、限速、可取消；异常后允许重试。|
 |T13|Tips 顶数排序|[trophies](../src/features/trophies.ts)|读取已载入 Tips 自身的顶数，不包含子评论；匿名站点不提供顶数时不能推断。|
 |T14|Tips 输入框缩放|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
 |P01|无白金游戏降低透明度|[games](../src/features/games.ts)|代码审阅、关联模块回归|
-|P02|游戏封面完成度提示|[games](../src/features/games.ts)|代码审阅、关联模块回归|
+|P02|游戏封面完成度提示|[games](../src/features/games.ts)|官方进度条优先，避免重复百分比与整行底色；缓存徽章覆盖亮暗主题、动态更新及他人主页回归。|
 |P03|游戏列表按难度排序|[games](../src/features/games.ts)|代码审阅、关联模块回归|
 |P04|我的游戏进度缓存|[games](../src/features/games.ts)|按已验证登录账号隔离；不读旧脚本独立 GM 私有区。|
 |P05|进度后台增量刷新|[games](../src/features/games.ts)|分批增量读取；账号、空列表、下一页与错误均需验证，缓存可能暂时滞后。|
-|P06|列表背景进度与徽章|[games](../src/features/games.ts)|代码审阅、关联模块回归|
+|P06|列表背景进度与徽章|[games](../src/features/games.ts)|官方进度条优先，避免重复百分比与整行底色；缓存徽章覆盖亮暗主题、动态更新及他人主页回归。|
 |P07|白金封面修饰|[games](../src/features/games.ts)|代码审阅、关联模块回归|
 |P08|未注册主页同步入口|[games](../src/features/games.ts)|只添加手动同步链接，本次未在网站执行同步。|
 |P09|游戏页转到我的奖杯|[games](../src/features/games.ts)|模拟导航验证；不覆盖 URL 已指定的其他用户。|

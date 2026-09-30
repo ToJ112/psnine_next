@@ -368,6 +368,23 @@ a.psnine-nav-settings-link {
   margin-right: 6px;
   user-select: none;
 }
+
+/* Game List Progress Badge (P06: Neutral, Accessible Contrast >= 4.5:1) */
+.psnine-game-list-progress-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 11px;
+  line-height: 1.4;
+  font-weight: 500;
+  border-radius: var(--p9n-radius-sm, 4px);
+  background-color: var(--p9n-surface-alt, #f4f6fa);
+  color: var(--p9n-text, #1f2937);
+  border: 1px solid var(--p9n-border, #ccd6dd);
+  margin-left: 6px;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
 .psnine-author-badge {
   display: inline-block;
   background: var(--p9n-link);
@@ -1252,5 +1269,12 @@ html[data-theme="dark"] #psnine-game-variants-section [style*="color: #666"],
 html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color:#666"],
 html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"] {
   color: var(--p9n-muted) !important;
+}
+
+/* Game List Progress Badge in Dark Mode */
+html[data-theme="dark"] .psnine-game-list-progress-badge {
+  background-color: var(--p9n-surface-alt, #202c3a) !important;
+  color: var(--p9n-text, #e6ebf2) !important;
+  border-color: var(--p9n-border, #3b4859) !important;
 }
 `;

@@ -349,8 +349,6 @@ export function mountSettingsUI(ctx: Context): void {
     s5.body.appendChild(createSwitch('redirectToMine', '游戏页自动跳转至我的奖杯'));
     s5.body.appendChild(createNumberInput('filterNonePlatinumAlpha', '无白金游戏卡片透明度 (0~1)', 0, 1, 0.05));
     s5.body.appendChild(createSwitch('platinumGlow', '白金奖杯发光光晕特效'));
-    s5.body.appendChild(createSwitch('foldTrophySummary', '默认折叠奖杯汇总列表'));
-    s5.body.appendChild(createSwitch('foldTrophyChart', '默认折叠奖杯统计图表'));
     s5.body.appendChild(createSwitch('referGameVariants', '关联游戏多版本信息'));
     s5.body.appendChild(createSwitch('preferSearchForFindingVariants', '优先搜索查找同款版本'));
     s5.body.appendChild(createSwitch('removeHeaderInBattle', '约战页面隐藏发起人头像'));

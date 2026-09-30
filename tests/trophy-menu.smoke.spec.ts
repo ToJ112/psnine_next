@@ -59,7 +59,8 @@ for (const personal of [true, false]) {
     const trigger = page.locator('[data-psnine-trophy-sort-trigger]');
     const menu = page.locator('[data-psnine-trophy-sort-menu]');
     await expect(trigger).toHaveAttribute('aria-expanded', 'false');
-    await expect(page.locator('#psnine-trophy-header-title')).toContainText('奖杯概览');
+    await expect(page.locator('#psnine-trophy-tips-toolbar')).toBeVisible();
+    await expect(page.locator('#psnine-trophy-stats-panel, #psnine-trophy-header-title, #psnine-filter-status-btn')).toHaveCount(0);
     await expect(page.locator('#psnine-sort-xmb-btn, #psnine-sort-time-btn, #psnine-sort-type-btn, #psnine-sort-rarity-btn')).toHaveCount(0);
     await expect(page.locator('[data-psnine-sort="time-desc"]')).toHaveCount(personal ? 1 : 0);
     const activate = () => isMobile ? trigger.tap() : trigger.click();
@@ -108,7 +109,7 @@ for (const personal of [true, false]) {
     await page.keyboard.press('Enter');
     await initial.focus();
     await page.keyboard.press('Tab');
-    const summaryToggle = page.locator('#psnine-toggle-summary-btn');
+    const summaryToggle = page.locator('#psnine-batch-load-all-tips-btn');
     await expect(summaryToggle).toBeFocused();
     await expect(menu).toBeHidden();
     await page.keyboard.press('Escape');

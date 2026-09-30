@@ -1355,7 +1355,7 @@
     "name": "奖杯类型统计",
     "module": "trophies",
     "behavior": "白金/金/银/铜计数和占比",
-    "status": "implemented",
+    "status": "removed_by_request",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_pie_chart",
@@ -1379,18 +1379,18 @@
       "src/features/trophies.ts"
     ],
     "test_files": [
-      "tests/trophies.test.ts",
-      "tests/trophies-regression.test.ts"
+      "tests/trophies-regression.test.ts",
+      "tests/progress-native.smoke.spec.ts"
     ],
-    "verification_scope": "code_review_and_module_regression",
-    "verification_note": "统计当前已载入奖杯；未知类型不伪造。"
+    "verification_scope": "intentional_ui_removal",
+    "verification_note": "1.0.4 按用户明确要求移除整个奖杯概览及相关设置，仅保留 Tips 操作；历史证据保留，不再声明当前界面支持。"
   },
   {
     "id": "T02",
     "name": "奖杯稀有度统计",
     "module": "trophies",
     "behavior": "0–5/5–10/10–20/20–50/50–100 边界",
-    "status": "implemented",
+    "status": "removed_by_request",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_pie_chart",
@@ -1414,18 +1414,18 @@
       "src/features/trophies.ts"
     ],
     "test_files": [
-      "tests/trophies.test.ts",
-      "tests/trophies-regression.test.ts"
+      "tests/trophies-regression.test.ts",
+      "tests/progress-native.smoke.spec.ts"
     ],
-    "verification_scope": "code_review_and_module_regression",
-    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
+    "verification_scope": "intentional_ui_removal",
+    "verification_note": "1.0.4 按用户明确要求移除整个奖杯概览及相关设置，仅保留 Tips 操作；历史证据保留，不再声明当前界面支持。"
   },
   {
     "id": "T03",
     "name": "获得时间曲线",
     "module": "trophies",
     "behavior": "已获累计数、完成率、缺失时间处理",
-    "status": "implemented",
+    "status": "removed_by_request",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_earned_line_chart",
@@ -1452,18 +1452,18 @@
       "src/features/trophies.ts"
     ],
     "test_files": [
-      "tests/trophies.test.ts",
-      "tests/trophies-regression.test.ts"
+      "tests/trophies-regression.test.ts",
+      "tests/progress-native.smoke.spec.ts"
     ],
-    "verification_scope": "code_review_and_module_regression",
-    "verification_note": "按可信获得时间统计；时间丢失不回填虚构时间。"
+    "verification_scope": "intentional_ui_removal",
+    "verification_note": "1.0.4 按用户明确要求移除整个奖杯概览及相关设置，仅保留 Tips 操作；历史证据保留，不再声明当前界面支持。"
   },
   {
     "id": "T04",
     "name": "已获/未获图标汇总",
     "module": "trophies",
     "behavior": "图标、各类型计数、未知状态区分",
-    "status": "implemented",
+    "status": "removed_by_request",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_icon_layout",
@@ -1496,18 +1496,18 @@
       "src/features/trophies.ts"
     ],
     "test_files": [
-      "tests/trophies.test.ts",
-      "tests/trophies-regression.test.ts"
+      "tests/trophies-regression.test.ts",
+      "tests/progress-native.smoke.spec.ts"
     ],
-    "verification_scope": "code_review_and_module_regression",
-    "verification_note": "公开页未提供个人状态时为未知，不能全算未获得。"
+    "verification_scope": "intentional_ui_removal",
+    "verification_note": "1.0.4 按用户明确要求移除整个奖杯概览及相关设置，仅保留 Tips 操作；历史证据保留，不再声明当前界面支持。"
   },
   {
     "id": "T05",
     "name": "汇总 Tips 标记与预览",
     "module": "trophies",
     "behavior": "有 Tips 视觉提示，标题详情与跳转",
-    "status": "implemented",
+    "status": "removed_by_request",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_icon_layout",
@@ -1540,18 +1540,18 @@
       "src/features/trophies.ts"
     ],
     "test_files": [
-      "tests/trophies.test.ts",
-      "tests/trophies-regression.test.ts"
+      "tests/trophies-regression.test.ts",
+      "tests/progress-native.smoke.spec.ts"
     ],
-    "verification_scope": "code_review_and_module_regression",
-    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
+    "verification_scope": "intentional_ui_removal",
+    "verification_note": "1.0.4 按用户明确要求移除整个奖杯概览及相关设置，仅保留 Tips 操作；历史证据保留，不再声明当前界面支持。"
   },
   {
     "id": "T06",
     "name": "奖杯汇总折叠",
     "module": "trophies",
     "behavior": "默认折叠设置及手动展开",
-    "status": "implemented",
+    "status": "removed_by_request",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_icon_layout",
@@ -1584,18 +1584,18 @@
       "src/features/trophies.ts"
     ],
     "test_files": [
-      "tests/trophies.test.ts",
-      "tests/trophies-regression.test.ts"
+      "tests/trophies-regression.test.ts",
+      "tests/progress-native.smoke.spec.ts"
     ],
-    "verification_scope": "code_review_and_module_regression",
-    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
+    "verification_scope": "intentional_ui_removal",
+    "verification_note": "1.0.4 按用户明确要求移除整个奖杯概览及相关设置，仅保留 Tips 操作；历史证据保留，不再声明当前界面支持。"
   },
   {
     "id": "T07",
     "name": "奖杯图表折叠",
     "module": "trophies",
     "behavior": "默认折叠设置及手动展开",
-    "status": "implemented",
+    "status": "removed_by_request",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_chart_folding"
@@ -1608,11 +1608,11 @@
       "src/features/trophies.ts"
     ],
     "test_files": [
-      "tests/trophies.test.ts",
-      "tests/trophies-regression.test.ts"
+      "tests/trophies-regression.test.ts",
+      "tests/progress-native.smoke.spec.ts"
     ],
-    "verification_scope": "code_review_and_module_regression",
-    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
+    "verification_scope": "intentional_ui_removal",
+    "verification_note": "1.0.4 按用户明确要求移除整个奖杯概览及相关设置，仅保留 Tips 操作；历史证据保留，不再声明当前界面支持。"
   },
   {
     "id": "T08",
@@ -1706,7 +1706,7 @@
     "id": "T10",
     "name": "获得状态筛选",
     "module": "trophies",
-    "behavior": "已获/未获，保留内联 Tips 归属",
+    "behavior": "原站获得状态筛选与内联 Tips 同步，不添加独立按钮",
     "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
@@ -1742,10 +1742,11 @@
     ],
     "test_files": [
       "tests/trophies.test.ts",
-      "tests/trophies-regression.test.ts"
+      "tests/trophies-regression.test.ts",
+      "tests/progress-native.smoke.spec.ts"
     ],
     "verification_scope": "code_review_and_module_regression",
-    "verification_note": "明确恢复历史已移除的获得状态筛选，非 v2 原有插件能力。"
+    "verification_note": "1.0.4 沿用原站已获得/未获得控件；保留原节点和事件，插件只同步内联 Tips 与动态新增行。无原控件时不另建筛选入口。"
   },
   {
     "id": "T11",
@@ -1985,10 +1986,11 @@
     ],
     "test_files": [
       "tests/games.test.ts",
-      "tests/games-regression.test.ts"
+      "tests/games-regression.test.ts",
+      "tests/progress-native.smoke.spec.ts"
     ],
     "verification_scope": "code_review_and_module_regression",
-    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
+    "verification_note": "官方有效进度条优先，不叠加插件百分比或整行底色；无官方进度的缓存徽章跟随主题，覆盖动态更新、他人主页和对比度。"
   },
   {
     "id": "P03",
@@ -2092,7 +2094,7 @@
     "id": "P06",
     "name": "列表背景进度与徽章",
     "module": "games",
-    "behavior": "游戏列表/个人主页，动态追加可用",
+    "behavior": "原站进度优先；缺少官方进度时显示缓存提示，不再整行染色",
     "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
@@ -2113,10 +2115,11 @@
     ],
     "test_files": [
       "tests/games.test.ts",
-      "tests/games-regression.test.ts"
+      "tests/games-regression.test.ts",
+      "tests/progress-native.smoke.spec.ts"
     ],
     "verification_scope": "code_review_and_module_regression",
-    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
+    "verification_note": "官方有效进度条优先，不叠加插件百分比或整行底色；无官方进度的缓存徽章跟随主题，覆盖动态更新、他人主页和对比度。"
   },
   {
     "id": "P07",

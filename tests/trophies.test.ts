@@ -233,27 +233,20 @@ describe('Trophies Feature Module (T01 - T14 + C19) - Followup Verification', ()
 
       const cleanup = await mountTrophies(ctx);
 
-      const panel = document.getElementById('psnine-trophy-stats-panel')!;
-      expect(panel).not.toBeNull();
-
-      // T04 & T05: Icon summary chips
-      const chips = panel.querySelectorAll('.psnine-trophy-icon-chip');
-      expect(chips.length).toBe(2);
-
-      // Click icon reveals preview
-      (chips[0] as HTMLElement).click();
-      const preview = document.getElementById('psnine-trophy-preview-card');
-      expect(preview?.style.display).toBe('block');
-      expect(preview?.textContent).toContain('白金弄臣 (platinum)');
-
-      // T06 & T07: Fold buttons
-      const toggleChartBtn = document.getElementById('psnine-toggle-charts-btn') as HTMLElement;
-      toggleChartBtn.click();
-      expect(document.getElementById('psnine-trophy-charts-container')?.style.display).toBe('none');
-
-      // Header simplified to 奖杯概览 & duplicate sort buttons removed
-      expect(document.getElementById('psnine-trophy-header-title')?.textContent).toContain('奖杯概览');
+      // Overview panel, header, charts, icon chips, and plugin status filter must NOT exist
+      expect(document.getElementById('psnine-trophy-stats-panel')).toBeNull();
+      expect(document.getElementById('psnine-trophy-header-title')).toBeNull();
+      expect(document.getElementById('psnine-trophy-charts-container')).toBeNull();
+      expect(document.getElementById('psnine-trophy-icon-grid-wrapper')).toBeNull();
+      expect(document.getElementById('psnine-filter-status-btn')).toBeNull();
       expect(document.querySelectorAll('#psnine-sort-xmb-btn, #psnine-sort-time-btn, #psnine-sort-rarity-btn, #psnine-sort-type-btn').length).toBe(0);
+
+      // Compact Tips toolbar is rendered with the 3 action buttons
+      const toolbar = document.getElementById('psnine-trophy-tips-toolbar')!;
+      expect(toolbar).not.toBeNull();
+      expect(toolbar.getAttribute('data-psnine-next')).toBe('true');
+      expect(document.getElementById('psnine-batch-load-all-tips-btn')).not.toBeNull();
+      expect((document.getElementById('psnine-batch-load-unearned-tips-btn') as HTMLButtonElement).disabled).toBe(false);
 
       // T08 & T09: Sort via native dropdown menu items
       const sortRarityDescItem = document.querySelector('[data-psnine-sort="rarity-desc"]') as HTMLElement;
@@ -266,15 +259,8 @@ describe('Trophies Feature Module (T01 - T14 + C19) - Followup Verification', ()
       sortInitialItem.click(); // restore initial order (trophy-1 then trophy-2)
       expect(table.querySelector('tbody')?.children[0].id).toBe('trophy-1');
 
-      // T10: Filter
-      const filterBtn = document.getElementById('psnine-filter-status-btn') as HTMLElement;
-      filterBtn.click(); // unearned
-      const tr1 = document.getElementById('trophy-1')!;
-      const tr2 = document.getElementById('trophy-2')!;
-      expect(isHiddenByReason(tr1, 'trophy-status-filter')).toBe(true);
-      expect(isHiddenByReason(tr2, 'trophy-status-filter')).toBe(false);
-
       // T11: Click tips badge loads sanitized tips
+      const tr1 = document.getElementById('trophy-1')!;
       const tipsBadge = tr1.querySelector('em.alert-success') as HTMLElement;
       tipsBadge.click();
       await new Promise(r => setTimeout(r, 60));
@@ -300,10 +286,10 @@ describe('Trophies Feature Module (T01 - T14 + C19) - Followup Verification', ()
       await new Promise(r => setTimeout(r, 50));
       expect(stopBtn.style.display).toBe('none');
 
-      // Verify onContent does not destroy panel
-      const panelRef = document.getElementById('psnine-trophy-stats-panel');
+      // Verify onContent preserves toolbar reference
+      const toolbarRef = document.getElementById('psnine-trophy-tips-toolbar');
       if (onContentCb) (onContentCb as () => void)();
-      expect(document.getElementById('psnine-trophy-stats-panel')).toBe(panelRef);
+      expect(document.getElementById('psnine-trophy-tips-toolbar')).toBe(toolbarRef);
 
       if (cleanup) cleanup();
     });

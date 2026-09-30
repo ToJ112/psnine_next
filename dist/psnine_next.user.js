@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PSNINE Next (PSN中文网功能增强)
 // @namespace    https://github.com/ToJ112/psnine_next
-// @version      1.0.3
+// @version      1.0.4
 // @description  现代化重构版 PSN中文网功能增强脚本，深度适配桌面 Tampermonkey 与 iOS Safari Stay
 // @author       ToJ112, swsoyee, InfinityLoop, mordom0404, Nathaniel-Wu, JayusTree, aesct
 // @match        https://psnine.com/*
@@ -1210,6 +1210,23 @@ a.psnine-nav-settings-link {
   margin-right: 6px;
   user-select: none;
 }
+
+/* Game List Progress Badge (P06: Neutral, Accessible Contrast >= 4.5:1) */
+.psnine-game-list-progress-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 11px;
+  line-height: 1.4;
+  font-weight: 500;
+  border-radius: var(--p9n-radius-sm, 4px);
+  background-color: var(--p9n-surface-alt, #f4f6fa);
+  color: var(--p9n-text, #1f2937);
+  border: 1px solid var(--p9n-border, #ccd6dd);
+  margin-left: 6px;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
 .psnine-author-badge {
   display: inline-block;
   background: var(--p9n-link);
@@ -2094,6 +2111,13 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color:#666"]
 html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"] {
   color: var(--p9n-muted) !important;
 }
+
+/* Game List Progress Badge in Dark Mode */
+html[data-theme="dark"] .psnine-game-list-progress-badge {
+  background-color: var(--p9n-surface-alt, #202c3a) !important;
+  color: var(--p9n-text, #e6ebf2) !important;
+  border-color: var(--p9n-border, #3b4859) !important;
+}
 `;
 
   // src/features/global.ts
@@ -2694,8 +2718,6 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
       s5.body.appendChild(createSwitch("redirectToMine", "\u6E38\u620F\u9875\u81EA\u52A8\u8DF3\u8F6C\u81F3\u6211\u7684\u5956\u676F"));
       s5.body.appendChild(createNumberInput("filterNonePlatinumAlpha", "\u65E0\u767D\u91D1\u6E38\u620F\u5361\u7247\u900F\u660E\u5EA6 (0~1)", 0, 1, 0.05));
       s5.body.appendChild(createSwitch("platinumGlow", "\u767D\u91D1\u5956\u676F\u53D1\u5149\u5149\u6655\u7279\u6548"));
-      s5.body.appendChild(createSwitch("foldTrophySummary", "\u9ED8\u8BA4\u6298\u53E0\u5956\u676F\u6C47\u603B\u5217\u8868"));
-      s5.body.appendChild(createSwitch("foldTrophyChart", "\u9ED8\u8BA4\u6298\u53E0\u5956\u676F\u7EDF\u8BA1\u56FE\u8868"));
       s5.body.appendChild(createSwitch("referGameVariants", "\u5173\u8054\u6E38\u620F\u591A\u7248\u672C\u4FE1\u606F"));
       s5.body.appendChild(createSwitch("preferSearchForFindingVariants", "\u4F18\u5148\u641C\u7D22\u67E5\u627E\u540C\u6B3E\u7248\u672C"));
       s5.body.appendChild(createSwitch("removeHeaderInBattle", "\u7EA6\u6218\u9875\u9762\u9690\u85CF\u53D1\u8D77\u4EBA\u5934\u50CF"));
@@ -5010,60 +5032,6 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
     });
     return items;
   }
-  function calculateTrophyStats(items) {
-    let platinum = 0;
-    let gold = 0;
-    let silver = 0;
-    let bronze = 0;
-    let earnedCount = 0;
-    let unearnedCount = 0;
-    let unknownCount = 0;
-    const buckets = [
-      { label: "0\u20135% (\u6781\u4E3A\u73CD\u8D35)", count: 0 },
-      { label: "5\u201310% (\u975E\u5E38\u73CD\u8D35)", count: 0 },
-      { label: "10\u201320% (\u73CD\u8D35)", count: 0 },
-      { label: "20\u201350% (\u6BD4\u8F83\u73CD\u8D35)", count: 0 },
-      { label: "50\u2013100% (\u666E\u901A)", count: 0 }
-    ];
-    for (const it of items) {
-      if (it.type === "platinum") platinum++;
-      else if (it.type === "gold") gold++;
-      else if (it.type === "silver") silver++;
-      else bronze++;
-      if (it.status === "earned") earnedCount++;
-      else if (it.status === "unearned") unearnedCount++;
-      else unknownCount++;
-      const r = it.rarityPercent;
-      if (r <= 5) buckets[0].count++;
-      else if (r <= 10) buckets[1].count++;
-      else if (r <= 20) buckets[2].count++;
-      else if (r <= 50) buckets[3].count++;
-      else buckets[4].count++;
-    }
-    const earnedItemsWithTime = items.filter((it) => it.status === "earned" && it.earnedTimestamp !== null).sort((a, b) => a.earnedTimestamp - b.earnedTimestamp);
-    const missingTimeCount = earnedCount - earnedItemsWithTime.length;
-    const timeCurve = [];
-    for (let i = 0; i < earnedItemsWithTime.length; i++) {
-      timeCurve.push({
-        time: earnedItemsWithTime[i].earnedTimestamp,
-        dateStr: new Date(earnedItemsWithTime[i].earnedTimestamp + SHANGHAI_OFFSET_MS2).toISOString().slice(0, 10),
-        cumCount: i + 1
-      });
-    }
-    return {
-      total: items.length,
-      platinum,
-      gold,
-      silver,
-      bronze,
-      earnedCount,
-      unearnedCount,
-      unknownCount,
-      rarityBuckets: buckets,
-      timeCurve,
-      missingTimeCount
-    };
-  }
   function sortTrophiesInTable(table, trophies, mode) {
     const tableTrophies = trophies.filter((t) => t.table === table);
     const tbody = table.querySelector("tbody") || table;
@@ -5117,111 +5085,6 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
     desiredNodes.forEach((node) => {
       tbody.appendChild(node);
     });
-  }
-  function renderTrophyChartsSvg(stats) {
-    const { total, platinum, gold, silver, bronze, rarityBuckets, timeCurve, missingTimeCount } = stats;
-    if (total === 0) return "";
-    const svgWidth = 460;
-    const svgHeight = 160;
-    const pPct = (platinum / total * 100).toFixed(1);
-    const gPct = (gold / total * 100).toFixed(1);
-    const sPct = (silver / total * 100).toFixed(1);
-    const bPct = (bronze / total * 100).toFixed(1);
-    const maxRarity = Math.max(1, Math.max(...rarityBuckets.map((b) => b.count)));
-    let timeCurveHtml = "";
-    if (timeCurve.length >= 1) {
-      const margin = { top: 15, right: 25, bottom: 25, left: 35 };
-      const innerW = svgWidth - margin.left - margin.right;
-      const innerH = svgHeight - margin.top - margin.bottom;
-      const minT = timeCurve[0].time;
-      const maxT = timeCurve[timeCurve.length - 1].time;
-      const tSpan = Math.max(1, maxT - minT);
-      const maxCount = timeCurve[timeCurve.length - 1].cumCount;
-      const pts = [];
-      for (const pt of timeCurve) {
-        const x = timeCurve.length === 1 ? margin.left + innerW / 2 : margin.left + (pt.time - minT) / tSpan * innerW;
-        const y = margin.top + innerH - pt.cumCount / maxCount * innerH;
-        pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
-      }
-      timeCurveHtml = `
-      <div data-psnine-next="true" class="psnine-trophy-chart-section">
-        <div class="psnine-trophy-chart-header" style="font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;">
-          <span>\u5956\u676F\u83B7\u5F97\u65F6\u95F4\u79EF\u7D2F\u66F2\u7EBF (\u5DF2\u83B7: ${timeCurve[timeCurve.length - 1].cumCount}\u4E2A)</span>
-          <span style="font-size:11px;color:var(--p9n-muted,#5f6b7a);">${timeCurve[0].dateStr} ~ ${timeCurve[timeCurve.length - 1].dateStr}</span>
-        </div>
-        <svg viewBox="0 0 ${svgWidth} ${svgHeight}" data-psnine-next="true" style="width:100%;height:100px;font-family:inherit;">
-          <line x1="${margin.left}" y1="${margin.top + innerH}" x2="${margin.left + innerW}" y2="${margin.top + innerH}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
-          <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + innerH}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
-          <text x="${margin.left - 5}" y="${margin.top + 6}" text-anchor="end" font-size="10" fill="currentColor">${maxCount}</text>
-          <text x="${margin.left - 5}" y="${margin.top + innerH}" text-anchor="end" font-size="10" fill="currentColor">0</text>
-          ${pts.length > 1 ? `<polyline points="${pts.join(" ")}" fill="none" stroke="#28a745" stroke-width="2.5" />` : ""}
-          ${pts.map((p) => `<circle cx="${p.split(",")[0]}" cy="${p.split(",")[1]}" r="4" fill="#28a745" />`).join("")}
-        </svg>
-        <details style="margin-top:4px;font-size:11px;color:var(--p9n-muted,#5f6b7a);">
-          <summary style="cursor:pointer;">\u67E5\u770B\u83B7\u5F97\u65F6\u95F4\u6570\u636E\u8868</summary>
-          <div style="max-height:80px;overflow-y:auto;margin-top:4px;">
-            <table style="width:100%;border-collapse:collapse;font-size:10px;">
-              <thead><tr><th style="text-align:left;">\u65E5\u671F</th><th style="text-align:right;">\u7D2F\u8BA1\u5DF2\u83B7</th></tr></thead>
-              <tbody>
-                ${timeCurve.map((t) => `<tr><td>${t.dateStr}</td><td style="text-align:right;">${t.cumCount}</td></tr>`).join("")}
-              </tbody>
-            </table>
-          </div>
-        </details>
-        ${missingTimeCount > 0 ? `<div style="font-size:10px;color:var(--p9n-muted,#5f6b7a);text-align:right;margin-top:2px;">${missingTimeCount}\u4E2A\u5DF2\u83B7\u5956\u676F\u7F3A\u5931\u65F6\u95F4\u6233</div>` : ""}
-      </div>
-    `;
-    } else {
-      timeCurveHtml = `
-      <div data-psnine-next="true" class="psnine-trophy-chart-section" style="font-size:12px;color:var(--p9n-muted,#5f6b7a);">
-        \u6682\u65E0\u6709\u6548\u83B7\u5F97\u65F6\u95F4\u8BB0\u5F55\uFF08\u5DF2\u8F7D\u5165\u6837\u672C\uFF09
-      </div>
-    `;
-    }
-    return `
-    <div data-psnine-next="true" class="psnine-trophy-charts">
-      <!-- Type Breakdown -->
-      <div data-psnine-next="true" class="psnine-trophy-chart-section">
-        <div class="psnine-trophy-chart-header" style="font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;">
-          <span>\u5956\u676F\u7C7B\u578B\u6784\u6210 (\u5DF2\u8F7D\u5165: ${total})</span>
-        </div>
-        <div style="height:12px;display:flex;border-radius:6px;overflow:hidden;margin-bottom:8px;">
-          <div style="width:${pPct}%;background:#4dabf7;" title="\u767D\u91D1: ${platinum} (${pPct}%)"></div>
-          <div style="width:${gPct}%;background:#ffd43b;" title="\u91D1\u676F: ${gold} (${gPct}%)"></div>
-          <div style="width:${sPct}%;background:#ced4da;" title="\u94F6\u676F: ${silver} (${sPct}%)"></div>
-          <div style="width:${bPct}%;background:#e59966;" title="\u94DC\u676F: ${bronze} (${bPct}%)"></div>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;">
-          <span style="color:#1971c2;">\u767D ${platinum}</span>
-          <span style="color:#f59f00;">\u91D1 ${gold}</span>
-          <span style="color:#868e96;">\u94F6 ${silver}</span>
-          <span style="color:#d9480f;">\u94DC ${bronze}</span>
-        </div>
-        <div style="font-size:10px;color:var(--p9n-muted,#5f6b7a);margin-top:4px;">*\u7EDF\u8BA1\u8303\u56F4\uFF1A\u5F53\u524D\u9875\u9762\u5DF2\u8F7D\u5165\u6837\u672C\uFF08\u4E0D\u4EE3\u8868\u7AD9\u70B9\u52A0\u6743\u603B\u8FDB\u5EA6\uFF09</div>
-      </div>
-
-      <!-- Rarity Breakdown -->
-      <div data-psnine-next="true" class="psnine-trophy-chart-section">
-        <div class="psnine-trophy-chart-header" style="font-size:12px;font-weight:600;margin-bottom:6px;">\u7A00\u6709\u5EA6\u5206\u5E03</div>
-        <svg viewBox="0 0 ${svgWidth} ${svgHeight}" data-psnine-next="true" style="width:100%;height:100px;font-family:inherit;">
-          ${rarityBuckets.map((b, i) => {
-      const h = b.count / maxRarity * 80;
-      const x = 30 + i * 85;
-      const y = 90 - h;
-      return `
-              <rect x="${x}" y="${y}" width="45" height="${Math.max(2, h)}" rx="3" fill="#3890ff">
-                <title>${b.label}: ${b.count}\u4E2A</title>
-              </rect>
-              <text x="${x + 22}" y="${y - 4}" text-anchor="middle" font-size="10" fill="currentColor">${b.count}</text>
-              <text x="${x + 22}" y="110" text-anchor="middle" font-size="9" fill="currentColor">${b.label.split(" ")[0]}</text>
-            `;
-    }).join("")}
-        </svg>
-      </div>
-
-      ${timeCurveHtml}
-    </div>
-  `;
   }
   var mountTrophies = async (ctx) => {
     const { document: doc, url, settings, store, userId, onContent, report } = ctx;
@@ -5430,11 +5293,9 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
         let batchAbortController = null;
         const activeManualControllers = /* @__PURE__ */ new Map();
         const isPersonalPage = url.searchParams.has("psnid");
-        let currentFilterStatus = "all";
         let currentSortMode = null;
         let cleanupNativeSortDropdown = null;
-        let isSummaryFolded = settings.foldTrophySummary;
-        let isChartFolded = settings.foldTrophyChart;
+        let cleanupNativeFilterSync = null;
         let isBatchRunning = false;
         const applyActiveSortToTables = (mode) => {
           doc.querySelectorAll("table.list").forEach((tbl) => {
@@ -5678,177 +5539,146 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
           };
         };
         let currentTrophies = [];
-        let lastStatsKey = "";
-        let lastTrophiesKey = "";
-        let mainPanel = doc.getElementById("psnine-trophy-stats-panel");
-        if (!mainPanel) {
-          mainPanel = doc.createElement("div");
-          mainPanel.id = "psnine-trophy-stats-panel";
-          mainPanel.setAttribute("data-psnine-next", "true");
-          mainPanel.className = "psnine-trophy-panel";
-          const target = doc.querySelector(".main, .box.pd10, .min-inner");
-          const firstTbl = doc.querySelector("table.list");
-          if (firstTbl && firstTbl.parentElement) {
-            firstTbl.parentElement.insertBefore(mainPanel, firstTbl);
-          } else if (target) {
-            target.appendChild(mainPanel);
-          }
-        }
-        const buildIconChips = (chipsContainer, trophies) => {
-          chipsContainer.innerHTML = "";
-          trophies.forEach((t) => {
-            const chip = doc.createElement("button");
-            chip.type = "button";
-            chip.className = "psnine-trophy-icon-chip";
-            chip.setAttribute("data-psnine-next", "true");
-            chip.setAttribute("data-trophy-id", t.trophyId);
-            chip.style.cssText = `width:36px;height:36px;border-radius:4px;overflow:hidden;position:relative;cursor:pointer;padding:0;background:transparent;border:1px solid ${t.status === "earned" ? "#28a745" : "var(--p9n-border,#ccd6dd)"};opacity:${t.status === "unearned" ? "0.6" : "1"};`;
-            chip.title = `${t.name} (${t.type})${t.tipsCount > 0 ? ` | \u{1F4A1}${t.tipsCount}Tips` : ""}`;
-            if (t.iconSrc) {
-              const img = doc.createElement("img");
-              img.src = t.iconSrc;
-              img.style.cssText = "width:100%;height:100%;object-fit:cover;";
-              chip.appendChild(img);
-            }
-            if (t.tipsCount > 0) {
-              const tipCountBadge = doc.createElement("span");
-              tipCountBadge.style.cssText = "position:absolute;bottom:0;right:0;background:#ff9800;color:#fff;font-size:9px;padding:0 2px;border-radius:2px;";
-              tipCountBadge.textContent = String(t.tipsCount);
-              chip.appendChild(tipCountBadge);
-            }
-            chip.onclick = () => {
-              const previewCard = doc.getElementById("psnine-trophy-preview-card");
-              if (previewCard) {
-                previewCard.className = "psnine-trophy-preview-card";
-                previewCard.style.display = "block";
-                previewCard.innerHTML = "";
-                const titleLine = doc.createElement("div");
-                titleLine.style.cssText = "font-weight:bold;margin-bottom:2px;";
-                titleLine.textContent = `${t.name} (${t.type}) - ${t.rarityPercent}%`;
-                previewCard.appendChild(titleLine);
-                const descLine = doc.createElement("div");
-                descLine.style.cssText = "color:var(--p9n-muted,#5f6b7a);margin-bottom:4px;";
-                descLine.textContent = t.description;
-                previewCard.appendChild(descLine);
-                const actionLine = doc.createElement("div");
-                actionLine.style.cssText = "font-size:11px;display:flex;gap:10px;align-items:center;";
-                const tipsSpan = doc.createElement("span");
-                tipsSpan.textContent = `Tips: ${t.tipsCount}\u6761`;
-                actionLine.appendChild(tipsSpan);
-                const jumpA = doc.createElement("a");
-                jumpA.setAttribute("data-psnine-next", "true");
-                jumpA.href = `#trophy-${t.trophyId}`;
-                jumpA.style.cssText = "color:#3890ff;text-decoration:none;cursor:pointer;";
-                jumpA.textContent = "\u8DF3\u8F6C\u81F3\u884C \u2193";
-                jumpA.onclick = (e) => {
-                  e.preventDefault();
-                  t.row.scrollIntoView({ behavior: "smooth", block: "center" });
-                };
-                actionLine.appendChild(jumpA);
-                previewCard.appendChild(actionLine);
+        let observedOwnBtn = null;
+        let observedUnownBtn = null;
+        let nativeFilterClassObserver = null;
+        let docFilterClickBound = false;
+        const getNativeFilterControls = () => {
+          const ownBtn = doc.querySelector('ul.dropmenu .own, .o_btn.own, [onclick*="getOwn"]');
+          const unownBtn = doc.querySelector('ul.dropmenu .unown, .o_btn.unown, [onclick*="getUnOwn"]');
+          return { ownBtn, unownBtn };
+        };
+        const getNativeFilterMode = () => {
+          const { ownBtn, unownBtn } = getNativeFilterControls();
+          if (ownBtn?.classList.contains("select")) return "earned";
+          if (unownBtn?.classList.contains("select")) return "unearned";
+          return "all";
+        };
+        const isTrophyRowEarned = (t) => {
+          return t.status === "earned" || t.row.querySelector(".earned") !== null;
+        };
+        const isTrophyRowFilteredOut = (t) => {
+          const nativeMode = getNativeFilterMode();
+          const isEarned = isTrophyRowEarned(t);
+          const shouldHideByNativeMode = nativeMode === "earned" && !isEarned || nativeMode === "unearned" && isEarned;
+          return shouldHideByNativeMode || t.row.style.display === "none" || t.row.hidden;
+        };
+        const syncNativeFilter = () => {
+          if (!isActive) return;
+          const nativeMode = getNativeFilterMode();
+          currentTrophies.forEach((t) => {
+            const isEarned = isTrophyRowEarned(t);
+            const shouldHideByNativeMode = nativeMode === "earned" && !isEarned || nativeMode === "unearned" && isEarned;
+            if (shouldHideByNativeMode) {
+              if (t.row.style.display !== "none") {
+                t.row.style.display = "none";
+                t.row.setAttribute("data-psnine-native-sync-hidden", "true");
               }
-            };
-            chipsContainer.appendChild(chip);
+            } else if (t.row.getAttribute("data-psnine-native-sync-hidden") === "true") {
+              t.row.removeAttribute("data-psnine-native-sync-hidden");
+              if (t.row.style.display === "none") {
+                t.row.style.removeProperty("display");
+              }
+            }
+            const rowIsHidden = shouldHideByNativeMode || t.row.style.display === "none" || t.row.hidden;
+            const tipRow = t.table.querySelector(`tr.psnine-inline-tip-row[data-for-trophy="${t.trophyId}"]`);
+            if (tipRow && isHiddenByReason(tipRow, "trophy-status-filter") !== rowIsHidden) {
+              setHidden(tipRow, "trophy-status-filter", rowIsHidden);
+            }
           });
         };
-        const enhanceTrophyPage = (initialBuild = false) => {
+        const onDocNativeFilterClick = (e) => {
+          if (!isActive) return;
+          const target = e.target;
+          if (!target) return;
+          const { ownBtn, unownBtn } = getNativeFilterControls();
+          const hitOwn = ownBtn ? ownBtn === target || ownBtn.contains(target) : false;
+          const hitUnown = unownBtn ? unownBtn === target || unownBtn.contains(target) : false;
+          if (!hitOwn && !hitUnown) return;
+          syncNativeFilter();
+          queueMicrotask(() => {
+            if (isActive) syncNativeFilter();
+          });
+        };
+        const ensureNativeFilterSync = () => {
+          if (!docFilterClickBound) {
+            doc.addEventListener("click", onDocNativeFilterClick);
+            docFilterClickBound = true;
+          }
+          const { ownBtn, unownBtn } = getNativeFilterControls();
+          if (ownBtn !== observedOwnBtn || unownBtn !== observedUnownBtn) {
+            nativeFilterClassObserver?.disconnect();
+            nativeFilterClassObserver = null;
+            observedOwnBtn = ownBtn;
+            observedUnownBtn = unownBtn;
+            if (ownBtn || unownBtn) {
+              nativeFilterClassObserver = new MutationObserver(() => {
+                if (isActive) syncNativeFilter();
+              });
+              if (ownBtn) {
+                nativeFilterClassObserver.observe(ownBtn, { attributes: true, attributeFilter: ["class"] });
+              }
+              if (unownBtn && unownBtn !== ownBtn) {
+                nativeFilterClassObserver.observe(unownBtn, { attributes: true, attributeFilter: ["class"] });
+              }
+            }
+          }
+          cleanupNativeFilterSync = () => {
+            if (docFilterClickBound) {
+              doc.removeEventListener("click", onDocNativeFilterClick);
+              docFilterClickBound = false;
+            }
+            nativeFilterClassObserver?.disconnect();
+            nativeFilterClassObserver = null;
+            observedOwnBtn = null;
+            observedUnownBtn = null;
+            doc.querySelectorAll("tr.psnine-inline-tip-row").forEach((tipRow) => {
+              if (isHiddenByReason(tipRow, "trophy-status-filter")) {
+                setHidden(tipRow, "trophy-status-filter", false);
+              }
+            });
+            doc.querySelectorAll('tr[data-psnine-native-sync-hidden="true"]').forEach((row) => {
+              row.removeAttribute("data-psnine-native-sync-hidden");
+              if (row.style.display === "none") {
+                row.style.removeProperty("display");
+              }
+            });
+          };
+        };
+        const enhanceTrophyPage = () => {
           currentTrophies = parseTrophyRows(doc, isPersonalPage);
           if (currentTrophies.length === 0) return;
           ensureNativeSortDropdown();
-          const stats = calculateTrophyStats(currentTrophies);
-          if (initialBuild || !mainPanel?.hasChildNodes()) {
-            lastStatsKey = `${stats.total}:${stats.platinum}:${stats.gold}:${stats.silver}:${stats.bronze}:${stats.earnedCount}:${stats.unearnedCount}:${stats.timeCurve.length}`;
-            lastTrophiesKey = currentTrophies.map((t) => `${t.trophyId}:${t.status}:${t.tipsCount}`).join(",");
-            mainPanel.innerHTML = `
-            <div data-psnine-next="true" class="psnine-trophy-overview-top">
-              <div data-psnine-next="true" id="psnine-trophy-header-title" class="psnine-trophy-card-hd">
-                <span class="psnine-trophy-title-text">\u5956\u676F\u6982\u89C8</span>
-                <span id="psnine-trophy-header-counts">[\u767D${stats.platinum} \u91D1${stats.gold} \u94F6${stats.silver} \u94DC${stats.bronze}]</span>
-                ${isPersonalPage ? `
-                  <span class="psnine-trophy-completion" id="psnine-trophy-completion-badge">
-                    \u5DF2\u83B7 ${stats.earnedCount} \xB7 \u672A\u83B7 ${stats.unearnedCount} \xB7 \u6570\u91CF\u5360\u6BD4 ${(stats.earnedCount / stats.total * 100).toFixed(1)}%
-                  </span>
-                ` : `
-                  <span class="psnine-trophy-completion" id="psnine-trophy-completion-badge">\u516C\u5F00\u5956\u676F\u5217\u8868 \xB7 \u5171 ${stats.total} \u4E2A</span>
-                `}
-              </div>
-
-              <!-- Action Toolbar -->
-              <div data-psnine-next="true" class="psnine-trophy-toolbar">
-                <div data-psnine-next="true" class="psnine-trophy-action-group">
-                  <button type="button" id="psnine-toggle-summary-btn" class="psnine-trophy-pill-btn" data-psnine-next="true">
-                    ${isSummaryFolded ? "\u5C55\u5F00\u56FE\u6807\u6C47\u603B" : "\u6298\u53E0\u56FE\u6807\u6C47\u603B"}
-                  </button>
-                  <button type="button" id="psnine-toggle-charts-btn" class="psnine-trophy-pill-btn" data-psnine-next="true">
-                    ${isChartFolded ? "\u5C55\u5F00\u56FE\u8868" : "\u6298\u53E0\u56FE\u8868"}
-                  </button>
-                </div>
-
-                <div data-psnine-next="true" class="psnine-trophy-action-group">
-                  ${isPersonalPage ? `
-                    <button type="button" id="psnine-filter-status-btn" class="psnine-trophy-pill-btn${currentFilterStatus !== "all" ? " active" : ""}" data-psnine-next="true" aria-pressed="${currentFilterStatus !== "all"}">
-                      \u7B5B\u9009: ${currentFilterStatus === "all" ? "\u5168\u90E8" : currentFilterStatus === "unearned" ? "\u4EC5\u672A\u83B7" : "\u4EC5\u5DF2\u83B7"}
-                    </button>
-                  ` : ""}
-
-                  <button type="button" id="psnine-batch-load-all-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true">
-                    \u5C55\u5F00\u6240\u6709Tips
-                  </button>
-                  <button type="button" id="psnine-batch-load-unearned-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true"${!isPersonalPage ? ' disabled title="\u516C\u5F00\u9875\u9762\u65E0\u6CD5\u786E\u8BA4\u83B7\u5F97\u72B6\u6001\uFF0C\u8BF7\u8BBF\u95EE\u4E2A\u4EBA\u5956\u676F\u9875\u4F7F\u7528\u6B64\u529F\u80FD"' : ""}>
-                    \u5C55\u5F00\u672A\u83B7Tips
-                  </button>
-                  <button type="button" id="psnine-stop-batch-tips-btn" class="psnine-trophy-pill-btn danger" data-psnine-next="true" style="display:none;">
-                    \u505C\u6B62\u52A0\u8F7D
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div id="psnine-trophy-charts-container" data-psnine-next="true" style="display:${isChartFolded ? "none" : "block"};">
-              ${renderTrophyChartsSvg(stats)}
-            </div>
-
-            <div data-psnine-next="true" id="psnine-trophy-icon-grid-wrapper" class="psnine-trophy-icon-grid-wrapper" style="display:${isSummaryFolded ? "none" : "block"};">
-              <div class="psnine-trophy-icon-grid-title" style="font-size:12px;font-weight:600;margin-bottom:6px;">\u5956\u676F\u56FE\u6807\u6C47\u603B (\u70B9\u51FB\u5FEB\u901F\u5B9A\u4F4D):</div>
-              <div id="psnine-trophy-icon-chips-container" data-psnine-next="true" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
-              <div id="psnine-trophy-preview-card" class="psnine-trophy-preview-card" data-psnine-next="true" style="display:none;"></div>
+          ensureNativeFilterSync();
+          doc.getElementById("psnine-trophy-stats-panel")?.remove();
+          let tipsToolbar = doc.getElementById("psnine-trophy-tips-toolbar");
+          if (!tipsToolbar) {
+            tipsToolbar = doc.createElement("div");
+            tipsToolbar.id = "psnine-trophy-tips-toolbar";
+            tipsToolbar.setAttribute("data-psnine-next", "true");
+            tipsToolbar.className = "psnine-trophy-toolbar";
+            const target = doc.querySelector(".main, .box.pd10, .min-inner");
+            const firstTbl = doc.querySelector("table.list");
+            if (firstTbl && firstTbl.parentElement) {
+              firstTbl.parentElement.insertBefore(tipsToolbar, firstTbl);
+            } else if (target) {
+              target.appendChild(tipsToolbar);
+            }
+          }
+          if (!tipsToolbar.hasChildNodes()) {
+            tipsToolbar.innerHTML = `
+            <div data-psnine-next="true" class="psnine-trophy-action-group">
+              <button type="button" id="psnine-batch-load-all-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true">
+                \u5C55\u5F00\u6240\u6709Tips
+              </button>
+              <button type="button" id="psnine-batch-load-unearned-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true"${!isPersonalPage ? ' disabled title="\u516C\u5F00\u9875\u9762\u65E0\u6CD5\u786E\u8BA4\u83B7\u5F97\u72B6\u6001\uFF0C\u8BF7\u8BBF\u95EE\u4E2A\u4EBA\u5956\u676F\u9875\u4F7F\u7528\u6B64\u529F\u80FD"' : ""}>
+                \u5C55\u5F00\u672A\u83B7Tips
+              </button>
+              <button type="button" id="psnine-stop-batch-tips-btn" class="psnine-trophy-pill-btn danger" data-psnine-next="true" style="display:none;">
+                \u505C\u6B62\u52A0\u8F7D
+              </button>
             </div>
           `;
-            const chipsContainer = doc.getElementById("psnine-trophy-icon-chips-container");
-            if (chipsContainer) {
-              buildIconChips(chipsContainer, currentTrophies);
-            }
-            doc.getElementById("psnine-toggle-summary-btn").onclick = () => {
-              isSummaryFolded = !isSummaryFolded;
-              const w = doc.getElementById("psnine-trophy-icon-grid-wrapper");
-              if (w) w.style.display = isSummaryFolded ? "none" : "block";
-              doc.getElementById("psnine-toggle-summary-btn").textContent = isSummaryFolded ? "\u5C55\u5F00\u56FE\u6807\u6C47\u603B" : "\u6298\u53E0\u56FE\u6807\u6C47\u603B";
-            };
-            doc.getElementById("psnine-toggle-charts-btn").onclick = () => {
-              isChartFolded = !isChartFolded;
-              const c = doc.getElementById("psnine-trophy-charts-container");
-              if (c) c.style.display = isChartFolded ? "none" : "block";
-              doc.getElementById("psnine-toggle-charts-btn").textContent = isChartFolded ? "\u5C55\u5F00\u56FE\u8868" : "\u6298\u53E0\u56FE\u8868";
-            };
-            const filterBtn = doc.getElementById("psnine-filter-status-btn");
-            if (filterBtn) {
-              filterBtn.onclick = () => {
-                if (currentFilterStatus === "all") currentFilterStatus = "unearned";
-                else if (currentFilterStatus === "unearned") currentFilterStatus = "earned";
-                else currentFilterStatus = "all";
-                filterBtn.textContent = `\u7B5B\u9009: ${currentFilterStatus === "all" ? "\u5168\u90E8" : currentFilterStatus === "unearned" ? "\u4EC5\u672A\u83B7" : "\u4EC5\u5DF2\u83B7"}`;
-                filterBtn.classList.toggle("active", currentFilterStatus !== "all");
-                filterBtn.setAttribute("aria-pressed", String(currentFilterStatus !== "all"));
-                currentTrophies.forEach((t) => {
-                  const hide = currentFilterStatus !== "all" && t.status !== currentFilterStatus;
-                  setHidden(t.row, "trophy-status-filter", hide);
-                  const tipRow = t.table.querySelector(`tr.psnine-inline-tip-row[data-for-trophy="${t.trophyId}"]`);
-                  if (tipRow) {
-                    setHidden(tipRow, "trophy-status-filter", hide);
-                  }
-                });
-              };
-            }
             const runBatchQueue = async (unearnedOnly) => {
               if (isBatchRunning) return;
               isBatchRunning = true;
@@ -5903,53 +5733,10 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
                 if (batchUnearnedBtn) batchUnearnedBtn.style.display = "inline-block";
               };
             }
-          } else {
-            const statsKey = `${stats.total}:${stats.platinum}:${stats.gold}:${stats.silver}:${stats.bronze}:${stats.earnedCount}:${stats.unearnedCount}:${stats.timeCurve.length}`;
-            if (statsKey !== lastStatsKey) {
-              lastStatsKey = statsKey;
-              const badge = doc.getElementById("psnine-trophy-completion-badge");
-              if (badge) {
-                badge.className = "psnine-trophy-completion";
-                if (isPersonalPage) {
-                  badge.textContent = `\u5DF2\u83B7 ${stats.earnedCount} \xB7 \u672A\u83B7 ${stats.unearnedCount} \xB7 \u6570\u91CF\u5360\u6BD4 ${(stats.earnedCount / stats.total * 100).toFixed(1)}%`;
-                } else {
-                  badge.textContent = `\u516C\u5F00\u5956\u676F\u5217\u8868 \xB7 \u5171 ${stats.total} \u4E2A`;
-                }
-              }
-              const headerCounts = doc.getElementById("psnine-trophy-header-counts");
-              if (headerCounts) {
-                headerCounts.textContent = `[\u767D${stats.platinum} \u91D1${stats.gold} \u94F6${stats.silver} \u94DC${stats.bronze}]`;
-              }
-              const chartsContainer = doc.getElementById("psnine-trophy-charts-container");
-              if (chartsContainer) {
-                const wasDetailsOpen = chartsContainer.querySelector("details")?.open;
-                chartsContainer.innerHTML = renderTrophyChartsSvg(stats);
-                if (wasDetailsOpen) {
-                  const d = chartsContainer.querySelector("details");
-                  if (d) d.open = true;
-                }
-              }
-            }
-            const trophiesKey = currentTrophies.map((t) => `${t.trophyId}:${t.status}:${t.tipsCount}`).join(",");
-            if (trophiesKey !== lastTrophiesKey) {
-              lastTrophiesKey = trophiesKey;
-              const chipsContainer = doc.getElementById("psnine-trophy-icon-chips-container");
-              if (chipsContainer) {
-                buildIconChips(chipsContainer, currentTrophies);
-              }
-            }
-            if (currentSortMode !== null) {
-              applyActiveSortToTables(currentSortMode);
-            }
-            currentTrophies.forEach((t) => {
-              const hide = currentFilterStatus !== "all" && t.status !== currentFilterStatus;
-              setHidden(t.row, "trophy-status-filter", hide);
-              const tipRow = t.table.querySelector(`tr.psnine-inline-tip-row[data-for-trophy="${t.trophyId}"]`);
-              if (tipRow) {
-                setHidden(tipRow, "trophy-status-filter", hide);
-              }
-            });
+          } else if (currentSortMode !== null) {
+            applyActiveSortToTables(currentSortMode);
           }
+          syncNativeFilter();
           currentTrophies.forEach((t) => {
             const tipsBadge = t.row.querySelector("em.alert-success:not(.r)");
             if (tipsBadge && !tipsBadge.classList.contains("psnine-bound-tip")) {
@@ -6001,7 +5788,7 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
           tipRow.className = "psnine-inline-tip-row";
           tipRow.setAttribute("data-psnine-next", "true");
           tipRow.setAttribute("data-for-trophy", t.trophyId);
-          if (currentFilterStatus !== "all" && t.status !== currentFilterStatus) {
+          if (isTrophyRowFilteredOut(t)) {
             setHidden(tipRow, "trophy-status-filter", true);
           }
           const td = doc.createElement("td");
@@ -6206,14 +5993,16 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
             }
           }
         };
-        enhanceTrophyPage(true);
+        enhanceTrophyPage();
         const unsubscribe = onContent(() => {
-          if (isActive) enhanceTrophyPage(false);
+          if (isActive) enhanceTrophyPage();
         });
         return () => {
           isActive = false;
           cleanupNativeSortDropdown?.();
           cleanupNativeSortDropdown = null;
+          cleanupNativeFilterSync?.();
+          cleanupNativeFilterSync = null;
           pageAbortController.abort();
           batchAbortController?.abort();
           activeManualControllers.forEach((ctrl) => ctrl.abort());
@@ -6311,8 +6100,33 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
     }
     return false;
   }
+  function isPluginNode(el) {
+    for (let cur = el; cur; cur = cur.parentElement) {
+      if (cur.hasAttribute("data-psnine-next") || typeof cur.className === "string" && cur.className.includes("psnine-")) {
+        return true;
+      }
+    }
+    return false;
+  }
+  function getTextExcludingPluginNodes(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      return isPluginNode(node.parentElement) ? "" : node.textContent || "";
+    }
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      const el = node;
+      if (isPluginNode(el)) {
+        return "";
+      }
+      let res = "";
+      node.childNodes.forEach((child) => {
+        res += getTextExcludingPluginNodes(child);
+      });
+      return res;
+    }
+    return "";
+  }
   function extractElementProgressPercent(el) {
-    if (!el) return null;
+    if (!el || isPluginNode(el)) return null;
     const htmlEl = el;
     if (htmlEl.style && typeof htmlEl.style.width === "string" && htmlEl.style.width.trim()) {
       const raw = htmlEl.style.width.trim();
@@ -6336,7 +6150,7 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
         return null;
       }
     }
-    const text = el.textContent?.trim() || "";
+    const text = getTextExcludingPluginNodes(el).trim();
     if (text) {
       const textM = text.match(/(?:^|\s)(\d{1,3})%(?:\s|$)/);
       if (textM) {
@@ -6348,19 +6162,26 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
     }
     return null;
   }
+  function hasOfficialGameProgress(tr) {
+    const progDiv = Array.from(tr.querySelectorAll(".progress-bar, .progress > div, div.progress")).find((el) => !isPluginNode(el));
+    if (!progDiv) return false;
+    const innerBar = Array.from(progDiv.querySelectorAll("div")).find((el) => !isPluginNode(el)) ?? null;
+    const pct = extractElementProgressPercent(innerBar) ?? extractElementProgressPercent(progDiv);
+    return pct !== null && Number.isFinite(pct) && pct >= 0 && pct <= 100;
+  }
   function parseGameRowProgress(tr) {
     const gameA = tr.querySelector('a[href*="/psngame/"]');
     if (!gameA) return null;
     const gid = extractGameId(gameA.href || gameA.getAttribute("href") || "");
     if (!gid) return null;
     let percent = null;
-    const progDiv = tr.querySelector(".progress-bar, .progress > div, div.progress");
+    const progDiv = Array.from(tr.querySelectorAll(".progress-bar, .progress > div, div.progress")).find((el) => !isPluginNode(el));
     if (progDiv) {
-      const innerBar = progDiv.querySelector("div");
+      const innerBar = Array.from(progDiv.querySelectorAll("div")).find((el) => !isPluginNode(el)) ?? null;
       percent = extractElementProgressPercent(innerBar) ?? extractElementProgressPercent(progDiv);
     }
     const platSpan = tr.querySelector(".text-platinum");
-    const platText = platSpan?.textContent?.trim() || "";
+    const platText = platSpan ? getTextExcludingPluginNodes(platSpan).trim() : "";
     const hasPlatImg = tr.querySelector('img.earned[src*="platinum"]') !== null;
     const isPlatEarned = hasPlatImg || platSpan !== null && !platText.includes("\u767D0") && (platText.includes("\u767D1") || platText === "1");
     return { gameId: gid, percent, platinum: isPlatEarned };
@@ -6642,6 +6463,10 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
     const isSingleGamePage = /^\/psngame\/\d+/.test(url.pathname);
     const isProfilePage = /^\/psnid\/[^/]+/.test(url.pathname);
     const isTrophyDetailPage = /^\/trophy\/\d+/.test(url.pathname);
+    const pathParts = url.pathname.split("/");
+    const profileId = isProfilePage ? pathParts[2] || "" : "";
+    const isBareProfile = isProfilePage && (url.pathname === `/psnid/${profileId}` || url.pathname === `/psnid/${profileId}/`);
+    const isMyProfile = Boolean(userId && profileId && userId.toLowerCase() === profileId.toLowerCase());
     try {
       const styleId = "psnine-enhanced-games-style";
       if (!doc.getElementById(styleId)) {
@@ -6668,6 +6493,25 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
           box-shadow: 0 0 10px rgba(56, 144, 255, 0.8), 0 0 20px rgba(56, 144, 255, 0.4) !important;
           border: 1px solid rgba(56, 144, 255, 0.6) !important;
           border-radius: 4px !important;
+        }
+        .psnine-game-list-progress-badge {
+          display: inline-block !important;
+          padding: 1px 6px !important;
+          font-size: 11px !important;
+          line-height: 1.4 !important;
+          font-weight: 500 !important;
+          border-radius: var(--p9n-radius-sm, 4px) !important;
+          background-color: var(--p9n-surface-alt, #f4f6fa) !important;
+          color: var(--p9n-text, #1f2937) !important;
+          border: 1px solid var(--p9n-border, #ccd6dd) !important;
+          margin-left: 6px !important;
+          vertical-align: middle !important;
+          box-sizing: border-box !important;
+        }
+        html[data-theme="dark"] .psnine-game-list-progress-badge {
+          background-color: var(--p9n-surface-alt, #202c3a) !important;
+          color: var(--p9n-text, #e6ebf2) !important;
+          border-color: var(--p9n-border, #3b4859) !important;
         }
       `;
         doc.head.appendChild(style);
@@ -6700,24 +6544,41 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
         }
       }
       const refreshGameListBadgesAndBackgrounds = () => {
+        if (isProfilePage && !isMyProfile) {
+          doc.querySelectorAll(".psnine-game-list-progress-badge").forEach((el) => el.remove());
+          doc.querySelectorAll(".psnine-ondemand-progress-btn").forEach((el) => el.remove());
+          return;
+        }
         doc.querySelectorAll("table tr").forEach((tr) => {
           const gameA = tr.querySelector('a[href*="/psngame/"]');
           if (!gameA) return;
           const gid = extractGameId(gameA.href || gameA.getAttribute("href") || "");
-          if (!gid || !myProgress.games[gid]) return;
-          const rec = myProgress.games[gid];
+          if (!gid) return;
           const row = tr;
-          row.style.background = `linear-gradient(to right, rgba(56, 144, 255, 0.12) ${rec.percent}%, transparent ${rec.percent}%)`;
+          const hasOfficial = hasOfficialGameProgress(tr);
+          if (hasOfficial) {
+            row.querySelector(".psnine-game-list-progress-badge")?.remove();
+            row.querySelector(".psnine-ondemand-progress-btn")?.remove();
+            const rec2 = myProgress.games[gid];
+            const parsed = parseGameRowProgress(tr);
+            const isPlat = parsed?.platinum ?? rec2?.platinum ?? false;
+            if (settings.platinumGlow && isPlat) {
+              const coverImg = row.querySelector("img");
+              if (coverImg) coverImg.classList.add("psnine-platinum-glow");
+            }
+            return;
+          }
+          const rec = myProgress.games[gid];
+          if (!rec) return;
+          row.querySelector(".psnine-ondemand-progress-btn")?.remove();
           let badge = row.querySelector(".psnine-game-list-progress-badge");
           if (!badge) {
             badge = doc.createElement("span");
             badge.className = "psnine-game-list-progress-badge";
             badge.setAttribute("data-psnine-next", "true");
-            badge.style.cssText = "display:inline-block;padding:1px 5px;font-size:11px;border-radius:3px;background:rgba(56, 144, 255, 0.2);color:#0056b3;font-weight:500;margin-left:6px;";
             gameA.parentElement?.appendChild(badge);
           }
           badge.textContent = `${rec.percent}%`;
-          row.querySelector(".psnine-ondemand-progress-btn")?.remove();
           if (settings.platinumGlow && rec.platinum) {
             const coverImg = row.querySelector("img");
             if (coverImg) coverImg.classList.add("psnine-platinum-glow");
@@ -6725,10 +6586,6 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
         });
       };
       if (isProfilePage) {
-        const pathParts = url.pathname.split("/");
-        const profileId = pathParts[2] || "";
-        const isBareProfile = url.pathname === `/psnid/${profileId}` || url.pathname === `/psnid/${profileId}/`;
-        const isMyProfile = Boolean(userId && profileId && userId.toLowerCase() === profileId.toLowerCase());
         if (isBareProfile) {
           const syncBtnId = "psnine-sync-psn-btn-group";
           if (!doc.getElementById(syncBtnId)) {
@@ -6799,11 +6656,14 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
               return cache;
             });
             myProgress = freshCache;
-            if (isActive && !abortController.signal.aborted) {
-              refreshGameListBadgesAndBackgrounds();
-            }
           }
         }
+        if (isActive && !abortController.signal.aborted) {
+          refreshGameListBadgesAndBackgrounds();
+        }
+        subscriptions.push(onContent(() => {
+          if (isActive) refreshGameListBadgesAndBackgrounds();
+        }));
       }
       if (isGameListPage) {
         let isHardestFirst = true;
@@ -7092,6 +6952,7 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
         isActive = false;
         abortController.abort();
         subscriptions.forEach((unsub) => unsub());
+        doc.querySelectorAll(".psnine-game-list-progress-badge").forEach((el) => el.remove());
       };
     } catch (err) {
       report("games", err);
