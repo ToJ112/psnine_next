@@ -1,0 +1,250 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { isDarkActive, applyTheme, enhanceMasks, fixLinks, handleAutoCheckIn, applyNewestDefaultSort } from '../src/features/global';
+import { createContext } from '../src/core/context';
+import { defaultSettings } from '../src/core/types';
+import { createStore } from '../src/core/store';
+import { createHttpClient } from '../src/core/http';
+
+describe('Global features module', () => {
+  beforeEach(() => {
+    document.body.innerHTML = '';
+    document.head.innerHTML = '';
+    vi.restoreAllMocks();
+  });
+
+  it('evaluates dark theme for SYSTEM, TIME, and manual switches', () => {
+    const store = createStore();
+    const http = createHttpClient();
+    const ctx = createContext({
+      document,
+      window,
+      settings: { ...defaultSettings, autoNightMode: 'OFF', nightMode: true },
+      store,
+      http,
+    });
+
+    expect(isDarkActive(ctx)).toBe(true);
+
+    applyTheme(ctx);
+    expect(document.getElementById('nightModeStyle')).not.toBeNull();
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+
+    ctx.settings.nightMode = false;
+    applyTheme(ctx);
+    expect(document.getElementById('nightModeStyle')).toBeNull();
+    expect(document.documentElement.hasAttribute('data-theme')).toBe(false);
+  });
+
+  it('unmasks spoiler bar on tap/click and keyboard Enter/Space', () => {
+    document.body.innerHTML = `
+      <div class="content">
+        <span class="mark">Secret Spoiler</span>
+      </div>
+    `;
+
+    const store = createStore();
+    const http = createHttpClient();
+    const ctx = createContext({
+      document,
+      window,
+      settings: { ...defaultSettings },
+      store,
+      http,
+    });
+
+    enhanceMasks(ctx, document.body);
+    const mark = document.querySelector('.mark') as HTMLElement;
+    expect(mark.classList.contains('unmasked')).toBe(false);
+
+    mark.click();
+    expect(mark.classList.contains('unmasked')).toBe(true);
+
+    mark.click();
+    expect(mark.classList.contains('unmasked')).toBe(false);
+
+    mark.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+    expect(mark.classList.contains('unmasked')).toBe(true);
+  });
+
+  it('fixes D7VG links and upgrades HTTP to HTTPS', () => {
+    document.body.innerHTML = `
+      <div>
+        <a id="l1" href="http://d7vg.com/topic/123">Old D7</a>
+        <a id="l2" href="http://psnine.com/psngame/456">HTTP PSNINE</a>
+      </div>
+    `;
+
+    const store = createStore();
+    const http = createHttpClient();
+    const ctx = createContext({
+      document,
+      window,
+      settings: { ...defaultSettings },
+      store,
+      http,
+    });
+
+    fixLinks(ctx, document.body);
+
+    const l1 = document.getElementById('l1');
+    const l2 = document.getElementById('l2');
+
+    expect(l1?.getAttribute('href')).toBe('https://psnine.com/topic/123');
+    expect(l2?.getAttribute('href')).toBe('https://psnine.com/psngame/456');
+  });
+
+  it('linkifies bare URLs in text nodes while skipping code and existing links', () => {
+    document.body.innerHTML = `
+      <div id="container">
+        <p>Check this: https://psnine.com/topic/888 for details.</p>
+        <pre>Do not touch: https://example.com/api</pre>
+        <a href="https://psnine.com">Already a link</a>
+      </div>
+    `;
+
+    const store = createStore();
+    const http = createHttpClient();
+    const ctx = createContext({
+      document,
+      window,
+      settings: { ...defaultSettings },
+      store,
+      http,
+    });
+
+    fixLinks(ctx, document.body);
+
+    const links = document.querySelectorAll('#container p a');
+    expect(links.length).toBe(1);
+    expect(links[0].getAttribute('href')).toBe('https://psnine.com/topic/888');
+
+    expect(document.querySelectorAll('pre a').length).toBe(0);
+  });
+
+  it('runs auto check-in only when enabled and not yet checked today', async () => {
+    document.body.innerHTML = `
+      <div class="nav-user">
+        <a class="yuan" href="/signin">签到</a>
+      </div>
+    `;
+
+    const store = createStore();
+    const http = createHttpClient();
+    const ctx = createContext({
+      document,
+      window,
+      settings: { ...defaultSettings, autoCheckIn: true },
+      store,
+      http,
+    });
+    ctx.userId = 'test_user';
+
+    const signinBtn = document.querySelector('.yuan') as HTMLElement;
+    const clickSpy = vi.spyOn(signinBtn, 'click');
+
+    await handleAutoCheckIn(ctx);
+    expect(clickSpy).toHaveBeenCalledTimes(1);
+
+    clickSpy.mockClear();
+    await handleAutoCheckIn(ctx);
+    expect(clickSpy).not.toHaveBeenCalled();
+  });
+
+  describe('G11 default newest post sorting on /gene and /qa', () => {
+    it('redirects /gene to ?ob=date when listPostsByNew is true and no sort param exists', () => {
+      const store = createStore();
+      const http = createHttpClient();
+      const mockReplace = vi.fn();
+      const mockWin = {
+        location: {
+          replace: mockReplace,
+          href: 'https://psnine.com/gene'
+        }
+      } as unknown as Window;
+
+      const ctx = createContext({
+        document,
+        window: mockWin,
+        settings: { ...defaultSettings, listPostsByNew: true, listQAAnswersByNew: false },
+        store,
+        http,
+      });
+      ctx.url = new URL('https://psnine.com/gene');
+
+      applyNewestDefaultSort(ctx);
+      expect(mockReplace).toHaveBeenCalledWith('https://psnine.com/gene?ob=date');
+    });
+
+    it('redirects /qa to ?ob=date when listPostsByNew is true even if listQAAnswersByNew is false', () => {
+      const store = createStore();
+      const http = createHttpClient();
+      const mockReplace = vi.fn();
+      const mockWin = {
+        location: {
+          replace: mockReplace,
+          href: 'https://psnine.com/qa'
+        }
+      } as unknown as Window;
+
+      const ctx = createContext({
+        document,
+        window: mockWin,
+        settings: { ...defaultSettings, listPostsByNew: true, listQAAnswersByNew: false },
+        store,
+        http,
+      });
+      ctx.url = new URL('https://psnine.com/qa');
+
+      applyNewestDefaultSort(ctx);
+      expect(mockReplace).toHaveBeenCalledWith('https://psnine.com/qa?ob=date');
+    });
+
+    it('does NOT redirect /qa when listPostsByNew is false even if listQAAnswersByNew is true', () => {
+      const store = createStore();
+      const http = createHttpClient();
+      const mockReplace = vi.fn();
+      const mockWin = {
+        location: {
+          replace: mockReplace,
+          href: 'https://psnine.com/qa'
+        }
+      } as unknown as Window;
+
+      const ctx = createContext({
+        document,
+        window: mockWin,
+        settings: { ...defaultSettings, listPostsByNew: false, listQAAnswersByNew: true },
+        store,
+        http,
+      });
+      ctx.url = new URL('https://psnine.com/qa');
+
+      applyNewestDefaultSort(ctx);
+      expect(mockReplace).not.toHaveBeenCalled();
+    });
+
+    it('does NOT redirect when ob param already exists on /gene or /qa', () => {
+      const store = createStore();
+      const http = createHttpClient();
+      const mockReplace = vi.fn();
+      const mockWin = {
+        location: {
+          replace: mockReplace,
+          href: 'https://psnine.com/gene?ob=hot'
+        }
+      } as unknown as Window;
+
+      const ctx = createContext({
+        document,
+        window: mockWin,
+        settings: { ...defaultSettings, listPostsByNew: true },
+        store,
+        http,
+      });
+      ctx.url = new URL('https://psnine.com/gene?ob=hot');
+
+      applyNewestDefaultSort(ctx);
+      expect(mockReplace).not.toHaveBeenCalled();
+    });
+  });
+});

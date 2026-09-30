@@ -4,7 +4,7 @@
     "name": "手动深色主题",
     "module": "global",
     "behavior": "v2 data-theme 与旧站样式",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "dark_theme",
@@ -51,14 +51,23 @@
       "ffe49ec4404d2824867426fdd72fa04c2cdb86f9",
       "876b4727c420e50978e799510abb37a8c70e48b5"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/global.ts",
+      "src/styles/index.ts"
+    ],
+    "test_files": [
+      "tests/global.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "G02",
     "name": "跟随系统主题",
     "module": "global",
     "behavior": "监听系统主题变化",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "auto_night_mode"
@@ -74,14 +83,23 @@
       "2ed011eec3cd6971dfa981f4bb924833e9eeb534",
       "bb67ba390beb40356bf682ffbf82d7763692359f"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/global.ts",
+      "src/styles/index.ts"
+    ],
+    "test_files": [
+      "tests/global.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "G03",
     "name": "按时间切换主题",
     "module": "global",
     "behavior": "跨午夜时间区间与运行中刷新",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "auto_night_mode"
@@ -97,14 +115,23 @@
       "2ed011eec3cd6971dfa981f4bb924833e9eeb534",
       "bb67ba390beb40356bf682ffbf82d7763692359f"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/global.ts",
+      "src/styles/index.ts"
+    ],
+    "test_files": [
+      "tests/global.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "G04",
     "name": "刮刮条显示",
     "module": "global",
     "behavior": "悬浮、键盘、触屏显隐",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "comment_spoiler_mask",
@@ -147,14 +174,23 @@
       "efcd2d3330f7f06515d1fbb8209f2eed64d5785e",
       "d3a8eb09af5ffae992780033683ef23775fb80da"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/global.ts",
+      "src/styles/index.ts"
+    ],
+    "test_files": [
+      "tests/global.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "G05",
     "name": "自动签到",
     "module": "global",
     "behavior": "每账号每日去重，仅启用后运行",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "auto_sign_in",
@@ -194,14 +230,22 @@
       "42c820a2360c1dca7c2dd21294706c316050de7a",
       "cabbd6937dd2cb20843e987c439f8387f10db951"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/global.ts"
+    ],
+    "test_files": [
+      "tests/global.test.ts"
+    ],
+    "verification_scope": "simulated_or_read_only",
+    "verification_note": "默认关闭；仅用模拟签到按钮验证去重与启用条件，本次未发起真实签到。"
   },
   {
     "id": "G06",
     "name": "回到页底",
     "module": "global",
     "behavior": "滚动至回复或分页位置",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "page_quick_bottom_buttons",
@@ -238,14 +282,22 @@
       "a2a02107e45ff427fce9912662830e084dfc8493",
       "eab700122fb732a7772c71d61d177f082ad09b06"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/global.ts"
+    ],
+    "test_files": [
+      "tests/global.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "G07",
     "name": "插件设置",
     "module": "core",
     "behavior": "页内入口、保存、取消、恢复默认、导入导出",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "settings_in_page_panel",
@@ -291,14 +343,33 @@
       "2e98947ae81a046d7155b6f80d4241aef4dd5ee1",
       "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/main.ts",
+      "src/core/types.ts",
+      "src/core/store.ts",
+      "src/core/settings-ui.ts",
+      "src/core/context.ts",
+      "src/core/http.ts",
+      "src/core/dom.ts"
+    ],
+    "test_files": [
+      "tests/core/store.test.ts",
+      "tests/core/context.test.ts",
+      "tests/core/http.test.ts",
+      "tests/core/settings-ui.test.ts",
+      "tests/core/dom.test.ts",
+      "tests/browser.smoke.spec.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "设置导入导出仅含设置，不同步 Cookie 或个人进度；移动浏览器回归不等于管理器沙箱实测。"
   },
   {
     "id": "G08",
     "name": "裸文本链接识别",
     "module": "global",
     "behavior": "跳过链接、代码与输入区域",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "link_plaintext_detection"
@@ -309,14 +380,22 @@
       "d9ab0c3b8e3b12a76e8d24ba3726bae022f56ae6",
       "c3c5b7f9f5f75c90f887e5b5088fac58d2af5fc7"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/global.ts"
+    ],
+    "test_files": [
+      "tests/global.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "G09",
     "name": "D7VG 旧链接修复",
     "module": "global",
     "behavior": "只替换确切旧域名",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "link_d7vg_fix"
@@ -324,14 +403,22 @@
     "evidence_commits": [
       "dfbe821581d9b33bcc571177b30578b8e9a02bd0"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/global.ts"
+    ],
+    "test_files": [
+      "tests/global.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "G10",
     "name": "站内 HTTPS",
     "module": "global",
     "behavior": "按设置升级准确主机链接",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "bilibili_iframe_https",
@@ -342,14 +429,22 @@
       "bbab96bddce0b727a453a6d598f73fc02aa12656",
       "d4c943ee217957e13ed0527b4cb124452cc612af"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/global.ts"
+    ],
+    "test_files": [
+      "tests/global.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "G11",
     "name": "机因问答默认最新",
     "module": "global",
     "behavior": "列表入口与目标页 query 保留",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "topic_sort_by_new"
@@ -357,14 +452,22 @@
     "evidence_commits": [
       "bd89b34ce59f1827c0b065d1853f339f7c9f3544"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/global.ts"
+    ],
+    "test_files": [
+      "tests/global.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C01",
     "name": "楼主徽标",
     "module": "community",
     "behavior": "可靠识别主题/机因/交易发起者",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "author_highlight",
@@ -387,14 +490,22 @@
       "bd211514bc5c39ea14e9c885b6e941b684408e13",
       "eab700122fb732a7772c71d61d177f082ad09b06"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/community.ts"
+    ],
+    "test_files": [
+      "tests/community.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C02",
     "name": "指定用户高亮",
     "module": "community",
     "behavior": "大小写不敏感、可配置颜色",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "specific_id_highlight"
@@ -409,14 +520,22 @@
       "7a7527b351305f2ba55a21f6f53c7a5fb78beb98",
       "728fa197e62b1abad20ddd89e4221126c04f1c55"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/community.ts"
+    ],
+    "test_files": [
+      "tests/community.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C03",
     "name": "楼层编号",
     "module": "community",
     "behavior": "主楼及子楼，不改原节点身份",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "comment_floor_index",
@@ -439,14 +558,22 @@
       "40726ca69ae56498c41d4c644928c0f8f6678313",
       "eab700122fb732a7772c71d61d177f082ad09b06"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/community.ts"
+    ],
+    "test_files": [
+      "tests/community.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C04",
     "name": "回复内容回溯",
     "module": "community",
     "behavior": "寻找被 @ 用户最近的先前回复",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "comment_scroll_to_reply",
@@ -500,14 +627,22 @@
       "a560fd3760c20318734da49a39663c07d1fa170f",
       "23bcfd04cee218f4113230f21a8b29968871d0f7"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/community.ts"
+    ],
+    "test_files": [
+      "tests/community.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C05",
     "name": "回溯完整内容与跳转",
     "module": "community",
     "behavior": "短摘要、完整预览与定位原回复",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "comment_scroll_to_reply",
@@ -561,14 +696,22 @@
       "a560fd3760c20318734da49a39663c07d1fa170f",
       "23bcfd04cee218f4113230f21a8b29968871d0f7"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/community.ts"
+    ],
+    "test_files": [
+      "tests/community.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C06",
     "name": "回复控件可见性",
     "module": "community",
     "behavior": "桌面悬浮、键盘与触屏始终可用",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "comment_hover_reply_btn"
@@ -582,14 +725,22 @@
       "2047b156e1faf63f68d56559a50c4c7352c265d3",
       "eb203ec61609b9fb4ed1fccbc20b6a24c118d444"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/community.ts"
+    ],
+    "test_files": [
+      "tests/community.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C07",
     "name": "热门标签",
     "module": "community",
     "behavior": "按评论/答案数量和可配置阈值",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "show_hot_tag",
@@ -626,14 +777,22 @@
       "fee71f81055a7a881cd3a240a06b36b685a76110",
       "9996347bdbe29f855683f5df97d894de28ce8eb4"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/community.ts"
+    ],
+    "test_files": [
+      "tests/community.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C08",
     "name": "用户黑名单",
     "module": "community",
     "behavior": "各类帖子、通知、约战、Tips 和子评论",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "comment_block_user",
@@ -661,14 +820,22 @@
       "96cddc045cb506e9ce19f5d41ae010a7e8f26528",
       "847ced47231124cad98b1bf076e08cd0d1af7900"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/community.ts"
+    ],
+    "test_files": [
+      "tests/community.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C09",
     "name": "关键词过滤",
     "module": "community",
     "behavior": "可揭示内容，非法正则保护",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "keyword_blocklist",
@@ -680,14 +847,22 @@
       "301a66979a7922f8431a31c9154cab7bf45207c8",
       "847ced47231124cad98b1bf076e08cd0d1af7900"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/community.ts"
+    ],
+    "test_files": [
+      "tests/community.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C10",
     "name": "头像个人卡片",
     "module": "community",
     "behavior": "延迟获取、缓存、触屏按钮替代",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "avatar_profile_hover",
@@ -717,14 +892,22 @@
       "40726ca69ae56498c41d4c644928c0f8f6678313",
       "eab700122fb732a7772c71d61d177f082ad09b06"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/community.ts"
+    ],
+    "test_files": [
+      "tests/community.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C11",
     "name": "问答状态与悬赏",
     "module": "community",
     "behavior": "已解决/未回答/解决中及悬赏数标识",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "qa_status_icon",
@@ -747,14 +930,22 @@
       "5d128de38bc75842fbcfde0700a5bc2b9adde42b",
       "b970da56d5cf18d104a4222ecc40b48377905b09"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/community.ts"
+    ],
+    "test_files": [
+      "tests/community.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C12",
     "name": "载入全部问答答案",
     "module": "paging",
     "behavior": "分页顺序正确、去重、限流",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "qa_enhanced_page"
@@ -778,14 +969,22 @@
       "eab700122fb732a7772c71d61d177f082ad09b06",
       "b1ee8cfd3c94bb3d6d2fb39df242f1e1280f00d3"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/paging.ts"
+    ],
+    "test_files": [
+      "tests/paging.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "仅沿真实下一页链接加载；每批有上限，可停止并继续，不把部分加载称为已全部完成。"
   },
   {
     "id": "C13",
     "name": "问答答案最新优先",
     "module": "community",
     "behavior": "反转实际答案，保留子回复归属",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "qa_enhanced_page"
@@ -809,14 +1008,22 @@
       "eab700122fb732a7772c71d61d177f082ad09b06",
       "b1ee8cfd3c94bb3d6d2fb39df242f1e1280f00d3"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/community.ts"
+    ],
+    "test_files": [
+      "tests/community.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C14",
     "name": "展开问答隐藏回复",
     "module": "community",
     "behavior": "适配站点已加载与折叠节点",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "qa_enhanced_page"
@@ -840,14 +1047,22 @@
       "eab700122fb732a7772c71d61d177f082ad09b06",
       "b1ee8cfd3c94bb3d6d2fb39df242f1e1280f00d3"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/community.ts"
+    ],
+    "test_files": [
+      "tests/community.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C15",
     "name": "二级回复倒序",
     "module": "community",
     "behavior": "Tips/评论/留言，避免重复翻转",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "comment_subreply_order",
@@ -866,14 +1081,22 @@
       "fee71f81055a7a881cd3a240a06b36b685a76110",
       "9996347bdbe29f855683f5df97d894de28ce8eb4"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/community.ts"
+    ],
+    "test_files": [
+      "tests/community.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C16",
     "name": "视口内展开子评论",
     "module": "community",
     "behavior": "有界触发，不无限重试点击",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "comment_expand_subcomments"
@@ -884,14 +1107,22 @@
       "a560fd3760c20318734da49a39663c07d1fa170f",
       "f4ef6ee3d096bc639cba4948029be945e6af2b74"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/community.ts"
+    ],
+    "test_files": [
+      "tests/community.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C17",
     "name": "机因字数统计",
     "module": "editor",
     "behavior": "600 字提示与超限反馈",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "comment_input_counter",
@@ -911,14 +1142,22 @@
       "22a2bfdc150d4dbfe5847b6935f876a06627ac29",
       "eab700122fb732a7772c71d61d177f082ad09b06"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/editor.ts"
+    ],
+    "test_files": [
+      "tests/editor.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "C18",
     "name": "BBCode 实时预览",
     "module": "editor",
     "behavior": "引用/黑条/图片/粗体/删除线/居中/颜色/链接",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "bbcode_live_preview",
@@ -937,14 +1176,22 @@
       "afd27493d171b54835193f075210ee94e8b34271",
       "eab700122fb732a7772c71d61d177f082ad09b06"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/editor.ts"
+    ],
+    "test_files": [
+      "tests/editor.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "安全的基础 BBCode 预览；历史未合并的完整编辑工具栏不恢复。"
   },
   {
     "id": "C19",
     "name": "攻略中我的奖杯",
     "module": "trophies",
     "behavior": "同一游戏请求去重，显示已获状态",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_earned_status_in_guide",
@@ -969,14 +1216,23 @@
       "1f7baea8c2925645c1446c809ad597d7bef83029",
       "eab700122fb732a7772c71d61d177f082ad09b06"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/trophies.ts"
+    ],
+    "test_files": [
+      "tests/trophies.test.ts",
+      "tests/trophies-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "需已验证登录身份和个人奖杯响应；无法确认时显示未知。"
   },
   {
     "id": "C20",
     "name": "列表自动翻页",
     "module": "paging",
     "behavior": "机因/问答/主题/交易，追加后增强",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "auto_pagination",
@@ -1020,14 +1276,22 @@
       "0a0f8c56cf3959cd2ea0a14760f350eb872c4544",
       "9996347bdbe29f855683f5df97d894de28ce8eb4"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/paging.ts"
+    ],
+    "test_files": [
+      "tests/paging.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "追加当前同类列表；保留原分页，遇到未知结构或请求失败停止。"
   },
   {
     "id": "C21",
     "name": "个人主页全部游戏",
     "module": "paging",
     "behavior": "滚动或按钮载入个人游戏后续页",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "auto_pagination",
@@ -1071,14 +1335,22 @@
       "0a0f8c56cf3959cd2ea0a14760f350eb872c4544",
       "9996347bdbe29f855683f5df97d894de28ce8eb4"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/paging.ts"
+    ],
+    "test_files": [
+      "tests/paging.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "跟随主页实际“全部游戏”入口，再按分页上限分批载入。"
   },
   {
     "id": "T01",
     "name": "奖杯类型统计",
     "module": "trophies",
     "behavior": "白金/金/银/铜计数和占比",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_pie_chart",
@@ -1097,14 +1369,23 @@
       "8b8a88f4161864446547b9994ab1b01b467412d0",
       "eab700122fb732a7772c71d61d177f082ad09b06"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/trophies.ts"
+    ],
+    "test_files": [
+      "tests/trophies.test.ts",
+      "tests/trophies-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "统计当前已载入奖杯；未知类型不伪造。"
   },
   {
     "id": "T02",
     "name": "奖杯稀有度统计",
     "module": "trophies",
     "behavior": "0–5/5–10/10–20/20–50/50–100 边界",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_pie_chart",
@@ -1123,14 +1404,23 @@
       "8b8a88f4161864446547b9994ab1b01b467412d0",
       "eab700122fb732a7772c71d61d177f082ad09b06"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/trophies.ts"
+    ],
+    "test_files": [
+      "tests/trophies.test.ts",
+      "tests/trophies-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "T03",
     "name": "获得时间曲线",
     "module": "trophies",
     "behavior": "已获累计数、完成率、缺失时间处理",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_earned_line_chart",
@@ -1152,14 +1442,23 @@
       "eab700122fb732a7772c71d61d177f082ad09b06",
       "af01450b9e0a9906f997a7d34662cb9bbba804af"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/trophies.ts"
+    ],
+    "test_files": [
+      "tests/trophies.test.ts",
+      "tests/trophies-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "按可信获得时间统计；时间丢失不回填虚构时间。"
   },
   {
     "id": "T04",
     "name": "已获/未获图标汇总",
     "module": "trophies",
     "behavior": "图标、各类型计数、未知状态区分",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_icon_layout",
@@ -1187,14 +1486,23 @@
       "eab700122fb732a7772c71d61d177f082ad09b06",
       "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/trophies.ts"
+    ],
+    "test_files": [
+      "tests/trophies.test.ts",
+      "tests/trophies-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "公开页未提供个人状态时为未知，不能全算未获得。"
   },
   {
     "id": "T05",
     "name": "汇总 Tips 标记与预览",
     "module": "trophies",
     "behavior": "有 Tips 视觉提示，标题详情与跳转",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_icon_layout",
@@ -1222,14 +1530,23 @@
       "eab700122fb732a7772c71d61d177f082ad09b06",
       "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/trophies.ts"
+    ],
+    "test_files": [
+      "tests/trophies.test.ts",
+      "tests/trophies-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "T06",
     "name": "奖杯汇总折叠",
     "module": "trophies",
     "behavior": "默认折叠设置及手动展开",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_icon_layout",
@@ -1257,14 +1574,23 @@
       "eab700122fb732a7772c71d61d177f082ad09b06",
       "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/trophies.ts"
+    ],
+    "test_files": [
+      "tests/trophies.test.ts",
+      "tests/trophies-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "T07",
     "name": "奖杯图表折叠",
     "module": "trophies",
     "behavior": "默认折叠设置及手动展开",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_chart_folding"
@@ -1272,14 +1598,23 @@
     "evidence_commits": [
       "c2deba919f0022c13cc07ca961c5d5ee822e6437"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/trophies.ts"
+    ],
+    "test_files": [
+      "tests/trophies.test.ts",
+      "tests/trophies-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "T08",
     "name": "获得时间排序",
     "module": "trophies",
     "behavior": "最新/最早/XMB，未知排最后",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "sort_trophies_by_timestamp",
@@ -1294,14 +1629,23 @@
       "eab700122fb732a7772c71d61d177f082ad09b06",
       "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/trophies.ts"
+    ],
+    "test_files": [
+      "tests/trophies.test.ts",
+      "tests/trophies-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "T09",
     "name": "原序/类型/稀有度排序",
     "module": "trophies",
     "behavior": "双向排序，DLC 分组不混排",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "table_sort_toggle_direction",
@@ -1340,14 +1684,23 @@
       "d3a8eb09af5ffae992780033683ef23775fb80da",
       "cbc24aad5512c340141f0431b840bfa58852bc37"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/trophies.ts"
+    ],
+    "test_files": [
+      "tests/trophies.test.ts",
+      "tests/trophies-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "T10",
     "name": "获得状态筛选",
     "module": "trophies",
     "behavior": "已获/未获，保留内联 Tips 归属",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_filter_unearned",
@@ -1376,14 +1729,23 @@
       "eab700122fb732a7772c71d61d177f082ad09b06",
       "3f023d95d4a1f55e9ab91e69dff38950ecfb9229"
     ],
-    "origin": "restored"
+    "origin": "restored",
+    "implementation": [
+      "src/features/trophies.ts"
+    ],
+    "test_files": [
+      "tests/trophies.test.ts",
+      "tests/trophies-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "明确恢复历史已移除的获得状态筛选，非 v2 原有插件能力。"
   },
   {
     "id": "T11",
     "name": "内联展开单个 Tips",
     "module": "trophies",
     "behavior": "按需请求、失败重试、状态显示、内容过滤",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_tips_inline"
@@ -1420,14 +1782,23 @@
       "d3a8eb09af5ffae992780033683ef23775fb80da",
       "cbc24aad5512c340141f0431b840bfa58852bc37"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/trophies.ts"
+    ],
+    "test_files": [
+      "tests/trophies.test.ts",
+      "tests/trophies-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "T12",
     "name": "批量全部/未获 Tips",
     "module": "trophies",
     "behavior": "原隐藏入口替为明确操作，队列可停止",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_tips_inline"
@@ -1464,14 +1835,23 @@
       "d3a8eb09af5ffae992780033683ef23775fb80da",
       "cbc24aad5512c340141f0431b840bfa58852bc37"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/trophies.ts"
+    ],
+    "test_files": [
+      "tests/trophies.test.ts",
+      "tests/trophies-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "显式按钮、限速、可取消；异常后允许重试。"
   },
   {
     "id": "T13",
     "name": "Tips 顶数排序",
     "module": "trophies",
     "behavior": "热度排序及恢复原顺序",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "sort_tips_by_likes",
@@ -1505,14 +1885,23 @@
       "9996347bdbe29f855683f5df97d894de28ce8eb4",
       "80889fb2357cb7a5d7181db1e6753f3e4e4615af"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/trophies.ts"
+    ],
+    "test_files": [
+      "tests/trophies.test.ts",
+      "tests/trophies-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "读取已载入 Tips 自身的顶数，不包含子评论；匿名站点不提供顶数时不能推断。"
   },
   {
     "id": "T14",
     "name": "Tips 输入框缩放",
     "module": "trophies",
     "behavior": "垂直调整，移动端尺寸",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "resizable_comment_box"
@@ -1521,14 +1910,23 @@
       "812c700ae3fbbf1e66da50a14e596c4dd3d8fa59",
       "c0e9701820e4b4bd8446db0e9a549827cabaad11"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/trophies.ts"
+    ],
+    "test_files": [
+      "tests/trophies.test.ts",
+      "tests/trophies-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "P01",
     "name": "无白金游戏降低透明度",
     "module": "games",
     "behavior": "仅明确无白金，透明度设置",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "trophy_card_opacity"
@@ -1540,14 +1938,23 @@
       "e1055654e33917187da496cbe8dfbf334fe48f34",
       "f20f094fae2ca05573cce7dd9873faa241a4722d"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/games.ts"
+    ],
+    "test_files": [
+      "tests/games.test.ts",
+      "tests/games-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "P02",
     "name": "游戏封面完成度提示",
     "module": "games",
     "behavior": "本地缓存优先、按需获取",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "game_completion_calc",
@@ -1565,14 +1972,23 @@
       "64d2cb31428d85b275e2e57faac9c390ec500998",
       "eab700122fb732a7772c71d61d177f082ad09b06"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/games.ts"
+    ],
+    "test_files": [
+      "tests/games.test.ts",
+      "tests/games-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "P03",
     "name": "游戏列表按难度排序",
     "module": "games",
     "behavior": "空值置后、双向稳定排序",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "game_list_personal_completion_bar"
@@ -1584,14 +2000,23 @@
       "23f3762ec9834368fec45f1409534f9a31583eea",
       "b62c411fdb0c4eac7da2126de7fafa3ee6afa6e8"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/games.ts"
+    ],
+    "test_files": [
+      "tests/games.test.ts",
+      "tests/games-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "P04",
     "name": "我的游戏进度缓存",
     "module": "games",
     "behavior": "按账号隔离，进度/白金与页记录",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "game_progress_cache",
@@ -1610,14 +2035,23 @@
       "69126f0160effac4428025bfecc0722f28868286",
       "ade62029353c7f50239e1e02330663494f86b136"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/games.ts"
+    ],
+    "test_files": [
+      "tests/games.test.ts",
+      "tests/games-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "按已验证登录账号隔离；不读旧脚本独立 GM 私有区。"
   },
   {
     "id": "P05",
     "name": "进度后台增量刷新",
     "module": "games",
     "behavior": "有变化快刷、无变化延迟及缺页补全",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "game_progress_cache",
@@ -1636,14 +2070,23 @@
       "69126f0160effac4428025bfecc0722f28868286",
       "ade62029353c7f50239e1e02330663494f86b136"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/games.ts"
+    ],
+    "test_files": [
+      "tests/games.test.ts",
+      "tests/games-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "分批增量读取；账号、空列表、下一页与错误均需验证，缓存可能暂时滞后。"
   },
   {
     "id": "P06",
     "name": "列表背景进度与徽章",
     "module": "games",
     "behavior": "游戏列表/个人主页，动态追加可用",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "game_list_personal_completion_bar",
@@ -1657,14 +2100,23 @@
       "b62c411fdb0c4eac7da2126de7fafa3ee6afa6e8",
       "4a97aa89ed9ff2e72974d83d70dc2cceb29016a0"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/games.ts"
+    ],
+    "test_files": [
+      "tests/games.test.ts",
+      "tests/games-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "P07",
     "name": "白金封面修饰",
     "module": "games",
     "behavior": "光晕及触摸友好的静态反馈",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "platinum_trophy_glow_aura"
@@ -1672,14 +2124,24 @@
     "evidence_commits": [
       "ed2108860a5ba0574ce80f71ff74fd7846c5ff79"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/games.ts",
+      "src/styles/index.ts"
+    ],
+    "test_files": [
+      "tests/games.test.ts",
+      "tests/games-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "P08",
     "name": "未注册主页同步入口",
     "module": "games",
     "behavior": "仅添加手动等级/游戏同步链接",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "user_profile_sync"
@@ -1687,14 +2149,23 @@
     "evidence_commits": [
       "e757775ebfd7cd1e0bf9165d3e1be3e04eced533"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/games.ts"
+    ],
+    "test_files": [
+      "tests/games.test.ts",
+      "tests/games-regression.test.ts"
+    ],
+    "verification_scope": "simulated_or_read_only",
+    "verification_note": "只添加手动同步链接，本次未在网站执行同步。"
   },
   {
     "id": "P09",
     "name": "游戏页转到我的奖杯",
     "module": "games",
     "behavior": "保留 query/hash，可设置关闭",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "game_page_default_my_trophies"
@@ -1709,14 +2180,23 @@
       "1febb9cf54e00be702f9faf513ff46007b602405",
       "bb67ba390beb40356bf682ffbf82d7763692359f"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/games.ts"
+    ],
+    "test_files": [
+      "tests/games.test.ts",
+      "tests/games-regression.test.ts"
+    ],
+    "verification_scope": "simulated_or_read_only",
+    "verification_note": "模拟导航验证；不覆盖 URL 已指定的其他用户。"
   },
   {
     "id": "P10",
     "name": "元数据关联游戏版本",
     "module": "games",
     "behavior": "关联游戏页面中的版本关系",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "game_variant_references"
@@ -1729,14 +2209,23 @@
       "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa",
       "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/games.ts"
+    ],
+    "test_files": [
+      "tests/games.test.ts",
+      "tests/games-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "以站点元数据为依据；部分游戏可能没有其他版本。"
   },
   {
     "id": "P11",
     "name": "搜索关联游戏版本",
     "module": "games",
     "behavior": "标准化精确标题匹配与缓存",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "game_variant_references"
@@ -1749,14 +2238,23 @@
       "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa",
       "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/games.ts"
+    ],
+    "test_files": [
+      "tests/games.test.ts",
+      "tests/games-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "规范化名称精确匹配；不把标题包含关系当同款证明。"
   },
   {
     "id": "P12",
     "name": "跨版本奖杯 Tips",
     "module": "games",
     "behavior": "先验证对应奖杯，不能盲拼序号",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "game_variant_references"
@@ -1769,14 +2267,23 @@
       "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa",
       "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/games.ts"
+    ],
+    "test_files": [
+      "tests/games.test.ts",
+      "tests/games-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "仅对名称或描述能明确对应的奖杯生成链接；跨语言无法确认时不猜。"
   },
   {
     "id": "P13",
     "name": "子页面版本导航",
     "module": "games",
     "behavior": "排名/评论/问答/主题/约战/游列路径保留",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "game_variant_references"
@@ -1789,14 +2296,23 @@
       "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa",
       "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/games.ts"
+    ],
+    "test_files": [
+      "tests/games.test.ts",
+      "tests/games-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "P14",
     "name": "PSPC 与 PS5 封面修正",
     "module": "games",
     "behavior": "平台标识补全与局部自然宽高比",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "game_ps5_chart_fix",
@@ -1821,14 +2337,24 @@
       "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa",
       "cbc24aad5512c340141f0431b840bfa58852bc37"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/games.ts",
+      "src/styles/index.ts"
+    ],
+    "test_files": [
+      "tests/games.test.ts",
+      "tests/games-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "B01",
     "name": "隐藏约战发起人头像",
     "module": "battle",
     "behavior": "按设置作用于头像列",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "battle_hide_avatar"
@@ -1836,14 +2362,22 @@
     "evidence_commits": [
       "6a6887744610aa0a32c87f94ff5ee32b42f71263"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/battle.ts"
+    ],
+    "test_files": [
+      "tests/battle.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "B02",
     "name": "约战列表我的进度",
     "module": "battle",
     "behavior": "账号进度缓存、渐变背景",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "game_list_personal_completion_bar"
@@ -1855,14 +2389,22 @@
       "23f3762ec9834368fec45f1409534f9a31583eea",
       "b62c411fdb0c4eac7da2126de7fafa3ee6afa6e8"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/battle.ts"
+    ],
+    "test_files": [
+      "tests/battle.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "B03",
     "name": "约战游戏监控",
     "module": "battle",
     "behavior": "游戏页及列表行增加/移除、状态同步",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "battle_monitor"
@@ -1874,14 +2416,22 @@
       "c91e2be124ff3496dad2db5cea442a1974d5eb87",
       "1872142b6fde927e5b04e43d4aaa638c6081be63"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/battle.ts"
+    ],
+    "test_files": [
+      "tests/battle.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "B04",
     "name": "导航招募提醒",
     "module": "battle",
     "behavior": "本地监控游戏与公开列表求交集，桌面/手机菜单",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "battle_monitor"
@@ -1893,14 +2443,22 @@
       "c91e2be124ff3496dad2db5cea442a1974d5eb87",
       "1872142b6fde927e5b04e43d4aaa638c6081be63"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/battle.ts"
+    ],
+    "test_files": [
+      "tests/battle.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "导航提醒为本地监控游戏的匹配数量，不是系统推送。"
   },
   {
     "id": "B05",
     "name": "约战信息缓存",
     "module": "battle",
     "behavior": "刷新间隔、无监控不请求、失败保留旧缓存",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "battle_monitor"
@@ -1912,14 +2470,22 @@
       "c91e2be124ff3496dad2db5cea442a1974d5eb87",
       "1872142b6fde927e5b04e43d4aaa638c6081be63"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/battle.ts"
+    ],
+    "test_files": [
+      "tests/battle.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "R01",
     "name": "测评均分",
     "module": "reviews",
     "behavior": "有效评分的已载入样本，显示样本数量",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "game_critic_average"
@@ -1935,14 +2501,22 @@
       "c35f21ea195b849fdcac2cffe93caaf85478c152",
       "7fa4049a17605712272dbfa19b5b0c98a233ad46"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/reviews.ts"
+    ],
+    "test_files": [
+      "tests/reviews.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "当前已载入评论样本，不声称全站总分。"
   },
   {
     "id": "R02",
     "name": "评分分布",
     "module": "reviews",
     "behavior": "1–10 分直方图，最高计数高亮",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "score_distribution_chart"
@@ -1961,14 +2535,22 @@
       "30ad07612d0d7b5d557d5ebce3a8ca6cf169442a",
       "3688044f8f36801e94edf14d55e4c58e892fc5e7"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/reviews.ts"
+    ],
+    "test_files": [
+      "tests/reviews.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "R03",
     "name": "按分数过滤评论",
     "module": "reviews",
     "behavior": "点击柱/刻度、隐藏无评分，与黑名单叠加",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "filter_reviews_by_score",
@@ -1984,14 +2566,22 @@
       "bd1c03458732b41b72a8a570be3bf13190aa1e87",
       "12cb1e3a3bd20c41da256e7bcc95c056ad81e5f9"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/reviews.ts"
+    ],
+    "test_files": [
+      "tests/reviews.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "R04",
     "name": "正态参考曲线",
     "module": "reviews",
     "behavior": "可开关，零方差不产生 NaN",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "gaussian_distribution_curve"
@@ -2005,14 +2595,22 @@
       "a48240d8a54824ae528b8a514179a9313703ccdf",
       "7884778416980f97acf4939c721c38ed5b56841e"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/reviews.ts"
+    ],
+    "test_files": [
+      "tests/reviews.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "正态曲线为分布参考，不是对评分真实性的判定。"
   },
   {
     "id": "R05",
     "name": "累计均分趋势",
     "module": "reviews",
     "behavior": "按可信时间累计，缺失时间单独说明",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "game_score_trend_chart",
@@ -2033,14 +2631,22 @@
       "eab700122fb732a7772c71d61d177f082ad09b06",
       "977a40aa0062595c1ed249b02bb6f1f63686b328"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/reviews.ts"
+    ],
+    "test_files": [
+      "tests/reviews.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "仅可信时间进入趋势；缺失时间单独说明。"
   },
   {
     "id": "R06",
     "name": "每周评分热度",
     "module": "reviews",
     "behavior": "ISO 周跨年及空周补零",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "comment_trend_chart"
@@ -2051,14 +2657,22 @@
       "e28049cda34e0055a6969f033f9daf5a4fbd0cc6",
       "2761020ae23923686c19bbdfeb3540db7a761522"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/reviews.ts"
+    ],
+    "test_files": [
+      "tests/reviews.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "按上海时区计算 ISO 周，并补齐样本范围内空周。"
   },
   {
     "id": "D01",
     "name": "普通/Plus 价格历史",
     "module": "deals",
     "behavior": "双序列、促销起止和原价恢复",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "discount_price_history_chart",
@@ -2082,14 +2696,23 @@
       "fee71f81055a7a881cd3a240a06b36b685a76110",
       "9996347bdbe29f855683f5df97d894de28ce8eb4"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/deals.ts"
+    ],
+    "test_files": [
+      "tests/deals.test.ts",
+      "tests/deals-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "缺失价格、日期或原价保留为未知，图表不将未知填成零。"
   },
   {
     "id": "D02",
     "name": "数折人民币换算",
     "module": "deals",
     "behavior": "HKD/USD/GBP/JPY，标注汇率日期与来源",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "foreign_currency_cny",
@@ -2121,14 +2744,23 @@
       "40726ca69ae56498c41d4c644928c0f8f6678313",
       "eab700122fb732a7772c71d61d177f082ad09b06"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/deals.ts"
+    ],
+    "test_files": [
+      "tests/deals.test.ts",
+      "tests/deals-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "异步公开汇率或用户填写的带日期汇率；必须保留原币种，来源/日期/过期状态可见。"
   },
   {
     "id": "D03",
     "name": "活动人民币切换",
     "module": "deals",
     "behavior": "保留原价，可在人民币/原币种间切换",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "sales_page_currency_conversion"
@@ -2138,14 +2770,23 @@
       "9b43c726495a77d7f89c50e5f9a01a3262a55554",
       "b0f1556f19fa243dd662353d16a68ac5b16bde56"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/deals.ts"
+    ],
+    "test_files": [
+      "tests/deals.test.ts",
+      "tests/deals-regression.test.ts"
+    ],
+    "verification_scope": "legacy_fixture_only",
+    "verification_note": "只读访问 /huodong 返回 404；采用旧源码结构的测试夹具验证，未做当前活动页在线验证。"
   },
   {
     "id": "D04",
     "name": "折扣幅度着色",
     "module": "deals",
     "behavior": "连续区间而非只识别20/50/80/100",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "discount_highlight",
@@ -2164,14 +2805,23 @@
       "a2a02107e45ff427fce9912662830e084dfc8493",
       "eab700122fb732a7772c71d61d177f082ad09b06"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/deals.ts"
+    ],
+    "test_files": [
+      "tests/deals.test.ts",
+      "tests/deals-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
     "id": "D05",
     "name": "数折与活动只看史低",
     "module": "deals",
     "behavior": "显式史低标记，筛选可复原",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "historic_low_filter"
@@ -2188,14 +2838,23 @@
       "796a5390fabb9f8762a7d3dacbd6bf3b37c5c162",
       "bf337df6c2def5eb6d3d606a026e653fec859e32"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/features/deals.ts"
+    ],
+    "test_files": [
+      "tests/deals.test.ts",
+      "tests/deals-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "只接受站点显式史低标记；活动页部分沿用历史夹具验证。"
   },
   {
     "id": "X01",
     "name": "v2 导航与布局",
     "module": "core",
     "behavior": "新旧 selector 适配，不重排站点内容",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "navbar_user_id_fallback",
@@ -2208,14 +2867,34 @@
       "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa",
       "cbc24aad5512c340141f0431b840bfa58852bc37"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/main.ts",
+      "src/core/types.ts",
+      "src/core/store.ts",
+      "src/core/settings-ui.ts",
+      "src/core/context.ts",
+      "src/core/http.ts",
+      "src/core/dom.ts",
+      "src/styles/index.ts"
+    ],
+    "test_files": [
+      "tests/core/store.test.ts",
+      "tests/core/context.test.ts",
+      "tests/core/http.test.ts",
+      "tests/core/settings-ui.test.ts",
+      "tests/core/dom.test.ts",
+      "tests/browser.smoke.spec.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "现站公开页面回放与旧结构夹具覆盖；未来站点 DOM 变更仍需维护。"
   },
   {
     "id": "X02",
     "name": "iOS Safari Stay",
     "module": "core",
     "behavior": "同步/异步GM、触控、单文件、16px表单、安全区域",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "chart_responsive_reflow",
@@ -2229,14 +2908,35 @@
       "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
       "cbc24aad5512c340141f0431b840bfa58852bc37"
     ],
-    "origin": "preserved"
+    "origin": "preserved",
+    "implementation": [
+      "src/main.ts",
+      "src/core/types.ts",
+      "src/core/store.ts",
+      "src/core/settings-ui.ts",
+      "src/core/context.ts",
+      "src/core/http.ts",
+      "src/core/dom.ts",
+      "src/styles/index.ts",
+      "scripts/build.mjs"
+    ],
+    "test_files": [
+      "tests/core/store.test.ts",
+      "tests/core/context.test.ts",
+      "tests/core/http.test.ts",
+      "tests/core/settings-ui.test.ts",
+      "tests/core/dom.test.ts",
+      "tests/browser.smoke.spec.ts"
+    ],
+    "verification_scope": "browser_automation_device_pending",
+    "verification_note": "单文件、GM 兼容层与触控已实现；Chromium/WebKit 自动化通过仍不能代表 Tampermonkey 或 iPhone Stay 真机安装、授权及沙箱通过。"
   },
   {
     "id": "X03",
     "name": "动态内容幂等增强",
     "module": "core",
     "behavior": "局部观察与清理，避免监听/请求/徽标重复",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "auto_pagination",
@@ -2280,14 +2980,33 @@
       "0a0f8c56cf3959cd2ea0a14760f350eb872c4544",
       "9996347bdbe29f855683f5df97d894de28ce8eb4"
     ],
-    "origin": "hardening"
+    "origin": "hardening",
+    "implementation": [
+      "src/main.ts",
+      "src/core/types.ts",
+      "src/core/store.ts",
+      "src/core/settings-ui.ts",
+      "src/core/context.ts",
+      "src/core/http.ts",
+      "src/core/dom.ts"
+    ],
+    "test_files": [
+      "tests/core/store.test.ts",
+      "tests/core/context.test.ts",
+      "tests/core/http.test.ts",
+      "tests/core/settings-ui.test.ts",
+      "tests/core/dom.test.ts",
+      "tests/browser.smoke.spec.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "重复注入、局部动态内容与取消回归；不依赖 MutationObserver 持续轮询。"
   },
   {
     "id": "X04",
     "name": "旧配置迁移",
     "module": "core",
     "behavior": "坏 JSON 不崩溃，类型校验、旧枚举与数字转换",
-    "status": "planned",
+    "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
       "settings_panel"
@@ -2329,6 +3048,25 @@
       "b90b98c3a6dd8fef86a500d058109b2dc25d5628",
       "8d1315b18bd0408558091dbadf1f500351edcd4a"
     ],
-    "origin": "hardening"
+    "origin": "hardening",
+    "implementation": [
+      "src/main.ts",
+      "src/core/types.ts",
+      "src/core/store.ts",
+      "src/core/settings-ui.ts",
+      "src/core/context.ts",
+      "src/core/http.ts",
+      "src/core/dom.ts"
+    ],
+    "test_files": [
+      "tests/core/store.test.ts",
+      "tests/core/context.test.ts",
+      "tests/core/http.test.ts",
+      "tests/core/settings-ui.test.ts",
+      "tests/core/dom.test.ts",
+      "tests/browser.smoke.spec.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "只迁移可访问的旧 localStorage 或用户导入的 JSON；新脚本不能读取旧脚本的 GM 私有区。"
   }
 ]

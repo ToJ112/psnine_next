@@ -7,16 +7,17 @@
 |页面|已观察到的结构|注意|
 |导航|`.site-nav .nav-menu`、`.nav-user`、`.mobile-nav-panel nav`|未登录没有 auth-user；不要从普通用户链接推断登录账号|
 |首页主题|`.topic-row .author a`、`.topic-main .title`、`.replies`|其余区块是不同结构|
-|游戏列表|`table.list tr`、`td.pd1015.title.lh180`、`.text-platinum`、`td.twoge em`|不能只找 `td.pd10`|
+|游戏列表|普通 `table`（不一定有 `.list`）、`td.pd1015.title.lh180`、`.text-platinum`、`td.twoge em`|按真实游戏链接辨认；末页可能只有一行，不能依赖类名或最少行数|
 |奖杯列表|`tr.trophy[id]`、首格 `td.t1..t4`、`img.imgbg`、末格 `.twoge`|行 ID 是分组内序号，真实 trophyId 要从 `/trophy/46507001` 取|
 |个人奖杯页|`?psnid=…`、`img.imgbg.earned`、时间 `em.alert-success` 的 `tips` 年份|公开版没有个人获得状态；个人版比公开版多一格|
 |DLC|每 DLC 独立 `table.list`|排序不能混到同一 tbody|
-|个人主页|游戏行 `td.pd15`、`div.progress > div`、`span.text-platinum`|此处白金为个人获得数，游戏总览为游戏白金总数，含义不同|
-|Tips/测评|`ul.list > li > .ml64 > .meta.pb10`、`.content.pb10`、`.sonlistmark > .sonlist`|无评分的评论也存在；不要抓整个 li 的第一个数字当评分|
+|个人主页|游戏行 `td.pd15`、`div.progress > div`、`span.text-platinum`|此处白金为个人获得数；进度可能只写在样式 width 中。样本官方完成度 38%，19/32 是奖杯数量比，18.63% 是游戏稀有度，不能互换|
+|Tips/测评|`ul.list > li > .ml64`、第一条 `.meta.pb10` 作者头、第二条 `.meta` 时间、`.content.pb10`、`.sonlistmark > .sonlist`|日期不能从作者头取；评分和顶数只读当前主评论，不能混入子评论|
 |主题/机因详情|`.post > .ml64 > .meta` 与 `.content.pb10`|与 ul.list 的评论不同|
-|数折|`li.dd_box`、`.dd_info p.dd_text`、`.dd_price_old/off/plus`、`.dd_status_best`|货币、日期与金额必须逐个产品解析|
+|数折|`ul.dd_ul > li.dd_box`、`h4.dd_title > a`、`.dd_info p.dd_text`、`.dd_price_old/off/plus`、`.dd_status_best`|商品标题与活动链接是不同元素；去重用商品 SKU，不能用共享活动 URL|
 |历史数折|日期示例 `20年10月14日 ~ 20年10月28日`|当前公开历史含多年以前记录，不代表今日促销|
-|约战|多个 `table.list`、游戏 `td.pdd15 a[href*="/psngame/"]`、作者头像列|只读取匹配游戏链接，不假定每行都完整|
+|约战|多个 `table.list`、封面 `td.pdd15 a[href*="/psngame/"]`、标题 `td.pd15 > p > a[href*="/battle/"]`、描述 `td.pd15 > span.font12`|封面和作者头像链接可能没有文字，标题不能取其 textContent|
+|游戏版本元数据|`.min-inner > ul.darklist > li`，平台在 `span.r`|封面与标题可重复链接同一版本；样本 46507 关联 42152 (PS4)、42066 (PS5)。奖杯页 12518001 的父游戏 12518 指向元数据 10999，不能假设 ID 相同|
 
 ## 外部接口
 

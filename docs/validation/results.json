@@ -1,0 +1,71 @@
+{
+  "date": "2026-09-30",
+  "release_version": "1.0.0",
+  "node": "24.19.0",
+  "dependencies": {
+    "typescript": "5.9.3",
+    "esbuild": "0.28.2",
+    "vitest": "4.1.11",
+    "vite": "6.4.3",
+    "playwright": "1.63.0"
+  },
+  "artifact": {
+    "path": "dist/psnine_next.user.js",
+    "bytes": 325314,
+    "sha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa"
+  },
+  "requirements": 80,
+  "typecheck": "passed",
+  "clean_install": "npm ci passed",
+  "unit": {
+    "files": 17,
+    "passed": 149,
+    "failed": 0,
+    "skipped": 0
+  },
+  "browser": {
+    "startTime": "2026-09-30T06:56:24.361Z",
+    "duration": 16735.41,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "public_page_replay": {
+    "pages": 13,
+    "engines": [
+      "chromium",
+      "webkit"
+    ],
+    "cases": 26,
+    "interaction_cases": 8,
+    "script_errors": 0,
+    "enhancement_overflows": 0,
+    "unsettled_mutations": 0
+  },
+  "audit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "history": {
+    "unique_commits": 778,
+    "review_records": 778,
+    "verified_patch_hashes": 778,
+    "missing_reviews": 0,
+    "duplicate_reviews": 0,
+    "upstream_master": 712,
+    "fork_v2": 715,
+    "other_branch_or_pr_only": 63,
+    "note": "Structural evidence verification, not an independent semantic review."
+  },
+  "device_validation": {
+    "Tampermonkey": "not_performed",
+    "iOS_Stay": "not_performed"
+  },
+  "legacy_huodong": "fixture_only; live route returned 404",
+  "format_cleanup": "Source/test diff -w empty; bundled lines equal after rstrip; browser and public replay rerun on final hash."
+}

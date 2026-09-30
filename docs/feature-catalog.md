@@ -1,88 +1,88 @@
-# 完整功能台账（实现前基线）
+# 功能台账
 
-本表从最新 v2 分支源码逐项拆出，并由逐提交审计补充历史来源。`X03/X04` 包含为避免旧实现故障而明确增加的工程要求。已删除/仅实验分支能力将在历史审计小结单列，不自动宣称现存支持。
+从两个来源仓库的可获取历史中整理出 80 个独立验收点。实现、历史 SHA 和关联测试完整保存在 [features.json](features.json)。历史删除/实验项的取舍见 [迁移决策](migration-decisions.md)。
 
-基线：[adapt-v2-psnine@304b14e](https://github.com/ToJ112/psnine-enhanced-version/tree/304b14e8bb6cf6d10bc0deb7f9250667822ac444)。当前为实现任务清单；最终状态须以实际代码和验证更新。
+以下“已实现”表示已接入代码；不代表每项都做过脚本管理器真机验证。关联测试按模块列出，个别功能还有模拟、历史夹具或站点数据限制。最终命令与浏览器结果见 [验证记录](validation.md)。
 
-|编号|功能|模块|验收行为|
+|编号|功能|实现文件|验证范围/限制|
 |---|---|---|---|
-|G01|手动深色主题|global|v2 data-theme 与旧站样式|
-|G02|跟随系统主题|global|监听系统主题变化|
-|G03|按时间切换主题|global|跨午夜时间区间与运行中刷新|
-|G04|刮刮条显示|global|悬浮、键盘、触屏显隐|
-|G05|自动签到|global|每账号每日去重，仅启用后运行|
-|G06|回到页底|global|滚动至回复或分页位置|
-|G07|插件设置|core|页内入口、保存、取消、恢复默认、导入导出|
-|G08|裸文本链接识别|global|跳过链接、代码与输入区域|
-|G09|D7VG 旧链接修复|global|只替换确切旧域名|
-|G10|站内 HTTPS|global|按设置升级准确主机链接|
-|G11|机因问答默认最新|global|列表入口与目标页 query 保留|
-|C01|楼主徽标|community|可靠识别主题/机因/交易发起者|
-|C02|指定用户高亮|community|大小写不敏感、可配置颜色|
-|C03|楼层编号|community|主楼及子楼，不改原节点身份|
-|C04|回复内容回溯|community|寻找被 @ 用户最近的先前回复|
-|C05|回溯完整内容与跳转|community|短摘要、完整预览与定位原回复|
-|C06|回复控件可见性|community|桌面悬浮、键盘与触屏始终可用|
-|C07|热门标签|community|按评论/答案数量和可配置阈值|
-|C08|用户黑名单|community|各类帖子、通知、约战、Tips 和子评论|
-|C09|关键词过滤|community|可揭示内容，非法正则保护|
-|C10|头像个人卡片|community|延迟获取、缓存、触屏按钮替代|
-|C11|问答状态与悬赏|community|已解决/未回答/解决中及悬赏数标识|
-|C12|载入全部问答答案|paging|分页顺序正确、去重、限流|
-|C13|问答答案最新优先|community|反转实际答案，保留子回复归属|
-|C14|展开问答隐藏回复|community|适配站点已加载与折叠节点|
-|C15|二级回复倒序|community|Tips/评论/留言，避免重复翻转|
-|C16|视口内展开子评论|community|有界触发，不无限重试点击|
-|C17|机因字数统计|editor|600 字提示与超限反馈|
-|C18|BBCode 实时预览|editor|引用/黑条/图片/粗体/删除线/居中/颜色/链接|
-|C19|攻略中我的奖杯|trophies|同一游戏请求去重，显示已获状态|
-|C20|列表自动翻页|paging|机因/问答/主题/交易，追加后增强|
-|C21|个人主页全部游戏|paging|滚动或按钮载入个人游戏后续页|
-|T01|奖杯类型统计|trophies|白金/金/银/铜计数和占比|
-|T02|奖杯稀有度统计|trophies|0–5/5–10/10–20/20–50/50–100 边界|
-|T03|获得时间曲线|trophies|已获累计数、完成率、缺失时间处理|
-|T04|已获/未获图标汇总|trophies|图标、各类型计数、未知状态区分|
-|T05|汇总 Tips 标记与预览|trophies|有 Tips 视觉提示，标题详情与跳转|
-|T06|奖杯汇总折叠|trophies|默认折叠设置及手动展开|
-|T07|奖杯图表折叠|trophies|默认折叠设置及手动展开|
-|T08|获得时间排序|trophies|最新/最早/XMB，未知排最后|
-|T09|原序/类型/稀有度排序|trophies|双向排序，DLC 分组不混排|
-|T10|获得状态筛选|trophies|已获/未获，保留内联 Tips 归属|
-|T11|内联展开单个 Tips|trophies|按需请求、失败重试、状态显示、内容过滤|
-|T12|批量全部/未获 Tips|trophies|原隐藏入口替为明确操作，队列可停止|
-|T13|Tips 顶数排序|trophies|热度排序及恢复原顺序|
-|T14|Tips 输入框缩放|trophies|垂直调整，移动端尺寸|
-|P01|无白金游戏降低透明度|games|仅明确无白金，透明度设置|
-|P02|游戏封面完成度提示|games|本地缓存优先、按需获取|
-|P03|游戏列表按难度排序|games|空值置后、双向稳定排序|
-|P04|我的游戏进度缓存|games|按账号隔离，进度/白金与页记录|
-|P05|进度后台增量刷新|games|有变化快刷、无变化延迟及缺页补全|
-|P06|列表背景进度与徽章|games|游戏列表/个人主页，动态追加可用|
-|P07|白金封面修饰|games|光晕及触摸友好的静态反馈|
-|P08|未注册主页同步入口|games|仅添加手动等级/游戏同步链接|
-|P09|游戏页转到我的奖杯|games|保留 query/hash，可设置关闭|
-|P10|元数据关联游戏版本|games|关联游戏页面中的版本关系|
-|P11|搜索关联游戏版本|games|标准化精确标题匹配与缓存|
-|P12|跨版本奖杯 Tips|games|先验证对应奖杯，不能盲拼序号|
-|P13|子页面版本导航|games|排名/评论/问答/主题/约战/游列路径保留|
-|P14|PSPC 与 PS5 封面修正|games|平台标识补全与局部自然宽高比|
-|B01|隐藏约战发起人头像|battle|按设置作用于头像列|
-|B02|约战列表我的进度|battle|账号进度缓存、渐变背景|
-|B03|约战游戏监控|battle|游戏页及列表行增加/移除、状态同步|
-|B04|导航招募提醒|battle|本地监控游戏与公开列表求交集，桌面/手机菜单|
-|B05|约战信息缓存|battle|刷新间隔、无监控不请求、失败保留旧缓存|
-|R01|测评均分|reviews|有效评分的已载入样本，显示样本数量|
-|R02|评分分布|reviews|1–10 分直方图，最高计数高亮|
-|R03|按分数过滤评论|reviews|点击柱/刻度、隐藏无评分，与黑名单叠加|
-|R04|正态参考曲线|reviews|可开关，零方差不产生 NaN|
-|R05|累计均分趋势|reviews|按可信时间累计，缺失时间单独说明|
-|R06|每周评分热度|reviews|ISO 周跨年及空周补零|
-|D01|普通/Plus 价格历史|deals|双序列、促销起止和原价恢复|
-|D02|数折人民币换算|deals|HKD/USD/GBP/JPY，标注汇率日期与来源|
-|D03|活动人民币切换|deals|保留原价，可在人民币/原币种间切换|
-|D04|折扣幅度着色|deals|连续区间而非只识别20/50/80/100|
-|D05|数折与活动只看史低|deals|显式史低标记，筛选可复原|
-|X01|v2 导航与布局|core|新旧 selector 适配，不重排站点内容|
-|X02|iOS Safari Stay|core|同步/异步GM、触控、单文件、16px表单、安全区域|
-|X03|动态内容幂等增强|core|局部观察与清理，避免监听/请求/徽标重复|
-|X04|旧配置迁移|core|坏 JSON 不崩溃，类型校验、旧枚举与数字转换|
+|G01|手动深色主题|[global](../src/features/global.ts)|代码审阅、关联模块回归|
+|G02|跟随系统主题|[global](../src/features/global.ts)|代码审阅、关联模块回归|
+|G03|按时间切换主题|[global](../src/features/global.ts)|代码审阅、关联模块回归|
+|G04|刮刮条显示|[global](../src/features/global.ts)|代码审阅、关联模块回归|
+|G05|自动签到|[global](../src/features/global.ts)|默认关闭；仅用模拟签到按钮验证去重与启用条件，本次未发起真实签到。|
+|G06|回到页底|[global](../src/features/global.ts)|代码审阅、关联模块回归|
+|G07|插件设置|[core](../src/main.ts)|设置导入导出仅含设置，不同步 Cookie 或个人进度；移动浏览器回归不等于管理器沙箱实测。|
+|G08|裸文本链接识别|[global](../src/features/global.ts)|代码审阅、关联模块回归|
+|G09|D7VG 旧链接修复|[global](../src/features/global.ts)|代码审阅、关联模块回归|
+|G10|站内 HTTPS|[global](../src/features/global.ts)|代码审阅、关联模块回归|
+|G11|机因问答默认最新|[global](../src/features/global.ts)|代码审阅、关联模块回归|
+|C01|楼主徽标|[community](../src/features/community.ts)|代码审阅、关联模块回归|
+|C02|指定用户高亮|[community](../src/features/community.ts)|代码审阅、关联模块回归|
+|C03|楼层编号|[community](../src/features/community.ts)|代码审阅、关联模块回归|
+|C04|回复内容回溯|[community](../src/features/community.ts)|代码审阅、关联模块回归|
+|C05|回溯完整内容与跳转|[community](../src/features/community.ts)|代码审阅、关联模块回归|
+|C06|回复控件可见性|[community](../src/features/community.ts)|代码审阅、关联模块回归|
+|C07|热门标签|[community](../src/features/community.ts)|代码审阅、关联模块回归|
+|C08|用户黑名单|[community](../src/features/community.ts)|代码审阅、关联模块回归|
+|C09|关键词过滤|[community](../src/features/community.ts)|代码审阅、关联模块回归|
+|C10|头像个人卡片|[community](../src/features/community.ts)|代码审阅、关联模块回归|
+|C11|问答状态与悬赏|[community](../src/features/community.ts)|代码审阅、关联模块回归|
+|C12|载入全部问答答案|[paging](../src/features/paging.ts)|仅沿真实下一页链接加载；每批有上限，可停止并继续，不把部分加载称为已全部完成。|
+|C13|问答答案最新优先|[community](../src/features/community.ts)|代码审阅、关联模块回归|
+|C14|展开问答隐藏回复|[community](../src/features/community.ts)|代码审阅、关联模块回归|
+|C15|二级回复倒序|[community](../src/features/community.ts)|代码审阅、关联模块回归|
+|C16|视口内展开子评论|[community](../src/features/community.ts)|代码审阅、关联模块回归|
+|C17|机因字数统计|[editor](../src/features/editor.ts)|代码审阅、关联模块回归|
+|C18|BBCode 实时预览|[editor](../src/features/editor.ts)|安全的基础 BBCode 预览；历史未合并的完整编辑工具栏不恢复。|
+|C19|攻略中我的奖杯|[trophies](../src/features/trophies.ts)|需已验证登录身份和个人奖杯响应；无法确认时显示未知。|
+|C20|列表自动翻页|[paging](../src/features/paging.ts)|追加当前同类列表；保留原分页，遇到未知结构或请求失败停止。|
+|C21|个人主页全部游戏|[paging](../src/features/paging.ts)|跟随主页实际“全部游戏”入口，再按分页上限分批载入。|
+|T01|奖杯类型统计|[trophies](../src/features/trophies.ts)|统计当前已载入奖杯；未知类型不伪造。|
+|T02|奖杯稀有度统计|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
+|T03|获得时间曲线|[trophies](../src/features/trophies.ts)|按可信获得时间统计；时间丢失不回填虚构时间。|
+|T04|已获/未获图标汇总|[trophies](../src/features/trophies.ts)|公开页未提供个人状态时为未知，不能全算未获得。|
+|T05|汇总 Tips 标记与预览|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
+|T06|奖杯汇总折叠|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
+|T07|奖杯图表折叠|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
+|T08|获得时间排序|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
+|T09|原序/类型/稀有度排序|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
+|T10|获得状态筛选|[trophies](../src/features/trophies.ts)|明确恢复历史已移除的获得状态筛选，非 v2 原有插件能力。|
+|T11|内联展开单个 Tips|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
+|T12|批量全部/未获 Tips|[trophies](../src/features/trophies.ts)|显式按钮、限速、可取消；异常后允许重试。|
+|T13|Tips 顶数排序|[trophies](../src/features/trophies.ts)|读取已载入 Tips 自身的顶数，不包含子评论；匿名站点不提供顶数时不能推断。|
+|T14|Tips 输入框缩放|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
+|P01|无白金游戏降低透明度|[games](../src/features/games.ts)|代码审阅、关联模块回归|
+|P02|游戏封面完成度提示|[games](../src/features/games.ts)|代码审阅、关联模块回归|
+|P03|游戏列表按难度排序|[games](../src/features/games.ts)|代码审阅、关联模块回归|
+|P04|我的游戏进度缓存|[games](../src/features/games.ts)|按已验证登录账号隔离；不读旧脚本独立 GM 私有区。|
+|P05|进度后台增量刷新|[games](../src/features/games.ts)|分批增量读取；账号、空列表、下一页与错误均需验证，缓存可能暂时滞后。|
+|P06|列表背景进度与徽章|[games](../src/features/games.ts)|代码审阅、关联模块回归|
+|P07|白金封面修饰|[games](../src/features/games.ts)|代码审阅、关联模块回归|
+|P08|未注册主页同步入口|[games](../src/features/games.ts)|只添加手动同步链接，本次未在网站执行同步。|
+|P09|游戏页转到我的奖杯|[games](../src/features/games.ts)|模拟导航验证；不覆盖 URL 已指定的其他用户。|
+|P10|元数据关联游戏版本|[games](../src/features/games.ts)|以站点元数据为依据；部分游戏可能没有其他版本。|
+|P11|搜索关联游戏版本|[games](../src/features/games.ts)|规范化名称精确匹配；不把标题包含关系当同款证明。|
+|P12|跨版本奖杯 Tips|[games](../src/features/games.ts)|仅对名称或描述能明确对应的奖杯生成链接；跨语言无法确认时不猜。|
+|P13|子页面版本导航|[games](../src/features/games.ts)|代码审阅、关联模块回归|
+|P14|PSPC 与 PS5 封面修正|[games](../src/features/games.ts)|代码审阅、关联模块回归|
+|B01|隐藏约战发起人头像|[battle](../src/features/battle.ts)|代码审阅、关联模块回归|
+|B02|约战列表我的进度|[battle](../src/features/battle.ts)|代码审阅、关联模块回归|
+|B03|约战游戏监控|[battle](../src/features/battle.ts)|代码审阅、关联模块回归|
+|B04|导航招募提醒|[battle](../src/features/battle.ts)|导航提醒为本地监控游戏的匹配数量，不是系统推送。|
+|B05|约战信息缓存|[battle](../src/features/battle.ts)|代码审阅、关联模块回归|
+|R01|测评均分|[reviews](../src/features/reviews.ts)|当前已载入评论样本，不声称全站总分。|
+|R02|评分分布|[reviews](../src/features/reviews.ts)|代码审阅、关联模块回归|
+|R03|按分数过滤评论|[reviews](../src/features/reviews.ts)|代码审阅、关联模块回归|
+|R04|正态参考曲线|[reviews](../src/features/reviews.ts)|正态曲线为分布参考，不是对评分真实性的判定。|
+|R05|累计均分趋势|[reviews](../src/features/reviews.ts)|仅可信时间进入趋势；缺失时间单独说明。|
+|R06|每周评分热度|[reviews](../src/features/reviews.ts)|按上海时区计算 ISO 周，并补齐样本范围内空周。|
+|D01|普通/Plus 价格历史|[deals](../src/features/deals.ts)|缺失价格、日期或原价保留为未知，图表不将未知填成零。|
+|D02|数折人民币换算|[deals](../src/features/deals.ts)|异步公开汇率或用户填写的带日期汇率；必须保留原币种，来源/日期/过期状态可见。|
+|D03|活动人民币切换|[deals](../src/features/deals.ts)|只读访问 /huodong 返回 404；采用旧源码结构的测试夹具验证，未做当前活动页在线验证。|
+|D04|折扣幅度着色|[deals](../src/features/deals.ts)|代码审阅、关联模块回归|
+|D05|数折与活动只看史低|[deals](../src/features/deals.ts)|只接受站点显式史低标记；活动页部分沿用历史夹具验证。|
+|X01|v2 导航与布局|[core](../src/main.ts)|现站公开页面回放与旧结构夹具覆盖；未来站点 DOM 变更仍需维护。|
+|X02|iOS Safari Stay|[core](../src/main.ts)|单文件、GM 兼容层与触控已实现；Chromium/WebKit 自动化通过仍不能代表 Tampermonkey 或 iPhone Stay 真机安装、授权及沙箱通过。|
+|X03|动态内容幂等增强|[core](../src/main.ts)|重复注入、局部动态内容与取消回归；不依赖 MutationObserver 持续轮询。|
+|X04|旧配置迁移|[core](../src/main.ts)|只迁移可访问的旧 localStorage 或用户导入的 JSON；新脚本不能读取旧脚本的 GM 私有区。|

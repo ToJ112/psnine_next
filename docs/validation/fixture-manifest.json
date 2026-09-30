@@ -1,0 +1,143 @@
+{
+  "snapshot_date": "2026-09-30",
+  "authenticated": false,
+  "note": "Public GET snapshots are local ignored evidence; replay strips site scripts and event attributes, substitutes images and intercepts every network request. Current upstream responses may differ from this snapshot. Three metadata pages support the 13 top-level replay cases.",
+  "fixtures": [
+    {
+      "name": "home",
+      "source_url": "https://psnine.com/",
+      "file": "home.html",
+      "sha256": "f1519d3ffb526d19f9be639b079ee86673032c72876e75a376a79237b53a8170",
+      "bytes": 53853
+    },
+    {
+      "name": "games",
+      "source_url": "https://psnine.com/psngame",
+      "file": "games.html",
+      "sha256": "3945aec734427c76897e4ea8e813b6ac3dd4e639bd8b268d48987932c752d2c5",
+      "bytes": 36427
+    },
+    {
+      "name": "game",
+      "source_url": "https://psnine.com/psngame/46507",
+      "file": "game.html",
+      "sha256": "b22047d7dd485543be3cb4076793694ee4c9de6c1a250eeb2601acc4c52830b8",
+      "bytes": 38788
+    },
+    {
+      "name": "game-personal",
+      "source_url": "https://psnine.com/psngame/46507?psnid=toonn95",
+      "file": "game-personal.html",
+      "sha256": "4491b9808f67e809b1e28038721c72744aefbf2b0acb4c7f97446e3bbc46fd64",
+      "bytes": 42594
+    },
+    {
+      "name": "trophy",
+      "source_url": "https://psnine.com/trophy/12518001",
+      "file": "trophy.html",
+      "sha256": "05870145aa21fbefb8dd0a1d085d6f4fcee45c3d1d32c566d3dd5a07aa045278",
+      "bytes": 76756
+    },
+    {
+      "name": "reviews",
+      "source_url": "https://psnine.com/psngame/46507/comment",
+      "file": "reviews.html",
+      "sha256": "5d8dddf8f01976ba931d231b6cc183c1fe84d428f7f9b93e4dcb4860b0cc7717",
+      "bytes": 17645
+    },
+    {
+      "name": "deals",
+      "source_url": "https://psnine.com/dd",
+      "file": "deals.html",
+      "sha256": "760737fc66cfec0704fdac444d7a1eb866a0ccbe774d67898a8dae3f684b613d",
+      "bytes": 50877
+    },
+    {
+      "name": "deal-history",
+      "source_url": "https://psnine.com/dd/HP9000-CUSA10218_00-HRZCE00000000000",
+      "file": "deal-history.html",
+      "sha256": "3ced85245e6f446bb9c2a8a3ff8cbce2cc3ce60dab0685f3880189fbaa614ed6",
+      "bytes": 31171
+    },
+    {
+      "name": "battle",
+      "source_url": "https://psnine.com/battle",
+      "file": "battle.html",
+      "sha256": "0753b33c6a7d8675703346505b9a83646d687c9e56fce25a90db30e9123f95b9",
+      "bytes": 49988
+    },
+    {
+      "name": "profile",
+      "source_url": "https://psnine.com/psnid/toonn95",
+      "file": "profile.html",
+      "sha256": "1a21d6ac53a5dd4b84d8cf5b748721a6ca12ba5b792e38236a25758af43ff46a",
+      "bytes": 45318
+    },
+    {
+      "name": "topic",
+      "source_url": "https://psnine.com/topic/39074",
+      "file": "topic.html",
+      "sha256": "788c68763e8415c504d38079075891d589ec207dc0de8f58ee8da1a4cf528638",
+      "bytes": 40907
+    },
+    {
+      "name": "qa",
+      "source_url": "https://psnine.com/qa",
+      "file": "qa.html",
+      "sha256": "f6a3a8608c90bdcf5e905232fac63dad6e4e7b47b48870acbd9708a5e8485e99",
+      "bytes": 49421
+    },
+    {
+      "name": "game-meta-46507",
+      "source_url": "https://psnine.com/game/46507",
+      "file": "game-meta-46507.html",
+      "sha256": "655ed07aed1a019980fa8b5620b4487e17b17cb2314df3f98992510e977d2ce6",
+      "bytes": 9929
+    },
+    {
+      "name": "profile-games",
+      "source_url": "https://psnine.com/psnid/toonn95/psngame",
+      "file": "profile-games.html",
+      "sha256": "10919bd035cbd10f2a3fff908739df7ae96b4a215e01dbcdaaf06ad46983de68",
+      "bytes": 46235
+    },
+    {
+      "name": "trophy-game",
+      "source_url": "https://psnine.com/psngame/12518",
+      "file": "trophy-game.html",
+      "sha256": "68a4bad11212045726b0a0436e2cdbcad5e6607474c76431d246daa0b3446340",
+      "bytes": 45712
+    },
+    {
+      "name": "trophy-game-meta",
+      "source_url": "https://psnine.com/game/10999",
+      "file": "trophy-game-meta.html",
+      "sha256": "085fc7a9ead6369143cb1d74220bbcafd503ae7565a49a257d5908b22d3ce511",
+      "bytes": 47634
+    },
+    {
+      "name": "style.css",
+      "file": "style.css",
+      "sha256": "50d7dc2e34097cc0a7e6c81254e5592e22d2a56205a95f2ca4fc4b4bface6fb1",
+      "bytes": 39414
+    },
+    {
+      "name": "p9base100801.css",
+      "file": "p9base100801.css",
+      "sha256": "95959dbce2681d13aa4e177410c1a7faec04c1e27547d77bb37478299589fe22",
+      "bytes": 31492
+    },
+    {
+      "name": "p9icon111001.css",
+      "file": "p9icon111001.css",
+      "sha256": "5ba259c46b97e40c5791e039cd9ed55364505c9642ff7129757adefb4e068982",
+      "bytes": 8750
+    },
+    {
+      "name": "layer111201.css",
+      "file": "layer111201.css",
+      "sha256": "dea8f220608ba61da2ac82520365cb6d373ee8550307adf926a6455d0908c62b",
+      "bytes": 28409
+    }
+  ]
+}

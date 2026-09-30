@@ -15,15 +15,15 @@
 5. 测评：均分、评分分布及筛选、正态参考曲线、累计均分与按周热度。
 6. 数折：普通/Plus 价格历史、带日期的人民币换算、折扣色阶、史低筛选。
 
-完整细项和源证据逐步汇入 `feature-catalog.md`。每项最终标注“实现并测试”“依赖站点/真机验证”“历史替代/不恢复”，不以 README 或提交标题代替行为核对。
+完整细项和源证据见 `feature-catalog.md` 与 `features.json`。每项记录实现文件、关联模块回归测试及验证范围；真机、历史活动页和登录操作的限制单列，不以 README 或提交标题代替行为核对。
 
 ## 技术选择
 
 - TypeScript strict + esbuild；IIFE 单文件，目标 Safari 15+ / ES2020。CSS、图标、图表直接打包；无运行时 `import()`、无 `@require`、不依赖页面 jQuery/Highcharts/tippy。
 - 图表使用原生 SVG + 可读数据表，支持触屏、键盘、响应式及深色；避免加载整个可视化框架。
 - Vitest + jsdom 测纯逻辑和 DOM；Playwright Chromium/WebKit 测实际构建产物。测试优先覆盖数据错误、重复执行、请求故障、跨账号、排序保持 Tips 归属与 XSS。
-- 用户脚本采用精确 `@match`（psnine.com、www.psnine.com、旧 d7vg 主机）；`document-start` 注入主题，DOM 就绪后挂载功能。
-- 只有存储和可选菜单需要 GM 能力。兼容 `GM.getValue/setValue` Promise 与 `GM_getValue/setValue` 同步接口；不可用时降级 localStorage，再降级内存并在设置中说明。
+- 用户脚本匹配 psnine.com、d7vg.com 及其子域；`document-start` 尝试注入主题，无根节点时在 DOM 就绪后补注入并挂载功能。
+- 存储兼容 `GM.getValue/setValue` Promise 与 `GM_getValue/setValue` 同步接口；不可用时降级 localStorage，再降级内存并在设置中说明。界面不依赖 GM 菜单。
 - 页面内始终有可点击设置入口，不依赖脚本管理器菜单。Stay 按钮最小触摸尺寸、16px 表单字体、安全区域边距、无纯 hover 必要操作；弹层支持关闭与返回焦点。
 
 ## 模块接口（所有实现者遵守）
@@ -67,7 +67,7 @@ type Mount = (ctx: Context) => void | Cleanup | Promise<void | Cleanup>;
 - `psnine_next:settings:v1` 存设置；只首次迁移旧 localStorage 的 `psnine-night-mode-CSS-settings`。不会假定新脚本能读到旧脚本的 GM 私有区；提供 JSON 导入/导出，个人进度重建。恢复默认不删除站点数据。
 - 进度缓存按已验证登录 ID 分区。浏览其他人主页不得写入“我的”数据；未知登录身份只显示公开信息，不后台刷新私人进度。
 - 进度源为个人游戏页，保存 gameId、percent、platinum、更新时间。支持首刷、分页补全、无变化后退避、有变化恢复及时更新；分页边界和隐藏游戏不得引发负长度数组。
-- 网络层：同 URL in-flight 去重、并发最多 2、超时、TTL、显式失败、请求频率上限。HTML 页面仅同源请求，导入 DOM 之前移除脚本/事件属性/危险 URL。
+- 网络层：不带独立取消信号的同 URL 在途请求去重，并发最多 2、15 秒超时、TTL、显式失败；带信号的请求单独取消，避免互相中止。分页、批量 Tips 和后台刷新分别设置批次上限、间隔或退避。HTML 页面仅同源请求，导入 DOM 之前移除脚本/事件属性/危险 URL。
 - 自动翻页保持原 query/hash，不猜不存在下一页。用已知分页链接；追加同一种列表，按行身份去重；失败保留原分页和重试入口，有上限、可停止。
 - 约战只缓存公开招募列表，监控列表保存在本地；仅有监控项目时刷新。红点代表匹配游戏数量而非系统推送。
 - 汇率用异步公开接口（若启用）或用户填写的带日期汇率。失败只显示“不可用/过期”，绝不把 2020 年常量伪装成实时值。原币种价格永远保留。

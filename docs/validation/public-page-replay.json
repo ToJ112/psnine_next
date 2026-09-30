@@ -1,0 +1,896 @@
+[
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "chromium",
+    "name": "home",
+    "url": "/",
+    "errors": [],
+    "checks": {
+      "settings": {
+        "fields": 42,
+        "width": 358,
+        "withinViewport": true
+      },
+      "settingsCloses": true
+    },
+    "requestCount": 41,
+    "characterSet": "UTF-8",
+    "pageTitle": "PSN中文站",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "chromium",
+    "name": "games",
+    "url": "/psngame",
+    "errors": [],
+    "checks": {},
+    "requestCount": 38,
+    "characterSet": "UTF-8",
+    "pageTitle": "PSN游戏列表",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-difficulty-sort-btn",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "chromium",
+    "name": "game",
+    "url": "/psngame/46507",
+    "errors": [],
+    "checks": {},
+    "requestCount": 47,
+    "characterSet": "UTF-8",
+    "pageTitle": "《小丑牌》中文奖杯列表",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-game-page-battle-bell",
+      "psnine-game-variants-section",
+      "psnine-trophy-stats-panel",
+      "psnine-trophy-header-title",
+      "psnine-trophy-header-counts",
+      "psnine-trophy-completion-badge",
+      "psnine-toggle-summary-btn",
+      "psnine-toggle-charts-btn",
+      "psnine-sort-xmb-btn",
+      "psnine-sort-time-btn",
+      "psnine-sort-rarity-btn",
+      "psnine-sort-type-btn",
+      "psnine-batch-load-all-tips-btn",
+      "psnine-batch-load-unearned-tips-btn",
+      "psnine-stop-batch-tips-btn",
+      "psnine-trophy-charts-container",
+      "psnine-trophy-icon-grid-wrapper",
+      "psnine-trophy-icon-chips-container",
+      "psnine-trophy-preview-card",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置",
+      "🔕 监控",
+      "展开所有Tips",
+      "展开未获Tips"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "chromium",
+    "name": "game-personal",
+    "url": "/psngame/46507?psnid=toonn95",
+    "errors": [],
+    "checks": {
+      "settings": {
+        "fields": 42,
+        "width": 358,
+        "withinViewport": true
+      },
+      "settingsCloses": true,
+      "sortChanged": true,
+      "originalRestored": true,
+      "unearnedFilter": {
+        "hidden": 19,
+        "visible": 13
+      },
+      "filterRestored": true
+    },
+    "requestCount": 47,
+    "characterSet": "UTF-8",
+    "pageTitle": "《小丑牌》中文奖杯列表",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-game-page-battle-bell",
+      "psnine-game-variants-section",
+      "psnine-trophy-stats-panel",
+      "psnine-trophy-header-title",
+      "psnine-trophy-header-counts",
+      "psnine-trophy-completion-badge",
+      "psnine-toggle-summary-btn",
+      "psnine-toggle-charts-btn",
+      "psnine-sort-xmb-btn",
+      "psnine-sort-time-btn",
+      "psnine-sort-rarity-btn",
+      "psnine-sort-type-btn",
+      "psnine-filter-status-btn",
+      "psnine-batch-load-all-tips-btn",
+      "psnine-batch-load-unearned-tips-btn",
+      "psnine-stop-batch-tips-btn",
+      "psnine-trophy-charts-container",
+      "psnine-trophy-icon-grid-wrapper",
+      "psnine-trophy-icon-chips-container",
+      "psnine-trophy-preview-card",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置",
+      "🔕 监控",
+      "展开所有Tips",
+      "展开未获Tips"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "chromium",
+    "name": "trophy",
+    "url": "/trophy/12518001",
+    "errors": [],
+    "checks": {},
+    "requestCount": 39,
+    "characterSet": "UTF-8",
+    "pageTitle": "《父與子》奖杯 - 《战神》",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-sort-tips-by-likes-btn",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置",
+      "🔥 按“顶”数热度排序Tips"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "chromium",
+    "name": "reviews",
+    "url": "/psngame/46507/comment",
+    "errors": [],
+    "checks": {
+      "settings": {
+        "fields": 42,
+        "width": 358,
+        "withinViewport": true
+      },
+      "settingsCloses": true
+    },
+    "requestCount": 14,
+    "characterSet": "UTF-8",
+    "pageTitle": "《小丑牌》测评评分",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-enhanced-reviews-panel",
+      "psnine-toggle-tab-btn",
+      "psnine-toggle-gaussian-btn",
+      "psnine-score-dist-container",
+      "psnine-trend-container",
+      "psnine-game-page-battle-bell",
+      "psnine-game-variants-section",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 2,
+    "controls": [
+      "插件设置",
+      "🔕 监控"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "chromium",
+    "name": "deals",
+    "url": "/dd",
+    "errors": [],
+    "checks": {
+      "settings": {
+        "fields": 42,
+        "width": 358,
+        "withinViewport": true
+      },
+      "settingsCloses": true,
+      "bestFilter": {
+        "hidden": 13,
+        "visible": 19
+      },
+      "bestRestored": true
+    },
+    "requestCount": 39,
+    "characterSet": "UTF-8",
+    "pageTitle": "PSN数字游戏折扣",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-deals-controls-bar",
+      "psnine-toggle-best-deal-btn",
+      "psnine-toggle-cny-btn",
+      "psnine-fx-status",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置",
+      "只看史低",
+      "已开启人民币换算 (CNY)"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "chromium",
+    "name": "deal-history",
+    "url": "/dd/HP9000-CUSA10218_00-HRZCE00000000000",
+    "errors": [],
+    "checks": {},
+    "requestCount": 8,
+    "characterSet": "UTF-8",
+    "pageTitle": "港服《Horizon Zero Dawn™: Complete Edition PlayStation®Hits》限时折扣优惠汇总",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-deals-controls-bar",
+      "psnine-toggle-best-deal-btn",
+      "psnine-toggle-cny-btn",
+      "psnine-fx-status",
+      "psnine-price-chart-container",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 1,
+    "controls": [
+      "插件设置",
+      "只看史低",
+      "已开启人民币换算 (CNY)"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "chromium",
+    "name": "battle",
+    "url": "/battle",
+    "errors": [],
+    "checks": {},
+    "requestCount": 55,
+    "characterSet": "UTF-8",
+    "pageTitle": "PSN约战系统",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "chromium",
+    "name": "profile",
+    "url": "/psnid/toonn95",
+    "errors": [],
+    "checks": {},
+    "requestCount": 41,
+    "characterSet": "UTF-8",
+    "pageTitle": "「toonn95」的PSN主页",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-sync-psn-btn-group",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "chromium",
+    "name": "topic",
+    "url": "/topic/39074",
+    "errors": [],
+    "checks": {},
+    "requestCount": 39,
+    "characterSet": "UTF-8",
+    "pageTitle": "《战锤40K 星际战士2》白金攻略 前言",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "chromium",
+    "name": "qa",
+    "url": "/qa",
+    "errors": [],
+    "checks": {},
+    "requestCount": 32,
+    "characterSet": "UTF-8",
+    "pageTitle": "问答",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "chromium",
+    "name": "profile-games",
+    "url": "/psnid/toonn95/psngame",
+    "errors": [],
+    "checks": {},
+    "requestCount": 37,
+    "characterSet": "UTF-8",
+    "pageTitle": "「toonn95」的游戏记录",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "webkit",
+    "name": "home",
+    "url": "/",
+    "errors": [],
+    "checks": {
+      "settings": {
+        "fields": 42,
+        "width": 358,
+        "withinViewport": true
+      },
+      "settingsCloses": true
+    },
+    "requestCount": 41,
+    "characterSet": "UTF-8",
+    "pageTitle": "PSN中文站",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "webkit",
+    "name": "games",
+    "url": "/psngame",
+    "errors": [],
+    "checks": {},
+    "requestCount": 38,
+    "characterSet": "UTF-8",
+    "pageTitle": "PSN游戏列表",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-difficulty-sort-btn",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "webkit",
+    "name": "game",
+    "url": "/psngame/46507",
+    "errors": [],
+    "checks": {},
+    "requestCount": 47,
+    "characterSet": "UTF-8",
+    "pageTitle": "《小丑牌》中文奖杯列表",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-game-page-battle-bell",
+      "psnine-game-variants-section",
+      "psnine-trophy-stats-panel",
+      "psnine-trophy-header-title",
+      "psnine-trophy-header-counts",
+      "psnine-trophy-completion-badge",
+      "psnine-toggle-summary-btn",
+      "psnine-toggle-charts-btn",
+      "psnine-sort-xmb-btn",
+      "psnine-sort-time-btn",
+      "psnine-sort-rarity-btn",
+      "psnine-sort-type-btn",
+      "psnine-batch-load-all-tips-btn",
+      "psnine-batch-load-unearned-tips-btn",
+      "psnine-stop-batch-tips-btn",
+      "psnine-trophy-charts-container",
+      "psnine-trophy-icon-grid-wrapper",
+      "psnine-trophy-icon-chips-container",
+      "psnine-trophy-preview-card",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置",
+      "🔕 监控",
+      "展开所有Tips",
+      "展开未获Tips"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "webkit",
+    "name": "game-personal",
+    "url": "/psngame/46507?psnid=toonn95",
+    "errors": [],
+    "checks": {
+      "settings": {
+        "fields": 42,
+        "width": 358,
+        "withinViewport": true
+      },
+      "settingsCloses": true,
+      "sortChanged": true,
+      "originalRestored": true,
+      "unearnedFilter": {
+        "hidden": 19,
+        "visible": 13
+      },
+      "filterRestored": true
+    },
+    "requestCount": 47,
+    "characterSet": "UTF-8",
+    "pageTitle": "《小丑牌》中文奖杯列表",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-game-page-battle-bell",
+      "psnine-game-variants-section",
+      "psnine-trophy-stats-panel",
+      "psnine-trophy-header-title",
+      "psnine-trophy-header-counts",
+      "psnine-trophy-completion-badge",
+      "psnine-toggle-summary-btn",
+      "psnine-toggle-charts-btn",
+      "psnine-sort-xmb-btn",
+      "psnine-sort-time-btn",
+      "psnine-sort-rarity-btn",
+      "psnine-sort-type-btn",
+      "psnine-filter-status-btn",
+      "psnine-batch-load-all-tips-btn",
+      "psnine-batch-load-unearned-tips-btn",
+      "psnine-stop-batch-tips-btn",
+      "psnine-trophy-charts-container",
+      "psnine-trophy-icon-grid-wrapper",
+      "psnine-trophy-icon-chips-container",
+      "psnine-trophy-preview-card",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置",
+      "🔕 监控",
+      "展开所有Tips",
+      "展开未获Tips"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "webkit",
+    "name": "trophy",
+    "url": "/trophy/12518001",
+    "errors": [],
+    "checks": {},
+    "requestCount": 39,
+    "characterSet": "UTF-8",
+    "pageTitle": "《父與子》奖杯 - 《战神》",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-sort-tips-by-likes-btn",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置",
+      "🔥 按“顶”数热度排序Tips"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "webkit",
+    "name": "reviews",
+    "url": "/psngame/46507/comment",
+    "errors": [],
+    "checks": {
+      "settings": {
+        "fields": 42,
+        "width": 358,
+        "withinViewport": true
+      },
+      "settingsCloses": true
+    },
+    "requestCount": 14,
+    "characterSet": "UTF-8",
+    "pageTitle": "《小丑牌》测评评分",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-enhanced-reviews-panel",
+      "psnine-toggle-tab-btn",
+      "psnine-toggle-gaussian-btn",
+      "psnine-score-dist-container",
+      "psnine-trend-container",
+      "psnine-game-page-battle-bell",
+      "psnine-game-variants-section",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 2,
+    "controls": [
+      "插件设置",
+      "🔕 监控"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "webkit",
+    "name": "deals",
+    "url": "/dd",
+    "errors": [],
+    "checks": {
+      "settings": {
+        "fields": 42,
+        "width": 358,
+        "withinViewport": true
+      },
+      "settingsCloses": true,
+      "bestFilter": {
+        "hidden": 13,
+        "visible": 19
+      },
+      "bestRestored": true
+    },
+    "requestCount": 39,
+    "characterSet": "UTF-8",
+    "pageTitle": "PSN数字游戏折扣",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-deals-controls-bar",
+      "psnine-toggle-best-deal-btn",
+      "psnine-toggle-cny-btn",
+      "psnine-fx-status",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置",
+      "只看史低",
+      "已开启人民币换算 (CNY)"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "webkit",
+    "name": "deal-history",
+    "url": "/dd/HP9000-CUSA10218_00-HRZCE00000000000",
+    "errors": [],
+    "checks": {},
+    "requestCount": 8,
+    "characterSet": "UTF-8",
+    "pageTitle": "港服《Horizon Zero Dawn™: Complete Edition PlayStation®Hits》限时折扣优惠汇总",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-deals-controls-bar",
+      "psnine-toggle-best-deal-btn",
+      "psnine-toggle-cny-btn",
+      "psnine-fx-status",
+      "psnine-price-chart-container",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 1,
+    "controls": [
+      "插件设置",
+      "只看史低",
+      "已开启人民币换算 (CNY)"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "webkit",
+    "name": "battle",
+    "url": "/battle",
+    "errors": [],
+    "checks": {},
+    "requestCount": 55,
+    "characterSet": "UTF-8",
+    "pageTitle": "PSN约战系统",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控",
+      "🔕 监控"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "webkit",
+    "name": "profile",
+    "url": "/psnid/toonn95",
+    "errors": [],
+    "checks": {},
+    "requestCount": 41,
+    "characterSet": "UTF-8",
+    "pageTitle": "「toonn95」的PSN主页",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-sync-psn-btn-group",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "webkit",
+    "name": "topic",
+    "url": "/topic/39074",
+    "errors": [],
+    "checks": {},
+    "requestCount": 39,
+    "characterSet": "UTF-8",
+    "pageTitle": "《战锤40K 星际战士2》白金攻略 前言",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "webkit",
+    "name": "qa",
+    "url": "/qa",
+    "errors": [],
+    "checks": {},
+    "requestCount": 32,
+    "characterSet": "UTF-8",
+    "pageTitle": "问答",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置"
+    ],
+    "overflow": []
+  },
+  {
+    "bundleSha256": "be70a4d3e753369a6e16cfbf1615ec057edb0c4486e9131fe0bc4d7e125d89aa",
+    "engine": "webkit",
+    "name": "profile-games",
+    "url": "/psnid/toonn95/psngame",
+    "errors": [],
+    "checks": {},
+    "requestCount": 37,
+    "characterSet": "UTF-8",
+    "pageTitle": "「toonn95」的游戏记录",
+    "mutationDelta": 0,
+    "injected": [
+      "psnineCoreStyles",
+      "psnine-enhanced-games-style",
+      "psnine-nav-settings-link",
+      "psnine-settings-gear",
+      "psnine-scrollbottom"
+    ],
+    "charts": 0,
+    "controls": [
+      "插件设置"
+    ],
+    "overflow": []
+  }
+]

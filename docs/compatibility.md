@@ -14,7 +14,7 @@
 
 - 单一 IIFE，自包含代码/CSS/SVG，不需要运行时模块加载与 CDN 脚本。
 - 兼容 `GM_getValue`/`GM_setValue` 与 `GM.getValue`/`GM.setValue`；缺失时在本机存储降级。
-- 页面内设置入口为主要入口，管理器菜单仅补充。
+- 通过页面右下角按钮与网站导航入口打开设置；设置操作在网页内完成。
 - Safari 15+ 是编译目标，移动表单至少 16px，弹层适配安全区和窄屏。
 - 黑条、个人卡片、回复与 Tips 都有点击操作；不能只依赖 hover。
 - 不依赖 `GM_notification`、`window.onurlchange` 等在部分 Stay 版本中不实现的接口。[官方 API 列表](https://github.com/shenruisi/Stay#api)

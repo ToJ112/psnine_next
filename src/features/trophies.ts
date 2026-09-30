@@ -1,0 +1,1390 @@
+/**
+ * psnine_next - Trophies Feature Module (T01 - T14 + C19)
+ *
+ * Implements:
+ * T01: 奖杯类型统计 (白金/金/银/铜计数和占比)
+ * T02: 奖杯稀有度统计 (0–5/5–10/10–20/20–50/50–100 边界)
+ * T03: 获得时间曲线 (已获累计数、单点/零点明确呈现、真实时间比例尺与可读数据表)
+ * T04: 已获/未获图标汇总 (图标网格button支持键盘、安全URL、无XSS)
+ * T05: 汇总 Tips 标记与预览 (悬浮/点击安全DOM展示名称描述与跳转)
+ * T06: 奖杯汇总折叠 (默认折叠偏好与手动展开切换)
+ * T07: 奖杯图表折叠 (默认折叠偏好与手动展开切换)
+ * T08: 获得时间排序 (持久data-psnine-orig-seq，最新/最早/XMB恢复，DLC分组独立且Tips跟随)
+ * T09: 原序/类型/稀有度双向排序 (稀有度与类型双向翻转，DLC 分组不混排)
+ * T10: 获得状态筛选 (全部/已获/未获，setHidden多原因隔离，保留内联 Tips 归属)
+ * T11: 内联展开单个 Tips (http.document安全DOM保留链接/图片/剧透刮刮条，黑名单大小写忽略，屏蔽词正则与可揭示button，重试与setHidden)
+ * T12: 批量全部/未获 Tips (支持全展与仅未获、公开页禁用未获并提示、AbortController支持随时打断无假错误)
+ * T13: Tips 顶数排序 (仅限直接子li、持久orig-seq恢复、onContent动态追加)
+ * T14: Tips 输入框缩放 (垂直resize、移动端16px防缩放)
+ * C19: 攻略中我的奖杯 (slice(0,-3)提取gameId、knownSet+earnedSet准确区分未获与未知、同段多杯独立徽章)
+ */
+
+import { Context, Mount } from '../core/types';
+import { setHidden, isHiddenByReason } from '../core/dom';
+import { parseP9Timestamp } from './reviews';
+import { enhanceMasks } from './global';
+
+export type TrophyType = 'platinum' | 'gold' | 'silver' | 'bronze';
+export type TrophyEarnedStatus = 'earned' | 'unearned' | 'unknown';
+
+export interface TrophyItem {
+  row: HTMLElement;
+  table: HTMLElement;
+  trophyId: string;
+  name: string;
+  description: string;
+  iconSrc: string;
+  type: TrophyType;
+  rarityPercent: number;
+  status: TrophyEarnedStatus;
+  earnedTimestamp: number | null;
+  earnedTimeStr: string;
+  tipsCount: number;
+  originalIndex: number;
+}
+
+export interface TrophyStats {
+  total: number;
+  platinum: number;
+  gold: number;
+  silver: number;
+  bronze: number;
+  earnedCount: number;
+  unearnedCount: number;
+  unknownCount: number;
+  rarityBuckets: { label: string; count: number }[];
+  timeCurve: { time: number; dateStr: string; cumCount: number }[];
+  missingTimeCount: number;
+}
+
+export interface ParsedTip {
+  author: string;
+  avatar: string;
+  contentEl: HTMLElement | null;
+  likes: number;
+  timeStr: string;
+}
+
+const SHANGHAI_OFFSET_MS = 8 * 3600 * 1000;
+
+/**
+ * Extracts trophy type from row classes or cell classes.
+ */
+export function extractTrophyType(row: Element): TrophyType {
+  const tCell = row.querySelector('td.t1, td.t2, td.t3, td.t4');
+  if (tCell) {
+    if (tCell.classList.contains('t1')) return 'platinum';
+    if (tCell.classList.contains('t2')) return 'gold';
+    if (tCell.classList.contains('t3')) return 'silver';
+    if (tCell.classList.contains('t4')) return 'bronze';
+  }
+  const text = row.textContent || '';
+  if (row.querySelector('.text-platinum') || text.includes('白金')) return 'platinum';
+  if (row.querySelector('.text-gold') || text.includes('金杯') || text.includes('（金）')) return 'gold';
+  if (row.querySelector('.text-silver') || text.includes('银杯') || text.includes('（银）')) return 'silver';
+  return 'bronze';
+}
+
+/**
+ * Parses rarity percentage from td.twoge (e.g. "3.60% 极为珍贵").
+ */
+export function parseRarityPercent(td: Element | null): number {
+  if (!td) return 100;
+  const text = td.textContent || '';
+  const m = text.match(/([\d.]+)%/);
+  return m ? parseFloat(m[1]) : 100;
+}
+
+/**
+ * Parses all trophy rows from trophy list tables.
+ * Accurately reads persistent data-psnine-orig-seq to guarantee original XMB order restoration (T08).
+ */
+export function parseTrophyRows(doc: ParentNode, isPersonalPage: boolean): TrophyItem[] {
+  const items: TrophyItem[] = [];
+  const tables = (doc instanceof Element && doc.matches('table.list'))
+    ? [doc]
+    : Array.from(doc.querySelectorAll('table.list'));
+
+  tables.forEach((tbl) => {
+    const tableEl = tbl as HTMLElement;
+    const rows = Array.from(tableEl.querySelectorAll('tr')).filter(
+      r => r.classList.contains('trophy') || (r.id && !isNaN(Number(r.id)))
+    );
+
+    // Find max persistent seq across existing rows in this table (Defect 5)
+    let maxPersistentSeq = -1;
+    rows.forEach((r) => {
+      if (r.hasAttribute('data-psnine-orig-seq')) {
+        const val = parseInt(r.getAttribute('data-psnine-orig-seq') || '0', 10);
+        if (!isNaN(val) && val > maxPersistentSeq) {
+          maxPersistentSeq = val;
+        }
+      }
+    });
+
+    rows.forEach((r, idx) => {
+      const row = r as HTMLElement;
+      if (row.classList.contains('psnine-inline-tip-row') || row.hasAttribute('data-psnine-next')) return;
+
+      // Stable original index from persistent attribute (T08 & Defect 5)
+      let originalIndex: number;
+      if (row.hasAttribute('data-psnine-orig-seq')) {
+        originalIndex = parseInt(row.getAttribute('data-psnine-orig-seq') || '0', 10);
+      } else {
+        if (maxPersistentSeq === -1) {
+          originalIndex = idx;
+          maxPersistentSeq = idx;
+        } else {
+          maxPersistentSeq++;
+          originalIndex = maxPersistentSeq;
+        }
+        row.setAttribute('data-psnine-orig-seq', String(originalIndex));
+      }
+
+      const link = row.querySelector('td:nth-child(2) a[href*="/trophy/"], td:not(:first-child) a[href*="/trophy/"]') as HTMLAnchorElement | null;
+      const href = link?.href || link?.getAttribute('href') || '';
+      const mId = href.match(/\/trophy\/(\d+)/);
+      const trophyId = mId ? mId[1] : `seq_${originalIndex}`;
+
+      const name = link?.textContent?.trim() || '奖杯';
+
+      // Robust description extraction (check td.pd15 p, .text-strong, em)
+      const descEl = row.querySelector('td.pd15 p, td:nth-child(2) div.text-strong, td:nth-child(2) em.mt10, td div.mt10, td p:last-child');
+      const description = descEl?.textContent?.trim() || '';
+
+      const img = row.querySelector('img.imgbg, img');
+      const iconSrc = img?.getAttribute('src') || '';
+
+      const type = extractTrophyType(row);
+      const rarityTd = row.querySelector('td.twoge, td:last-child');
+      const rarityPercent = parseRarityPercent(rarityTd);
+
+      // Status & Timestamp (T03, T04)
+      let status: TrophyEarnedStatus = 'unknown';
+      let earnedTimestamp: number | null = null;
+      let earnedTimeStr = '';
+
+      if (isPersonalPage) {
+        const timeEm = row.querySelector('em.alert-success.pd5.r, em.lh180.alert-success.pd5.r, em.alert-success.r');
+        const hasEarnedImg = row.querySelector('img.imgbg.earned, img.earned') !== null;
+        if (timeEm || hasEarnedImg) {
+          status = 'earned';
+          if (timeEm) {
+            // Replace <br> with space before reading textContent (T03)
+            const clone = timeEm.cloneNode(true) as HTMLElement;
+            clone.querySelectorAll('br').forEach(br => br.replaceWith(' '));
+            const rawTime = clone.textContent?.trim() || '';
+
+            const tipsYear = timeEm.getAttribute('tips') || '';
+            const yMatch = tipsYear.match(/(\d{4})/);
+            const yearStr = yMatch ? `${yMatch[1]}-` : '';
+
+            earnedTimeStr = `${yearStr}${rawTime}`;
+            earnedTimestamp = parseP9Timestamp(earnedTimeStr);
+          }
+        } else {
+          status = 'unearned';
+        }
+      }
+
+      let tipsCount = 0;
+      const tipsBadge = row.querySelector('em.alert-success:not(.r), em.alert-success b');
+      if (tipsBadge) {
+        const b = tipsBadge.querySelector('b') || tipsBadge;
+        const countMatch = b.textContent?.match(/(\d+)/);
+        if (countMatch) tipsCount = parseInt(countMatch[1], 10);
+      }
+
+      items.push({
+        row,
+        table: tableEl,
+        trophyId,
+        name,
+        description,
+        iconSrc,
+        type,
+        rarityPercent,
+        status,
+        earnedTimestamp,
+        earnedTimeStr,
+        tipsCount,
+        originalIndex
+      });
+    });
+  });
+
+  return items;
+}
+
+/**
+ * Calculates Trophy Stats (T01 - T04).
+ */
+export function calculateTrophyStats(items: TrophyItem[]): TrophyStats {
+  let platinum = 0;
+  let gold = 0;
+  let silver = 0;
+  let bronze = 0;
+  let earnedCount = 0;
+  let unearnedCount = 0;
+  let unknownCount = 0;
+
+  const buckets = [
+    { label: '0–5% (极为珍贵)', count: 0 },
+    { label: '5–10% (非常珍贵)', count: 0 },
+    { label: '10–20% (珍贵)', count: 0 },
+    { label: '20–50% (比较珍贵)', count: 0 },
+    { label: '50–100% (普通)', count: 0 },
+  ];
+
+  for (const it of items) {
+    if (it.type === 'platinum') platinum++;
+    else if (it.type === 'gold') gold++;
+    else if (it.type === 'silver') silver++;
+    else bronze++;
+
+    if (it.status === 'earned') earnedCount++;
+    else if (it.status === 'unearned') unearnedCount++;
+    else unknownCount++;
+
+    const r = it.rarityPercent;
+    if (r <= 5) buckets[0].count++;
+    else if (r <= 10) buckets[1].count++;
+    else if (r <= 20) buckets[2].count++;
+    else if (r <= 50) buckets[3].count++;
+    else buckets[4].count++;
+  }
+
+  // T03: Time curve in Asia/Shanghai timezone
+  const earnedItemsWithTime = items
+    .filter((it): it is typeof it & { earnedTimestamp: number } => it.status === 'earned' && it.earnedTimestamp !== null)
+    .sort((a, b) => a.earnedTimestamp - b.earnedTimestamp);
+
+  const missingTimeCount = earnedCount - earnedItemsWithTime.length;
+  const timeCurve: TrophyStats['timeCurve'] = [];
+  for (let i = 0; i < earnedItemsWithTime.length; i++) {
+    timeCurve.push({
+      time: earnedItemsWithTime[i].earnedTimestamp,
+      dateStr: new Date(earnedItemsWithTime[i].earnedTimestamp + SHANGHAI_OFFSET_MS).toISOString().slice(0, 10),
+      cumCount: i + 1
+    });
+  }
+
+  return {
+    total: items.length,
+    platinum,
+    gold,
+    silver,
+    bronze,
+    earnedCount,
+    unearnedCount,
+    unknownCount,
+    rarityBuckets: buckets,
+    timeCurve,
+    missingTimeCount
+  };
+}
+
+/**
+ * Sorts trophies strictly WITHIN their DLC table group, keeping inline tips attached (T08, T09).
+ */
+export function sortTrophiesInTable(
+  table: HTMLElement,
+  trophies: TrophyItem[],
+  mode: 'xmb' | 'time-desc' | 'time-asc' | 'rarity-asc' | 'rarity-desc' | 'type-desc' | 'type-asc'
+): void {
+  const tableTrophies = trophies.filter(t => t.table === table);
+  const tbody = table.querySelector('tbody') || table;
+
+  const sorted = [...tableTrophies].sort((a, b) => {
+    if (mode === 'xmb') {
+      return a.originalIndex - b.originalIndex;
+    }
+    if (mode === 'time-desc') {
+      if (a.earnedTimestamp === null && b.earnedTimestamp === null) return 0;
+      if (a.earnedTimestamp === null) return 1;
+      if (b.earnedTimestamp === null) return -1;
+      return b.earnedTimestamp - a.earnedTimestamp;
+    }
+    if (mode === 'time-asc') {
+      if (a.earnedTimestamp === null && b.earnedTimestamp === null) return 0;
+      if (a.earnedTimestamp === null) return 1;
+      if (b.earnedTimestamp === null) return -1;
+      return a.earnedTimestamp - b.earnedTimestamp;
+    }
+    if (mode === 'rarity-asc') {
+      return a.rarityPercent - b.rarityPercent;
+    }
+    if (mode === 'rarity-desc') {
+      return b.rarityPercent - a.rarityPercent;
+    }
+    if (mode === 'type-desc') {
+      const typeRank = { platinum: 1, gold: 2, silver: 3, bronze: 4 };
+      return typeRank[a.type] - typeRank[b.type];
+    }
+    if (mode === 'type-asc') {
+      const typeRank = { platinum: 1, gold: 2, silver: 3, bronze: 4 };
+      return typeRank[b.type] - typeRank[a.type];
+    }
+    return 0;
+  });
+
+  sorted.forEach((item) => {
+    tbody.appendChild(item.row);
+    const tipRow = table.querySelector(`tr.psnine-inline-tip-row[data-for-trophy="${item.trophyId}"]`);
+    if (tipRow) {
+      tbody.appendChild(tipRow);
+    }
+  });
+}
+
+/**
+ * Renders Native SVG Trophy Charts including Time Curve (T01, T02, T03).
+ */
+export function renderTrophyChartsSvg(stats: TrophyStats): string {
+  const { total, platinum, gold, silver, bronze, rarityBuckets, timeCurve, missingTimeCount } = stats;
+  if (total === 0) return '';
+
+  const svgWidth = 460;
+  const svgHeight = 160;
+
+  const pPct = ((platinum / total) * 100).toFixed(1);
+  const gPct = ((gold / total) * 100).toFixed(1);
+  const sPct = ((silver / total) * 100).toFixed(1);
+  const bPct = ((bronze / total) * 100).toFixed(1);
+
+  const maxRarity = Math.max(1, Math.max(...rarityBuckets.map(b => b.count)));
+
+  // T03: Time Curve SVG (supports 1 point, multiple points, or empty statement)
+  let timeCurveHtml = '';
+  if (timeCurve.length >= 1) {
+    const margin = { top: 15, right: 25, bottom: 25, left: 35 };
+    const innerW = svgWidth - margin.left - margin.right;
+    const innerH = svgHeight - margin.top - margin.bottom;
+
+    const minT = timeCurve[0].time;
+    const maxT = timeCurve[timeCurve.length - 1].time;
+    const tSpan = Math.max(1, maxT - minT);
+    const maxCount = timeCurve[timeCurve.length - 1].cumCount;
+
+    const pts: string[] = [];
+    for (const pt of timeCurve) {
+      const x = timeCurve.length === 1 ? margin.left + innerW / 2 : margin.left + ((pt.time - minT) / tSpan) * innerW;
+      const y = margin.top + innerH - (pt.cumCount / maxCount) * innerH;
+      pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+    }
+
+    timeCurveHtml = `
+      <div data-psnine-next="true" style="padding:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(0,0,0,0.05);border-radius:6px;">
+        <div style="font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;">
+          <span>📈 奖杯获得时间积累曲线 (已获: ${timeCurve[timeCurve.length - 1].cumCount}个)</span>
+          <span style="font-size:11px;color:#888;">${timeCurve[0].dateStr} ~ ${timeCurve[timeCurve.length - 1].dateStr}</span>
+        </div>
+        <svg viewBox="0 0 ${svgWidth} ${svgHeight}" data-psnine-next="true" style="width:100%;height:100px;font-family:inherit;">
+          <line x1="${margin.left}" y1="${margin.top + innerH}" x2="${margin.left + innerW}" y2="${margin.top + innerH}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
+          <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + innerH}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
+          <text x="${margin.left - 5}" y="${margin.top + 6}" text-anchor="end" font-size="10" fill="currentColor">${maxCount}</text>
+          <text x="${margin.left - 5}" y="${margin.top + innerH}" text-anchor="end" font-size="10" fill="currentColor">0</text>
+          ${pts.length > 1 ? `<polyline points="${pts.join(' ')}" fill="none" stroke="#28a745" stroke-width="2.5" />` : ''}
+          ${pts.map(p => `<circle cx="${p.split(',')[0]}" cy="${p.split(',')[1]}" r="4" fill="#28a745" />`).join('')}
+        </svg>
+        <details style="margin-top:4px;font-size:11px;color:#666;">
+          <summary style="cursor:pointer;">查看获得时间数据表</summary>
+          <div style="max-height:80px;overflow-y:auto;margin-top:4px;">
+            <table style="width:100%;border-collapse:collapse;font-size:10px;">
+              <thead><tr><th style="text-align:left;">日期</th><th style="text-align:right;">累计已获</th></tr></thead>
+              <tbody>
+                ${timeCurve.map(t => `<tr><td>${t.dateStr}</td><td style="text-align:right;">${t.cumCount}</td></tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </details>
+        ${missingTimeCount > 0 ? `<div style="font-size:10px;color:#888;text-align:right;margin-top:2px;">${missingTimeCount}个已获奖杯缺失时间戳</div>` : ''}
+      </div>
+    `;
+  } else {
+    timeCurveHtml = `
+      <div data-psnine-next="true" style="padding:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(0,0,0,0.05);border-radius:6px;font-size:12px;color:#888;">
+        📈 暂无有效获得时间记录（已载入样本）
+      </div>
+    `;
+  }
+
+  return `
+    <div data-psnine-next="true" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:12px;margin:8px 0;">
+      <!-- Type Breakdown -->
+      <div data-psnine-next="true" style="padding:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(0,0,0,0.05);border-radius:6px;">
+        <div style="font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;">
+          <span>🏆 奖杯类型构成 (已载入: ${total})</span>
+        </div>
+        <div style="height:12px;display:flex;border-radius:6px;overflow:hidden;margin-bottom:8px;">
+          <div style="width:${pPct}%;background:#4dabf7;" title="白金: ${platinum} (${pPct}%)"></div>
+          <div style="width:${gPct}%;background:#ffd43b;" title="金杯: ${gold} (${gPct}%)"></div>
+          <div style="width:${sPct}%;background:#ced4da;" title="银杯: ${silver} (${sPct}%)"></div>
+          <div style="width:${bPct}%;background:#e59966;" title="铜杯: ${bronze} (${bPct}%)"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;">
+          <span style="color:#1971c2;">白 ${platinum}</span>
+          <span style="color:#f59f00;">金 ${gold}</span>
+          <span style="color:#868e96;">银 ${silver}</span>
+          <span style="color:#d9480f;">铜 ${bronze}</span>
+        </div>
+        <div style="font-size:10px;color:#888;margin-top:4px;">*统计范围：当前页面已载入样本（不代表站点加权总进度）</div>
+      </div>
+
+      <!-- Rarity Breakdown -->
+      <div data-psnine-next="true" style="padding:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(0,0,0,0.05);border-radius:6px;">
+        <div style="font-size:12px;font-weight:600;margin-bottom:6px;">📊 稀有度分布</div>
+        <svg viewBox="0 0 ${svgWidth} ${svgHeight}" data-psnine-next="true" style="width:100%;height:100px;font-family:inherit;">
+          ${rarityBuckets.map((b, i) => {
+            const h = (b.count / maxRarity) * 80;
+            const x = 30 + i * 85;
+            const y = 90 - h;
+            return `
+              <rect x="${x}" y="${y}" width="45" height="${Math.max(2, h)}" rx="3" fill="#3890ff">
+                <title>${b.label}: ${b.count}个</title>
+              </rect>
+              <text x="${x + 22}" y="${y - 4}" text-anchor="middle" font-size="10" fill="currentColor">${b.count}</text>
+              <text x="${x + 22}" y="110" text-anchor="middle" font-size="9" fill="currentColor">${b.label.split(' ')[0]}</text>
+            `;
+          }).join('')}
+        </svg>
+      </div>
+
+      ${timeCurveHtml}
+    </div>
+  `;
+}
+
+/**
+ * Mounts the Trophies Feature Module.
+ */
+export const mountTrophies: Mount = async (ctx: Context) => {
+  const { document: doc, url, settings, store, userId, onContent, report } = ctx;
+
+  const isTrophyListPage = url.pathname.includes('/psngame/') && !url.pathname.includes('/comment');
+  const isTrophyDetailPage = url.pathname.includes('/trophy/');
+  const isGuideTopicPage = url.pathname.includes('/topic/') || url.pathname.includes('/node/guide');
+
+  let isActive = true;
+
+  try {
+    // 1. Single Trophy Detail Page (/trophy/\d+) - T13 & T14
+    if (isTrophyDetailPage) {
+      const applyT14Textareas = (root: ParentNode = doc) => {
+        const textareas = root instanceof Element && root.matches('textarea')
+          ? [root]
+          : Array.from(root.querySelectorAll('textarea'));
+        textareas.forEach((ta) => {
+          if (!ta.getAttribute('data-psnine-t14-ready')) {
+            ta.setAttribute('data-psnine-t14-ready', 'true');
+            ta.setAttribute('style', `${ta.getAttribute('style') || ''};resize:vertical !important;font-size:16px !important;min-height:80px !important;box-sizing:border-box !important;`);
+          }
+        });
+      };
+
+      applyT14Textareas(doc);
+
+      const tipsList = doc.querySelector('ul.list');
+      let isLikesSorted = false;
+
+      const parseTipLikes = (li: Element): number => {
+        // Direct metas of this li only, strictly excluding any in .sonlist or child li
+        const directMetas = Array.from(li.querySelectorAll(':scope > .ml64 > .meta, :scope > .meta, :scope > div > .meta'))
+          .filter(m => !m.closest('.sonlist') && m.closest('li') === li);
+        for (const meta of directMetas) {
+          const upLink = meta.querySelector('a[onclick*="up_tip"], a.btn-up, em.alert-success');
+          if (upLink) {
+            const m = upLink.textContent?.match(/(\d+)/);
+            if (m) return parseInt(m[1], 10);
+          }
+        }
+        const upLinks = Array.from(li.querySelectorAll('a[onclick*="up_tip"], a.btn-up, em.alert-success'))
+          .filter(a => !a.closest('.sonlist') && a.closest('li') === li);
+        for (const a of upLinks) {
+          const m = a.textContent?.match(/(\d+)/);
+          if (m) return parseInt(m[1], 10);
+        }
+        return 0;
+      };
+
+      const updateT13Tips = () => {
+        if (!tipsList) return;
+        const directLis = Array.from(tipsList.querySelectorAll(':scope > li'));
+        if (directLis.length === 0) return;
+
+        let maxSeq = -1;
+        directLis.forEach((li) => {
+          if (li.hasAttribute('data-psnine-orig-seq')) {
+            const val = parseInt(li.getAttribute('data-psnine-orig-seq') || '0', 10);
+            if (!isNaN(val) && val > maxSeq) maxSeq = val;
+          }
+        });
+
+        directLis.forEach((li, idx) => {
+          if (!li.hasAttribute('data-psnine-orig-seq')) {
+            if (maxSeq === -1) {
+              maxSeq = idx;
+              li.setAttribute('data-psnine-orig-seq', String(idx));
+            } else {
+              maxSeq++;
+              li.setAttribute('data-psnine-orig-seq', String(maxSeq));
+            }
+          }
+        });
+
+        const targetOrder = [...directLis].sort((a, b) => {
+          const seqA = parseInt(a.getAttribute('data-psnine-orig-seq') || '0', 10);
+          const seqB = parseInt(b.getAttribute('data-psnine-orig-seq') || '0', 10);
+          if (!isLikesSorted) {
+            return seqA - seqB;
+          }
+          const likesA = parseTipLikes(a);
+          const likesB = parseTipLikes(b);
+          if (likesB !== likesA) {
+            return likesB - likesA;
+          }
+          return seqA - seqB;
+        });
+
+        const isDifferent = targetOrder.some((el, i) => el !== directLis[i]);
+        if (isDifferent) {
+          targetOrder.forEach(li => tipsList.appendChild(li));
+        }
+      };
+
+      if (tipsList && !doc.getElementById('psnine-sort-tips-by-likes-btn')) {
+        updateT13Tips();
+
+        const sortBtn = doc.createElement('button');
+        sortBtn.id = 'psnine-sort-tips-by-likes-btn';
+        sortBtn.type = 'button';
+        sortBtn.setAttribute('data-psnine-next', 'true');
+        sortBtn.style.cssText = 'padding:4px 8px;font-size:12px;border-radius:4px;border:1px solid #3890ff;background:transparent;color:#3890ff;cursor:pointer;margin-bottom:8px;';
+        sortBtn.textContent = '🔥 按“顶”数热度排序Tips';
+
+        sortBtn.onclick = () => {
+          isLikesSorted = !isLikesSorted;
+          sortBtn.textContent = isLikesSorted ? '🔄 恢复默认排序' : '🔥 按“顶”数热度排序Tips';
+          updateT13Tips();
+        };
+
+        tipsList.parentElement?.insertBefore(sortBtn, tipsList);
+      }
+
+      const unsubscribe = onContent((root) => {
+        if (isActive) {
+          applyT14Textareas(root);
+          updateT13Tips();
+        }
+      });
+
+      return () => {
+        isActive = false;
+        unsubscribe();
+      };
+    }
+
+    // 2. Guide Page (/topic/\d+) - C19: exact slice(0,-3) 提取 gameId、knownSet + earnedSet、同段多杯独立徽标
+    if (isGuideTopicPage && userId) {
+      const pageAbortController = new AbortController();
+
+      interface GameData {
+        verifiedPersonal: boolean;
+        knownSet: Set<string>;
+        earnedSet: Set<string>;
+      }
+
+      const gameCache = new Map<string, Promise<GameData | null>>();
+
+      const fetchGameData = (gid: string): Promise<GameData | null> => {
+        if (gameCache.has(gid)) {
+          return gameCache.get(gid)!;
+        }
+        const p = (async () => {
+          try {
+            const targetUrl = new URL(`/psngame/${gid}?psnid=${userId}`, ctx.url.origin).href;
+            const gameDoc = await ctx.http.document(targetUrl, { ttl: 600000, signal: pageAbortController.signal });
+            if (!isActive || pageAbortController.signal.aborted) return null;
+
+            const trophyRows = Array.from(gameDoc.querySelectorAll('table.list tr.trophy, tr.trophy, table.list tr[id]'))
+              .filter(r => r.querySelector('a[href*="/trophy/"]') !== null);
+
+            // Verification of personal view:
+            // Must contain user-specific link or earned indicators on trophy rows
+            const hasUserLink = Array.from(gameDoc.querySelectorAll('a[href*="/psnid/"]'))
+              .some(a => (a.getAttribute('href') || '').toLowerCase().includes(`/psnid/${userId.toLowerCase()}`));
+            const hasEarnedMarker = gameDoc.querySelector('tr.trophy img.earned, tr.trophy .imgbg.earned, tr.trophy em.alert-success.r, img.earned') !== null;
+
+            const verifiedPersonal = (hasUserLink || hasEarnedMarker) && trophyRows.length > 0;
+
+            const knownSet = new Set<string>();
+            const earnedSet = new Set<string>();
+
+            trophyRows.forEach((tr) => {
+              const a = tr.querySelector('a[href*="/trophy/"]');
+              const tm = a?.getAttribute('href')?.match(/\/trophy\/(\d+)/);
+              if (tm) {
+                const id = tm[1];
+                knownSet.add(id);
+                const isEarned = tr.querySelector('img.earned, img.imgbg.earned, em.alert-success.r') !== null;
+                if (isEarned) earnedSet.add(id);
+              }
+            });
+
+            return { verifiedPersonal, knownSet, earnedSet };
+          } catch (err) {
+            if (!pageAbortController.signal.aborted) {
+              report('guide_trophies_sync', err);
+            }
+            return null;
+          }
+        })();
+        gameCache.set(gid, p);
+        return p;
+      };
+
+      const annotateArticleTrophies = async () => {
+        // Scoped article only:
+        const articleContainer = doc.querySelector('.post .content, .post, article, .page_content, .min-inner');
+        const rootToSearch = articleContainer || doc;
+        const trophyLinks = Array.from(rootToSearch.querySelectorAll('a[href*="/trophy/"]')) as HTMLAnchorElement[];
+
+        if (trophyLinks.length === 0) return;
+
+        const linksToProcess: Array<{ a: HTMLAnchorElement; tId: string; gid: string }> = [];
+        const neededGids = new Set<string>();
+
+        for (const a of trophyLinks) {
+          if (a.hasAttribute('data-psnine-badge-bound')) continue;
+          const href = a.href || a.getAttribute('href') || '';
+          const m = href.match(/\/trophy\/(\d+)/);
+          if (m) {
+            const tId = m[1];
+            // Exact derived gameId: last 3 digits are trophy index, prefix is gameId (no startsWith prefix override)
+            const gid = tId.length > 3 ? tId.slice(0, -3) : tId;
+            linksToProcess.push({ a, tId, gid });
+            neededGids.add(gid);
+          }
+        }
+
+        if (linksToProcess.length === 0) return;
+
+        // Fetch each known game at most once (cached)
+        for (const gid of neededGids) {
+          fetchGameData(gid);
+        }
+
+        for (const item of linksToProcess) {
+          if (item.a.hasAttribute('data-psnine-badge-bound')) continue;
+          const gameData = await fetchGameData(item.gid);
+          if (!isActive || pageAbortController.signal.aborted) return;
+
+          item.a.setAttribute('data-psnine-badge-bound', 'true');
+
+          let badgeText = '❓ 状态未知';
+          let bg = '#6c757d';
+          let fg = '#fff';
+
+          if (gameData && gameData.verifiedPersonal) {
+            if (gameData.earnedSet.has(item.tId)) {
+              badgeText = '✅ 已获得';
+              bg = '#28a745';
+              fg = '#fff';
+            } else if (gameData.knownSet.has(item.tId)) {
+              badgeText = '⏳ 未获得';
+              bg = '#ffc107';
+              fg = '#000';
+            }
+          }
+
+          const badge = doc.createElement('span');
+          badge.className = 'psnine-guide-trophy-badge';
+          badge.setAttribute('data-psnine-next', 'true');
+          badge.style.cssText = `display:inline-block;padding:1px 5px;font-size:11px;border-radius:3px;margin-left:4px;background:${bg};color:${fg};font-weight:500;`;
+          badge.textContent = badgeText;
+          item.a.after(badge);
+        }
+      };
+
+      await annotateArticleTrophies();
+
+      const unsubscribe = onContent(() => {
+        if (isActive) {
+          annotateArticleTrophies();
+        }
+      });
+
+      return () => {
+        isActive = false;
+        pageAbortController.abort();
+        unsubscribe();
+      };
+    }
+
+    // 3. Trophy List Page (/psngame/\d+) - T01-T12
+    if (isTrophyListPage) {
+      const pageAbortController = new AbortController();
+      let batchAbortController: AbortController | null = null;
+      const activeManualControllers = new Map<string, AbortController>();
+
+      const isPersonalPage = url.searchParams.has('psnid');
+      let currentFilterStatus: TrophyEarnedStatus | 'all' = 'all';
+      let currentTypeSort: 'desc' | 'asc' | null = null;
+      let currentRaritySort: 'asc' | 'desc' | null = null;
+      let timeSortState = 0;
+      let isSummaryFolded = settings.foldTrophySummary;
+      let isChartFolded = settings.foldTrophyChart;
+      let isBatchRunning = false;
+
+      let currentTrophies: TrophyItem[] = [];
+      let lastStatsKey = '';
+      let lastTrophiesKey = '';
+
+      // Stable Panel Initialization
+      let mainPanel = doc.getElementById('psnine-trophy-stats-panel');
+      if (!mainPanel) {
+        mainPanel = doc.createElement('div');
+        mainPanel.id = 'psnine-trophy-stats-panel';
+        mainPanel.setAttribute('data-psnine-next', 'true');
+        mainPanel.style.cssText = 'margin:12px 0;padding:12px;background:rgba(0,0,0,0.015);border:1px solid rgba(0,0,0,0.06);border-radius:8px;';
+
+        const target = doc.querySelector('.main, .box.pd10, .min-inner');
+        const firstTbl = doc.querySelector('table.list');
+        if (firstTbl && firstTbl.parentElement) {
+          firstTbl.parentElement.insertBefore(mainPanel, firstTbl);
+        } else if (target) {
+          target.appendChild(mainPanel);
+        }
+      }
+
+      const buildIconChips = (chipsContainer: HTMLElement, trophies: TrophyItem[]) => {
+        chipsContainer.innerHTML = '';
+        trophies.forEach((t) => {
+          const chip = doc.createElement('button');
+          chip.type = 'button';
+          chip.className = 'psnine-trophy-icon-chip';
+          chip.setAttribute('data-psnine-next', 'true');
+          chip.setAttribute('data-trophy-id', t.trophyId);
+          chip.style.cssText = `width:36px;height:36px;border-radius:4px;overflow:hidden;position:relative;cursor:pointer;padding:0;background:transparent;border:1px solid ${t.status === 'earned' ? '#28a745' : '#ccc'};opacity:${t.status === 'unearned' ? '0.6' : '1'};`;
+          chip.title = `${t.name} (${t.type})${t.tipsCount > 0 ? ` | 💡${t.tipsCount}Tips` : ''}`;
+
+          if (t.iconSrc) {
+            const img = doc.createElement('img');
+            img.src = t.iconSrc;
+            img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+            chip.appendChild(img);
+          }
+
+          if (t.tipsCount > 0) {
+            const tipCountBadge = doc.createElement('span');
+            tipCountBadge.style.cssText = 'position:absolute;bottom:0;right:0;background:#ff9800;color:#fff;font-size:9px;padding:0 2px;border-radius:2px;';
+            tipCountBadge.textContent = String(t.tipsCount);
+            chip.appendChild(tipCountBadge);
+          }
+
+          chip.onclick = () => {
+            const previewCard = doc.getElementById('psnine-trophy-preview-card');
+            if (previewCard) {
+              previewCard.style.display = 'block';
+              previewCard.innerHTML = '';
+
+              const titleLine = doc.createElement('div');
+              titleLine.style.cssText = 'font-weight:bold;margin-bottom:2px;';
+              titleLine.textContent = `${t.name} (${t.type}) - ${t.rarityPercent}%`;
+              previewCard.appendChild(titleLine);
+
+              const descLine = doc.createElement('div');
+              descLine.style.cssText = 'color:#666;margin-bottom:4px;';
+              descLine.textContent = t.description;
+              previewCard.appendChild(descLine);
+
+              const actionLine = doc.createElement('div');
+              actionLine.style.cssText = 'font-size:11px;display:flex;gap:10px;align-items:center;';
+
+              const tipsSpan = doc.createElement('span');
+              tipsSpan.textContent = `Tips: ${t.tipsCount}条`;
+              actionLine.appendChild(tipsSpan);
+
+              const jumpA = doc.createElement('a');
+              jumpA.setAttribute('data-psnine-next', 'true');
+              jumpA.href = `#trophy-${t.trophyId}`;
+              jumpA.style.cssText = 'color:#3890ff;text-decoration:none;cursor:pointer;';
+              jumpA.textContent = '跳转至行 ↓';
+              jumpA.onclick = (e) => {
+                e.preventDefault();
+                t.row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              };
+              actionLine.appendChild(jumpA);
+
+              previewCard.appendChild(actionLine);
+            }
+          };
+
+          chipsContainer.appendChild(chip);
+        });
+      };
+
+      const enhanceTrophyPage = (initialBuild = false) => {
+        currentTrophies = parseTrophyRows(doc, isPersonalPage);
+        if (currentTrophies.length === 0) return;
+
+        const stats = calculateTrophyStats(currentTrophies);
+
+        if (initialBuild || !mainPanel?.hasChildNodes()) {
+          lastStatsKey = `${stats.total}:${stats.platinum}:${stats.gold}:${stats.silver}:${stats.bronze}:${stats.earnedCount}:${stats.unearnedCount}:${stats.timeCurve.length}`;
+          lastTrophiesKey = currentTrophies.map(t => `${t.trophyId}:${t.status}:${t.tipsCount}`).join(',');
+
+          mainPanel!.innerHTML = `
+            <div data-psnine-next="true" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
+              <div data-psnine-next="true" id="psnine-trophy-header-title" style="font-weight:600;font-size:13px;display:flex;align-items:center;gap:6px;">
+                <span>🏆 奖杯统计与交互控制</span>
+                <span id="psnine-trophy-header-counts" style="font-size:11px;color:#666;font-weight:normal;">[白${stats.platinum} 金${stats.gold} 银${stats.silver} 铜${stats.bronze}]</span>
+                ${isPersonalPage ? `
+                  <span class="alert-success pd5" id="psnine-trophy-completion-badge" style="border-radius:4px;font-size:11px;padding:2px 6px;background:#28a745;color:#fff;">
+                    已获 ${stats.earnedCount} / 未获 ${stats.unearnedCount} (奖杯数量占比: ${((stats.earnedCount / stats.total) * 100).toFixed(1)}%)
+                  </span>
+                ` : `
+                  <span id="psnine-trophy-completion-badge" style="font-size:11px;color:#888;">(公开奖杯列表: 共 ${stats.total} 个)</span>
+                `}
+              </div>
+
+              <!-- Action Toolbar -->
+              <div data-psnine-next="true" style="display:flex;flex-wrap:wrap;gap:6px;font-size:12px;">
+                <button type="button" id="psnine-toggle-summary-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #ccc;background:transparent;cursor:pointer;">
+                  ${isSummaryFolded ? '展开图标汇总' : '折叠图标汇总'}
+                </button>
+                <button type="button" id="psnine-toggle-charts-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #ccc;background:transparent;cursor:pointer;">
+                  ${isChartFolded ? '展开图表' : '折叠图表'}
+                </button>
+                <button type="button" id="psnine-sort-xmb-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #ccc;background:transparent;cursor:pointer;">原序</button>
+                <button type="button" id="psnine-sort-time-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #ccc;background:transparent;cursor:pointer;">时间三态</button>
+                <button type="button" id="psnine-sort-rarity-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #ccc;background:transparent;cursor:pointer;">稀有度(双向)</button>
+                <button type="button" id="psnine-sort-type-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #ccc;background:transparent;cursor:pointer;">类型(双向)</button>
+
+                ${isPersonalPage ? `
+                  <button type="button" id="psnine-filter-status-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #3890ff;background:rgba(56,144,255,0.1);color:#0056b3;cursor:pointer;font-weight:500;">
+                    筛选: ${currentFilterStatus === 'all' ? '全部' : currentFilterStatus === 'unearned' ? '仅未获' : '仅已获'}
+                  </button>
+                ` : ''}
+
+                <button type="button" id="psnine-batch-load-all-tips-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #17a2b8;background:rgba(23,162,184,0.1);color:#117a8b;cursor:pointer;">
+                  展开所有Tips
+                </button>
+                <button type="button" id="psnine-batch-load-unearned-tips-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #17a2b8;background:rgba(23,162,184,0.1);color:#117a8b;cursor:pointer;${!isPersonalPage ? 'opacity:0.5;cursor:not-allowed;' : ''}" ${!isPersonalPage ? 'disabled title="公开页面无法确认获得状态，请访问个人奖杯页使用此功能"' : ''}>
+                  展开未获Tips
+                </button>
+                <button type="button" id="psnine-stop-batch-tips-btn" data-psnine-next="true" style="padding:3px 6px;border-radius:3px;border:1px solid #e03131;background:rgba(224,49,49,0.1);color:#c92a2a;cursor:pointer;display:none;">
+                  停止加载
+                </button>
+              </div>
+            </div>
+
+            <div id="psnine-trophy-charts-container" data-psnine-next="true" style="display:${isChartFolded ? 'none' : 'block'};">
+              ${renderTrophyChartsSvg(stats)}
+            </div>
+
+            <div data-psnine-next="true" id="psnine-trophy-icon-grid-wrapper" style="display:${isSummaryFolded ? 'none' : 'block'};margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.05);">
+              <div style="font-size:12px;font-weight:600;margin-bottom:6px;">🖼️ 奖杯图标汇总 (点击快速定位):</div>
+              <div id="psnine-trophy-icon-chips-container" data-psnine-next="true" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+              <div id="psnine-trophy-preview-card" data-psnine-next="true" style="display:none;margin-top:6px;padding:6px 10px;background:rgba(0,0,0,0.03);border-radius:4px;font-size:12px;"></div>
+            </div>
+          `;
+
+          const chipsContainer = doc.getElementById('psnine-trophy-icon-chips-container');
+          if (chipsContainer) {
+            buildIconChips(chipsContainer, currentTrophies);
+          }
+
+          // T06 & T07 Toggles
+          doc.getElementById('psnine-toggle-summary-btn')!.onclick = () => {
+            isSummaryFolded = !isSummaryFolded;
+            const w = doc.getElementById('psnine-trophy-icon-grid-wrapper');
+            if (w) w.style.display = isSummaryFolded ? 'none' : 'block';
+            doc.getElementById('psnine-toggle-summary-btn')!.textContent = isSummaryFolded ? '展开图标汇总' : '折叠图标汇总';
+          };
+          doc.getElementById('psnine-toggle-charts-btn')!.onclick = () => {
+            isChartFolded = !isChartFolded;
+            const c = doc.getElementById('psnine-trophy-charts-container');
+            if (c) c.style.display = isChartFolded ? 'none' : 'block';
+            doc.getElementById('psnine-toggle-charts-btn')!.textContent = isChartFolded ? '展开图表' : '折叠图表';
+          };
+
+          // T08 & T09 Sort Bindings
+          doc.getElementById('psnine-sort-xmb-btn')!.onclick = () => {
+            doc.querySelectorAll('table.list').forEach(tbl => sortTrophiesInTable(tbl as HTMLElement, currentTrophies, 'xmb'));
+          };
+          doc.getElementById('psnine-sort-time-btn')!.onclick = () => {
+            timeSortState = (timeSortState + 1) % 3;
+            const mode = timeSortState === 1 ? 'time-desc' : timeSortState === 2 ? 'time-asc' : 'xmb';
+            doc.querySelectorAll('table.list').forEach(tbl => sortTrophiesInTable(tbl as HTMLElement, currentTrophies, mode));
+          };
+          doc.getElementById('psnine-sort-rarity-btn')!.onclick = () => {
+            currentRaritySort = currentRaritySort === 'asc' ? 'desc' : 'asc';
+            const mode = currentRaritySort === 'asc' ? 'rarity-asc' : 'rarity-desc';
+            doc.querySelectorAll('table.list').forEach(tbl => sortTrophiesInTable(tbl as HTMLElement, currentTrophies, mode));
+          };
+          doc.getElementById('psnine-sort-type-btn')!.onclick = () => {
+            currentTypeSort = currentTypeSort === 'desc' ? 'asc' : 'desc';
+            const mode = currentTypeSort === 'desc' ? 'type-desc' : 'type-asc';
+            doc.querySelectorAll('table.list').forEach(tbl => sortTrophiesInTable(tbl as HTMLElement, currentTrophies, mode));
+          };
+
+          // T10 Filter Binding
+          const filterBtn = doc.getElementById('psnine-filter-status-btn');
+          if (filterBtn) {
+            filterBtn.onclick = () => {
+              if (currentFilterStatus === 'all') currentFilterStatus = 'unearned';
+              else if (currentFilterStatus === 'unearned') currentFilterStatus = 'earned';
+              else currentFilterStatus = 'all';
+
+              filterBtn.textContent = `筛选: ${currentFilterStatus === 'all' ? '全部' : currentFilterStatus === 'unearned' ? '仅未获' : '仅已获'}`;
+
+              currentTrophies.forEach((t) => {
+                const hide = currentFilterStatus !== 'all' && t.status !== currentFilterStatus;
+                setHidden(t.row, 'trophy-status-filter', hide);
+                const tipRow = t.table.querySelector(`tr.psnine-inline-tip-row[data-for-trophy="${t.trophyId}"]`);
+                if (tipRow) {
+                  setHidden(tipRow as HTMLElement, 'trophy-status-filter', hide);
+                }
+              });
+            };
+          }
+
+          // T12 Batch Tips Loading
+          const runBatchQueue = async (unearnedOnly: boolean) => {
+            if (isBatchRunning) return;
+            isBatchRunning = true;
+            batchAbortController = new AbortController();
+
+            const batchAllBtn = doc.getElementById('psnine-batch-load-all-tips-btn');
+            const batchUnearnedBtn = doc.getElementById('psnine-batch-load-unearned-tips-btn');
+            const stopBtn = doc.getElementById('psnine-stop-batch-tips-btn');
+
+            if (batchAllBtn) batchAllBtn.style.display = 'none';
+            if (batchUnearnedBtn) batchUnearnedBtn.style.display = 'none';
+            if (stopBtn) stopBtn.style.display = 'inline-block';
+
+            const targets = currentTrophies.filter(t => t.tipsCount > 0 && (!unearnedOnly || t.status === 'unearned'));
+            for (const t of targets) {
+              if (!isActive || batchAbortController.signal.aborted) break;
+              const existing = t.table.querySelector(`tr.psnine-inline-tip-row[data-for-trophy="${t.trophyId}"]`);
+              if (!existing) {
+                await toggleInlineTips(t, batchAbortController.signal);
+                if (!isActive || batchAbortController.signal.aborted) break;
+                try {
+                  await new Promise<void>((resolve, reject) => {
+                    let timer: any = null;
+                    const onAbort = () => {
+                      if (timer) clearTimeout(timer);
+                      batchAbortController?.signal.removeEventListener('abort', onAbort);
+                      reject(new Error('aborted'));
+                    };
+                    timer = setTimeout(() => {
+                      batchAbortController?.signal.removeEventListener('abort', onAbort);
+                      resolve();
+                    }, 300);
+                    batchAbortController?.signal.addEventListener('abort', onAbort, { once: true });
+                  });
+                } catch {
+                  break;
+                }
+              }
+            }
+
+            if (stopBtn) stopBtn.style.display = 'none';
+            if (batchAllBtn) batchAllBtn.style.display = 'inline-block';
+            if (batchUnearnedBtn) batchUnearnedBtn.style.display = 'inline-block';
+            isBatchRunning = false;
+          };
+
+          const batchAllBtn = doc.getElementById('psnine-batch-load-all-tips-btn');
+          if (batchAllBtn) batchAllBtn.onclick = () => runBatchQueue(false);
+          const batchUnearnedBtn = doc.getElementById('psnine-batch-load-unearned-tips-btn');
+          if (batchUnearnedBtn && isPersonalPage) batchUnearnedBtn.onclick = () => runBatchQueue(true);
+
+          const stopBtn = doc.getElementById('psnine-stop-batch-tips-btn');
+          if (stopBtn) {
+            stopBtn.onclick = () => {
+              batchAbortController?.abort();
+              stopBtn.style.display = 'none';
+              if (batchAllBtn) batchAllBtn.style.display = 'inline-block';
+              if (batchUnearnedBtn) batchUnearnedBtn.style.display = 'inline-block';
+            };
+          }
+        } else {
+          // Dynamic onContent update without innerHTML destruction
+          const badge = doc.getElementById('psnine-trophy-completion-badge');
+          if (badge) {
+            if (isPersonalPage) {
+              badge.textContent = `已获 ${stats.earnedCount} / 未获 ${stats.unearnedCount} (奖杯数量占比: ${((stats.earnedCount / stats.total) * 100).toFixed(1)}%)`;
+            } else {
+              badge.textContent = `(公开奖杯列表: 共 ${stats.total} 个)`;
+            }
+          }
+
+          const headerCounts = doc.getElementById('psnine-trophy-header-counts');
+          if (headerCounts) {
+            headerCounts.textContent = `[白${stats.platinum} 金${stats.gold} 银${stats.silver} 铜${stats.bronze}]`;
+          }
+
+          // Charts update only when data changed (preserves focus and open details)
+          const statsKey = `${stats.total}:${stats.platinum}:${stats.gold}:${stats.silver}:${stats.bronze}:${stats.earnedCount}:${stats.unearnedCount}:${stats.timeCurve.length}`;
+          if (statsKey !== lastStatsKey) {
+            lastStatsKey = statsKey;
+            const chartsContainer = doc.getElementById('psnine-trophy-charts-container');
+            if (chartsContainer) {
+              const wasDetailsOpen = chartsContainer.querySelector('details')?.open;
+              chartsContainer.innerHTML = renderTrophyChartsSvg(stats);
+              if (wasDetailsOpen) {
+                const d = chartsContainer.querySelector('details');
+                if (d) d.open = true;
+              }
+            }
+          }
+
+          // Chips update only when trophies count or IDs changed
+          const trophiesKey = currentTrophies.map(t => `${t.trophyId}:${t.status}:${t.tipsCount}`).join(',');
+          if (trophiesKey !== lastTrophiesKey) {
+            lastTrophiesKey = trophiesKey;
+            const chipsContainer = doc.getElementById('psnine-trophy-icon-chips-container');
+            if (chipsContainer) {
+              buildIconChips(chipsContainer, currentTrophies);
+            }
+          }
+
+          // Apply current filter state to new rows
+          currentTrophies.forEach((t) => {
+            const hide = currentFilterStatus !== 'all' && t.status !== currentFilterStatus;
+            setHidden(t.row, 'trophy-status-filter', hide);
+            const tipRow = t.table.querySelector(`tr.psnine-inline-tip-row[data-for-trophy="${t.trophyId}"]`);
+            if (tipRow) {
+              setHidden(tipRow as HTMLElement, 'trophy-status-filter', hide);
+            }
+          });
+        }
+
+        // T11 Single Tip Loader Binding
+        currentTrophies.forEach((t) => {
+          const tipsBadge = t.row.querySelector('em.alert-success:not(.r)') as HTMLElement | null;
+          if (tipsBadge && !tipsBadge.classList.contains('psnine-bound-tip')) {
+            tipsBadge.classList.add('psnine-bound-tip');
+            tipsBadge.style.cursor = 'pointer';
+            tipsBadge.setAttribute('role', 'button');
+            tipsBadge.setAttribute('tabindex', '0');
+            tipsBadge.setAttribute('title', '点击在下方内联展开本奖杯Tips (键盘可回车)');
+
+            const triggerHandler = async (e: Event) => {
+              e.preventDefault();
+              e.stopPropagation();
+              await toggleInlineTips(t);
+            };
+
+            tipsBadge.onclick = triggerHandler;
+            tipsBadge.onkeydown = (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                triggerHandler(e);
+              }
+            };
+          }
+        });
+      };
+
+      // T11 Safe DOM Inline Tips Loader
+      const toggleInlineTips = async (t: TrophyItem, customSignal?: AbortSignal) => {
+        const existingTipRow = t.table.querySelector(`tr.psnine-inline-tip-row[data-for-trophy="${t.trophyId}"]`) as HTMLElement | null;
+        if (existingTipRow) {
+          if (activeManualControllers.has(t.trophyId) && !customSignal) {
+            activeManualControllers.get(t.trophyId)!.abort();
+            activeManualControllers.delete(t.trophyId);
+            existingTipRow.remove();
+            return;
+          }
+          const isH = isHiddenByReason(existingTipRow, 'inline-tip-toggle');
+          setHidden(existingTipRow, 'inline-tip-toggle', !isH);
+          return;
+        }
+
+        let requestSignal: AbortSignal;
+        let manualCtrl: AbortController | null = null;
+        let onPageAbort: (() => void) | null = null;
+
+        if (customSignal) {
+          requestSignal = customSignal;
+        } else {
+          manualCtrl = new AbortController();
+          activeManualControllers.set(t.trophyId, manualCtrl);
+          requestSignal = manualCtrl.signal;
+          onPageAbort = () => manualCtrl?.abort();
+          pageAbortController.signal.addEventListener('abort', onPageAbort, { once: true });
+        }
+
+        const tipRow = doc.createElement('tr');
+        tipRow.className = 'psnine-inline-tip-row';
+        tipRow.setAttribute('data-psnine-next', 'true');
+        tipRow.setAttribute('data-for-trophy', t.trophyId);
+
+        if (currentFilterStatus !== 'all' && t.status !== currentFilterStatus) {
+          setHidden(tipRow, 'trophy-status-filter', true);
+        }
+
+        const td = doc.createElement('td');
+        td.setAttribute('colspan', '4');
+        td.setAttribute('data-psnine-next', 'true');
+        td.style.cssText = 'padding:10px 15px;background:rgba(0,0,0,0.02);border-bottom:1px solid rgba(0,0,0,0.08);';
+
+        const loadingDiv = doc.createElement('div');
+        loadingDiv.setAttribute('data-psnine-next', 'true');
+        loadingDiv.style.cssText = 'font-size:12px;color:#666;';
+        loadingDiv.textContent = `⏳ 正在加载奖杯 Tips (#${t.trophyId})...`;
+        td.appendChild(loadingDiv);
+        tipRow.appendChild(td);
+
+        t.row.after(tipRow);
+
+        try {
+          const targetUrl = new URL(`/trophy/${t.trophyId}`, ctx.url.origin).href;
+          const tipDoc = await ctx.http.document(targetUrl, { ttl: 600000, signal: requestSignal });
+          if (!isActive || requestSignal.aborted) {
+            tipRow.remove();
+            return;
+          }
+
+          td.innerHTML = '';
+
+          const listEl = tipDoc.querySelector('ul.list');
+          const directLis = listEl ? Array.from(listEl.querySelectorAll(':scope > li')) : [];
+          const tipNodes = directLis.length > 0 ? directLis : Array.from(tipDoc.querySelectorAll('ul.list > li, div.content'));
+
+          if (tipNodes.length === 0) {
+            const emptyMsg = doc.createElement('div');
+            emptyMsg.setAttribute('data-psnine-next', 'true');
+            emptyMsg.style.cssText = 'font-size:12px;color:#888;';
+            emptyMsg.textContent = '暂无可用 Tips';
+            td.appendChild(emptyMsg);
+            return;
+          }
+
+          const container = doc.createElement('div');
+          container.setAttribute('data-psnine-next', 'true');
+          container.style.cssText = 'max-height:280px;overflow-y:auto;';
+
+          const topBar = doc.createElement('div');
+          topBar.setAttribute('data-psnine-next', 'true');
+          topBar.style.cssText = 'font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;';
+
+          const countSpan = doc.createElement('span');
+          countSpan.textContent = `💡 奖杯 Tips (${tipNodes.length}条):`;
+          topBar.appendChild(countSpan);
+
+          const fullLink = doc.createElement('a');
+          fullLink.setAttribute('data-psnine-next', 'true');
+          fullLink.href = targetUrl;
+          fullLink.target = '_blank';
+          fullLink.style.cssText = 'font-size:11px;color:#3890ff;text-decoration:none;';
+          fullLink.textContent = '前往奖杯完整页 ↗';
+          topBar.appendChild(fullLink);
+          container.appendChild(topBar);
+
+          const blockedUsers = new Set(settings.blockList.map(u => u.toLowerCase().trim()));
+
+          tipNodes.forEach((liNode) => {
+            // Read direct author link (exclude .sonlist and child li)
+            const authorA = liNode.querySelector(':scope > .meta a[href*="/psnid/"], :scope > div > .meta a[href*="/psnid/"], :scope > .ml64 > .meta a[href*="/psnid/"], a.psnnode');
+            const authorHref = authorA?.getAttribute('href') || '';
+            const mAuthor = authorHref.match(/\/psnid\/([^/?#]+)/);
+            const authorId = (mAuthor ? mAuthor[1] : authorA?.textContent?.trim() || '').toLowerCase();
+            const authorDisplay = authorA?.textContent?.trim() || authorId || '匿名玩家';
+
+            const contentEl = liNode.querySelector(':scope > .content, :scope > div > .content, :scope > .ml64 > .content, .content');
+            const rawContentText = contentEl?.textContent || '';
+
+            const isBlockedAuthor = authorId ? blockedUsers.has(authorId) : false;
+
+            let isBlockedWord = false;
+            let blockedReasonWord = '';
+            for (const word of settings.blockWordsList) {
+              if (settings.blockWordsRegex) {
+                try {
+                  const reg = new RegExp(word, 'i');
+                  if (reg.test(rawContentText)) {
+                    isBlockedWord = true;
+                    blockedReasonWord = word;
+                    break;
+                  }
+                } catch {
+                  if (rawContentText.includes(word)) {
+                    isBlockedWord = true;
+                    blockedReasonWord = word;
+                    break;
+                  }
+                }
+              } else if (rawContentText.includes(word)) {
+                isBlockedWord = true;
+                blockedReasonWord = word;
+                break;
+              }
+            }
+
+            const itemDiv = doc.createElement('div');
+            itemDiv.setAttribute('data-psnine-next', 'true');
+            itemDiv.style.cssText = 'margin-bottom:8px;padding-bottom:8px;border-bottom:1px dashed rgba(0,0,0,0.06);font-size:12px;';
+
+            if (isBlockedAuthor || isBlockedWord) {
+              const placeholderBtn = doc.createElement('button');
+              placeholderBtn.type = 'button';
+              placeholderBtn.setAttribute('data-psnine-next', 'true');
+              placeholderBtn.className = 'psnine-filtered-tip-btn';
+              placeholderBtn.style.cssText = 'display:block;width:100%;text-align:left;padding:4px 8px;background:rgba(0,0,0,0.04);color:#888;font-size:11px;border-radius:3px;border:1px dashed #ccc;cursor:pointer;user-select:none;';
+              placeholderBtn.textContent = `🚫 评论已过滤 (${isBlockedAuthor ? `黑名单用户 ${authorDisplay}` : `屏蔽词: ${blockedReasonWord}`}) - 点击揭示内容`;
+
+              const hiddenBody = doc.createElement('div');
+              hiddenBody.setAttribute('data-psnine-next', 'true');
+              hiddenBody.style.display = 'none';
+              hiddenBody.style.marginTop = '4px';
+
+              placeholderBtn.onclick = () => {
+                const isH = hiddenBody.style.display === 'none';
+                hiddenBody.style.display = isH ? 'block' : 'none';
+                placeholderBtn.textContent = isH ? `👁️ 评论已揭示 (${authorDisplay}) - 点击重新折叠` : `🚫 评论已过滤 (${authorDisplay}) - 点击揭示内容`;
+              };
+
+              itemDiv.appendChild(placeholderBtn);
+              itemDiv.appendChild(hiddenBody);
+
+              if (contentEl) {
+                const clone = contentEl.cloneNode(true) as HTMLElement;
+                clone.querySelectorAll('script, form').forEach(s => s.remove());
+                // Strip data-psnine-mask-ready/unmasked/pinned from clones
+                const markEls = (clone.classList?.contains('mark') ? [clone] : []).concat(
+                  Array.from(clone.querySelectorAll('.mark'))
+                );
+                markEls.forEach(m => {
+                  m.removeAttribute('data-psnine-mask-ready');
+                  m.classList.remove('unmasked', 'pinned');
+                });
+                hiddenBody.appendChild(clone);
+                enhanceMasks(ctx, hiddenBody);
+              }
+            } else {
+              // Direct metas of liNode only, excluding any in .sonlist or sub-li
+              const directMetas = Array.from(liNode.querySelectorAll(':scope > .ml64 > .meta, :scope > .meta, :scope > div > .meta'))
+                .filter(m => !m.closest('.sonlist') && m.closest('li') === liNode);
+              const bottomMeta = directMetas.length > 1 ? directMetas[directMetas.length - 1] : directMetas[0] || null;
+
+              // Date: actual bottom meta span date, not arbitrary .h-p
+              const dateSpan = bottomMeta?.querySelector('.h-p, span[class*="date"], span.time') || liNode.querySelector(':scope > .meta .h-p, :scope > div > .meta .h-p');
+              const timeStr = dateSpan?.textContent?.trim() || '';
+
+              // Like button: strictly on direct meta, excluding .sonlist
+              const likeBtn = bottomMeta?.querySelector('a[onclick*="up_tip"], a.btn-up, em.alert-success')
+                || liNode.querySelector(':scope > .meta a[onclick*="up_tip"], :scope > div > .meta a[onclick*="up_tip"], a[onclick*="up_tip"]');
+
+              let likes: number | null = null;
+              if (likeBtn) {
+                const likesMatch = likeBtn.textContent?.match(/(\d+)/);
+                if (likesMatch) {
+                  likes = parseInt(likesMatch[1], 10);
+                } else if (likeBtn.textContent && (likeBtn.textContent.includes('赞') || likeBtn.textContent.includes('顶'))) {
+                  likes = 0;
+                }
+              }
+
+              const metaLine = doc.createElement('div');
+              metaLine.setAttribute('data-psnine-next', 'true');
+              metaLine.style.cssText = 'display:flex;justify-content:space-between;color:#666;font-size:11px;margin-bottom:2px;';
+
+              const authorSpan = doc.createElement('span');
+              authorSpan.style.cssText = 'font-weight:500;color:#3890ff;';
+              authorSpan.textContent = authorDisplay;
+              if (authorId) {
+                authorSpan.title = `PSNID: ${authorId}`;
+                authorSpan.setAttribute('data-psnid', authorId);
+              }
+              metaLine.appendChild(authorSpan);
+
+              const timeLikesSpan = doc.createElement('span');
+              if (likes !== null && likes > 0) {
+                timeLikesSpan.textContent = timeStr ? `${timeStr} | 👍 ${likes}` : `👍 ${likes}`;
+              } else {
+                timeLikesSpan.textContent = timeStr;
+              }
+              metaLine.appendChild(timeLikesSpan);
+              itemDiv.appendChild(metaLine);
+
+              if (contentEl) {
+                const bodyDiv = doc.createElement('div');
+                bodyDiv.setAttribute('data-psnine-next', 'true');
+                bodyDiv.style.cssText = 'line-height:1.5;';
+
+                const clone = contentEl.cloneNode(true) as HTMLElement;
+                clone.querySelectorAll('script, form').forEach(s => s.remove());
+                const markEls = (clone.classList?.contains('mark') ? [clone] : []).concat(
+                  Array.from(clone.querySelectorAll('.mark'))
+                );
+                markEls.forEach(m => {
+                  m.removeAttribute('data-psnine-mask-ready');
+                  m.classList.remove('unmasked', 'pinned');
+                });
+                bodyDiv.appendChild(clone);
+                enhanceMasks(ctx, bodyDiv);
+                itemDiv.appendChild(bodyDiv);
+              }
+            }
+
+            container.appendChild(itemDiv);
+          });
+
+          td.appendChild(container);
+        } catch (err) {
+          if (!isActive || requestSignal.aborted || (err as any)?.name === 'AbortError' || (err as any)?.message === 'aborted') {
+            tipRow.remove();
+            return;
+          }
+          td.innerHTML = '';
+          const errDiv = doc.createElement('div');
+          errDiv.setAttribute('data-psnine-next', 'true');
+          errDiv.style.cssText = 'font-size:12px;color:#e03131;';
+
+          const errMsg = doc.createElement('span');
+          errMsg.textContent = '❌ 加载 Tips 失败，请检查网络。';
+          errDiv.appendChild(errMsg);
+
+          const retryBtn = doc.createElement('button');
+          retryBtn.type = 'button';
+          retryBtn.setAttribute('data-psnine-next', 'true');
+          retryBtn.style.cssText = 'margin-left:8px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;cursor:pointer;';
+          retryBtn.textContent = '重试';
+          retryBtn.onclick = () => {
+            tipRow.remove();
+            toggleInlineTips(t);
+          };
+          errDiv.appendChild(retryBtn);
+          td.appendChild(errDiv);
+        } finally {
+          if (manualCtrl) {
+            activeManualControllers.delete(t.trophyId);
+            if (onPageAbort) {
+              pageAbortController.signal.removeEventListener('abort', onPageAbort);
+            }
+          }
+        }
+      };
+
+      enhanceTrophyPage(true);
+      const unsubscribe = onContent(() => {
+        if (isActive) enhanceTrophyPage(false);
+      });
+
+      return () => {
+        isActive = false;
+        pageAbortController.abort();
+        batchAbortController?.abort();
+        activeManualControllers.forEach(ctrl => ctrl.abort());
+        activeManualControllers.clear();
+        unsubscribe();
+      };
+    }
+  } catch (err) {
+    report('trophies', err);
+  }
+};

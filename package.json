@@ -1,0 +1,30 @@
+{
+  "name": "psnine_next",
+  "version": "1.0.0",
+  "description": "Next-generation userscript for PSNINE, modernized in TypeScript and designed for desktop Tampermonkey and mobile Safari Stay userscripts",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:browser": "playwright test",
+    "test:smoke": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^22.10.2",
+    "esbuild": "^0.28.2",
+    "jsdom": "^25.0.1",
+    "playwright": "^1.49.1",
+    "typescript": "^5.7.2",
+    "vite": "^6.4.2",
+    "vitest": "4.1.11"
+  },
+  "overrides": {
+    "esbuild": "^0.28.2",
+    "vite": "^6.4.2"
+  }
+}
