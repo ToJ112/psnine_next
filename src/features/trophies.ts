@@ -393,9 +393,9 @@ export function renderTrophyChartsSvg(stats: TrophyStats): string {
     }
 
     timeCurveHtml = `
-      <div data-psnine-next="true" style="padding:10px;background:var(--p9n-surface-alt,#f8fafc);border:1px solid var(--p9n-border,#ccd6dd);border-radius:6px;color:var(--p9n-text,inherit);">
-        <div style="font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;">
-          <span>📈 奖杯获得时间积累曲线 (已获: ${timeCurve[timeCurve.length - 1].cumCount}个)</span>
+      <div data-psnine-next="true" class="psnine-trophy-chart-section">
+        <div class="psnine-trophy-chart-header" style="font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;">
+          <span>奖杯获得时间积累曲线 (已获: ${timeCurve[timeCurve.length - 1].cumCount}个)</span>
           <span style="font-size:11px;color:var(--p9n-muted,#5f6b7a);">${timeCurve[0].dateStr} ~ ${timeCurve[timeCurve.length - 1].dateStr}</span>
         </div>
         <svg viewBox="0 0 ${svgWidth} ${svgHeight}" data-psnine-next="true" style="width:100%;height:100px;font-family:inherit;">
@@ -422,18 +422,18 @@ export function renderTrophyChartsSvg(stats: TrophyStats): string {
     `;
   } else {
     timeCurveHtml = `
-      <div data-psnine-next="true" style="padding:10px;background:var(--p9n-surface-alt,#f8fafc);border:1px solid var(--p9n-border,#ccd6dd);border-radius:6px;font-size:12px;color:var(--p9n-muted,#5f6b7a);">
-        📈 暂无有效获得时间记录（已载入样本）
+      <div data-psnine-next="true" class="psnine-trophy-chart-section" style="font-size:12px;color:var(--p9n-muted,#5f6b7a);">
+        暂无有效获得时间记录（已载入样本）
       </div>
     `;
   }
 
   return `
-    <div data-psnine-next="true" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:12px;margin:8px 0;">
+    <div data-psnine-next="true" class="psnine-trophy-charts">
       <!-- Type Breakdown -->
-      <div data-psnine-next="true" style="padding:10px;background:var(--p9n-surface-alt,#f8fafc);border:1px solid var(--p9n-border,#ccd6dd);border-radius:6px;color:var(--p9n-text,inherit);">
-        <div style="font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;">
-          <span>🏆 奖杯类型构成 (已载入: ${total})</span>
+      <div data-psnine-next="true" class="psnine-trophy-chart-section">
+        <div class="psnine-trophy-chart-header" style="font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;">
+          <span>奖杯类型构成 (已载入: ${total})</span>
         </div>
         <div style="height:12px;display:flex;border-radius:6px;overflow:hidden;margin-bottom:8px;">
           <div style="width:${pPct}%;background:#4dabf7;" title="白金: ${platinum} (${pPct}%)"></div>
@@ -451,8 +451,8 @@ export function renderTrophyChartsSvg(stats: TrophyStats): string {
       </div>
 
       <!-- Rarity Breakdown -->
-      <div data-psnine-next="true" style="padding:10px;background:var(--p9n-surface-alt,#f8fafc);border:1px solid var(--p9n-border,#ccd6dd);border-radius:6px;color:var(--p9n-text,inherit);">
-        <div style="font-size:12px;font-weight:600;margin-bottom:6px;">📊 稀有度分布</div>
+      <div data-psnine-next="true" class="psnine-trophy-chart-section">
+        <div class="psnine-trophy-chart-header" style="font-size:12px;font-weight:600;margin-bottom:6px;">稀有度分布</div>
         <svg viewBox="0 0 ${svgWidth} ${svgHeight}" data-psnine-next="true" style="width:100%;height:100px;font-family:inherit;">
           ${rarityBuckets.map((b, i) => {
             const h = (b.count / maxRarity) * 80;
@@ -1056,7 +1056,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
         mainPanel = doc.createElement('div');
         mainPanel.id = 'psnine-trophy-stats-panel';
         mainPanel.setAttribute('data-psnine-next', 'true');
-        mainPanel.style.cssText = 'margin:12px 0;padding:12px;background:var(--p9n-surface,#fff);border:1px solid var(--p9n-border,#ccd6dd);border-radius:8px;color:var(--p9n-text,inherit);';
+        mainPanel.className = 'psnine-trophy-panel';
 
         const target = doc.querySelector('.main, .box.pd10, .min-inner');
         const firstTbl = doc.querySelector('table.list');
@@ -1095,6 +1095,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
           chip.onclick = () => {
             const previewCard = doc.getElementById('psnine-trophy-preview-card');
             if (previewCard) {
+              previewCard.className = 'psnine-trophy-preview-card';
               previewCard.style.display = 'block';
               previewCard.innerHTML = '';
 
@@ -1147,44 +1148,44 @@ export const mountTrophies: Mount = async (ctx: Context) => {
           lastTrophiesKey = currentTrophies.map(t => `${t.trophyId}:${t.status}:${t.tipsCount}`).join(',');
 
           mainPanel!.innerHTML = `
-            <div data-psnine-next="true" class="psnine-trophy-overview-top" style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
-              <div data-psnine-next="true" id="psnine-trophy-header-title" style="font-weight:600;font-size:13px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;">
-                <span class="psnine-trophy-title-text" style="white-space:nowrap;font-size:14px;">奖杯概览</span>
-                <span id="psnine-trophy-header-counts" style="white-space:nowrap;font-size:12px;color:var(--p9n-muted,#5f6b7a);font-weight:normal;">[白${stats.platinum} 金${stats.gold} 银${stats.silver} 铜${stats.bronze}]</span>
+            <div data-psnine-next="true" class="psnine-trophy-overview-top">
+              <div data-psnine-next="true" id="psnine-trophy-header-title" class="psnine-trophy-card-hd">
+                <span class="psnine-trophy-title-text">奖杯概览</span>
+                <span id="psnine-trophy-header-counts">[白${stats.platinum} 金${stats.gold} 银${stats.silver} 铜${stats.bronze}]</span>
                 ${isPersonalPage ? `
-                  <span class="alert-success pd5" id="psnine-trophy-completion-badge" style="border-radius:4px;font-size:11px;padding:2px 6px;background:#28a745;color:#fff;font-weight:normal;">
-                    已获 ${stats.earnedCount} / 未获 ${stats.unearnedCount} (奖杯数量占比: ${((stats.earnedCount / stats.total) * 100).toFixed(1)}%)
+                  <span class="psnine-trophy-completion" id="psnine-trophy-completion-badge">
+                    已获 ${stats.earnedCount} · 未获 ${stats.unearnedCount} · 数量占比 ${((stats.earnedCount / stats.total) * 100).toFixed(1)}%
                   </span>
                 ` : `
-                  <span id="psnine-trophy-completion-badge" style="font-size:11px;color:var(--p9n-muted,#5f6b7a);font-weight:normal;">(公开奖杯列表: 共 ${stats.total} 个)</span>
+                  <span class="psnine-trophy-completion" id="psnine-trophy-completion-badge">公开奖杯列表 · 共 ${stats.total} 个</span>
                 `}
               </div>
 
               <!-- Action Toolbar -->
-              <div data-psnine-next="true" class="psnine-trophy-toolbar" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:12px;">
-                <div data-psnine-next="true" class="psnine-trophy-action-group" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;">
-                  <button type="button" id="psnine-toggle-summary-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid var(--p9n-border,#ccd6dd);background:transparent;cursor:pointer;">
+              <div data-psnine-next="true" class="psnine-trophy-toolbar">
+                <div data-psnine-next="true" class="psnine-trophy-action-group">
+                  <button type="button" id="psnine-toggle-summary-btn" class="psnine-trophy-pill-btn" data-psnine-next="true">
                     ${isSummaryFolded ? '展开图标汇总' : '折叠图标汇总'}
                   </button>
-                  <button type="button" id="psnine-toggle-charts-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid var(--p9n-border,#ccd6dd);background:transparent;cursor:pointer;">
+                  <button type="button" id="psnine-toggle-charts-btn" class="psnine-trophy-pill-btn" data-psnine-next="true">
                     ${isChartFolded ? '展开图表' : '折叠图表'}
                   </button>
                 </div>
 
-                <div data-psnine-next="true" class="psnine-trophy-action-group" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;">
+                <div data-psnine-next="true" class="psnine-trophy-action-group">
                   ${isPersonalPage ? `
-                    <button type="button" id="psnine-filter-status-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid #3890ff;background:rgba(56,144,255,0.1);color:#0056b3;cursor:pointer;font-weight:500;">
+                    <button type="button" id="psnine-filter-status-btn" class="psnine-trophy-pill-btn${currentFilterStatus !== 'all' ? ' active' : ''}" data-psnine-next="true" aria-pressed="${currentFilterStatus !== 'all'}">
                       筛选: ${currentFilterStatus === 'all' ? '全部' : currentFilterStatus === 'unearned' ? '仅未获' : '仅已获'}
                     </button>
                   ` : ''}
 
-                  <button type="button" id="psnine-batch-load-all-tips-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid #17a2b8;background:rgba(23,162,184,0.1);color:#117a8b;cursor:pointer;">
+                  <button type="button" id="psnine-batch-load-all-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true">
                     展开所有Tips
                   </button>
-                  <button type="button" id="psnine-batch-load-unearned-tips-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid #17a2b8;background:rgba(23,162,184,0.1);color:#117a8b;cursor:pointer;${!isPersonalPage ? 'opacity:0.5;cursor:not-allowed;' : ''}" ${!isPersonalPage ? 'disabled title="公开页面无法确认获得状态，请访问个人奖杯页使用此功能"' : ''}>
+                  <button type="button" id="psnine-batch-load-unearned-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true"${!isPersonalPage ? ' disabled title="公开页面无法确认获得状态，请访问个人奖杯页使用此功能"' : ''}>
                     展开未获Tips
                   </button>
-                  <button type="button" id="psnine-stop-batch-tips-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid #e03131;background:rgba(224,49,49,0.1);color:#c92a2a;cursor:pointer;display:none;">
+                  <button type="button" id="psnine-stop-batch-tips-btn" class="psnine-trophy-pill-btn danger" data-psnine-next="true" style="display:none;">
                     停止加载
                   </button>
                 </div>
@@ -1195,10 +1196,10 @@ export const mountTrophies: Mount = async (ctx: Context) => {
               ${renderTrophyChartsSvg(stats)}
             </div>
 
-            <div data-psnine-next="true" id="psnine-trophy-icon-grid-wrapper" style="display:${isSummaryFolded ? 'none' : 'block'};margin-top:8px;padding-top:8px;border-top:1px solid var(--p9n-border,#ccd6dd);">
-              <div style="font-size:12px;font-weight:600;margin-bottom:6px;">🖼️ 奖杯图标汇总 (点击快速定位):</div>
+            <div data-psnine-next="true" id="psnine-trophy-icon-grid-wrapper" class="psnine-trophy-icon-grid-wrapper" style="display:${isSummaryFolded ? 'none' : 'block'};">
+              <div class="psnine-trophy-icon-grid-title" style="font-size:12px;font-weight:600;margin-bottom:6px;">奖杯图标汇总 (点击快速定位):</div>
               <div id="psnine-trophy-icon-chips-container" data-psnine-next="true" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
-              <div id="psnine-trophy-preview-card" data-psnine-next="true" style="display:none;margin-top:6px;padding:6px 10px;background:var(--p9n-surface-alt,#f8fafc);border:1px solid var(--p9n-border,#ccd6dd);border-radius:4px;font-size:12px;color:var(--p9n-text,inherit);"></div>
+              <div id="psnine-trophy-preview-card" class="psnine-trophy-preview-card" data-psnine-next="true" style="display:none;"></div>
             </div>
           `;
 
@@ -1230,6 +1231,8 @@ export const mountTrophies: Mount = async (ctx: Context) => {
               else currentFilterStatus = 'all';
 
               filterBtn.textContent = `筛选: ${currentFilterStatus === 'all' ? '全部' : currentFilterStatus === 'unearned' ? '仅未获' : '仅已获'}`;
+              filterBtn.classList.toggle('active', currentFilterStatus !== 'all');
+              filterBtn.setAttribute('aria-pressed', String(currentFilterStatus !== 'all'));
 
               currentTrophies.forEach((t) => {
                 const hide = currentFilterStatus !== 'all' && t.status !== currentFilterStatus;
@@ -1311,10 +1314,11 @@ export const mountTrophies: Mount = async (ctx: Context) => {
             lastStatsKey = statsKey;
             const badge = doc.getElementById('psnine-trophy-completion-badge');
             if (badge) {
+              badge.className = 'psnine-trophy-completion';
               if (isPersonalPage) {
-                badge.textContent = `已获 ${stats.earnedCount} / 未获 ${stats.unearnedCount} (奖杯数量占比: ${((stats.earnedCount / stats.total) * 100).toFixed(1)}%)`;
+                badge.textContent = `已获 ${stats.earnedCount} · 未获 ${stats.unearnedCount} · 数量占比 ${((stats.earnedCount / stats.total) * 100).toFixed(1)}%`;
               } else {
-                badge.textContent = `(公开奖杯列表: 共 ${stats.total} 个)`;
+                badge.textContent = `公开奖杯列表 · 共 ${stats.total} 个`;
               }
             }
 

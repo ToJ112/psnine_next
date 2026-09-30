@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { isDarkActive, applyTheme, mountGlobal, enhanceMasks, fixLinks, handleAutoCheckIn, applyNewestDefaultSort } from '../src/features/global';
+import { isDarkActive, applyTheme, mountGlobal, mountScrollBottom, integrateFloatingLayer, enhanceMasks, fixLinks, handleAutoCheckIn, applyNewestDefaultSort } from '../src/features/global';
 import { createContext } from '../src/core/context';
 import { defaultSettings } from '../src/core/types';
 import { createStore } from '../src/core/store';
@@ -301,6 +301,70 @@ describe('Global features module', () => {
 
       applyNewestDefaultSort(ctx);
       expect(mockReplace).not.toHaveBeenCalled();
+    });
+  });
+  describe('G06 Floating Layer Integration', () => {
+    it('idempotently merges scrollbottom and gear into native .float-layer when present, preserving native buttons', () => {
+      document.body.innerHTML = `
+        <div class="float-layer">
+          <button class="float-btn theme-toggle" type="button"><span>黑暗模式</span></button>
+          <div class="float-btn to-top"><span>顶部</span></div>
+        </div>
+        <button id="psnine-settings-gear"><span>设置</span></button>
+      `;
+
+      const store = createStore();
+      const http = createHttpClient();
+      const ctx = createContext({
+        document,
+        window,
+        settings: { ...defaultSettings },
+        store,
+        http,
+      });
+
+      mountScrollBottom(ctx);
+
+      const floatLayer = document.querySelector('.float-layer')!;
+      const scrollBottomBtn = document.getElementById('psnine-scrollbottom')!;
+      const gearBtn = document.getElementById('psnine-settings-gear')!;
+      const themeToggle = document.querySelector('.theme-toggle')!;
+
+      // Both plugin buttons moved inside .float-layer
+      expect(scrollBottomBtn.parentElement).toBe(floatLayer);
+      expect(gearBtn.parentElement).toBe(floatLayer);
+
+      // Both received .float-btn class
+      expect(scrollBottomBtn.classList.contains('float-btn')).toBe(true);
+      expect(gearBtn.classList.contains('float-btn')).toBe(true);
+
+      // Native buttons preserved intact
+      expect(themeToggle.parentElement).toBe(floatLayer);
+      expect(floatLayer.children.length).toBe(4);
+
+      // Calling again is completely idempotent
+      integrateFloatingLayer(document);
+      expect(floatLayer.children.length).toBe(4);
+    });
+
+    it('keeps scrollbottom in body when .float-layer is absent (legacy pages)', () => {
+      document.body.innerHTML = `<div>Legacy Content</div>`;
+
+      const store = createStore();
+      const http = createHttpClient();
+      const ctx = createContext({
+        document,
+        window,
+        settings: { ...defaultSettings },
+        store,
+        http,
+      });
+
+      mountScrollBottom(ctx);
+
+      const scrollBottomBtn = document.getElementById('psnine-scrollbottom')!;
+      expect(scrollBottomBtn.parentElement).toBe(document.body);
+      expect(scrollBottomBtn.classList.contains('float-btn')).toBe(false);
     });
   });
 });

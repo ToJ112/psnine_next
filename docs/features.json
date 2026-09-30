@@ -290,10 +290,11 @@
       "src/features/global.ts"
     ],
     "test_files": [
-      "tests/global.test.ts"
+      "tests/global.test.ts",
+      "tests/theme-settings.smoke.spec.ts"
     ],
     "verification_scope": "code_review_and_module_regression",
-    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
+    "verification_note": "悬浮按钮采用原站样式；有原生 float-layer 时幂等合并，无原生层保留固定入口，浏览器检查几何不重叠。"
   },
   {
     "id": "G07",
@@ -366,7 +367,7 @@
       "tests/theme-settings.smoke.spec.ts"
     ],
     "verification_scope": "code_review_and_module_regression",
-    "verification_note": "手机设置按功能折叠，底部仅保存/取消；主题设置统一选择，开关固定宽度。设置导入导出不含 Cookie 或进度缓存。"
+    "verification_note": "设置入口复用原生导航链接结构；设置按组折叠，主题统一选择，导入导出不含 Cookie 或进度缓存。"
   },
   {
     "id": "G08",
@@ -2890,10 +2891,11 @@
       "tests/core/http.test.ts",
       "tests/core/settings-ui.test.ts",
       "tests/core/dom.test.ts",
-      "tests/browser.smoke.spec.ts"
+      "tests/browser.smoke.spec.ts",
+      "tests/theme-settings.smoke.spec.ts"
     ],
     "verification_scope": "code_review_and_module_regression",
-    "verification_note": "现站公开页面回放与旧结构夹具覆盖；未来站点 DOM 变更仍需维护。"
+    "verification_note": "导航字体、边框、圆角、高度与原生项逐项比较；插件表面跟随原生变量动态变化，覆盖亮暗两种模式。"
   },
   {
     "id": "X02",

@@ -1,6 +1,6 @@
 [
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "chromium",
     "name": "home",
     "url": "/",
@@ -11,6 +11,7 @@
       "themeApplied": true,
       "darkTextReadable": true,
       "noBrightNavigation": true,
+      "nativeSettingsStyle": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -25,18 +26,15 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
-      "psnine-settings-gear",
-      "psnine-scrollbottom"
+      "psnine-scrollbottom",
+      "psnine-settings-gear"
     ],
     "charts": 0,
-    "controls": [
-      "插件设置"
-    ],
+    "controls": [],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "chromium",
     "name": "games",
     "url": "/psngame",
@@ -61,19 +59,16 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-difficulty-sort-btn",
       "psnine-settings-gear",
       "psnine-scrollbottom"
     ],
     "charts": 0,
-    "controls": [
-      "插件设置"
-    ],
+    "controls": [],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "chromium",
     "name": "game",
     "url": "/psngame/46507",
@@ -100,6 +95,7 @@
       "themeApplied": true,
       "darkTextReadable": true,
       "noBrightNavigation": true,
+      "nativeSettingsStyle": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -122,7 +118,6 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-game-page-battle-bell",
       "psnine-game-variants-section",
       "psnine-trophy-stats-panel",
@@ -143,7 +138,6 @@
     ],
     "charts": 0,
     "controls": [
-      "插件设置",
       "🔕 监控",
       "展开所有Tips",
       "展开未获Tips"
@@ -151,7 +145,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "chromium",
     "name": "game-personal",
     "url": "/psngame/46507?psnid=toonn95",
@@ -178,6 +172,7 @@
       "themeApplied": true,
       "darkTextReadable": true,
       "noBrightNavigation": true,
+      "nativeSettingsStyle": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -192,10 +187,12 @@
       "menuClosesAfterChoice": true,
       "originalRestored": true,
       "nativeLinksPreserved": true,
+      "activeFilterStyle": true,
       "unearnedFilter": {
         "hidden": 19,
         "visible": 13
       },
+      "filterStyleRestored": true,
       "filterRestored": true
     },
     "requestCount": 47,
@@ -205,7 +202,6 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-game-page-battle-bell",
       "psnine-game-variants-section",
       "psnine-trophy-stats-panel",
@@ -227,7 +223,6 @@
     ],
     "charts": 0,
     "controls": [
-      "插件设置",
       "🔕 监控",
       "展开所有Tips",
       "展开未获Tips"
@@ -235,7 +230,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "chromium",
     "name": "trophy",
     "url": "/trophy/12518001",
@@ -254,20 +249,18 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-sort-tips-by-likes-btn",
       "psnine-settings-gear",
       "psnine-scrollbottom"
     ],
     "charts": 0,
     "controls": [
-      "插件设置",
       "🔥 按“顶”数热度排序Tips"
     ],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "chromium",
     "name": "reviews",
     "url": "/psngame/46507/comment",
@@ -289,6 +282,7 @@
       "themeApplied": true,
       "darkTextReadable": true,
       "noBrightNavigation": true,
+      "nativeSettingsStyle": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -303,7 +297,6 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-enhanced-reviews-panel",
       "psnine-toggle-tab-btn",
       "psnine-toggle-gaussian-btn",
@@ -316,13 +309,12 @@
     ],
     "charts": 2,
     "controls": [
-      "插件设置",
       "🔕 监控"
     ],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "chromium",
     "name": "deals",
     "url": "/dd",
@@ -339,6 +331,7 @@
       "themeApplied": true,
       "darkTextReadable": true,
       "noBrightNavigation": true,
+      "nativeSettingsStyle": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -358,7 +351,6 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-deals-controls-bar",
       "psnine-toggle-best-deal-btn",
       "psnine-toggle-cny-btn",
@@ -368,14 +360,13 @@
     ],
     "charts": 0,
     "controls": [
-      "插件设置",
       "只看史低",
       "已开启人民币换算 (CNY)"
     ],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "chromium",
     "name": "deal-history",
     "url": "/dd/HP9000-CUSA10218_00-HRZCE00000000000",
@@ -400,7 +391,6 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-deals-controls-bar",
       "psnine-toggle-best-deal-btn",
       "psnine-toggle-cny-btn",
@@ -411,14 +401,13 @@
     ],
     "charts": 1,
     "controls": [
-      "插件设置",
       "只看史低",
       "已开启人民币换算 (CNY)"
     ],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "chromium",
     "name": "battle",
     "url": "/battle",
@@ -437,13 +426,11 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-settings-gear",
       "psnine-scrollbottom"
     ],
     "charts": 0,
     "controls": [
-      "插件设置",
       "🔕 监控",
       "🔕 监控",
       "🔕 监控",
@@ -473,7 +460,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "chromium",
     "name": "profile",
     "url": "/psnid/toonn95",
@@ -498,19 +485,16 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-sync-psn-btn-group",
       "psnine-settings-gear",
       "psnine-scrollbottom"
     ],
     "charts": 0,
-    "controls": [
-      "插件设置"
-    ],
+    "controls": [],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "chromium",
     "name": "topic",
     "url": "/topic/39074",
@@ -535,18 +519,15 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-settings-gear",
       "psnine-scrollbottom"
     ],
     "charts": 0,
-    "controls": [
-      "插件设置"
-    ],
+    "controls": [],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "chromium",
     "name": "qa",
     "url": "/qa",
@@ -565,18 +546,15 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-settings-gear",
       "psnine-scrollbottom"
     ],
     "charts": 0,
-    "controls": [
-      "插件设置"
-    ],
+    "controls": [],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "chromium",
     "name": "profile-games",
     "url": "/psnid/toonn95/psngame",
@@ -601,18 +579,15 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-settings-gear",
       "psnine-scrollbottom"
     ],
     "charts": 0,
-    "controls": [
-      "插件设置"
-    ],
+    "controls": [],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "webkit",
     "name": "home",
     "url": "/",
@@ -623,6 +598,7 @@
       "themeApplied": true,
       "darkTextReadable": true,
       "noBrightNavigation": true,
+      "nativeSettingsStyle": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -637,18 +613,15 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
-      "psnine-settings-gear",
-      "psnine-scrollbottom"
+      "psnine-scrollbottom",
+      "psnine-settings-gear"
     ],
     "charts": 0,
-    "controls": [
-      "插件设置"
-    ],
+    "controls": [],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "webkit",
     "name": "games",
     "url": "/psngame",
@@ -673,19 +646,16 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-difficulty-sort-btn",
       "psnine-settings-gear",
       "psnine-scrollbottom"
     ],
     "charts": 0,
-    "controls": [
-      "插件设置"
-    ],
+    "controls": [],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "webkit",
     "name": "game",
     "url": "/psngame/46507",
@@ -712,6 +682,7 @@
       "themeApplied": true,
       "darkTextReadable": true,
       "noBrightNavigation": true,
+      "nativeSettingsStyle": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -734,7 +705,6 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-game-page-battle-bell",
       "psnine-game-variants-section",
       "psnine-trophy-stats-panel",
@@ -755,7 +725,6 @@
     ],
     "charts": 0,
     "controls": [
-      "插件设置",
       "🔕 监控",
       "展开所有Tips",
       "展开未获Tips"
@@ -763,7 +732,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "webkit",
     "name": "game-personal",
     "url": "/psngame/46507?psnid=toonn95",
@@ -790,6 +759,7 @@
       "themeApplied": true,
       "darkTextReadable": true,
       "noBrightNavigation": true,
+      "nativeSettingsStyle": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -804,10 +774,12 @@
       "menuClosesAfterChoice": true,
       "originalRestored": true,
       "nativeLinksPreserved": true,
+      "activeFilterStyle": true,
       "unearnedFilter": {
         "hidden": 19,
         "visible": 13
       },
+      "filterStyleRestored": true,
       "filterRestored": true
     },
     "requestCount": 47,
@@ -817,7 +789,6 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-game-page-battle-bell",
       "psnine-game-variants-section",
       "psnine-trophy-stats-panel",
@@ -839,7 +810,6 @@
     ],
     "charts": 0,
     "controls": [
-      "插件设置",
       "🔕 监控",
       "展开所有Tips",
       "展开未获Tips"
@@ -847,7 +817,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "webkit",
     "name": "trophy",
     "url": "/trophy/12518001",
@@ -866,20 +836,18 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-sort-tips-by-likes-btn",
       "psnine-settings-gear",
       "psnine-scrollbottom"
     ],
     "charts": 0,
     "controls": [
-      "插件设置",
       "🔥 按“顶”数热度排序Tips"
     ],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "webkit",
     "name": "reviews",
     "url": "/psngame/46507/comment",
@@ -901,6 +869,7 @@
       "themeApplied": true,
       "darkTextReadable": true,
       "noBrightNavigation": true,
+      "nativeSettingsStyle": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -915,7 +884,6 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-enhanced-reviews-panel",
       "psnine-toggle-tab-btn",
       "psnine-toggle-gaussian-btn",
@@ -928,13 +896,12 @@
     ],
     "charts": 2,
     "controls": [
-      "插件设置",
       "🔕 监控"
     ],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "webkit",
     "name": "deals",
     "url": "/dd",
@@ -951,6 +918,7 @@
       "themeApplied": true,
       "darkTextReadable": true,
       "noBrightNavigation": true,
+      "nativeSettingsStyle": true,
       "settings": {
         "fields": 41,
         "width": 366,
@@ -970,7 +938,6 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-deals-controls-bar",
       "psnine-toggle-best-deal-btn",
       "psnine-toggle-cny-btn",
@@ -980,14 +947,13 @@
     ],
     "charts": 0,
     "controls": [
-      "插件设置",
       "只看史低",
       "已开启人民币换算 (CNY)"
     ],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "webkit",
     "name": "deal-history",
     "url": "/dd/HP9000-CUSA10218_00-HRZCE00000000000",
@@ -1012,7 +978,6 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-deals-controls-bar",
       "psnine-toggle-best-deal-btn",
       "psnine-toggle-cny-btn",
@@ -1023,14 +988,13 @@
     ],
     "charts": 1,
     "controls": [
-      "插件设置",
       "只看史低",
       "已开启人民币换算 (CNY)"
     ],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "webkit",
     "name": "battle",
     "url": "/battle",
@@ -1049,13 +1013,11 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-settings-gear",
       "psnine-scrollbottom"
     ],
     "charts": 0,
     "controls": [
-      "插件设置",
       "🔕 监控",
       "🔕 监控",
       "🔕 监控",
@@ -1085,7 +1047,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "webkit",
     "name": "profile",
     "url": "/psnid/toonn95",
@@ -1110,19 +1072,16 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-sync-psn-btn-group",
       "psnine-settings-gear",
       "psnine-scrollbottom"
     ],
     "charts": 0,
-    "controls": [
-      "插件设置"
-    ],
+    "controls": [],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "webkit",
     "name": "topic",
     "url": "/topic/39074",
@@ -1147,18 +1106,15 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-settings-gear",
       "psnine-scrollbottom"
     ],
     "charts": 0,
-    "controls": [
-      "插件设置"
-    ],
+    "controls": [],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "webkit",
     "name": "qa",
     "url": "/qa",
@@ -1177,18 +1133,15 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-settings-gear",
       "psnine-scrollbottom"
     ],
     "charts": 0,
-    "controls": [
-      "插件设置"
-    ],
+    "controls": [],
     "overflow": []
   },
   {
-    "bundleSha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae",
+    "bundleSha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f",
     "engine": "webkit",
     "name": "profile-games",
     "url": "/psnid/toonn95/psngame",
@@ -1213,14 +1166,11 @@
     "injected": [
       "psnineCoreStyles",
       "psnine-enhanced-games-style",
-      "psnine-nav-settings-link",
       "psnine-settings-gear",
       "psnine-scrollbottom"
     ],
     "charts": 0,
-    "controls": [
-      "插件设置"
-    ],
+    "controls": [],
     "overflow": []
   }
 ]

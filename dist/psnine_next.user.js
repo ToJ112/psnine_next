@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PSNINE Next (PSN中文网功能增强)
 // @namespace    https://github.com/ToJ112/psnine_next
-// @version      1.0.2
+// @version      1.0.3
 // @description  现代化重构版 PSN中文网功能增强脚本，深度适配桌面 Tampermonkey 与 iOS Safari Stay
 // @author       ToJ112, swsoyee, InfinityLoop, mordom0404, Nathaniel-Wu, JayusTree, aesct
 // @match        https://psnine.com/*
@@ -854,19 +854,21 @@
     close: `<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M18 6L6 18M6 6l12 12"/></svg>`
   };
   var CORE_STYLES = `
-/* psnine_next Core Base Tokens & Styles */
+/* psnine_next Core Base Tokens & Styles (aligned with PSNINE v2) */
 :root {
-  --p9n-bg: #f4f6fa;
-  --p9n-surface: #ffffff;
-  --p9n-surface-alt: #f8fafc;
-  --p9n-text: #1f2937;
-  --p9n-muted: #5f6b7a;
-  --p9n-border: #ccd6dd;
-  --p9n-link: #1966c2;
+  --p9n-bg: var(--c-bg, #f4f6fa);
+  --p9n-surface: var(--c-card, #ffffff);
+  --p9n-surface-alt: var(--c-bg, #f8fafc);
+  --p9n-text: var(--c-text, #1f2937);
+  --p9n-muted: var(--c-text-2, #5f6b7a);
+  --p9n-border: var(--c-line, #ccd6dd);
+  --p9n-link: var(--c-brand, #1966c2);
   --p9n-primary: #1d4ed8;
+  --p9n-radius-sm: var(--r-sm, 4px);
+  --p9n-radius-md: var(--r-md, 8px);
 }
 
-[data-psnine-next] {
+[data-psnine-next]:where(:not(.psnine-nav-settings-link)) {
   box-sizing: border-box;
 }
 
@@ -879,7 +881,7 @@ button[data-psnine-next]:where(:not(.psnine-settings-close)) {
   border: 1px solid var(--p9n-border);
   padding: 6px 14px;
   font-size: 14px;
-  border-radius: 6px;
+  border-radius: var(--p9n-radius-sm, 6px);
   cursor: pointer;
   touch-action: manipulation;
   box-sizing: border-box;
@@ -905,50 +907,69 @@ button[data-psnine-next].psnine-btn-danger {
   border-color: #e74c3c !important;
 }
 
-/* Floating Bottom Button */
+/* Floating Action Buttons (.float-btn native style) */
+#psnine-settings-gear,
 #psnine-scrollbottom {
   position: fixed;
-  right: 20px;
-  bottom: 70px;
+  right: max(16px, env(safe-area-inset-right));
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  background: var(--p9n-primary) !important;
-  color: #ffffff !important;
-  border: none !important;
-  cursor: pointer;
-  z-index: 999;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-  display: flex;
+  padding: 0 !important;
+  border-radius: var(--r-md, var(--p9n-radius-md, 8px)) !important;
+  background-color: var(--c-card, var(--p9n-surface)) !important;
+  color: var(--c-text-2, var(--p9n-muted)) !important;
+  border: 1px solid var(--c-line, var(--p9n-border)) !important;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  z-index: 40 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   touch-action: manipulation;
+  box-sizing: border-box;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
+#psnine-settings-gear {
+  bottom: max(20px, env(safe-area-inset-bottom));
+}
+#psnine-scrollbottom {
+  bottom: calc(max(20px, env(safe-area-inset-bottom)) + 52px);
+}
+#psnine-settings-gear:hover,
 #psnine-scrollbottom:hover {
-  filter: brightness(1.1);
+  background-color: var(--p9n-surface-alt) !important;
+  color: var(--p9n-link) !important;
+  border-color: var(--p9n-link) !important;
 }
 
-/* Settings Gear Button */
-#psnine-settings-gear {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: #2c3e50 !important;
-  color: #ecf0f1 !important;
-  border: none !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 999;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-  touch-action: manipulation;
+/* When merged into native .float-layer */
+.float-layer > #psnine-settings-gear,
+.float-layer > #psnine-scrollbottom {
+  position: static !important;
+  width: 46px !important;
+  height: 46px !important;
+  min-width: 46px !important;
+  min-height: 46px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: var(--r-md, 8px) !important;
+  box-shadow: none !important;
 }
-#psnine-settings-gear:hover {
-  background: #1a252f !important;
+@media (min-width: 769px) {
+  .float-layer > #psnine-settings-gear,
+  .float-layer > #psnine-scrollbottom {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    min-height: 52px !important;
+  }
+}
+
+/* Nav menu trigger cursor */
+.psnine-nav-settings-btn,
+a.psnine-nav-settings-link {
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
 /* Settings Modal Backdrop & Dialog */
@@ -968,7 +989,7 @@ button[data-psnine-next].psnine-btn-danger {
   background: var(--p9n-surface);
   color: var(--p9n-text);
   border: 1px solid var(--p9n-border);
-  border-radius: 12px;
+  border-radius: var(--p9n-radius-md, 12px);
   width: 100%;
   max-width: 540px;
   max-height: calc(100vh - 24px);
@@ -1005,7 +1026,7 @@ button[data-psnine-next].psnine-btn-danger {
   justify-content: center;
   min-width: 44px;
   min-height: 44px;
-  border-radius: 6px;
+  border-radius: var(--p9n-radius-sm, 6px);
 }
 .psnine-settings-close:hover {
   color: var(--p9n-text) !important;
@@ -1042,7 +1063,7 @@ button[data-psnine-next].psnine-btn-danger {
 .psnine-settings-summary:focus-visible {
   outline: 2px solid var(--p9n-link);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: var(--p9n-radius-sm, 4px);
 }
 .psnine-settings-section-body {
   padding: 2px 0 8px 0;
@@ -1075,7 +1096,7 @@ button[data-psnine-next].psnine-btn-danger {
   min-height: 40px;
   padding: 8px 10px;
   border: 1px solid var(--p9n-border);
-  border-radius: 6px;
+  border-radius: var(--p9n-radius-sm, 6px);
   background: var(--p9n-surface);
   color: var(--p9n-text);
   box-sizing: border-box;
@@ -1088,7 +1109,7 @@ button[data-psnine-next].psnine-btn-danger {
   background: var(--p9n-surface);
   color: var(--p9n-text);
   border: 1px solid var(--p9n-border);
-  border-radius: 6px;
+  border-radius: var(--p9n-radius-sm, 6px);
 }
 .psnine-settings-actions {
   display: flex;
@@ -1102,7 +1123,7 @@ button[data-psnine-next].psnine-btn-danger {
   border: 1px solid #ffeeba;
   padding: 10px 14px;
   margin-bottom: 12px;
-  border-radius: 6px;
+  border-radius: var(--p9n-radius-sm, 6px);
   font-size: 13px;
   line-height: 1.5;
 }
@@ -1122,7 +1143,7 @@ button[data-psnine-next].psnine-btn-danger {
   padding: 8px 18px !important;
   font-size: 16px !important;
   font-weight: 500;
-  border-radius: 8px !important;
+  border-radius: var(--p9n-radius-md, 8px) !important;
 }
 
 /* iOS-Style Toggle Switch */
@@ -1195,7 +1216,7 @@ button[data-psnine-next].psnine-btn-danger {
   color: #ffffff;
   padding: 1px 6px;
   font-size: 11px;
-  border-radius: 4px;
+  border-radius: var(--p9n-radius-sm, 4px);
   margin-left: 5px;
   vertical-align: middle;
 }
@@ -1204,9 +1225,9 @@ button[data-psnine-next].psnine-btn-danger {
 .psnine-traceback-card {
   margin-top: 8px;
   padding: 8px 12px;
-  background: rgba(0, 0, 0, 0.04);
+  background: var(--p9n-surface-alt);
   border-left: 3px solid var(--p9n-link);
-  border-radius: 4px;
+  border-radius: var(--p9n-radius-sm, 4px);
   font-size: 13px;
 }
 .psnine-traceback-header {
@@ -1244,13 +1265,25 @@ button[data-psnine-next].psnine-btn-danger {
   vertical-align: middle;
 }
 
-/* Trophy Overview Panel & Native Sort Dropdown */
-#psnine-trophy-stats-panel .psnine-trophy-overview-top {
+/* Trophy Module V2 Native Card & Outline Pill Styles */
+.psnine-trophy-panel,
+#psnine-trophy-stats-panel {
+  background-color: var(--p9n-surface);
+  border: 1px solid var(--p9n-border);
+  border-radius: var(--p9n-radius-md, 8px);
+  padding: 14px 16px;
+  margin: 12px 0;
+  box-sizing: border-box;
+}
+
+.psnine-trophy-overview-top {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   margin-bottom: 8px;
 }
+
+.psnine-trophy-card-hd,
 #psnine-trophy-header-title {
   display: flex;
   flex-wrap: wrap;
@@ -1259,12 +1292,14 @@ button[data-psnine-next].psnine-btn-danger {
   font-size: 13px;
   font-weight: 600;
   line-height: 1.4;
+  color: var(--p9n-text);
 }
-#psnine-trophy-header-title .psnine-trophy-title-text {
+.psnine-trophy-title-text {
   white-space: nowrap;
   font-size: 14px;
   font-weight: 600;
 }
+.psnine-trophy-completion,
 #psnine-trophy-header-counts {
   white-space: nowrap;
   font-size: 12px;
@@ -1275,27 +1310,167 @@ button[data-psnine-next].psnine-btn-danger {
   font-size: 11px;
   font-weight: normal;
   line-height: 1.4;
+  color: var(--p9n-muted);
 }
-#psnine-trophy-stats-panel .psnine-trophy-toolbar {
+
+.psnine-trophy-toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 6px 10px;
   font-size: 12px;
 }
-#psnine-trophy-stats-panel .psnine-trophy-action-group {
+
+.psnine-trophy-action-group {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 6px;
 }
-#psnine-trophy-stats-panel .psnine-trophy-toolbar button {
-  padding: 4px 10px;
+
+/* Neutral outline pill button (at least 36px touch height) */
+.psnine-trophy-pill-btn,
+.psnine-pill-btn,
+.psnine-trophy-toolbar button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 4px 12px;
   font-size: 12px;
-  line-height: 1.4;
-  border-radius: 4px;
+  font-weight: 500;
+  border-radius: 18px;
+  border: 1px solid var(--p9n-border);
+  background-color: var(--p9n-surface);
+  color: var(--p9n-text);
+  cursor: pointer;
+  touch-action: manipulation;
+  box-sizing: border-box;
+  text-decoration: none;
+  transition: all 0.15s ease;
   white-space: nowrap;
 }
+.psnine-trophy-pill-btn:hover:not(:disabled),
+.psnine-pill-btn:hover:not(:disabled),
+.psnine-trophy-toolbar button:hover:not(:disabled) {
+  background-color: var(--p9n-surface-alt);
+  border-color: var(--p9n-link);
+  color: var(--p9n-link);
+}
+.psnine-trophy-pill-btn.active,
+.psnine-trophy-pill-btn[aria-pressed="true"],
+.psnine-pill-btn.active,
+.psnine-trophy-toolbar button.active,
+.psnine-trophy-toolbar button[aria-pressed="true"] {
+  background-color: var(--p9n-surface-alt);
+  border-color: var(--p9n-link);
+  color: var(--p9n-link);
+  font-weight: 600;
+}
+.psnine-trophy-pill-btn.danger,
+.psnine-trophy-pill-btn.psnine-btn-danger,
+.psnine-trophy-toolbar button.danger,
+.psnine-trophy-toolbar button.psnine-btn-danger {
+  color: #e74c3c !important;
+  border-color: #e74c3c !important;
+  background-color: var(--p9n-surface) !important;
+}
+.psnine-trophy-pill-btn:disabled,
+.psnine-pill-btn:disabled,
+.psnine-trophy-toolbar button:disabled {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+  pointer-events: none;
+}
+
+/* Trophy Charts grid & sections */
+.psnine-trophy-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin: 10px 0;
+}
+.psnine-trophy-chart-section {
+  padding: 12px 0;
+  border: none;
+  border-top: 1px solid var(--p9n-border);
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--p9n-text);
+  box-sizing: border-box;
+}
+
+/* Trophy Icon thumbnail chip */
+.psnine-trophy-chip,
+.psnine-trophy-icon-chip {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: var(--p9n-radius-sm, 4px);
+  border: 1px solid var(--p9n-border);
+  background-color: transparent !important;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+  box-sizing: border-box;
+}
+.psnine-trophy-chip.earned,
+.psnine-trophy-icon-chip.earned,
+.psnine-trophy-icon-chip[style*="#28a745"],
+.psnine-trophy-icon-chip[style*="rgb(40, 167, 69)"] {
+  border-color: #28a745 !important;
+  opacity: 1 !important;
+}
+.psnine-trophy-chip.unearned,
+.psnine-trophy-icon-chip.unearned {
+  opacity: 0.6;
+}
+
+/* Trophy Preview Card */
+.psnine-trophy-preview-card,
+#psnine-trophy-preview-card {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background-color: var(--p9n-surface-alt);
+  border: 1px solid var(--p9n-border);
+  border-radius: var(--p9n-radius-sm, 6px);
+  font-size: 12px;
+  color: var(--p9n-text);
+  box-sizing: border-box;
+}
+
+/* Trophy Tip Row */
+.psnine-trophy-tip-row {
+  padding: 10px 14px;
+  background-color: var(--p9n-surface-alt);
+  border-bottom: 1px solid var(--p9n-border);
+  color: var(--p9n-text);
+  font-size: 12px;
+}
+
+/* Filtered Tip Reveal Button */
+.psnine-trophy-filtered-btn,
+.psnine-filtered-tip-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 6px 10px;
+  background-color: var(--p9n-surface);
+  color: var(--p9n-muted);
+  font-size: 11px;
+  border-radius: var(--p9n-radius-sm, 4px);
+  border: 1px dashed var(--p9n-border);
+  cursor: pointer;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+/* Native Sort Dropdown */
 ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] {
   position: relative;
 }
@@ -1337,7 +1512,7 @@ ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > ul[data-psn
   text-decoration: none;
 }
 ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > ul[data-psnine-trophy-sort-menu="true"] > li > a:focus-visible {
-  outline: 2px solid #3890ff;
+  outline: 2px solid var(--p9n-link);
   outline-offset: -2px;
 }
 
@@ -1373,13 +1548,13 @@ ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > ul[data-psn
 html[data-theme="dark"],
 body[data-theme="dark"],
 html[data-theme="dark"] body {
-  --p9n-bg: #10151d;
-  --p9n-surface: #1a222d;
-  --p9n-surface-alt: #202c3a;
-  --p9n-text: #e6ebf2;
-  --p9n-muted: #a8b3c2;
-  --p9n-border: #3b4859;
-  --p9n-link: #91bdff;
+  --p9n-bg: var(--c-bg, #10151d);
+  --p9n-surface: var(--c-card, #1a222d);
+  --p9n-surface-alt: var(--c-bg, #202c3a);
+  --p9n-text: var(--c-text, #e6ebf2);
+  --p9n-muted: var(--c-text-2, #a8b3c2);
+  --p9n-border: var(--c-line, #3b4859);
+  --p9n-link: var(--c-brand, #91bdff);
   --p9n-primary: #1d4ed8;
 }
 
@@ -1392,6 +1567,26 @@ body[data-theme="dark"] {
   color: #e6ebf2 !important;
 }
 
+/* Floating Action Buttons in Dark Mode */
+html[data-theme="dark"] #psnine-settings-gear,
+html[data-theme="dark"] #psnine-scrollbottom {
+  padding: 0 !important;
+  background-color: var(--c-card, var(--p9n-surface)) !important;
+  color: var(--c-text-2, var(--p9n-muted)) !important;
+  border: 1px solid var(--c-line, var(--p9n-border)) !important;
+  border-radius: var(--r-md, var(--p9n-radius-md, 8px)) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+html[data-theme="dark"] .float-layer > #psnine-settings-gear,
+html[data-theme="dark"] .float-layer > #psnine-scrollbottom {
+  position: static !important;
+  background-color: var(--c-card, var(--p9n-surface)) !important;
+  color: var(--c-text-2, var(--p9n-muted)) !important;
+  border: 1px solid var(--c-line, var(--p9n-border)) !important;
+  box-shadow: none !important;
+}
+
 /* Structural Panels & Containers */
 html[data-theme="dark"] .box,
 html[data-theme="dark"] .content,
@@ -1399,45 +1594,45 @@ html[data-theme="dark"] .header,
 html[data-theme="dark"] .footer,
 html[data-theme="dark"] .dropdown ul,
 html[data-theme="dark"] .mobile-nav-panel {
-  background-color: #1a222d !important;
-  color: #e6ebf2 !important;
-  border-color: #3b4859 !important;
+  background-color: var(--p9n-surface) !important;
+  color: var(--p9n-text) !important;
+  border-color: var(--p9n-border) !important;
 }
 
 /* Navigation (.inav) */
 html[data-theme="dark"] .inav {
-  background-color: #1a222d !important;
-  color: #e6ebf2 !important;
-  border-color: #3b4859 !important;
+  background-color: var(--p9n-surface) !important;
+  color: var(--p9n-text) !important;
+  border-color: var(--p9n-border) !important;
 }
 html[data-theme="dark"] .inav li a {
-  color: #91bdff !important;
+  color: var(--p9n-link) !important;
 }
 html[data-theme="dark"] .inav li.current,
 html[data-theme="dark"] .inav li.current a {
-  background-color: #202c3a !important;
-  color: #e6ebf2 !important;
+  background-color: var(--p9n-surface-alt) !important;
+  color: var(--p9n-text) !important;
 }
 
 /* Pagination (.page li a) */
 html[data-theme="dark"] .page li a {
-  background-color: #202c3a !important;
-  color: #91bdff !important;
-  border-color: #3b4859 !important;
+  background-color: var(--p9n-surface-alt) !important;
+  color: var(--p9n-link) !important;
+  border-color: var(--p9n-border) !important;
 }
 html[data-theme="dark"] .page li.current a {
-  background-color: #1d4ed8 !important;
+  background-color: var(--p9n-primary) !important;
   color: #ffffff !important;
-  border-color: #1d4ed8 !important;
+  border-color: var(--p9n-primary) !important;
 }
 
 /* Lists and Tables */
 html[data-theme="dark"] .list,
 html[data-theme="dark"] table.list,
 html[data-theme="dark"] .sonlist {
-  background-color: #1a222d !important;
-  color: #e6ebf2 !important;
-  border-color: #3b4859 !important;
+  background-color: var(--p9n-surface) !important;
+  color: var(--p9n-text) !important;
+  border-color: var(--p9n-border) !important;
 }
 html[data-theme="dark"] .list li,
 html[data-theme="dark"] .sonlist li,
@@ -1446,12 +1641,12 @@ html[data-theme="dark"] table.list td:where(:not(.t1):not(.t2):not(.t3):not(.t4)
 html[data-theme="dark"] table.list th,
 html[data-theme="dark"] .box .post {
   background-color: transparent !important;
-  color: #e6ebf2 !important;
-  border-bottom: 1px solid #3b4859 !important;
+  color: var(--p9n-text) !important;
+  border-bottom: 1px solid var(--p9n-border) !important;
 }
 html[data-theme="dark"] .list li:hover,
 html[data-theme="dark"] table.list tr:hover {
-  background-color: #202c3a !important;
+  background-color: var(--p9n-surface-alt) !important;
 }
 
 /* Trophy Grade Cell Backgrounds (preserve t1/t2/t3/t4 grade colors) */
@@ -1487,29 +1682,31 @@ html[data-theme="dark"] table.tbl,
 html[data-theme="dark"] table.tbl tr,
 html[data-theme="dark"] table.tbl td,
 html[data-theme="dark"] table.tbl th {
-  background-color: #1a222d !important;
-  color: #e6ebf2 !important;
-  border-color: #3b4859 !important;
+  background-color: var(--p9n-surface) !important;
+  color: var(--p9n-text) !important;
+  border-color: var(--p9n-border) !important;
 }
 
 /* Typography */
 html[data-theme="dark"] h1,
 html[data-theme="dark"] h2,
 html[data-theme="dark"] h3,
-html[data-theme="dark"] .text-strong,
+html[data-theme="dark"] .text-strong {
+  color: var(--p9n-text) !important;
+}
 html[data-theme="dark"] strong:where(:not([class*="alert-"]):not([class*="alert-"] *)),
 html[data-theme="dark"] b:where(:not([class*="alert-"]):not([class*="alert-"] *)) {
-  color: #e6ebf2 !important;
+  color: var(--p9n-text) !important;
 }
 html[data-theme="dark"] em:where(:not([class*="alert-"]):not([class*="alert-"] *)) {
-  color: #a8b3c2 !important;
+  color: var(--p9n-muted) !important;
 }
 
-/* Generic links: Exclude semantic grade text, buttons, and inline-colored links (D04 discounts) */
-html[data-theme="dark"] a:where(:not(.btn):not(.text-platinum):not(.text-gold):not(.text-silver):not(.text-bronze):not([style*="color"])) {
-  color: #91bdff !important;
+/* Generic links: Exclude native navs/headers, semantic grade text, buttons, and inline-colored links */
+html[data-theme="dark"] a:where(:not(.btn):not(.text-platinum):not(.text-gold):not(.text-silver):not(.text-bronze):not([style*="color"]):not(.mobile-nav-panel *):not(.user-menu-list *):not(.site-nav *):not(#header *):not(.header *):not(#pcmenu *)) {
+  color: var(--p9n-link) !important;
 }
-html[data-theme="dark"] a:visited:where(:not(.btn):not(.text-platinum):not(.text-gold):not(.text-silver):not(.text-bronze):not([style*="color"])) {
+html[data-theme="dark"] a:visited:where(:not(.btn):not(.text-platinum):not(.text-gold):not(.text-silver):not(.text-bronze):not([style*="color"]):not(.mobile-nav-panel *):not(.user-menu-list *):not(.site-nav *):not(#header *):not(.header *):not(#pcmenu *)) {
   color: #c4b5fd !important;
 }
 
@@ -1532,8 +1729,8 @@ html[data-theme="dark"] a.text-bronze {
 }
 
 html[data-theme="dark"] .psnnode {
-  background-color: #202c3a !important;
-  color: #e6ebf2 !important;
+  background-color: var(--p9n-surface-alt) !important;
+  color: var(--p9n-text) !important;
 }
 
 /* Form Controls (exclude color and checkbox) */
@@ -1543,9 +1740,9 @@ html[data-theme="dark"] input[type="search"],
 html[data-theme="dark"] input[type="password"],
 html[data-theme="dark"] textarea,
 html[data-theme="dark"] select {
-  background-color: #10151d !important;
-  color: #e6ebf2 !important;
-  border: 1px solid #3b4859 !important;
+  background-color: var(--p9n-bg) !important;
+  color: var(--p9n-text) !important;
+  border: 1px solid var(--p9n-border) !important;
 }
 
 /* Spoiler Bar (.mark) Dark Mode Rules (G04) */
@@ -1630,55 +1827,46 @@ html[data-theme="dark"] .alert-error strong {
   color: inherit !important;
 }
 
-/* Plugin inline completion badges */
-html[data-theme="dark"] #psnine-trophy-completion-badge.alert-success {
-  background-color: #28a745 !important;
-  color: #ffffff !important;
-}
-html[data-theme="dark"] #psnine-trophy-completion-badge.alert-success * {
-  color: inherit !important;
-}
-
 /* Settings Modal Dark Mode */
 html[data-theme="dark"] .psnine-settings-dialog {
-  background: #1a222d !important;
-  color: #e6ebf2 !important;
-  border-color: #3b4859 !important;
+  background: var(--p9n-surface) !important;
+  color: var(--p9n-text) !important;
+  border-color: var(--p9n-border) !important;
 }
 html[data-theme="dark"] .psnine-settings-header {
-  border-color: #3b4859 !important;
-  background: #1a222d !important;
+  border-color: var(--p9n-border) !important;
+  background: var(--p9n-surface) !important;
 }
 html[data-theme="dark"] .psnine-settings-footer {
-  border-color: #3b4859 !important;
-  background: #10151d !important;
+  border-color: var(--p9n-border) !important;
+  background: var(--p9n-bg) !important;
 }
 html[data-theme="dark"] .psnine-settings-section {
-  border-color: #3b4859 !important;
+  border-color: var(--p9n-border) !important;
 }
 html[data-theme="dark"] .psnine-settings-summary {
-  color: #91bdff !important;
+  color: var(--p9n-link) !important;
 }
 html[data-theme="dark"] .psnine-settings-summary:hover {
-  color: #e6ebf2 !important;
+  color: var(--p9n-text) !important;
 }
 html[data-theme="dark"] .psnine-settings-summary:focus-visible {
-  outline: 2px solid #91bdff !important;
+  outline: 2px solid var(--p9n-link) !important;
   outline-offset: 2px;
 }
 html[data-theme="dark"] .psnine-settings-row {
-  border-color: #3b4859 !important;
+  border-color: var(--p9n-border) !important;
 }
 html[data-theme="dark"] .psnine-settings-row > .psnine-settings-label,
 html[data-theme="dark"] .psnine-settings-row > label:where(:not(.psnine-switch)) {
-  color: #e6ebf2 !important;
+  color: var(--p9n-text) !important;
 }
 html[data-theme="dark"] .psnine-settings-row input,
 html[data-theme="dark"] .psnine-settings-row select,
 html[data-theme="dark"] .psnine-settings-row textarea {
-  background: #10151d !important;
-  color: #e6ebf2 !important;
-  border-color: #3b4859 !important;
+  background: var(--p9n-bg) !important;
+  color: var(--p9n-text) !important;
+  border-color: var(--p9n-border) !important;
 }
 html[data-theme="dark"] .psnine-settings-memory-warning {
   background: #332701 !important;
@@ -1687,41 +1875,110 @@ html[data-theme="dark"] .psnine-settings-memory-warning {
 }
 
 /* Generic Button Contrast in Dark Mode (Exclude custom status/chip/filter buttons) */
-html[data-theme="dark"] [data-psnine-next] button:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(.psnine-filtered-tip-btn)),
-html[data-theme="dark"] button[data-psnine-next]:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(.psnine-filtered-tip-btn)),
+html[data-theme="dark"] [data-psnine-next] button:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-trophy-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(#psnine-settings-gear):not(.psnine-filtered-tip-btn):not(.psnine-trophy-pill-btn)),
+html[data-theme="dark"] button[data-psnine-next]:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-trophy-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(#psnine-settings-gear):not(.psnine-filtered-tip-btn):not(.psnine-trophy-pill-btn)),
 html[data-theme="dark"] .psnine-btn:where(:not(.psnine-btn-primary):not(.psnine-btn-danger)) {
-  color: #e6ebf2 !important;
-  background-color: #202c3a !important;
-  border-color: #3b4859 !important;
+  color: var(--p9n-text) !important;
+  background-color: var(--p9n-surface-alt) !important;
+  border-color: var(--p9n-border) !important;
 }
 html[data-theme="dark"] .psnine-btn.psnine-btn-primary,
 html[data-theme="dark"] [data-psnine-next] button.psnine-btn-primary,
 html[data-theme="dark"] button[data-psnine-next].psnine-btn-primary {
   color: #ffffff !important;
-  background-color: #1d4ed8 !important;
-  border-color: #1d4ed8 !important;
+  background-color: var(--p9n-primary) !important;
+  border-color: var(--p9n-primary) !important;
 }
 html[data-theme="dark"] .psnine-btn.psnine-btn-danger,
 html[data-theme="dark"] [data-psnine-next] button.psnine-btn-danger,
 html[data-theme="dark"] button[data-psnine-next].psnine-btn-danger {
   color: #ff6b6b !important;
-  background-color: #202c3a !important;
+  background-color: var(--p9n-surface-alt) !important;
   border-color: #ff6b6b !important;
 }
 html[data-theme="dark"] .psnine-settings-close {
-  color: #a8b3c2 !important;
+  color: var(--p9n-muted) !important;
   background: transparent !important;
 }
 html[data-theme="dark"] .psnine-settings-close:hover {
-  color: #e6ebf2 !important;
+  color: var(--p9n-text) !important;
   background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Trophy Module Dark Mode */
+html[data-theme="dark"] .psnine-trophy-panel {
+  background-color: var(--p9n-surface) !important;
+  border-color: var(--p9n-border) !important;
+  color: var(--p9n-text) !important;
+}
+html[data-theme="dark"] .psnine-trophy-card-hd {
+  border-color: var(--p9n-border) !important;
+  color: var(--p9n-text) !important;
+}
+html[data-theme="dark"] .psnine-trophy-chart-section {
+  background-color: transparent !important;
+  border: none !important;
+  border-top: 1px solid var(--p9n-border) !important;
+  color: var(--p9n-text) !important;
+}
+html[data-theme="dark"] .psnine-trophy-pill-btn,
+html[data-theme="dark"] .psnine-pill-btn,
+html[data-theme="dark"] .psnine-trophy-toolbar button {
+  background-color: var(--p9n-surface) !important;
+  border-color: var(--p9n-border) !important;
+  color: var(--p9n-text) !important;
+}
+html[data-theme="dark"] .psnine-trophy-pill-btn:hover:not(:disabled),
+html[data-theme="dark"] .psnine-pill-btn:hover:not(:disabled),
+html[data-theme="dark"] .psnine-trophy-toolbar button:hover:not(:disabled) {
+  background-color: var(--p9n-surface-alt) !important;
+  border-color: var(--p9n-link) !important;
+  color: var(--p9n-link) !important;
+}
+html[data-theme="dark"] .psnine-trophy-pill-btn.active,
+html[data-theme="dark"] .psnine-trophy-pill-btn[aria-pressed="true"],
+html[data-theme="dark"] .psnine-pill-btn.active,
+html[data-theme="dark"] .psnine-trophy-toolbar button.active,
+html[data-theme="dark"] .psnine-trophy-toolbar button[aria-pressed="true"] {
+  background-color: var(--p9n-surface-alt) !important;
+  border-color: var(--p9n-link) !important;
+  color: var(--p9n-link) !important;
+}
+html[data-theme="dark"] .psnine-trophy-pill-btn.danger,
+html[data-theme="dark"] .psnine-trophy-pill-btn.psnine-btn-danger,
+html[data-theme="dark"] .psnine-trophy-toolbar button.danger,
+html[data-theme="dark"] .psnine-trophy-toolbar button.psnine-btn-danger {
+  color: #ff6b6b !important;
+  border-color: #ff6b6b !important;
+  background-color: var(--p9n-surface) !important;
+}
+html[data-theme="dark"] .psnine-trophy-pill-btn:disabled,
+html[data-theme="dark"] .psnine-pill-btn:disabled,
+html[data-theme="dark"] .psnine-trophy-toolbar button:disabled {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+}
+html[data-theme="dark"] .psnine-trophy-preview-card,
+html[data-theme="dark"] #psnine-trophy-preview-card {
+  background-color: var(--p9n-surface-alt) !important;
+  border-color: var(--p9n-border) !important;
+  color: var(--p9n-text) !important;
+}
+html[data-theme="dark"] .psnine-trophy-filtered-btn,
+html[data-theme="dark"] .psnine-filtered-tip-btn {
+  background-color: var(--p9n-surface) !important;
+  border-color: var(--p9n-border) !important;
+  color: var(--p9n-muted) !important;
 }
 
 /* Custom Status & Filter Buttons in Dark Mode */
 /* 1. Trophy Icon Chip (Preserve earned green border) */
+html[data-theme="dark"] .psnine-trophy-chip,
 html[data-theme="dark"] .psnine-trophy-icon-chip {
   background-color: transparent !important;
 }
+html[data-theme="dark"] .psnine-trophy-chip.earned,
+html[data-theme="dark"] .psnine-trophy-icon-chip.earned,
 html[data-theme="dark"] .psnine-trophy-icon-chip[style*="#28a745"],
 html[data-theme="dark"] .psnine-trophy-icon-chip[style*="rgb(40, 167, 69)"] {
   border-color: #28a745 !important;
@@ -1729,9 +1986,9 @@ html[data-theme="dark"] .psnine-trophy-icon-chip[style*="rgb(40, 167, 69)"] {
 
 /* 2. Review Score Filter Chip (Preserve selected orange status) */
 html[data-theme="dark"] .psnine-score-filter-chip {
-  background-color: #202c3a !important;
-  border: 1px solid #3b4859 !important;
-  color: #a8b3c2 !important;
+  background-color: var(--p9n-surface-alt) !important;
+  border: 1px solid var(--p9n-border) !important;
+  color: var(--p9n-muted) !important;
 }
 html[data-theme="dark"] .psnine-score-filter-chip[style*="#ff9800"],
 html[data-theme="dark"] .psnine-score-filter-chip[style*="rgb(255, 152, 0)"] {
@@ -1747,9 +2004,9 @@ html[data-theme="dark"] #psnine-clear-score-filter-btn {
 
 /* 3. Deal Best Only Toggle Button (Preserve active red state) */
 html[data-theme="dark"] #psnine-toggle-best-deal-btn {
-  background-color: #202c3a !important;
-  border: 1px solid #3b4859 !important;
-  color: #e6ebf2 !important;
+  background-color: var(--p9n-surface-alt) !important;
+  border: 1px solid var(--p9n-border) !important;
+  color: var(--p9n-text) !important;
 }
 html[data-theme="dark"] #psnine-toggle-best-deal-btn[style*="#da314b"],
 html[data-theme="dark"] #psnine-toggle-best-deal-btn[style*="rgb(218, 49, 75)"] {
@@ -1767,9 +2024,9 @@ html[data-theme="dark"] #psnine-toggle-cny-btn {
 
 /* 5. Battle Bell Monitor Button (Preserve active amber/gold state) */
 html[data-theme="dark"] .psnine-battle-bell-btn {
-  background-color: #202c3a !important;
-  border: 1px solid #3b4859 !important;
-  color: #a8b3c2 !important;
+  background-color: var(--p9n-surface-alt) !important;
+  border: 1px solid var(--p9n-border) !important;
+  color: var(--p9n-muted) !important;
 }
 html[data-theme="dark"] .psnine-battle-bell-btn[style*="245, 159, 0"],
 html[data-theme="dark"] .psnine-battle-bell-btn[style*="#f59f00"] {
@@ -1778,16 +2035,9 @@ html[data-theme="dark"] .psnine-battle-bell-btn[style*="#f59f00"] {
   color: #fbbf24 !important;
 }
 
-/* 6. Filtered Tip Button */
-html[data-theme="dark"] .psnine-filtered-tip-btn {
-  background-color: #202c3a !important;
-  border: 1px dashed #3b4859 !important;
-  color: #a8b3c2 !important;
-}
-
 /* Toggle Switch Slider in Dark Mode */
 html[data-theme="dark"] .psnine-slider {
-  background-color: #3b4859 !important;
+  background-color: var(--p9n-border) !important;
 }
 html[data-theme="dark"] .psnine-switch input:checked + .psnine-slider {
   background-color: #2ecc71 !important;
@@ -1795,13 +2045,13 @@ html[data-theme="dark"] .psnine-switch input:checked + .psnine-slider {
 
 /* Traceback in Dark Mode */
 html[data-theme="dark"] .psnine-traceback-card {
-  background: rgba(255, 255, 255, 0.06) !important;
+  background: var(--p9n-surface-alt) !important;
 }
 html[data-theme="dark"] .psnine-traceback-header {
-  color: #91bdff !important;
+  color: var(--p9n-link) !important;
 }
 html[data-theme="dark"] .psnine-traceback-content {
-  color: #a8b3c2 !important;
+  color: var(--p9n-muted) !important;
 }
 
 /* Plugin Panels & Low Contrast Container Fixes */
@@ -1812,9 +2062,9 @@ html[data-theme="dark"] #psnine-deals-controls-bar,
 html[data-theme="dark"] #psnine-price-chart-container,
 html[data-theme="dark"] #psnine-game-variants-section,
 html[data-theme="dark"] #psnine-cross-version-tips-section {
-  background-color: #1a222d !important;
-  color: #e6ebf2 !important;
-  border-color: #3b4859 !important;
+  background-color: var(--p9n-surface) !important;
+  color: var(--p9n-text) !important;
+  border-color: var(--p9n-border) !important;
 }
 
 /* Muted labels & counts in plugin panels */
@@ -1842,7 +2092,7 @@ html[data-theme="dark"] #psnine-game-variants-section [style*="color:#666"],
 html[data-theme="dark"] #psnine-game-variants-section [style*="color: #666"],
 html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color:#666"],
 html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"] {
-  color: #a8b3c2 !important;
+  color: var(--p9n-muted) !important;
 }
 `;
 
@@ -1935,6 +2185,20 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
       });
     });
   }
+  function integrateFloatingLayer(doc) {
+    const floatLayer = doc.querySelector(".float-layer");
+    if (!floatLayer) return;
+    const scrollBottomBtn = doc.getElementById("psnine-scrollbottom");
+    if (scrollBottomBtn && scrollBottomBtn.parentElement !== floatLayer) {
+      scrollBottomBtn.classList.add("float-btn");
+      floatLayer.appendChild(scrollBottomBtn);
+    }
+    const gearBtn = doc.getElementById("psnine-settings-gear");
+    if (gearBtn && gearBtn.parentElement !== floatLayer) {
+      gearBtn.classList.add("float-btn");
+      floatLayer.appendChild(gearBtn);
+    }
+  }
   function mountScrollBottom(ctx) {
     const { document: doc, window: win } = ctx;
     let btn = doc.getElementById("psnine-scrollbottom");
@@ -1956,6 +2220,7 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
       });
       doc.body.appendChild(btn);
     }
+    integrateFloatingLayer(doc);
   }
   function getShanghaiDateString() {
     try {
@@ -2126,6 +2391,7 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
     const unsubs = ctx.onContent((root) => {
       enhanceMasks(ctx, root);
       fixLinks(ctx, root);
+      integrateFloatingLayer(ctx.document);
     });
     return () => {
       unsubs();
@@ -2173,21 +2439,33 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
     const injectNavMenu = () => {
       const targets = doc.querySelectorAll(".user-menu-list, .mobile-nav-panel nav, .nav-user .dropdown ul, .header .dropdown ul");
       targets.forEach((target) => {
-        if (!target.querySelector("#psnine-nav-settings-link")) {
+        if (target.querySelector("[data-psnine-settings-trigger]")) {
+          return;
+        }
+        const a = doc.createElement("a");
+        a.href = "#";
+        a.setAttribute("role", "button");
+        a.setAttribute("data-psnine-next", "nav-link");
+        a.setAttribute("data-psnine-settings-trigger", "true");
+        a.className = "psnine-nav-settings-btn psnine-nav-settings-link";
+        a.textContent = "\u63D2\u4EF6\u8BBE\u7F6E";
+        const handleTrigger = (e) => {
+          e.preventDefault();
+          openSettingsModal();
+        };
+        a.addEventListener("click", handleTrigger);
+        a.addEventListener("keydown", (e) => {
+          if (e.key === " " || e.key === "Enter") {
+            handleTrigger(e);
+          }
+        });
+        if (target.tagName === "UL" || target.tagName === "OL") {
           const item = doc.createElement("li");
-          item.id = "psnine-nav-settings-link";
-          item.setAttribute("data-psnine-next", "nav-link");
-          const btn = doc.createElement("button");
-          btn.setAttribute("type", "button");
-          btn.className = "psnine-nav-settings-btn";
-          btn.style.cssText = "background:none; border:none; color:inherit; font:inherit; cursor:pointer; padding:6px 12px; width:100%; text-align:left; display:flex; align-items:center; gap:6px;";
-          btn.innerHTML = `${ICONS.gear} <span>\u63D2\u4EF6\u8BBE\u7F6E</span>`;
-          btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            openSettingsModal();
-          });
-          item.appendChild(btn);
+          item.setAttribute("data-psnine-next", "nav-item");
+          item.appendChild(a);
           target.appendChild(item);
+        } else {
+          target.appendChild(a);
         }
       });
     };
@@ -4866,9 +5144,9 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
         pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
       }
       timeCurveHtml = `
-      <div data-psnine-next="true" style="padding:10px;background:var(--p9n-surface-alt,#f8fafc);border:1px solid var(--p9n-border,#ccd6dd);border-radius:6px;color:var(--p9n-text,inherit);">
-        <div style="font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;">
-          <span>\u{1F4C8} \u5956\u676F\u83B7\u5F97\u65F6\u95F4\u79EF\u7D2F\u66F2\u7EBF (\u5DF2\u83B7: ${timeCurve[timeCurve.length - 1].cumCount}\u4E2A)</span>
+      <div data-psnine-next="true" class="psnine-trophy-chart-section">
+        <div class="psnine-trophy-chart-header" style="font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;">
+          <span>\u5956\u676F\u83B7\u5F97\u65F6\u95F4\u79EF\u7D2F\u66F2\u7EBF (\u5DF2\u83B7: ${timeCurve[timeCurve.length - 1].cumCount}\u4E2A)</span>
           <span style="font-size:11px;color:var(--p9n-muted,#5f6b7a);">${timeCurve[0].dateStr} ~ ${timeCurve[timeCurve.length - 1].dateStr}</span>
         </div>
         <svg viewBox="0 0 ${svgWidth} ${svgHeight}" data-psnine-next="true" style="width:100%;height:100px;font-family:inherit;">
@@ -4895,17 +5173,17 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
     `;
     } else {
       timeCurveHtml = `
-      <div data-psnine-next="true" style="padding:10px;background:var(--p9n-surface-alt,#f8fafc);border:1px solid var(--p9n-border,#ccd6dd);border-radius:6px;font-size:12px;color:var(--p9n-muted,#5f6b7a);">
-        \u{1F4C8} \u6682\u65E0\u6709\u6548\u83B7\u5F97\u65F6\u95F4\u8BB0\u5F55\uFF08\u5DF2\u8F7D\u5165\u6837\u672C\uFF09
+      <div data-psnine-next="true" class="psnine-trophy-chart-section" style="font-size:12px;color:var(--p9n-muted,#5f6b7a);">
+        \u6682\u65E0\u6709\u6548\u83B7\u5F97\u65F6\u95F4\u8BB0\u5F55\uFF08\u5DF2\u8F7D\u5165\u6837\u672C\uFF09
       </div>
     `;
     }
     return `
-    <div data-psnine-next="true" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:12px;margin:8px 0;">
+    <div data-psnine-next="true" class="psnine-trophy-charts">
       <!-- Type Breakdown -->
-      <div data-psnine-next="true" style="padding:10px;background:var(--p9n-surface-alt,#f8fafc);border:1px solid var(--p9n-border,#ccd6dd);border-radius:6px;color:var(--p9n-text,inherit);">
-        <div style="font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;">
-          <span>\u{1F3C6} \u5956\u676F\u7C7B\u578B\u6784\u6210 (\u5DF2\u8F7D\u5165: ${total})</span>
+      <div data-psnine-next="true" class="psnine-trophy-chart-section">
+        <div class="psnine-trophy-chart-header" style="font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;">
+          <span>\u5956\u676F\u7C7B\u578B\u6784\u6210 (\u5DF2\u8F7D\u5165: ${total})</span>
         </div>
         <div style="height:12px;display:flex;border-radius:6px;overflow:hidden;margin-bottom:8px;">
           <div style="width:${pPct}%;background:#4dabf7;" title="\u767D\u91D1: ${platinum} (${pPct}%)"></div>
@@ -4923,8 +5201,8 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
       </div>
 
       <!-- Rarity Breakdown -->
-      <div data-psnine-next="true" style="padding:10px;background:var(--p9n-surface-alt,#f8fafc);border:1px solid var(--p9n-border,#ccd6dd);border-radius:6px;color:var(--p9n-text,inherit);">
-        <div style="font-size:12px;font-weight:600;margin-bottom:6px;">\u{1F4CA} \u7A00\u6709\u5EA6\u5206\u5E03</div>
+      <div data-psnine-next="true" class="psnine-trophy-chart-section">
+        <div class="psnine-trophy-chart-header" style="font-size:12px;font-weight:600;margin-bottom:6px;">\u7A00\u6709\u5EA6\u5206\u5E03</div>
         <svg viewBox="0 0 ${svgWidth} ${svgHeight}" data-psnine-next="true" style="width:100%;height:100px;font-family:inherit;">
           ${rarityBuckets.map((b, i) => {
       const h = b.count / maxRarity * 80;
@@ -5407,7 +5685,7 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
           mainPanel = doc.createElement("div");
           mainPanel.id = "psnine-trophy-stats-panel";
           mainPanel.setAttribute("data-psnine-next", "true");
-          mainPanel.style.cssText = "margin:12px 0;padding:12px;background:var(--p9n-surface,#fff);border:1px solid var(--p9n-border,#ccd6dd);border-radius:8px;color:var(--p9n-text,inherit);";
+          mainPanel.className = "psnine-trophy-panel";
           const target = doc.querySelector(".main, .box.pd10, .min-inner");
           const firstTbl = doc.querySelector("table.list");
           if (firstTbl && firstTbl.parentElement) {
@@ -5441,6 +5719,7 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
             chip.onclick = () => {
               const previewCard = doc.getElementById("psnine-trophy-preview-card");
               if (previewCard) {
+                previewCard.className = "psnine-trophy-preview-card";
                 previewCard.style.display = "block";
                 previewCard.innerHTML = "";
                 const titleLine = doc.createElement("div");
@@ -5481,44 +5760,44 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
             lastStatsKey = `${stats.total}:${stats.platinum}:${stats.gold}:${stats.silver}:${stats.bronze}:${stats.earnedCount}:${stats.unearnedCount}:${stats.timeCurve.length}`;
             lastTrophiesKey = currentTrophies.map((t) => `${t.trophyId}:${t.status}:${t.tipsCount}`).join(",");
             mainPanel.innerHTML = `
-            <div data-psnine-next="true" class="psnine-trophy-overview-top" style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
-              <div data-psnine-next="true" id="psnine-trophy-header-title" style="font-weight:600;font-size:13px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;">
-                <span class="psnine-trophy-title-text" style="white-space:nowrap;font-size:14px;">\u5956\u676F\u6982\u89C8</span>
-                <span id="psnine-trophy-header-counts" style="white-space:nowrap;font-size:12px;color:var(--p9n-muted,#5f6b7a);font-weight:normal;">[\u767D${stats.platinum} \u91D1${stats.gold} \u94F6${stats.silver} \u94DC${stats.bronze}]</span>
+            <div data-psnine-next="true" class="psnine-trophy-overview-top">
+              <div data-psnine-next="true" id="psnine-trophy-header-title" class="psnine-trophy-card-hd">
+                <span class="psnine-trophy-title-text">\u5956\u676F\u6982\u89C8</span>
+                <span id="psnine-trophy-header-counts">[\u767D${stats.platinum} \u91D1${stats.gold} \u94F6${stats.silver} \u94DC${stats.bronze}]</span>
                 ${isPersonalPage ? `
-                  <span class="alert-success pd5" id="psnine-trophy-completion-badge" style="border-radius:4px;font-size:11px;padding:2px 6px;background:#28a745;color:#fff;font-weight:normal;">
-                    \u5DF2\u83B7 ${stats.earnedCount} / \u672A\u83B7 ${stats.unearnedCount} (\u5956\u676F\u6570\u91CF\u5360\u6BD4: ${(stats.earnedCount / stats.total * 100).toFixed(1)}%)
+                  <span class="psnine-trophy-completion" id="psnine-trophy-completion-badge">
+                    \u5DF2\u83B7 ${stats.earnedCount} \xB7 \u672A\u83B7 ${stats.unearnedCount} \xB7 \u6570\u91CF\u5360\u6BD4 ${(stats.earnedCount / stats.total * 100).toFixed(1)}%
                   </span>
                 ` : `
-                  <span id="psnine-trophy-completion-badge" style="font-size:11px;color:var(--p9n-muted,#5f6b7a);font-weight:normal;">(\u516C\u5F00\u5956\u676F\u5217\u8868: \u5171 ${stats.total} \u4E2A)</span>
+                  <span class="psnine-trophy-completion" id="psnine-trophy-completion-badge">\u516C\u5F00\u5956\u676F\u5217\u8868 \xB7 \u5171 ${stats.total} \u4E2A</span>
                 `}
               </div>
 
               <!-- Action Toolbar -->
-              <div data-psnine-next="true" class="psnine-trophy-toolbar" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:12px;">
-                <div data-psnine-next="true" class="psnine-trophy-action-group" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;">
-                  <button type="button" id="psnine-toggle-summary-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid var(--p9n-border,#ccd6dd);background:transparent;cursor:pointer;">
+              <div data-psnine-next="true" class="psnine-trophy-toolbar">
+                <div data-psnine-next="true" class="psnine-trophy-action-group">
+                  <button type="button" id="psnine-toggle-summary-btn" class="psnine-trophy-pill-btn" data-psnine-next="true">
                     ${isSummaryFolded ? "\u5C55\u5F00\u56FE\u6807\u6C47\u603B" : "\u6298\u53E0\u56FE\u6807\u6C47\u603B"}
                   </button>
-                  <button type="button" id="psnine-toggle-charts-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid var(--p9n-border,#ccd6dd);background:transparent;cursor:pointer;">
+                  <button type="button" id="psnine-toggle-charts-btn" class="psnine-trophy-pill-btn" data-psnine-next="true">
                     ${isChartFolded ? "\u5C55\u5F00\u56FE\u8868" : "\u6298\u53E0\u56FE\u8868"}
                   </button>
                 </div>
 
-                <div data-psnine-next="true" class="psnine-trophy-action-group" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;">
+                <div data-psnine-next="true" class="psnine-trophy-action-group">
                   ${isPersonalPage ? `
-                    <button type="button" id="psnine-filter-status-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid #3890ff;background:rgba(56,144,255,0.1);color:#0056b3;cursor:pointer;font-weight:500;">
+                    <button type="button" id="psnine-filter-status-btn" class="psnine-trophy-pill-btn${currentFilterStatus !== "all" ? " active" : ""}" data-psnine-next="true" aria-pressed="${currentFilterStatus !== "all"}">
                       \u7B5B\u9009: ${currentFilterStatus === "all" ? "\u5168\u90E8" : currentFilterStatus === "unearned" ? "\u4EC5\u672A\u83B7" : "\u4EC5\u5DF2\u83B7"}
                     </button>
                   ` : ""}
 
-                  <button type="button" id="psnine-batch-load-all-tips-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid #17a2b8;background:rgba(23,162,184,0.1);color:#117a8b;cursor:pointer;">
+                  <button type="button" id="psnine-batch-load-all-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true">
                     \u5C55\u5F00\u6240\u6709Tips
                   </button>
-                  <button type="button" id="psnine-batch-load-unearned-tips-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid #17a2b8;background:rgba(23,162,184,0.1);color:#117a8b;cursor:pointer;${!isPersonalPage ? "opacity:0.5;cursor:not-allowed;" : ""}" ${!isPersonalPage ? 'disabled title="\u516C\u5F00\u9875\u9762\u65E0\u6CD5\u786E\u8BA4\u83B7\u5F97\u72B6\u6001\uFF0C\u8BF7\u8BBF\u95EE\u4E2A\u4EBA\u5956\u676F\u9875\u4F7F\u7528\u6B64\u529F\u80FD"' : ""}>
+                  <button type="button" id="psnine-batch-load-unearned-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true"${!isPersonalPage ? ' disabled title="\u516C\u5F00\u9875\u9762\u65E0\u6CD5\u786E\u8BA4\u83B7\u5F97\u72B6\u6001\uFF0C\u8BF7\u8BBF\u95EE\u4E2A\u4EBA\u5956\u676F\u9875\u4F7F\u7528\u6B64\u529F\u80FD"' : ""}>
                     \u5C55\u5F00\u672A\u83B7Tips
                   </button>
-                  <button type="button" id="psnine-stop-batch-tips-btn" data-psnine-next="true" style="padding:4px 10px;border-radius:4px;border:1px solid #e03131;background:rgba(224,49,49,0.1);color:#c92a2a;cursor:pointer;display:none;">
+                  <button type="button" id="psnine-stop-batch-tips-btn" class="psnine-trophy-pill-btn danger" data-psnine-next="true" style="display:none;">
                     \u505C\u6B62\u52A0\u8F7D
                   </button>
                 </div>
@@ -5529,10 +5808,10 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
               ${renderTrophyChartsSvg(stats)}
             </div>
 
-            <div data-psnine-next="true" id="psnine-trophy-icon-grid-wrapper" style="display:${isSummaryFolded ? "none" : "block"};margin-top:8px;padding-top:8px;border-top:1px solid var(--p9n-border,#ccd6dd);">
-              <div style="font-size:12px;font-weight:600;margin-bottom:6px;">\u{1F5BC}\uFE0F \u5956\u676F\u56FE\u6807\u6C47\u603B (\u70B9\u51FB\u5FEB\u901F\u5B9A\u4F4D):</div>
+            <div data-psnine-next="true" id="psnine-trophy-icon-grid-wrapper" class="psnine-trophy-icon-grid-wrapper" style="display:${isSummaryFolded ? "none" : "block"};">
+              <div class="psnine-trophy-icon-grid-title" style="font-size:12px;font-weight:600;margin-bottom:6px;">\u5956\u676F\u56FE\u6807\u6C47\u603B (\u70B9\u51FB\u5FEB\u901F\u5B9A\u4F4D):</div>
               <div id="psnine-trophy-icon-chips-container" data-psnine-next="true" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
-              <div id="psnine-trophy-preview-card" data-psnine-next="true" style="display:none;margin-top:6px;padding:6px 10px;background:var(--p9n-surface-alt,#f8fafc);border:1px solid var(--p9n-border,#ccd6dd);border-radius:4px;font-size:12px;color:var(--p9n-text,inherit);"></div>
+              <div id="psnine-trophy-preview-card" class="psnine-trophy-preview-card" data-psnine-next="true" style="display:none;"></div>
             </div>
           `;
             const chipsContainer = doc.getElementById("psnine-trophy-icon-chips-container");
@@ -5558,6 +5837,8 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
                 else if (currentFilterStatus === "unearned") currentFilterStatus = "earned";
                 else currentFilterStatus = "all";
                 filterBtn.textContent = `\u7B5B\u9009: ${currentFilterStatus === "all" ? "\u5168\u90E8" : currentFilterStatus === "unearned" ? "\u4EC5\u672A\u83B7" : "\u4EC5\u5DF2\u83B7"}`;
+                filterBtn.classList.toggle("active", currentFilterStatus !== "all");
+                filterBtn.setAttribute("aria-pressed", String(currentFilterStatus !== "all"));
                 currentTrophies.forEach((t) => {
                   const hide = currentFilterStatus !== "all" && t.status !== currentFilterStatus;
                   setHidden(t.row, "trophy-status-filter", hide);
@@ -5628,10 +5909,11 @@ html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"
               lastStatsKey = statsKey;
               const badge = doc.getElementById("psnine-trophy-completion-badge");
               if (badge) {
+                badge.className = "psnine-trophy-completion";
                 if (isPersonalPage) {
-                  badge.textContent = `\u5DF2\u83B7 ${stats.earnedCount} / \u672A\u83B7 ${stats.unearnedCount} (\u5956\u676F\u6570\u91CF\u5360\u6BD4: ${(stats.earnedCount / stats.total * 100).toFixed(1)}%)`;
+                  badge.textContent = `\u5DF2\u83B7 ${stats.earnedCount} \xB7 \u672A\u83B7 ${stats.unearnedCount} \xB7 \u6570\u91CF\u5360\u6BD4 ${(stats.earnedCount / stats.total * 100).toFixed(1)}%`;
                 } else {
-                  badge.textContent = `(\u516C\u5F00\u5956\u676F\u5217\u8868: \u5171 ${stats.total} \u4E2A)`;
+                  badge.textContent = `\u516C\u5F00\u5956\u676F\u5217\u8868 \xB7 \u5171 ${stats.total} \u4E2A`;
                 }
               }
               const headerCounts = doc.getElementById("psnine-trophy-header-counts");

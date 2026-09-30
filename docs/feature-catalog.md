@@ -11,7 +11,7 @@
 |G03|按时间切换主题|[global](../src/features/global.ts)|选择定时后才显示开始/结束小时，兼容旧配置。|
 |G04|刮刮条显示|[global](../src/features/global.ts)|代码审阅、关联模块回归|
 |G05|自动签到|[global](../src/features/global.ts)|默认关闭；仅用模拟签到按钮验证去重与启用条件，本次未发起真实签到。|
-|G06|回到页底|[global](../src/features/global.ts)|代码审阅、关联模块回归|
+|G06|回到页底|[global](../src/features/global.ts)|原生悬浮层合并与几何无重叠回归；旧页保留独立入口。|
 |G07|插件设置|[core](../src/main.ts)|设置导入导出仅含设置，不同步 Cookie 或个人进度；移动浏览器回归不等于管理器沙箱实测。|
 |G08|裸文本链接识别|[global](../src/features/global.ts)|代码审阅、关联模块回归|
 |G09|D7VG 旧链接修复|[global](../src/features/global.ts)|代码审阅、关联模块回归|
@@ -82,7 +82,7 @@
 |D03|活动人民币切换|[deals](../src/features/deals.ts)|只读访问 /huodong 返回 404；采用旧源码结构的测试夹具验证，未做当前活动页在线验证。|
 |D04|折扣幅度着色|[deals](../src/features/deals.ts)|代码审阅、关联模块回归|
 |D05|数折与活动只看史低|[deals](../src/features/deals.ts)|只接受站点显式史低标记；活动页部分沿用历史夹具验证。|
-|X01|v2 导航与布局|[core](../src/main.ts)|现站公开页面回放与旧结构夹具覆盖；未来站点 DOM 变更仍需维护。|
+|X01|v2 导航与布局|[core](../src/main.ts)|入口复用原生链接，亮暗样式逐项比对；插件配色跟随站点变量，公开页面回放覆盖。|
 |X02|iOS Safari Stay|[core](../src/main.ts)|单文件、GM 兼容层与触控已实现；Chromium/WebKit 自动化通过仍不能代表 Tampermonkey 或 iPhone Stay 真机安装、授权及沙箱通过。|
 |X03|动态内容幂等增强|[core](../src/main.ts)|重复注入、局部动态内容与取消回归；不依赖 MutationObserver 持续轮询。|
 |X04|旧配置迁移|[core](../src/main.ts)|只迁移可访问的旧 localStorage 或用户导入的 JSON；新脚本不能读取旧脚本的 GM 私有区。|

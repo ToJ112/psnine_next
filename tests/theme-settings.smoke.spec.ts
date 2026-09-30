@@ -5,15 +5,29 @@ const bundle = readFileSync(new URL('../dist/psnine_next.user.js', import.meta.u
 const html = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+:root { --c-card:#fcfdff; --c-bg:#f4f6fa; --c-line:#e5e8ef; --c-text:#1f2937; --c-text-2:#6b7280; --c-brand:#1e5ae6; --c-brand-soft:#e8effe; --r-md:8px; --r-sm:4px; }
+html[data-theme="dark"] { --c-card:#1a222d; --c-bg:#10151d; --c-line:#303b49; --c-text:#e6ebf2; --c-text-2:#a8b3c2; --c-brand:#79aaff; --c-brand-soft:#202c3a; }
 body { margin:0; background:#a9bbca; color:#333; font:14px sans-serif; }
-.box { padding:12px; background:white; }
+.box { padding:12px; background:var(--c-card); }
+.mobile-nav-panel { padding:12px; background:var(--c-card); }
+.mobile-nav-panel nav { display:grid; gap:8px; }
+.mobile-nav-panel a { display:flex; align-items:center; justify-content:center; min-height:46px; border:1px solid var(--c-line); border-radius:var(--r-md); color:var(--c-text); font-size:14px; font-weight:600; text-decoration:none; }
+.user-menu-list a { display:flex; align-items:center; min-height:38px; padding:8px 12px; color:var(--c-text-2); border-radius:var(--r-sm); }
+#native-icon-probe { background:var(--c-card); border:1px solid var(--c-line); border-radius:var(--r-md); color:var(--c-text-2); }
+.float-layer { position:fixed; right:16px; bottom:20px; z-index:40; display:flex; flex-direction:column; gap:8px; }
+.float-layer .float-btn { width:46px; height:46px; border:1px solid var(--c-line); border-radius:var(--r-md); background:var(--c-card); color:var(--c-text-2); }
 .list { width:100%; } td { padding:8px; }
 .inav { padding:15px; background:white; } .inav a { color:#3890ff; }
 .text-strong { color:#333; } a { color:#1686db; }
 .text-platinum { color:#7a96d1; } .text-gold { color:#cd9a46; }
 .t1 { background:#d5d9e4; } .t4 { background:#e4cdc1; }
 .alert-success { color:#659f13; background:#f5faec; }
-</style></head><body class="bg"><div class="box"><h1>奖杯列表</h1>
+</style></head><body class="bg">
+<div class="mobile-nav-panel" hidden><nav><a href="/psngame">游戏</a><a href="/gene">机因</a><a href="/qa">问答</a></nav></div>
+<div class="user-menu-list" hidden><a href="/set">设置</a></div>
+<div class="nav-user" hidden><div class="dropdown"><ul><li><a href="/set">旧版设置</a></li></ul></div></div>
+<button id="native-icon-probe" hidden>原生图标按钮</button>
+<div class="box"><h1>奖杯列表</h1>
 <ul class="inav"><li class="current"><a href="/psngame/12345">奖杯</a></li><li><a href="/psngame/12345/comment">评论</a></li></ul>
 <p>完成度 <span class="text-strong">1/2</span></p>
 <table class="list"><tbody>
@@ -208,3 +222,61 @@ test('dark theme preserves trophy, discount and selected-state colors while keep
   expect(contrast(tips.color,tips.background)).toBeGreaterThanOrEqual(4.5);
   expect(contrast(count.color,tips.background)).toBeGreaterThanOrEqual(4.5);
 });
+
+for (const scheme of ['light','dark'] as const) {
+  test(`plugin navigation and trophy controls inherit native ${scheme} design`, async ({ page }, testInfo) => {
+    await page.setViewportSize({width:390,height:844});
+    await page.emulateMedia({colorScheme:scheme});
+    const nativeLayer='<div class="float-layer"><button type="button" class="float-btn" id="native-float-button">原站</button></div>';
+    await page.route('**/*',route=>route.fulfill({contentType:'text/html; charset=utf-8',body:html.replace('<div class="box">',nativeLayer+'<div class="box">')}));
+    await page.goto('https://psnine.com/psngame/12345');
+    const menu=page.locator('.mobile-nav-panel');
+    await menu.evaluate(el=>{(el as HTMLElement).hidden=false;});
+    const entry=menu.locator('nav > a.psnine-nav-settings-btn');
+    await expect(entry).toHaveCount(1);
+    await expect(page.locator('.user-menu-list > a.psnine-nav-settings-btn')).toHaveCount(1);
+    await expect(page.locator('.nav-user .dropdown ul > li > a.psnine-nav-settings-btn')).toHaveCount(1);
+    const styleOf=(locator:import('@playwright/test').Locator)=>locator.evaluate(el=>{
+      const s=getComputedStyle(el);
+      return {background:s.backgroundColor,color:s.color,border:s.borderTopColor,borderWidth:s.borderTopWidth,radius:s.borderRadius,fontSize:s.fontSize,fontWeight:s.fontWeight,minHeight:s.minHeight,justify:s.justifyContent,boxSizing:s.boxSizing};
+    });
+    expect(await styleOf(entry)).toEqual(await styleOf(menu.locator('nav > a').first()));
+    expect((await entry.boundingBox())!.height).toBe((await menu.locator('nav > a').first().boundingBox())!.height);
+    const native=await styleOf(page.locator('#native-icon-probe'));
+    for(const id of ['#psnine-settings-gear','#psnine-scrollbottom']) {
+      const button=page.locator(id), style=await styleOf(button);
+      await expect(page.locator('.float-layer > '+id)).toHaveCount(1);
+      expect(style.background).toBe(native.background);
+      expect(style.border).toBe(native.border);
+      expect(style.radius).toBe(native.radius);
+      const box=await button.boundingBox();
+      expect(box!.width).toBeGreaterThanOrEqual(44);
+      expect(box!.height).toBeGreaterThanOrEqual(44);
+    }
+    const floatingBoxes=await page.locator('.float-layer > button').evaluateAll(els=>els.map(el=>{const r=el.getBoundingClientRect();return {top:r.top,bottom:r.bottom};}).sort((a,b)=>a.top-b.top));
+    expect(floatingBoxes).toHaveLength(3);
+    expect(floatingBoxes[0].top).toBeGreaterThanOrEqual(0);
+    for(let i=1;i<floatingBoxes.length;i++) expect(floatingBoxes[i].top).toBeGreaterThanOrEqual(floatingBoxes[i-1].bottom+4);
+    const panel=page.locator('#psnine-trophy-stats-panel');
+    expect((await colors(panel)).background).toBe(native.background);
+    const action=panel.locator('.psnine-trophy-pill-btn').first();
+    expect((await action.boundingBox())!.height).toBeGreaterThanOrEqual(36);
+    expect(parseFloat((await styleOf(action)).radius)).toBeGreaterThanOrEqual(12);
+    await page.screenshot({path:testInfo.outputPath(`native-style-${scheme}.png`)});
+    // Native variables may be changed by the site; plugin surfaces must follow without reinjection.
+    await page.evaluate(()=>document.documentElement.style.setProperty('--c-card','#26364a'));
+    expect((await colors(panel)).background).toBe((await colors(page.locator('#native-icon-probe'))).background);
+    await page.evaluate(()=>document.documentElement.style.removeProperty('--c-card'));
+    const url=page.url();
+    await entry.focus();
+    await entry.press('Space');
+    await expect(page.getByRole('dialog')).toBeVisible();
+    expect(page.url()).toBe(url);
+    await page.keyboard.press('Escape');
+    await expect(entry).toBeFocused();
+    // Repeated content hooks must not insert another entry or duplicate IDs.
+    await page.evaluate(()=>document.body.appendChild(document.createElement('aside')));
+    await expect(entry).toHaveCount(1);
+    expect(await page.locator('[id]').evaluateAll(els=>new Set(els.map(el=>el.id)).size===els.length)).toBe(true);
+  });
+}

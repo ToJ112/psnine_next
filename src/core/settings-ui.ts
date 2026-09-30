@@ -46,21 +46,38 @@ export function mountSettingsUI(ctx: Context): void {
   const injectNavMenu = () => {
     const targets = doc.querySelectorAll('.user-menu-list, .mobile-nav-panel nav, .nav-user .dropdown ul, .header .dropdown ul');
     targets.forEach(target => {
-      if (!target.querySelector('#psnine-nav-settings-link')) {
+      if (target.querySelector('[data-psnine-settings-trigger]')) {
+        return;
+      }
+
+      const a = doc.createElement('a');
+      a.href = '#';
+      a.setAttribute('role', 'button');
+      a.setAttribute('data-psnine-next', 'nav-link');
+      a.setAttribute('data-psnine-settings-trigger', 'true');
+      a.className = 'psnine-nav-settings-btn psnine-nav-settings-link';
+      a.textContent = '插件设置';
+
+      const handleTrigger = (e: Event) => {
+        e.preventDefault();
+        openSettingsModal();
+      };
+
+      a.addEventListener('click', handleTrigger);
+      a.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          handleTrigger(e);
+        }
+      });
+
+      // Wrap in <li> for list containers (ul / ol), direct append for native nav / a lists
+      if (target.tagName === 'UL' || target.tagName === 'OL') {
         const item = doc.createElement('li');
-        item.id = 'psnine-nav-settings-link';
-        item.setAttribute('data-psnine-next', 'nav-link');
-        const btn = doc.createElement('button');
-        btn.setAttribute('type', 'button');
-        btn.className = 'psnine-nav-settings-btn';
-        btn.style.cssText = 'background:none; border:none; color:inherit; font:inherit; cursor:pointer; padding:6px 12px; width:100%; text-align:left; display:flex; align-items:center; gap:6px;';
-        btn.innerHTML = `${ICONS.gear} <span>插件设置</span>`;
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          openSettingsModal();
-        });
-        item.appendChild(btn);
+        item.setAttribute('data-psnine-next', 'nav-item');
+        item.appendChild(a);
         target.appendChild(item);
+      } else {
+        target.appendChild(a);
       }
     });
   };

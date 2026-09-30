@@ -116,6 +116,31 @@ export function enhanceMasks(ctx: Context, root: ParentNode): void {
 /**
  * Smooth scroll to bottom button (G06) using standard accessible <button>.
  */
+/**
+ * Idempotently merges plugin floating buttons into native v2 .float-layer if present,
+ * avoiding overlaying native check-in / back-to-top buttons.
+ */
+export function integrateFloatingLayer(doc: Document): void {
+  const floatLayer = doc.querySelector('.float-layer') as HTMLElement | null;
+  if (!floatLayer) return;
+
+  const scrollBottomBtn = doc.getElementById('psnine-scrollbottom') as HTMLElement | null;
+  if (scrollBottomBtn && scrollBottomBtn.parentElement !== floatLayer) {
+    scrollBottomBtn.classList.add('float-btn');
+    floatLayer.appendChild(scrollBottomBtn);
+  }
+
+  const gearBtn = doc.getElementById('psnine-settings-gear') as HTMLElement | null;
+  if (gearBtn && gearBtn.parentElement !== floatLayer) {
+    gearBtn.classList.add('float-btn');
+    floatLayer.appendChild(gearBtn);
+  }
+}
+
+/**
+ * Smooth scroll to bottom button (G06) using standard accessible <button>.
+ * Integrates into native v2 .float-layer when available.
+ */
 export function mountScrollBottom(ctx: Context): void {
   const { document: doc, window: win } = ctx;
   let btn = doc.getElementById('psnine-scrollbottom') as HTMLButtonElement | null;
@@ -137,6 +162,9 @@ export function mountScrollBottom(ctx: Context): void {
     });
     doc.body.appendChild(btn);
   }
+
+  // Idempotently integrate into native v2 .float-layer if present on page
+  integrateFloatingLayer(doc);
 }
 
 /**
@@ -364,6 +392,7 @@ export const mountGlobal: Mount = (ctx: Context): Cleanup => {
   const unsubs = ctx.onContent((root) => {
     enhanceMasks(ctx, root);
     fixLinks(ctx, root);
+    integrateFloatingLayer(ctx.document);
   });
 
   return () => {

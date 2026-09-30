@@ -1,6 +1,6 @@
 {
   "date": "2026-09-30",
-  "release_version": "1.0.2",
+  "release_version": "1.0.3",
   "node": "24.19.0",
   "dependencies": {
     "typescript": "5.9.3",
@@ -11,22 +11,22 @@
   },
   "artifact": {
     "path": "dist/psnine_next.user.js",
-    "bytes": 367614,
-    "sha256": "01b2a51965483056b36b1c49a4f5b562b4dcc23e7ccdee0dec59217f3cf46fae"
+    "bytes": 376592,
+    "sha256": "a663ccf9e40ffba23b6cca59876c18583f00199310c2fee3674d6f14db46859f"
   },
   "requirements": 80,
   "typecheck": "passed",
-  "clean_install": "npm ci passed for 1.0.0; dependency resolutions unchanged in 1.0.2",
+  "clean_install": "npm ci passed for 1.0.0; dependency resolutions unchanged in 1.0.3",
   "unit": {
     "files": 17,
-    "passed": 163,
+    "passed": 165,
     "failed": 0,
     "skipped": 0
   },
   "browser": {
-    "startTime": "2026-09-30T13:23:14.247Z",
-    "duration": 75141.874,
-    "expected": 22,
+    "startTime": "2026-09-30T13:47:53.727Z",
+    "duration": 96227.82800000001,
+    "expected": 26,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
@@ -79,12 +79,11 @@
     "reason": "Dependency resolutions and history evidence unchanged; package version fields only were updated."
   },
   "validated_changes": [
-    "compact mobile settings switches and collapsible sections with reachable footer",
-    "single appearance choice with save, reload, system changes and conditional schedule inputs",
-    "late native theme attributes reconciled and observer disconnected on cleanup",
-    "dark navigation, statistics, tables and controls with measured text contrast",
-    "trophy, discount and filter-state semantic colors preserved",
-    "nested spoiler text masked and revealed using actual shipped theme CSS",
+    "native navigation links preserve site typography, spacing, borders, box sizing and keyboard access",
+    "theme tokens follow native site colors and radii, including dynamic variable changes",
+    "neutral trophy overview with outline controls, selected filter state and restoration",
+    "floating controls join the native floating layer without overlapping native buttons",
+    "light and dark mobile layout, dialog usability and all 1.0.2 regressions retained",
     "native trophy sorting, touch and keyboard regressions retained"
   ],
   "dark_page_replay": {
@@ -99,5 +98,6 @@
     "script_errors": 0,
     "enhancement_overflows": 0,
     "unsettled_mutations": 0
-  }
+  },
+  "execution_note": "An initial unrestricted unit run concurrent with three browser suites hit one 5s timeout. The full unit suite rerun with --maxWorkers=2 passed 165/165 without raising timeouts or changing assertions. Replay checks now wait for the CSS transition and remove hover before checking filter activation/restoration; no production change was needed for that sampling issue."
 }

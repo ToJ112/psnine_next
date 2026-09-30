@@ -84,6 +84,24 @@ for (const [engine,launcher] of [['chromium',chromium],['webkit',webkit]]) {
   if(colorScheme==='dark')checks.darkTextReadable=darkReadability.filter(r=>r.selector!=='.inav').every(r=>r.contrast>=4.5);
   if(colorScheme==='dark')checks.noBrightNavigation=darkReadability.filter(r=>r.selector==='.inav').every(r=>r.backgroundLuminance<.2);
   if (['home','game','game-personal','reviews','deals'].includes(name)) {
+  const nativeNav = page.locator('.mobile-nav-panel nav');
+  if(await nativeNav.count()) {
+    const navCheck = await nativeNav.evaluate(nav => {
+      const original = nav.querySelector('a:not(.psnine-nav-settings-btn)');
+      const inserted = nav.querySelector('.psnine-nav-settings-btn');
+      if(!original || !inserted) return {matches:false};
+      const props=['backgroundColor','color','borderTopColor','borderTopWidth','borderRadius','fontSize','fontWeight','minHeight','justifyContent','boxSizing'];
+      const a=getComputedStyle(original), b=getComputedStyle(inserted);
+      return {matches:inserted.tagName==='A' && inserted.parentElement===nav && props.every(p=>a[p]===b[p]),
+        native:Object.fromEntries(props.map(p=>[p,a[p]])),plugin:Object.fromEntries(props.map(p=>[p,b[p]]))};
+    });
+    checks.nativeSettingsStyle=navCheck.matches;
+    if(name==='game-personal') {
+      await nativeNav.evaluate(nav=>{const panel=nav.closest('.mobile-nav-panel');panel.dataset.replayWasHidden=String(panel.hidden);panel.hidden=false;});
+      await page.screenshot({path:path.join(output,`${engine}-${name}-mobile-nav.png`),fullPage:false});
+      await nativeNav.evaluate(nav=>{const panel=nav.closest('.mobile-nav-panel');panel.hidden=panel.dataset.replayWasHidden==='true';delete panel.dataset.replayWasHidden;});
+    }
+  }
   await page.locator('#psnine-settings-gear').click();
   checks.settings=await page.locator('.psnine-settings-dialog').evaluate(n=>({fields:n.querySelectorAll('input,select,textarea').length,width:n.getBoundingClientRect().width,withinViewport:n.getBoundingClientRect().left>=0&&n.getBoundingClientRect().right<=innerWidth}));
   if(name==='game-personal')await page.screenshot({path:path.join(output,`${engine}-${name}-settings.png`),fullPage:false});
@@ -108,9 +126,23 @@ for (const [engine,launcher] of [['chromium',chromium],['webkit',webkit]]) {
     checks.originalRestored=original===await order();
     checks.nativeLinksPreserved=await page.evaluate(()=>window.__nativeSortLinks.length===3 && window.__nativeSortLinks.every(({node,href})=>node.isConnected && node.getAttribute('href')===href));
     if(name==='game-personal'){
-      await page.locator('#psnine-filter-status-btn').click();await page.waitForTimeout(100);
+      const filterBefore=await page.locator('#psnine-filter-status-btn').evaluate(el=>getComputedStyle(el).borderTopColor);
+      await page.locator('#psnine-filter-status-btn').click();
+      await page.mouse.move(0,0);
+      // Wait for the CSS transition, and check the selected state without hover styling.
+      await page.waitForFunction(before=>{
+        const el=document.getElementById('psnine-filter-status-btn');
+        return el?.getAttribute('aria-pressed')==='true' && !el.matches(':hover') && getComputedStyle(el).borderTopColor!==before;
+      },filterBefore,{timeout:3000});
+      checks.activeFilterStyle=await page.locator('#psnine-filter-status-btn').evaluate((el,before)=>el.getAttribute('aria-pressed')==='true'&&!el.matches(':hover')&&getComputedStyle(el).borderTopColor!==before,filterBefore);
       checks.unearnedFilter=await page.locator('tr.trophy').evaluateAll(rs=>({hidden:rs.filter(r=>r.hidden).length,visible:rs.filter(r=>!r.hidden).length}));
       await page.locator('#psnine-filter-status-btn').click();await page.locator('#psnine-filter-status-btn').click();
+      await page.mouse.move(0,0);
+      await page.waitForFunction(before=>{
+        const el=document.getElementById('psnine-filter-status-btn');
+        return el?.getAttribute('aria-pressed')==='false' && !el.matches(':hover') && getComputedStyle(el).borderTopColor===before;
+      },filterBefore,{timeout:3000});
+      checks.filterStyleRestored=true;
       checks.filterRestored=await page.locator('tr.trophy').evaluateAll(rs=>rs.every(r=>!r.hidden));
     }
   }
