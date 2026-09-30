@@ -5,7 +5,53 @@
     "module": "global",
     "behavior": "v2 data-theme 与旧站样式",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "dark_theme",
+      "theme_dark_mode"
+    ],
+    "evidence_commits": [
+      "e1a15a9c356a817b27603089cb3568d3b9af0c45",
+      "81d71b349947f14f4d78ded2c1d9d9aefe2ee408",
+      "7d2b193b5173a7fbfcb057da0b3b50bbf742a818",
+      "72941dc59612a65982a0e5cc1764253966319e47",
+      "209a32c4cc706a23524c019d2d528a15595725b8",
+      "889bd0f92eceecd37efeb11562bdecca0f6ee596",
+      "4543bb2a47a7b11c19314f2f92d08dfabc72b1bb",
+      "52d7fb8baf9060906d822b14b83956e7daab8ccb",
+      "4e1ccc28e2900832d249f88ae52e402875d36398",
+      "4ccb971bd211ee6881ac30de61c3752e289b9e79",
+      "b03bc6e85def650eb6dbfdd23ca6502ad2049f85",
+      "35d55f020b2e7226bbe2d42d629894156143131c",
+      "7d7b8d0c14a3a0c3a6f59a97b2a9ce03f32dba3c",
+      "f388881a74fbab8f43ad3da028c128645de79f1b",
+      "e49d4fe93d703628b6df83aab32a876eb5b7c00e",
+      "bb41569afc163ca1dfffbc58afb59f37555ab634",
+      "fd657e5d790db1ba99204258b010f3fee25e529c",
+      "f4c93e8cf20d7b619cb8f2e4251e8390f3389021",
+      "32ff1df447e31713dcc33151d2b208145cf3af24",
+      "c1bca6d450854fd2836f8787ac64ec0bac1964d3",
+      "756796180e7936febb478bd01f8e27a3f9624841",
+      "761a2d89602dbf1ac622dd278aa65cba02545e4d",
+      "8513ba27c053c76ff78830e2897cdd7f09c95387",
+      "ddd7b2c2808aeea4b606d91a0bf67ca411edc63d",
+      "1897ab604e9aab01081affe30d115edc67e49a04",
+      "ab3b0059a9655cfbfe56dbd220a3327ead5f57a7",
+      "a4d90d1ef70f363e90bf4407af4cba6474609553",
+      "be0ddee471b17422867a4762d7ed3d96a6463a95",
+      "ec1a1645732df21ef9f053b2030b29f75569ec1a",
+      "6ebdbedcef4fa64572686f8aa9c853102861f56b",
+      "99fc5afe7d4494386ab7581c70e27c63e88cc398",
+      "aab88d67c148fecc3d808a1abd5de84c43bc1148",
+      "2ed011eec3cd6971dfa981f4bb924833e9eeb534",
+      "bb67ba390beb40356bf682ffbf82d7763692359f",
+      "027d7817fd2249a8e6e76a3a0ab96ef266f0cbc6",
+      "74b4f6d3fed51062d258be60fe664b8f09456d7e",
+      "5fd04cd367c3377fbe56ed558e83d9d4121c6b3a",
+      "ffe49ec4404d2824867426fdd72fa04c2cdb86f9",
+      "876b4727c420e50978e799510abb37a8c70e48b5"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "G02",
@@ -13,7 +59,22 @@
     "module": "global",
     "behavior": "监听系统主题变化",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "auto_night_mode"
+    ],
+    "evidence_commits": [
+      "bb41569afc163ca1dfffbc58afb59f37555ab634",
+      "fd657e5d790db1ba99204258b010f3fee25e529c",
+      "f4c93e8cf20d7b619cb8f2e4251e8390f3389021",
+      "c0057fd10c3133c8a2fd26b0c36bc15f193d3cc2",
+      "301b32e131d39359741049f2ef8c99dd40c4f7fc",
+      "cc7fe0b8d93197e2a32a28e37e87c4c0abf423a3",
+      "6ebdbedcef4fa64572686f8aa9c853102861f56b",
+      "2ed011eec3cd6971dfa981f4bb924833e9eeb534",
+      "bb67ba390beb40356bf682ffbf82d7763692359f"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "G03",
@@ -21,7 +82,22 @@
     "module": "global",
     "behavior": "跨午夜时间区间与运行中刷新",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "auto_night_mode"
+    ],
+    "evidence_commits": [
+      "bb41569afc163ca1dfffbc58afb59f37555ab634",
+      "fd657e5d790db1ba99204258b010f3fee25e529c",
+      "f4c93e8cf20d7b619cb8f2e4251e8390f3389021",
+      "c0057fd10c3133c8a2fd26b0c36bc15f193d3cc2",
+      "301b32e131d39359741049f2ef8c99dd40c4f7fc",
+      "cc7fe0b8d93197e2a32a28e37e87c4c0abf423a3",
+      "6ebdbedcef4fa64572686f8aa9c853102861f56b",
+      "2ed011eec3cd6971dfa981f4bb924833e9eeb534",
+      "bb67ba390beb40356bf682ffbf82d7763692359f"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "G04",
@@ -29,7 +105,49 @@
     "module": "global",
     "behavior": "悬浮、键盘、触屏显隐",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "comment_spoiler_mask",
+      "hover_mask_reveal"
+    ],
+    "evidence_commits": [
+      "e1a15a9c356a817b27603089cb3568d3b9af0c45",
+      "81d71b349947f14f4d78ded2c1d9d9aefe2ee408",
+      "d3d5f910e757807997644651731ff51d20b99803",
+      "7d7b8d0c14a3a0c3a6f59a97b2a9ce03f32dba3c",
+      "a2a3194763edcfec9ba1c5c53ea7dabfa6bfcddc",
+      "3b3412c915b4127ca8b65cb9e6dc374eeb9f164e",
+      "9f9abc1744dc4df1375cfe84521f114a758f9c7b",
+      "6d6062ff922f303fdd74e3bd72cdd30360a12891",
+      "8d88f99480758910161e8eea66a0b94d322acc3d",
+      "a8e4cfb4135af10f2e97a0959a041985ff29249a",
+      "fb5164aaae475951a635e107676caf7ff25a3f5d",
+      "c98a0140229b53d6365fe32c95c8ffe11798343f",
+      "1f515ab8343d48de43458ac4af76f6343e94d573",
+      "cf3b5145d66fd200179b7dd32d73e2de0fbe03b2",
+      "4aa034d013c6efbf147793dc75e4b932da452664",
+      "1f34eace81e1b51c4af4478d99db1a2c9ffc50fe",
+      "960fd6ad8e55187d17301cc3d7b87021486dda98",
+      "848eeeb91536cd790bc5c425b1feff05817043fb",
+      "8c33bd47377ebf39f3bf95686fd9b0a43b185526",
+      "a6331e947461ad1d844cd235621d97328bdc3b2f",
+      "64d2cb31428d85b275e2e57faac9c390ec500998",
+      "e3239651c96c7908984d99dea0bde856da2a9882",
+      "e3d216333708a1ae41f52d358b7b91db5294abc2",
+      "a2a02107e45ff427fce9912662830e084dfc8493",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "fee71f81055a7a881cd3a240a06b36b685a76110",
+      "9996347bdbe29f855683f5df97d894de28ce8eb4",
+      "1100a076c8a4c8e74393c24b073a56b033f95748",
+      "a93491f8654b312577c0b049e3620db50703f56c",
+      "3261e326de710d52abc9c243294b57d1636975f0",
+      "d15d02f15a6a922f9316689e442992bfb0ec2f42",
+      "52a086aaa2bbbbc2f71258e3115826845c568ed3",
+      "c388d10a78486e0caa15bd62fe40646ac356dfc1",
+      "efcd2d3330f7f06515d1fbb8209f2eed64d5785e",
+      "d3a8eb09af5ffae992780033683ef23775fb80da"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "G05",
@@ -37,7 +155,46 @@
     "module": "global",
     "behavior": "每账号每日去重，仅启用后运行",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "auto_sign_in",
+      "user_auto_checkin"
+    ],
+    "evidence_commits": [
+      "71e742649f9b85aab0ace6f95624045d74b6bf6d",
+      "6b1713ddd71f46f03075e6ece1f154db36f0f0a1",
+      "4edb8faf3b6834d8d70ed26aa8fed7313331693a",
+      "7924928c60082840b9472cfb8c133c86df23cda7",
+      "f3d941fa818e33623b73802dfd22b39638bfd67c",
+      "f20f094fae2ca05573cce7dd9873faa241a4722d",
+      "bd89b34ce59f1827c0b065d1853f339f7c9f3544",
+      "137f2d5f76a5cec154e43b52bc3b2d7fb02fbb32",
+      "6da803686b5bb41ee1e3a57a618144a4e6ff450f",
+      "af92becc54eafa11491cfcabd70de0cc6531e577",
+      "84f0ed57d5b66c40e0dd1a9e917625e246ed4422",
+      "4d2ceefee8342b8c8093fda09c4c5c27b4d5281c",
+      "64f47a0ebca6f29cc186d8f59d0719f784912225",
+      "25b276ae5d085dfea8a65fb1e15a85f9c3765881",
+      "a6331e947461ad1d844cd235621d97328bdc3b2f",
+      "8529a46b3d5a3d99e2018001f0a1f6ba90bf7618",
+      "e3d216333708a1ae41f52d358b7b91db5294abc2",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "dfbe821581d9b33bcc571177b30578b8e9a02bd0",
+      "d06bb7814cb7765c52166f5c79e375aa8b63f460",
+      "f96120a4c1317a5dca97eb1f88587c2c18a1d7ea",
+      "fee71f81055a7a881cd3a240a06b36b685a76110",
+      "9996347bdbe29f855683f5df97d894de28ce8eb4",
+      "1100a076c8a4c8e74393c24b073a56b033f95748",
+      "a93491f8654b312577c0b049e3620db50703f56c",
+      "3261e326de710d52abc9c243294b57d1636975f0",
+      "d15d02f15a6a922f9316689e442992bfb0ec2f42",
+      "8358281d7f576c4747192facb7d6dee845fce966",
+      "9b9463963ea81d04404c4b44b6434506d40e1243",
+      "efcd2d3330f7f06515d1fbb8209f2eed64d5785e",
+      "42c820a2360c1dca7c2dd21294706c316050de7a",
+      "cabbd6937dd2cb20843e987c439f8387f10db951"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "G06",
@@ -45,7 +202,43 @@
     "module": "global",
     "behavior": "滚动至回复或分页位置",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "page_quick_bottom_buttons",
+      "scroll_to_bottom",
+      "smooth_scroll_to_bottom"
+    ],
+    "evidence_commits": [
+      "51fce0194dcb096b09ac9063d5242bca85d1a3a1",
+      "d3d5f910e757807997644651731ff51d20b99803",
+      "8ad78a480795a29d5da477f0c6be2f64d7e650fc",
+      "050b870151b12ba8644a651f6051238501a25286",
+      "ae6829b364f284b4cbab0f1440aafd42b90990cb",
+      "f20f094fae2ca05573cce7dd9873faa241a4722d",
+      "55cda4b8149b61b0d10ca5a694921dc9aa5613b4",
+      "fa0425822d0e7faead19690e2990c4a8f3e35d62",
+      "8ddef83747df3b6799e2e036367f93b5c83d2823",
+      "b8a21f4547909aac1dc58710bcc91ff7223122b9",
+      "473e8bbfd2cfd487fcbf7c0bfaa2d7d4d6c605b1",
+      "0ae72149aab08bb4212e6a5b81020d7326073a84",
+      "28bbe841d974ac9e74355b16d98517c082df2c51",
+      "a3ea5522724e6a4c1b8e57dde2164c651634ea3a",
+      "fb5164aaae475951a635e107676caf7ff25a3f5d",
+      "c98a0140229b53d6365fe32c95c8ffe11798343f",
+      "1f515ab8343d48de43458ac4af76f6343e94d573",
+      "cf3b5145d66fd200179b7dd32d73e2de0fbe03b2",
+      "1f34eace81e1b51c4af4478d99db1a2c9ffc50fe",
+      "524ed718579082e8cce4cbd5c0865e3d9a87d6f8",
+      "8c33bd47377ebf39f3bf95686fd9b0a43b185526",
+      "0727e64f118dcf8b215ea00c885dc2383a4ceba4",
+      "a6331e947461ad1d844cd235621d97328bdc3b2f",
+      "8529a46b3d5a3d99e2018001f0a1f6ba90bf7618",
+      "64d2cb31428d85b275e2e57faac9c390ec500998",
+      "e3d216333708a1ae41f52d358b7b91db5294abc2",
+      "a2a02107e45ff427fce9912662830e084dfc8493",
+      "eab700122fb732a7772c71d61d177f082ad09b06"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "G07",
@@ -53,7 +246,52 @@
     "module": "core",
     "behavior": "页内入口、保存、取消、恢复默认、导入导出",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "settings_in_page_panel",
+      "settings_panel",
+      "settings_ui_responsive"
+    ],
+    "evidence_commits": [
+      "ebc5a326408cff15e8da12841ec52cdd5f361f49",
+      "18fcaf0126f7ae24c7c367aefdff43a65638c4ce",
+      "57858e1f53e8a7c4bf1eaf3984188d0f6a8e17d5",
+      "8b357ee8915ee719da0e65a9850630c0a2d306ea",
+      "c61cd72adf1dce8209252f6cc58d20408dbc18d8",
+      "c7e0801ffa3d43a82bf2f70c956a369a34f98aee",
+      "d61623f29cd53a66f5b224323754d1cc3ca44f45",
+      "0bbf0c885821b9db7ffebd8781415acdc3a286bb",
+      "85e974d6e06320c5af199fe1579a76a13f855c63",
+      "209a32c4cc706a23524c019d2d528a15595725b8",
+      "889bd0f92eceecd37efeb11562bdecca0f6ee596",
+      "52d7fb8baf9060906d822b14b83956e7daab8ccb",
+      "8f4aba9a52a4574ccfaa49e07ff9d6911bf2dfb3",
+      "9d2e4540e64ff7f360aea21c7851f90b60ab2735",
+      "b6c0a3db3bb63acf40772977b3e1b29f356a5bd3",
+      "b3f0156f2d088cee6cc75b85989a292ec7ea3e8f",
+      "71e742649f9b85aab0ace6f95624045d74b6bf6d",
+      "860ff14baf17a9d38cf7ce31e162891a52519e1c",
+      "ad10cfd8b91203b5cb715394c5b98d81113386b6",
+      "238d2b0788ed7dd0bd44ab1c9b4afa8275cf63f9",
+      "6ba5e13846936d6a77b42c53b77e238a84db4ad4",
+      "6a6887744610aa0a32c87f94ff5ee32b42f71263",
+      "7924928c60082840b9472cfb8c133c86df23cda7",
+      "e49d4fe93d703628b6df83aab32a876eb5b7c00e",
+      "f3264ee2f86cc8b3133df0aab4ea7691a9587516",
+      "6dc1bc43b39616c8b330753cfe285062dda81f45",
+      "4dd6ec7f6d414c0b7e700b340781750aa27eb334",
+      "bb41569afc163ca1dfffbc58afb59f37555ab634",
+      "c330d0ffce9bf15cbe597971b66568c723e26c81",
+      "54e8ef156bbb63e0a1222fada2e265ae11e36609",
+      "c0f7d105e1816010df0293bd92a7ab49673f01e8",
+      "c0057fd10c3133c8a2fd26b0c36bc15f193d3cc2",
+      "301b32e131d39359741049f2ef8c99dd40c4f7fc",
+      "b90b98c3a6dd8fef86a500d058109b2dc25d5628",
+      "8d1315b18bd0408558091dbadf1f500351edcd4a",
+      "2e98947ae81a046d7155b6f80d4241aef4dd5ee1",
+      "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "G08",
@@ -61,7 +299,17 @@
     "module": "global",
     "behavior": "跳过链接、代码与输入区域",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "link_plaintext_detection"
+    ],
+    "evidence_commits": [
+      "d06bb7814cb7765c52166f5c79e375aa8b63f460",
+      "c8a62a3c0f1c81bb7f790123023ba0b2b1235cc9",
+      "d9ab0c3b8e3b12a76e8d24ba3726bae022f56ae6",
+      "c3c5b7f9f5f75c90f887e5b5088fac58d2af5fc7"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "G09",
@@ -69,7 +317,14 @@
     "module": "global",
     "behavior": "只替换确切旧域名",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "link_d7vg_fix"
+    ],
+    "evidence_commits": [
+      "dfbe821581d9b33bcc571177b30578b8e9a02bd0"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "G10",
@@ -77,7 +332,17 @@
     "module": "global",
     "behavior": "按设置升级准确主机链接",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "bilibili_iframe_https",
+      "https_resource_fix"
+    ],
+    "evidence_commits": [
+      "91e991706658fb5983d6a3e15550a24507db2000",
+      "bbab96bddce0b727a453a6d598f73fc02aa12656",
+      "d4c943ee217957e13ed0527b4cb124452cc612af"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "G11",
@@ -85,7 +350,14 @@
     "module": "global",
     "behavior": "列表入口与目标页 query 保留",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "topic_sort_by_new"
+    ],
+    "evidence_commits": [
+      "bd89b34ce59f1827c0b065d1853f339f7c9f3544"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C01",
@@ -93,7 +365,29 @@
     "module": "community",
     "behavior": "可靠识别主题/机因/交易发起者",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "author_highlight",
+      "comment_op_badge"
+    ],
+    "evidence_commits": [
+      "51fce0194dcb096b09ac9063d5242bca85d1a3a1",
+      "b672cdfbcab38cc70579cedbd6fb18b4e69578bf",
+      "889db88d6d0734d962b0f1b576a728b9fa2e8c46",
+      "21584e2e710f55432bb878801f3b720d87e0b970",
+      "c98a0140229b53d6365fe32c95c8ffe11798343f",
+      "1f515ab8343d48de43458ac4af76f6343e94d573",
+      "cf3b5145d66fd200179b7dd32d73e2de0fbe03b2",
+      "4aa034d013c6efbf147793dc75e4b932da452664",
+      "1f34eace81e1b51c4af4478d99db1a2c9ffc50fe",
+      "960fd6ad8e55187d17301cc3d7b87021486dda98",
+      "848eeeb91536cd790bc5c425b1feff05817043fb",
+      "b9afa4479087400f19ec1c10e5682d61d9761372",
+      "027b3bfa9eb3fcdfcfa1751549546ba4c762196b",
+      "bd211514bc5c39ea14e9c885b6e941b684408e13",
+      "eab700122fb732a7772c71d61d177f082ad09b06"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C02",
@@ -101,7 +395,21 @@
     "module": "community",
     "behavior": "大小写不敏感、可配置颜色",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "specific_id_highlight"
+    ],
+    "evidence_commits": [
+      "51fce0194dcb096b09ac9063d5242bca85d1a3a1",
+      "6ed917ff4949e18bd1a169461e79beaaa029b286",
+      "238d2b0788ed7dd0bd44ab1c9b4afa8275cf63f9",
+      "db8d196dc70eca28bc5cd2557abd5d478c978721",
+      "069e93586ab0b0fe6d270cc1db9e8f139b6f916d",
+      "21584e2e710f55432bb878801f3b720d87e0b970",
+      "7a7527b351305f2ba55a21f6f53c7a5fb78beb98",
+      "728fa197e62b1abad20ddd89e4221126c04f1c55"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C03",
@@ -109,7 +417,29 @@
     "module": "community",
     "behavior": "主楼及子楼，不改原节点身份",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "comment_floor_index",
+      "comment_floor_number"
+    ],
+    "evidence_commits": [
+      "204b17d2f437c1c5707ed98a7de04ce6fb59a209",
+      "7d7b8d0c14a3a0c3a6f59a97b2a9ce03f32dba3c",
+      "21bf6ed062a6390d0462c2306cf896421be199c1",
+      "5ace7836121665e019cfab75a9e2dbb1b1c10643",
+      "798ee26b91898e5f79b46f354d1ef23cb36612e1",
+      "f66448399c093f5cc0bd5f8b91d95be872e5d3ce",
+      "64d2cb31428d85b275e2e57faac9c390ec500998",
+      "fa6419095cae689d6c94e6a58ae52541e6ddefe6",
+      "e3239651c96c7908984d99dea0bde856da2a9882",
+      "d67ed4601ced4c8fab46c4c1626ee1a99382ead4",
+      "a4290614806e728c8726ded9b2ffa3fdfde7b388",
+      "a2a02107e45ff427fce9912662830e084dfc8493",
+      "bd211514bc5c39ea14e9c885b6e941b684408e13",
+      "40726ca69ae56498c41d4c644928c0f8f6678313",
+      "eab700122fb732a7772c71d61d177f082ad09b06"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C04",
@@ -117,7 +447,60 @@
     "module": "community",
     "behavior": "寻找被 @ 用户最近的先前回复",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "comment_scroll_to_reply",
+      "reply_content_preview",
+      "reply_traceback_toggle"
+    ],
+    "evidence_commits": [
+      "51fce0194dcb096b09ac9063d5242bca85d1a3a1",
+      "edf96b27f10e03610d7ab863656009ea482ea70d",
+      "b12477a3e8318b164a0f1f839d09bb16c3724111",
+      "d3d5f910e757807997644651731ff51d20b99803",
+      "6ed917ff4949e18bd1a169461e79beaaa029b286",
+      "d8d6d2c1a2a839cd17c5ec6a7a72718696a88795",
+      "cf531e6b2b74f1201d7b04be32bf1d578ec71d7f",
+      "72941dc59612a65982a0e5cc1764253966319e47",
+      "606517acf8e72aa050f62bdd89ea75efe1fbe47b",
+      "bf5b32fcd7fa31ca01bbb66a5fba595f86f180ae",
+      "ec585fe691d6d45872d37ecdb9a81dd89ca8fac6",
+      "85e974d6e06320c5af199fe1579a76a13f855c63",
+      "10c67567c797bb2315db77bbd14126d112c19f8a",
+      "d2853d53e9e885a85c14d75d6423ef6cd8c62e63",
+      "633619e403fbd6e1878c6075a8f345365eb1f133",
+      "fc9fe5dc1ed9b61a6ae2f1a9c05e61cfa6eed039",
+      "45fe646f132ca298540e2b103f3f5e7d904c78ee",
+      "3f4575374e16773038a4e430f194739ef3e2117a",
+      "b8a21f4547909aac1dc58710bcc91ff7223122b9",
+      "09b8108cad58f7356e877d100fd8a0ec8681f7c9",
+      "1100a076c8a4c8e74393c24b073a56b033f95748",
+      "a93491f8654b312577c0b049e3620db50703f56c",
+      "3261e326de710d52abc9c243294b57d1636975f0",
+      "d15d02f15a6a922f9316689e442992bfb0ec2f42",
+      "2e98947ae81a046d7155b6f80d4241aef4dd5ee1",
+      "73d15cb1c34374c23649f805e175ccd4f5a0be10",
+      "b1ee8cfd3c94bb3d6d2fb39df242f1e1280f00d3",
+      "439e281dbbdaa1d124d65d3d4123d8b34cd5e553",
+      "d62588c708d64d162871d2db9aef6d2b4bc53c7a",
+      "efcd2d3330f7f06515d1fbb8209f2eed64d5785e",
+      "a45c0be01da549c01d6363f049d0f3baaa479b54",
+      "2ea70eb6899fb7af260072d6d20a698c7fdb60e1",
+      "1105f622761122df94bb0268166031fcf3ef6b8f",
+      "eb2baac2341499e0d2cf9713522f44375c872f2b",
+      "8da1d81ea983386c88a641c914c0c46da651cc35",
+      "0ff6dcc9a3f18b8e686c84c7d58ba961e7e935c7",
+      "c74d04a485069cd0402b8a144afd2fe6bb79678b",
+      "feec341d16611e4ddc30340f53fd18702e7f3894",
+      "75de1ae36b6de8370dc477618d72aafd595348f5",
+      "cd1416a8466a37e33a6aa06784c566b5c0d5634d",
+      "0a0a977df492b0d91b247cf1c15b0666de262483",
+      "94e8d8f33deca596e2667616320e940407050b91",
+      "0b200ac41b67b5151c2ebdcac7d0df9deabae8a5",
+      "a560fd3760c20318734da49a39663c07d1fa170f",
+      "23bcfd04cee218f4113230f21a8b29968871d0f7"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C05",
@@ -125,7 +508,60 @@
     "module": "community",
     "behavior": "短摘要、完整预览与定位原回复",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "comment_scroll_to_reply",
+      "reply_content_preview",
+      "reply_traceback_toggle"
+    ],
+    "evidence_commits": [
+      "51fce0194dcb096b09ac9063d5242bca85d1a3a1",
+      "edf96b27f10e03610d7ab863656009ea482ea70d",
+      "b12477a3e8318b164a0f1f839d09bb16c3724111",
+      "d3d5f910e757807997644651731ff51d20b99803",
+      "6ed917ff4949e18bd1a169461e79beaaa029b286",
+      "d8d6d2c1a2a839cd17c5ec6a7a72718696a88795",
+      "cf531e6b2b74f1201d7b04be32bf1d578ec71d7f",
+      "72941dc59612a65982a0e5cc1764253966319e47",
+      "606517acf8e72aa050f62bdd89ea75efe1fbe47b",
+      "bf5b32fcd7fa31ca01bbb66a5fba595f86f180ae",
+      "ec585fe691d6d45872d37ecdb9a81dd89ca8fac6",
+      "85e974d6e06320c5af199fe1579a76a13f855c63",
+      "10c67567c797bb2315db77bbd14126d112c19f8a",
+      "d2853d53e9e885a85c14d75d6423ef6cd8c62e63",
+      "633619e403fbd6e1878c6075a8f345365eb1f133",
+      "fc9fe5dc1ed9b61a6ae2f1a9c05e61cfa6eed039",
+      "45fe646f132ca298540e2b103f3f5e7d904c78ee",
+      "3f4575374e16773038a4e430f194739ef3e2117a",
+      "b8a21f4547909aac1dc58710bcc91ff7223122b9",
+      "09b8108cad58f7356e877d100fd8a0ec8681f7c9",
+      "1100a076c8a4c8e74393c24b073a56b033f95748",
+      "a93491f8654b312577c0b049e3620db50703f56c",
+      "3261e326de710d52abc9c243294b57d1636975f0",
+      "d15d02f15a6a922f9316689e442992bfb0ec2f42",
+      "2e98947ae81a046d7155b6f80d4241aef4dd5ee1",
+      "73d15cb1c34374c23649f805e175ccd4f5a0be10",
+      "b1ee8cfd3c94bb3d6d2fb39df242f1e1280f00d3",
+      "439e281dbbdaa1d124d65d3d4123d8b34cd5e553",
+      "d62588c708d64d162871d2db9aef6d2b4bc53c7a",
+      "efcd2d3330f7f06515d1fbb8209f2eed64d5785e",
+      "a45c0be01da549c01d6363f049d0f3baaa479b54",
+      "2ea70eb6899fb7af260072d6d20a698c7fdb60e1",
+      "1105f622761122df94bb0268166031fcf3ef6b8f",
+      "eb2baac2341499e0d2cf9713522f44375c872f2b",
+      "8da1d81ea983386c88a641c914c0c46da651cc35",
+      "0ff6dcc9a3f18b8e686c84c7d58ba961e7e935c7",
+      "c74d04a485069cd0402b8a144afd2fe6bb79678b",
+      "feec341d16611e4ddc30340f53fd18702e7f3894",
+      "75de1ae36b6de8370dc477618d72aafd595348f5",
+      "cd1416a8466a37e33a6aa06784c566b5c0d5634d",
+      "0a0a977df492b0d91b247cf1c15b0666de262483",
+      "94e8d8f33deca596e2667616320e940407050b91",
+      "0b200ac41b67b5151c2ebdcac7d0df9deabae8a5",
+      "a560fd3760c20318734da49a39663c07d1fa170f",
+      "23bcfd04cee218f4113230f21a8b29968871d0f7"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C06",
@@ -133,7 +569,20 @@
     "module": "community",
     "behavior": "桌面悬浮、键盘与触屏始终可用",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "comment_hover_reply_btn"
+    ],
+    "evidence_commits": [
+      "85e974d6e06320c5af199fe1579a76a13f855c63",
+      "3893e1ba4936467a3ef902d6fe6138a70e7a8ed2",
+      "69cef99115c8ed682778792b8a9eb8238d1b391f",
+      "0a437eb588aaffd4b8e22e534f8d4302f728a987",
+      "d57c056baf77933e907ab0ff5314cc8db11231e0",
+      "2047b156e1faf63f68d56559a50c4c7352c265d3",
+      "eb203ec61609b9fb4ed1fccbc20b6a24c118d444"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C07",
@@ -141,7 +590,43 @@
     "module": "community",
     "behavior": "按评论/答案数量和可配置阈值",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "show_hot_tag",
+      "topic_hot_tag"
+    ],
+    "evidence_commits": [
+      "d836d37490e9f9528c51f70551c3c2deb470a387",
+      "fbea76c4a45f21490e13c3a2ac606e44dba0a20b",
+      "ec1a1645732df21ef9f053b2030b29f75569ec1a",
+      "c0f7d105e1816010df0293bd92a7ab49673f01e8",
+      "371bcf3285077fbd2fd610b0280f4f9d3e2c493b",
+      "bd89b34ce59f1827c0b065d1853f339f7c9f3544",
+      "137f2d5f76a5cec154e43b52bc3b2d7fb02fbb32",
+      "6da803686b5bb41ee1e3a57a618144a4e6ff450f",
+      "af92becc54eafa11491cfcabd70de0cc6531e577",
+      "84f0ed57d5b66c40e0dd1a9e917625e246ed4422",
+      "4d2ceefee8342b8c8093fda09c4c5c27b4d5281c",
+      "64f47a0ebca6f29cc186d8f59d0719f784912225",
+      "25b276ae5d085dfea8a65fb1e15a85f9c3765881",
+      "cf3b5145d66fd200179b7dd32d73e2de0fbe03b2",
+      "4aa034d013c6efbf147793dc75e4b932da452664",
+      "1f34eace81e1b51c4af4478d99db1a2c9ffc50fe",
+      "524ed718579082e8cce4cbd5c0865e3d9a87d6f8",
+      "8c33bd47377ebf39f3bf95686fd9b0a43b185526",
+      "a6331e947461ad1d844cd235621d97328bdc3b2f",
+      "64d2cb31428d85b275e2e57faac9c390ec500998",
+      "e3239651c96c7908984d99dea0bde856da2a9882",
+      "e3d216333708a1ae41f52d358b7b91db5294abc2",
+      "a2a02107e45ff427fce9912662830e084dfc8493",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "dfbe821581d9b33bcc571177b30578b8e9a02bd0",
+      "d06bb7814cb7765c52166f5c79e375aa8b63f460",
+      "f96120a4c1317a5dca97eb1f88587c2c18a1d7ea",
+      "fee71f81055a7a881cd3a240a06b36b685a76110",
+      "9996347bdbe29f855683f5df97d894de28ce8eb4"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C08",
@@ -149,7 +634,34 @@
     "module": "community",
     "behavior": "各类帖子、通知、约战、Tips 和子评论",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "comment_block_user",
+      "user_blacklist"
+    ],
+    "evidence_commits": [
+      "11f77825fa12966de322b345a5bc95e1abd4054b",
+      "0bbf0c885821b9db7ffebd8781415acdc3a286bb",
+      "7e8166d3073f3e801ffbb52cd1f4313be0381959",
+      "238d2b0788ed7dd0bd44ab1c9b4afa8275cf63f9",
+      "086fa38d8be7a3fe7b06bea93057276627c65023",
+      "2613135c0b271a0308a67818bc15a2d761563875",
+      "ef483b3016f2966a0fe39a43a8d428bc7aaa7d7a",
+      "ce8f071889d1182572ea99ecd105048d757ec362",
+      "366ad542d611736368c0949ee3149204882ddf1a",
+      "4d75cf6225fcb33a5555a7fa670f8aefabb3351b",
+      "f800ba6be191c61374205fa8fcb0f29292f74976",
+      "7cf586b95297638dd83b1854d07fbd3573354e2b",
+      "c87810317db3d049829572204bb40d5eb252813d",
+      "91bc742d39a2da181748e39bf25f13e627ee0006",
+      "84bc87ba4a42de97d664b5a003540884da22f4e1",
+      "752683122a1a01136a366f7d7a033e35a194d235",
+      "c35f21ea195b849fdcac2cffe93caaf85478c152",
+      "8f68a2ca6a6fdd6a7c8e06f63775a3be46e5b6bc",
+      "96cddc045cb506e9ce19f5d41ae010a7e8f26528",
+      "847ced47231124cad98b1bf076e08cd0d1af7900"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C09",
@@ -157,7 +669,18 @@
     "module": "community",
     "behavior": "可揭示内容，非法正则保护",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "keyword_blocklist",
+      "keyword_filter"
+    ],
+    "evidence_commits": [
+      "8f68a2ca6a6fdd6a7c8e06f63775a3be46e5b6bc",
+      "7212939718bd467e68bf33724eaf74d51779d8d6",
+      "301a66979a7922f8431a31c9154cab7bf45207c8",
+      "847ced47231124cad98b1bf076e08cd0d1af7900"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C10",
@@ -165,7 +688,36 @@
     "module": "community",
     "behavior": "延迟获取、缓存、触屏按钮替代",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "avatar_profile_hover",
+      "user_hover_profile"
+    ],
+    "evidence_commits": [
+      "ad10cfd8b91203b5cb715394c5b98d81113386b6",
+      "36f1dfc19600904880c2bdf44a08708aff986315",
+      "f17620bfd8b8de154c520f8fbd0760fb742a9a8c",
+      "e1a7a94c1f2e33b128800ea5dbf01b3cd66272ba",
+      "238d2b0788ed7dd0bd44ab1c9b4afa8275cf63f9",
+      "227eecff1675ebe8071f4f0783a6b41ee14a394e",
+      "050b870151b12ba8644a651f6051238501a25286",
+      "118efee125482efde04f80d30801260b608b926b",
+      "a8fd8a298de63a901974dfbac5c064cbb9f291e3",
+      "2dfffa277e6782ade9eb65230a08b19f2f78ea16",
+      "8f6a4c41d9ec72acc57f383093bc6694da0eef2b",
+      "5212dd6d3d9d3da61e444feafbb3cb15b51261f2",
+      "707e872e44aae77c28b8f8a409d6e6ed517cc1dd",
+      "4aa4b246ace94771fcd5dbf95e1890590b7a1de7",
+      "8c33bd47377ebf39f3bf95686fd9b0a43b185526",
+      "a6331e947461ad1d844cd235621d97328bdc3b2f",
+      "1f7baea8c2925645c1446c809ad597d7bef83029",
+      "64d2cb31428d85b275e2e57faac9c390ec500998",
+      "e3239651c96c7908984d99dea0bde856da2a9882",
+      "a2a02107e45ff427fce9912662830e084dfc8493",
+      "40726ca69ae56498c41d4c644928c0f8f6678313",
+      "eab700122fb732a7772c71d61d177f082ad09b06"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C11",
@@ -173,7 +725,29 @@
     "module": "community",
     "behavior": "已解决/未回答/解决中及悬赏数标识",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "qa_status_icon",
+      "qa_title_color"
+    ],
+    "evidence_commits": [
+      "31781d4bfba8007d49b79b1cb78790a9ceadf8a8",
+      "76fa942d4df193e2bb19ed4dfb3f7065a89f9155",
+      "0f81fc9126db268ecf6772f079f9486c3484c4f1",
+      "860ff14baf17a9d38cf7ce31e162891a52519e1c",
+      "1549dd76715b758412a9101f87da232f9bac6d75",
+      "f20f094fae2ca05573cce7dd9873faa241a4722d",
+      "77c5faf5bfe8ebbb41b2ad88aeb3d8193879e5ea",
+      "4aa4b246ace94771fcd5dbf95e1890590b7a1de7",
+      "55a14601de320e34153b62816e624beb539b9160",
+      "16fd8cad0ad31a872235a93a29253f79054018c3",
+      "c521e35293f67db16278138c0b4d36e5d955d7c1",
+      "cc25c723c9ac90bd34145bc273dd429954b0fea0",
+      "1897ab604e9aab01081affe30d115edc67e49a04",
+      "5d128de38bc75842fbcfde0700a5bc2b9adde42b",
+      "b970da56d5cf18d104a4222ecc40b48377905b09"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C12",
@@ -181,7 +755,30 @@
     "module": "paging",
     "behavior": "分页顺序正确、去重、限流",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "qa_enhanced_page"
+    ],
+    "evidence_commits": [
+      "bd89b34ce59f1827c0b065d1853f339f7c9f3544",
+      "6da803686b5bb41ee1e3a57a618144a4e6ff450f",
+      "898b9d145a690b712bf9896e4fdd1cf9a9b14b5a",
+      "16128d436a84c837a74e9d573d012cd45a407e74",
+      "a3ea5522724e6a4c1b8e57dde2164c651634ea3a",
+      "fb5164aaae475951a635e107676caf7ff25a3f5d",
+      "c98a0140229b53d6365fe32c95c8ffe11798343f",
+      "1f515ab8343d48de43458ac4af76f6343e94d573",
+      "cf3b5145d66fd200179b7dd32d73e2de0fbe03b2",
+      "4aa034d013c6efbf147793dc75e4b932da452664",
+      "1f34eace81e1b51c4af4478d99db1a2c9ffc50fe",
+      "960fd6ad8e55187d17301cc3d7b87021486dda98",
+      "8c33bd47377ebf39f3bf95686fd9b0a43b185526",
+      "a6331e947461ad1d844cd235621d97328bdc3b2f",
+      "bd211514bc5c39ea14e9c885b6e941b684408e13",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "b1ee8cfd3c94bb3d6d2fb39df242f1e1280f00d3"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C13",
@@ -189,7 +786,30 @@
     "module": "community",
     "behavior": "反转实际答案，保留子回复归属",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "qa_enhanced_page"
+    ],
+    "evidence_commits": [
+      "bd89b34ce59f1827c0b065d1853f339f7c9f3544",
+      "6da803686b5bb41ee1e3a57a618144a4e6ff450f",
+      "898b9d145a690b712bf9896e4fdd1cf9a9b14b5a",
+      "16128d436a84c837a74e9d573d012cd45a407e74",
+      "a3ea5522724e6a4c1b8e57dde2164c651634ea3a",
+      "fb5164aaae475951a635e107676caf7ff25a3f5d",
+      "c98a0140229b53d6365fe32c95c8ffe11798343f",
+      "1f515ab8343d48de43458ac4af76f6343e94d573",
+      "cf3b5145d66fd200179b7dd32d73e2de0fbe03b2",
+      "4aa034d013c6efbf147793dc75e4b932da452664",
+      "1f34eace81e1b51c4af4478d99db1a2c9ffc50fe",
+      "960fd6ad8e55187d17301cc3d7b87021486dda98",
+      "8c33bd47377ebf39f3bf95686fd9b0a43b185526",
+      "a6331e947461ad1d844cd235621d97328bdc3b2f",
+      "bd211514bc5c39ea14e9c885b6e941b684408e13",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "b1ee8cfd3c94bb3d6d2fb39df242f1e1280f00d3"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C14",
@@ -197,7 +817,30 @@
     "module": "community",
     "behavior": "适配站点已加载与折叠节点",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "qa_enhanced_page"
+    ],
+    "evidence_commits": [
+      "bd89b34ce59f1827c0b065d1853f339f7c9f3544",
+      "6da803686b5bb41ee1e3a57a618144a4e6ff450f",
+      "898b9d145a690b712bf9896e4fdd1cf9a9b14b5a",
+      "16128d436a84c837a74e9d573d012cd45a407e74",
+      "a3ea5522724e6a4c1b8e57dde2164c651634ea3a",
+      "fb5164aaae475951a635e107676caf7ff25a3f5d",
+      "c98a0140229b53d6365fe32c95c8ffe11798343f",
+      "1f515ab8343d48de43458ac4af76f6343e94d573",
+      "cf3b5145d66fd200179b7dd32d73e2de0fbe03b2",
+      "4aa034d013c6efbf147793dc75e4b932da452664",
+      "1f34eace81e1b51c4af4478d99db1a2c9ffc50fe",
+      "960fd6ad8e55187d17301cc3d7b87021486dda98",
+      "8c33bd47377ebf39f3bf95686fd9b0a43b185526",
+      "a6331e947461ad1d844cd235621d97328bdc3b2f",
+      "bd211514bc5c39ea14e9c885b6e941b684408e13",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "b1ee8cfd3c94bb3d6d2fb39df242f1e1280f00d3"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C15",
@@ -205,7 +848,25 @@
     "module": "community",
     "behavior": "Tips/评论/留言，避免重复翻转",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "comment_subreply_order",
+      "floor_reverse_order"
+    ],
+    "evidence_commits": [
+      "f66448399c093f5cc0bd5f8b91d95be872e5d3ce",
+      "2613135c0b271a0308a67818bc15a2d761563875",
+      "8737d5351a9152ef4cbbe83328fc222e1c885ab8",
+      "4f0e5f50ff1825627eed5143c47b161d15d810f4",
+      "45b162fd22f3bd1ebc1296f1c294f2e8be32a45e",
+      "d1ca2fe7f889737d5f36c19d1509638637007890",
+      "6da803686b5bb41ee1e3a57a618144a4e6ff450f",
+      "af92becc54eafa11491cfcabd70de0cc6531e577",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "fee71f81055a7a881cd3a240a06b36b685a76110",
+      "9996347bdbe29f855683f5df97d894de28ce8eb4"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C16",
@@ -213,7 +874,17 @@
     "module": "community",
     "behavior": "有界触发，不无限重试点击",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "comment_expand_subcomments"
+    ],
+    "evidence_commits": [
+      "2b565084468f19884f37d6cdcba535c8a2c12c4e",
+      "6c3b793aafa3b1fe6f2912b1f2ddfa3f8c3eede4",
+      "a560fd3760c20318734da49a39663c07d1fa170f",
+      "f4ef6ee3d096bc639cba4948029be945e6af2b74"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C17",
@@ -221,7 +892,26 @@
     "module": "editor",
     "behavior": "600 字提示与超限反馈",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "comment_input_counter",
+      "forbid_gene_over_limit",
+      "gene_word_count"
+    ],
+    "evidence_commits": [
+      "aada03f292c040148364bab03e69953b5053aecf",
+      "db22b91c20ae83e8b1a1609f540c468b11ee0a99",
+      "4aa4b246ace94771fcd5dbf95e1890590b7a1de7",
+      "026b0ff31bca68399f66e4a2f5284ae837227c0a",
+      "4aa034d013c6efbf147793dc75e4b932da452664",
+      "1f34eace81e1b51c4af4478d99db1a2c9ffc50fe",
+      "960fd6ad8e55187d17301cc3d7b87021486dda98",
+      "848eeeb91536cd790bc5c425b1feff05817043fb",
+      "b9afa4479087400f19ec1c10e5682d61d9761372",
+      "22a2bfdc150d4dbfe5847b6935f876a06627ac29",
+      "eab700122fb732a7772c71d61d177f082ad09b06"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C18",
@@ -229,7 +919,25 @@
     "module": "editor",
     "behavior": "引用/黑条/图片/粗体/删除线/居中/颜色/链接",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "bbcode_live_preview",
+      "comment_input_preview"
+    ],
+    "evidence_commits": [
+      "d2853d53e9e885a85c14d75d6423ef6cd8c62e63",
+      "4d5c77060ca647520851acf7625e73c8dfb4cff4",
+      "db22b91c20ae83e8b1a1609f540c468b11ee0a99",
+      "4aa4b246ace94771fcd5dbf95e1890590b7a1de7",
+      "a75998924edafb93728437f75cf49cf386fb90f0",
+      "960fd6ad8e55187d17301cc3d7b87021486dda98",
+      "848eeeb91536cd790bc5c425b1feff05817043fb",
+      "b9afa4479087400f19ec1c10e5682d61d9761372",
+      "22a2bfdc150d4dbfe5847b6935f876a06627ac29",
+      "afd27493d171b54835193f075210ee94e8b34271",
+      "eab700122fb732a7772c71d61d177f082ad09b06"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C19",
@@ -237,7 +945,31 @@
     "module": "trophies",
     "behavior": "同一游戏请求去重，显示已获状态",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "trophy_earned_status_in_guide",
+      "trophy_guide_reference_mark"
+    ],
+    "evidence_commits": [
+      "1a2e8b4b5336acb989913c46dc1907dfe65f8415",
+      "3ad4d68e20abe1608c72d8c1b5c7847df1436eaf",
+      "21754779afea7b199299d25595dba66d3bda57b1",
+      "b3ee91d9939f147a28936b0ecdf6265eb4d6ff34",
+      "6c017a7bac3b7f12343de20ffe9be6b097e76d7f",
+      "cc7fe0b8d93197e2a32a28e37e87c4c0abf423a3",
+      "2d57e948bf72026cefc8f10afe7530d587dab72e",
+      "a922b99fa23a5c294341cf578fa2cb343f6d72ec",
+      "9278504656128ab0093ce9b18966c8fc17e9a3ff",
+      "8ac68f9837792ef8bfd19835cae9c2fa5aa3dc7a",
+      "37774d27acd6dbc63930d4cf39cff342120a7438",
+      "0727e64f118dcf8b215ea00c885dc2383a4ceba4",
+      "adc3a751e50e5879d32e2b9f419b3a0b9061fe1e",
+      "8b8a88f4161864446547b9994ab1b01b467412d0",
+      "1af4efe68c7c6868a9b805ff519022f64d9b0c40",
+      "1f7baea8c2925645c1446c809ad597d7bef83029",
+      "eab700122fb732a7772c71d61d177f082ad09b06"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C20",
@@ -245,7 +977,50 @@
     "module": "paging",
     "behavior": "机因/问答/主题/交易，追加后增强",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "auto_pagination",
+      "page_auto_paging"
+    ],
+    "evidence_commits": [
+      "c7b4900d26d7bd567b6488ed7057e8b969e41700",
+      "8378d5cd85373756122129ff4b9435278784f567",
+      "238d2b0788ed7dd0bd44ab1c9b4afa8275cf63f9",
+      "7122ff9948d7fa04860cf0c9414f109c5cd5167f",
+      "6ba5e13846936d6a77b42c53b77e238a84db4ad4",
+      "6b458244b875117774711d54e5e7803f2317be15",
+      "96a81a1eb44150846115c76a396e1c526a87198f",
+      "3172c261411957ad778cb39684004933cc42870f",
+      "d7380e4e518478b6dddec2e43399d339d2fe4e87",
+      "f49491b3d58c6168221f6904929bb36a26fe331e",
+      "77c5faf5bfe8ebbb41b2ad88aeb3d8193879e5ea",
+      "ae35c91838a3dd0dc9186c3746f5dc753a83f129",
+      "4377f9c7d3c25006915215b656791ff21d90ac44",
+      "371bcf3285077fbd2fd610b0280f4f9d3e2c493b",
+      "bd89b34ce59f1827c0b065d1853f339f7c9f3544",
+      "137f2d5f76a5cec154e43b52bc3b2d7fb02fbb32",
+      "6da803686b5bb41ee1e3a57a618144a4e6ff450f",
+      "af92becc54eafa11491cfcabd70de0cc6531e577",
+      "84f0ed57d5b66c40e0dd1a9e917625e246ed4422",
+      "4d2ceefee8342b8c8093fda09c4c5c27b4d5281c",
+      "64f47a0ebca6f29cc186d8f59d0719f784912225",
+      "25b276ae5d085dfea8a65fb1e15a85f9c3765881",
+      "1f7baea8c2925645c1446c809ad597d7bef83029",
+      "8529a46b3d5a3d99e2018001f0a1f6ba90bf7618",
+      "64d2cb31428d85b275e2e57faac9c390ec500998",
+      "fa6419095cae689d6c94e6a58ae52541e6ddefe6",
+      "e3239651c96c7908984d99dea0bde856da2a9882",
+      "d67ed4601ced4c8fab46c4c1626ee1a99382ead4",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "dfbe821581d9b33bcc571177b30578b8e9a02bd0",
+      "d06bb7814cb7765c52166f5c79e375aa8b63f460",
+      "f96120a4c1317a5dca97eb1f88587c2c18a1d7ea",
+      "fee71f81055a7a881cd3a240a06b36b685a76110",
+      "05184d1a86c6cf87728f94bafb7a095ab8afa47c",
+      "0a0f8c56cf3959cd2ea0a14760f350eb872c4544",
+      "9996347bdbe29f855683f5df97d894de28ce8eb4"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "C21",
@@ -253,7 +1028,50 @@
     "module": "paging",
     "behavior": "滚动或按钮载入个人游戏后续页",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "auto_pagination",
+      "page_auto_paging"
+    ],
+    "evidence_commits": [
+      "c7b4900d26d7bd567b6488ed7057e8b969e41700",
+      "8378d5cd85373756122129ff4b9435278784f567",
+      "238d2b0788ed7dd0bd44ab1c9b4afa8275cf63f9",
+      "7122ff9948d7fa04860cf0c9414f109c5cd5167f",
+      "6ba5e13846936d6a77b42c53b77e238a84db4ad4",
+      "6b458244b875117774711d54e5e7803f2317be15",
+      "96a81a1eb44150846115c76a396e1c526a87198f",
+      "3172c261411957ad778cb39684004933cc42870f",
+      "d7380e4e518478b6dddec2e43399d339d2fe4e87",
+      "f49491b3d58c6168221f6904929bb36a26fe331e",
+      "77c5faf5bfe8ebbb41b2ad88aeb3d8193879e5ea",
+      "ae35c91838a3dd0dc9186c3746f5dc753a83f129",
+      "4377f9c7d3c25006915215b656791ff21d90ac44",
+      "371bcf3285077fbd2fd610b0280f4f9d3e2c493b",
+      "bd89b34ce59f1827c0b065d1853f339f7c9f3544",
+      "137f2d5f76a5cec154e43b52bc3b2d7fb02fbb32",
+      "6da803686b5bb41ee1e3a57a618144a4e6ff450f",
+      "af92becc54eafa11491cfcabd70de0cc6531e577",
+      "84f0ed57d5b66c40e0dd1a9e917625e246ed4422",
+      "4d2ceefee8342b8c8093fda09c4c5c27b4d5281c",
+      "64f47a0ebca6f29cc186d8f59d0719f784912225",
+      "25b276ae5d085dfea8a65fb1e15a85f9c3765881",
+      "1f7baea8c2925645c1446c809ad597d7bef83029",
+      "8529a46b3d5a3d99e2018001f0a1f6ba90bf7618",
+      "64d2cb31428d85b275e2e57faac9c390ec500998",
+      "fa6419095cae689d6c94e6a58ae52541e6ddefe6",
+      "e3239651c96c7908984d99dea0bde856da2a9882",
+      "d67ed4601ced4c8fab46c4c1626ee1a99382ead4",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "dfbe821581d9b33bcc571177b30578b8e9a02bd0",
+      "d06bb7814cb7765c52166f5c79e375aa8b63f460",
+      "f96120a4c1317a5dca97eb1f88587c2c18a1d7ea",
+      "fee71f81055a7a881cd3a240a06b36b685a76110",
+      "05184d1a86c6cf87728f94bafb7a095ab8afa47c",
+      "0a0f8c56cf3959cd2ea0a14760f350eb872c4544",
+      "9996347bdbe29f855683f5df97d894de28ce8eb4"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "T01",
@@ -261,7 +1079,25 @@
     "module": "trophies",
     "behavior": "白金/金/银/铜计数和占比",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "trophy_pie_chart",
+      "trophy_ratio_chart"
+    ],
+    "evidence_commits": [
+      "51fce0194dcb096b09ac9063d5242bca85d1a3a1",
+      "4305c44e0cec3b050d38da524113c6cd43ef1b87",
+      "f20f094fae2ca05573cce7dd9873faa241a4722d",
+      "0857e7dac214421a3f184466a3b01bb0882dbe45",
+      "f6417ccc0371cb6234e0e5b85a738f1ac93c76b6",
+      "22a2bfdc150d4dbfe5847b6935f876a06627ac29",
+      "afd27493d171b54835193f075210ee94e8b34271",
+      "0727e64f118dcf8b215ea00c885dc2383a4ceba4",
+      "adc3a751e50e5879d32e2b9f419b3a0b9061fe1e",
+      "8b8a88f4161864446547b9994ab1b01b467412d0",
+      "eab700122fb732a7772c71d61d177f082ad09b06"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "T02",
@@ -269,7 +1105,25 @@
     "module": "trophies",
     "behavior": "0–5/5–10/10–20/20–50/50–100 边界",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "trophy_pie_chart",
+      "trophy_ratio_chart"
+    ],
+    "evidence_commits": [
+      "51fce0194dcb096b09ac9063d5242bca85d1a3a1",
+      "4305c44e0cec3b050d38da524113c6cd43ef1b87",
+      "f20f094fae2ca05573cce7dd9873faa241a4722d",
+      "0857e7dac214421a3f184466a3b01bb0882dbe45",
+      "f6417ccc0371cb6234e0e5b85a738f1ac93c76b6",
+      "22a2bfdc150d4dbfe5847b6935f876a06627ac29",
+      "afd27493d171b54835193f075210ee94e8b34271",
+      "0727e64f118dcf8b215ea00c885dc2383a4ceba4",
+      "adc3a751e50e5879d32e2b9f419b3a0b9061fe1e",
+      "8b8a88f4161864446547b9994ab1b01b467412d0",
+      "eab700122fb732a7772c71d61d177f082ad09b06"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "T03",
@@ -277,7 +1131,28 @@
     "module": "trophies",
     "behavior": "已获累计数、完成率、缺失时间处理",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "trophy_earned_line_chart",
+      "trophy_timeline_chart"
+    ],
+    "evidence_commits": [
+      "51fce0194dcb096b09ac9063d5242bca85d1a3a1",
+      "4b39e5d42f258697b29974f881863283e42bab90",
+      "7cdeaa50c6c3495876f9df48bc9b6547584c2397",
+      "7ce7e846c673a4ad4e121856a18073ff6028c6a5",
+      "a21b76a4ab50819b8eff4b5fbdc46117c2e4bb18",
+      "168725e9f54d791b29bdf18b8601c6274068f1f1",
+      "afd27493d171b54835193f075210ee94e8b34271",
+      "0727e64f118dcf8b215ea00c885dc2383a4ceba4",
+      "adc3a751e50e5879d32e2b9f419b3a0b9061fe1e",
+      "8b8a88f4161864446547b9994ab1b01b467412d0",
+      "1af4efe68c7c6868a9b805ff519022f64d9b0c40",
+      "461d5162b73ce5c2a2471e2b4af7990dfa3ebb1c",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "af01450b9e0a9906f997a7d34662cb9bbba804af"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "T04",
@@ -285,7 +1160,34 @@
     "module": "trophies",
     "behavior": "图标、各类型计数、未知状态区分",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "trophy_icon_layout",
+      "trophy_summary_bar",
+      "trophy_summary_list"
+    ],
+    "evidence_commits": [
+      "92a6a18f53e9d4030086abc8eab9ff70b2dc0f4d",
+      "c2a973b52251e135fd9e947da9f1b79e64db65d1",
+      "c0c2ebd5b9f62907e2fdc622604e26b3ba242e08",
+      "209a32c4cc706a23524c019d2d528a15595725b8",
+      "52d7fb8baf9060906d822b14b83956e7daab8ccb",
+      "fabb2684509fee4f86d28b3abc66cdfae14a7a8f",
+      "4e1ccc28e2900832d249f88ae52e402875d36398",
+      "7d7b8d0c14a3a0c3a6f59a97b2a9ce03f32dba3c",
+      "12dab27c880e1f7267ea9f984325f17f134ab656",
+      "238d2b0788ed7dd0bd44ab1c9b4afa8275cf63f9",
+      "2a93ed24be16fcacd16e319b2ac213c6c26b242f",
+      "c8c7dff2e0b33a15baf813af048f56ab5a12237a",
+      "01ca2e63c9bbd7e5d71ff62936436931da3e163e",
+      "461d5162b73ce5c2a2471e2b4af7990dfa3ebb1c",
+      "a2a02107e45ff427fce9912662830e084dfc8493",
+      "ccc17f87593117310bb9d4150e7de7fc1c1d8c48",
+      "40726ca69ae56498c41d4c644928c0f8f6678313",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "T05",
@@ -293,7 +1195,34 @@
     "module": "trophies",
     "behavior": "有 Tips 视觉提示，标题详情与跳转",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "trophy_icon_layout",
+      "trophy_summary_bar",
+      "trophy_summary_list"
+    ],
+    "evidence_commits": [
+      "92a6a18f53e9d4030086abc8eab9ff70b2dc0f4d",
+      "c2a973b52251e135fd9e947da9f1b79e64db65d1",
+      "c0c2ebd5b9f62907e2fdc622604e26b3ba242e08",
+      "209a32c4cc706a23524c019d2d528a15595725b8",
+      "52d7fb8baf9060906d822b14b83956e7daab8ccb",
+      "fabb2684509fee4f86d28b3abc66cdfae14a7a8f",
+      "4e1ccc28e2900832d249f88ae52e402875d36398",
+      "7d7b8d0c14a3a0c3a6f59a97b2a9ce03f32dba3c",
+      "12dab27c880e1f7267ea9f984325f17f134ab656",
+      "238d2b0788ed7dd0bd44ab1c9b4afa8275cf63f9",
+      "2a93ed24be16fcacd16e319b2ac213c6c26b242f",
+      "c8c7dff2e0b33a15baf813af048f56ab5a12237a",
+      "01ca2e63c9bbd7e5d71ff62936436931da3e163e",
+      "461d5162b73ce5c2a2471e2b4af7990dfa3ebb1c",
+      "a2a02107e45ff427fce9912662830e084dfc8493",
+      "ccc17f87593117310bb9d4150e7de7fc1c1d8c48",
+      "40726ca69ae56498c41d4c644928c0f8f6678313",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "T06",
@@ -301,7 +1230,34 @@
     "module": "trophies",
     "behavior": "默认折叠设置及手动展开",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "trophy_icon_layout",
+      "trophy_summary_bar",
+      "trophy_summary_list"
+    ],
+    "evidence_commits": [
+      "92a6a18f53e9d4030086abc8eab9ff70b2dc0f4d",
+      "c2a973b52251e135fd9e947da9f1b79e64db65d1",
+      "c0c2ebd5b9f62907e2fdc622604e26b3ba242e08",
+      "209a32c4cc706a23524c019d2d528a15595725b8",
+      "52d7fb8baf9060906d822b14b83956e7daab8ccb",
+      "fabb2684509fee4f86d28b3abc66cdfae14a7a8f",
+      "4e1ccc28e2900832d249f88ae52e402875d36398",
+      "7d7b8d0c14a3a0c3a6f59a97b2a9ce03f32dba3c",
+      "12dab27c880e1f7267ea9f984325f17f134ab656",
+      "238d2b0788ed7dd0bd44ab1c9b4afa8275cf63f9",
+      "2a93ed24be16fcacd16e319b2ac213c6c26b242f",
+      "c8c7dff2e0b33a15baf813af048f56ab5a12237a",
+      "01ca2e63c9bbd7e5d71ff62936436931da3e163e",
+      "461d5162b73ce5c2a2471e2b4af7990dfa3ebb1c",
+      "a2a02107e45ff427fce9912662830e084dfc8493",
+      "ccc17f87593117310bb9d4150e7de7fc1c1d8c48",
+      "40726ca69ae56498c41d4c644928c0f8f6678313",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "T07",
@@ -309,7 +1265,14 @@
     "module": "trophies",
     "behavior": "默认折叠设置及手动展开",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "trophy_chart_folding"
+    ],
+    "evidence_commits": [
+      "c2deba919f0022c13cc07ca961c5d5ee822e6437"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "T08",
@@ -317,7 +1280,21 @@
     "module": "trophies",
     "behavior": "最新/最早/XMB，未知排最后",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "sort_trophies_by_timestamp",
+      "trophy_sort_by_timestamp"
+    ],
+    "evidence_commits": [
+      "8fef41dc8b043b62736280942b1a0b765ee406cc",
+      "0ece5b82fa58638567180b1906b89708a1094247",
+      "b0f1556f19fa243dd662353d16a68ac5b16bde56",
+      "ccc17f87593117310bb9d4150e7de7fc1c1d8c48",
+      "40726ca69ae56498c41d4c644928c0f8f6678313",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "T09",
@@ -325,7 +1302,45 @@
     "module": "trophies",
     "behavior": "双向排序，DLC 分组不混排",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "table_sort_toggle_direction",
+      "trophy_tips_inline"
+    ],
+    "evidence_commits": [
+      "34c2568b1bdeb7095575c35cb8d120a460a08226",
+      "1126db7345f7b9033d9b2e104bc80f814b8c9ff2",
+      "ea644dbfbea313dea80a9fe139602a2bd4b13207",
+      "459da7051f05a7c26daa3d8eaf57839730956053",
+      "e1bbcf7234995d7ac7ebd4056e8eab3ef4a2504e",
+      "fc8315c8c1da937509f9810f5fbe1dc251184313",
+      "44e0625668ae01a48763cc6b406b352ccaac20d4",
+      "5b069908188bf4202f5664921cdd7afe5f897ac8",
+      "133f3c2dfd01a364d35cab3b4a56d54d51e009f7",
+      "51f133d098a36e3088d2dbcea76c6022c7bd9e60",
+      "4611fba817e93d72e0c8590461823cd9045987c3",
+      "54241c110b53f31cb96ad220ab73be0c28ef6963",
+      "e8be066c94fadc64997edde68836d9790113e453",
+      "b358b7775f9d466242e4ebf5333af1a789f9dffd",
+      "847ced47231124cad98b1bf076e08cd0d1af7900",
+      "d880355e70a8cc1159cbd5d4e21eb26cb65a758e",
+      "ad2a5263ec4ddf2a6dff32072851b7421f6b8cc7",
+      "2a7f10eaf36caff2205f45f93bd2fa947725764c",
+      "c71f5a981a4abfe12823514897e2c8eecd69c552",
+      "04f8ffcd4fe23a013ae9d6953f6d26646c1b716a",
+      "4486e4da2e8d29ecd5586d38252b32a9f088ff7d",
+      "d3894424183a1fbf82437a0f46250624173178c8",
+      "839d80391f6d5378a28f35fb8a4b32eac6c84891",
+      "bf757c85e8637e1d861fda9e70244b40647e14fd",
+      "621fdb5e5449455872af6c280764d1e892f8e9ef",
+      "c9515666f2f385dae4750a90369c32e5320b87b7",
+      "f637b1d1c81b2d917e30e664b8c2304d462cb495",
+      "2f5b134180e351fb07793c2698eba19edff44f46",
+      "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa",
+      "d3a8eb09af5ffae992780033683ef23775fb80da",
+      "cbc24aad5512c340141f0431b840bfa58852bc37"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "T10",
@@ -333,7 +1348,35 @@
     "module": "trophies",
     "behavior": "已获/未获，保留内联 Tips 归属",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "trophy_filter_unearned",
+      "unearned_trophy_filter"
+    ],
+    "evidence_commits": [
+      "ac77c6a29ed8671a1eb3d0ebc4d260698aab455b",
+      "f5a815deaef08a7aef2234d7d22606d55ea29fa3",
+      "8378d5cd85373756122129ff4b9435278784f567",
+      "8ddef83747df3b6799e2e036367f93b5c83d2823",
+      "169b7cf6bf4770be5dd1241c6e8e4eb6419c8b50",
+      "208db205460a6545c270461e426bdc746632ebf5",
+      "1738ee33cac5a3d9f525c51124097f78bcca8c2d",
+      "7e4ca463c28ee14663516856388bc148c5a067f9",
+      "b5eb9ad1caf76cbe31629bff977b08114f263747",
+      "f2439b47a05bc8e064cfb2fdf4f18c178019e227",
+      "91e1dcef11803922dcce084914b83ff11cf4c0ee",
+      "bf337df6c2def5eb6d3d606a026e653fec859e32",
+      "b9afa4479087400f19ec1c10e5682d61d9761372",
+      "22a2bfdc150d4dbfe5847b6935f876a06627ac29",
+      "afd27493d171b54835193f075210ee94e8b34271",
+      "0727e64f118dcf8b215ea00c885dc2383a4ceba4",
+      "adc3a751e50e5879d32e2b9f419b3a0b9061fe1e",
+      "461d5162b73ce5c2a2471e2b4af7990dfa3ebb1c",
+      "ccc17f87593117310bb9d4150e7de7fc1c1d8c48",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "3f023d95d4a1f55e9ab91e69dff38950ecfb9229"
+    ],
+    "origin": "restored"
   },
   {
     "id": "T11",
@@ -341,7 +1384,43 @@
     "module": "trophies",
     "behavior": "按需请求、失败重试、状态显示、内容过滤",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "trophy_tips_inline"
+    ],
+    "evidence_commits": [
+      "1126db7345f7b9033d9b2e104bc80f814b8c9ff2",
+      "ea644dbfbea313dea80a9fe139602a2bd4b13207",
+      "459da7051f05a7c26daa3d8eaf57839730956053",
+      "e1bbcf7234995d7ac7ebd4056e8eab3ef4a2504e",
+      "fc8315c8c1da937509f9810f5fbe1dc251184313",
+      "44e0625668ae01a48763cc6b406b352ccaac20d4",
+      "5b069908188bf4202f5664921cdd7afe5f897ac8",
+      "133f3c2dfd01a364d35cab3b4a56d54d51e009f7",
+      "51f133d098a36e3088d2dbcea76c6022c7bd9e60",
+      "4611fba817e93d72e0c8590461823cd9045987c3",
+      "54241c110b53f31cb96ad220ab73be0c28ef6963",
+      "e8be066c94fadc64997edde68836d9790113e453",
+      "b358b7775f9d466242e4ebf5333af1a789f9dffd",
+      "847ced47231124cad98b1bf076e08cd0d1af7900",
+      "d880355e70a8cc1159cbd5d4e21eb26cb65a758e",
+      "ad2a5263ec4ddf2a6dff32072851b7421f6b8cc7",
+      "2a7f10eaf36caff2205f45f93bd2fa947725764c",
+      "c71f5a981a4abfe12823514897e2c8eecd69c552",
+      "04f8ffcd4fe23a013ae9d6953f6d26646c1b716a",
+      "4486e4da2e8d29ecd5586d38252b32a9f088ff7d",
+      "d3894424183a1fbf82437a0f46250624173178c8",
+      "839d80391f6d5378a28f35fb8a4b32eac6c84891",
+      "bf757c85e8637e1d861fda9e70244b40647e14fd",
+      "621fdb5e5449455872af6c280764d1e892f8e9ef",
+      "c9515666f2f385dae4750a90369c32e5320b87b7",
+      "f637b1d1c81b2d917e30e664b8c2304d462cb495",
+      "2f5b134180e351fb07793c2698eba19edff44f46",
+      "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa",
+      "d3a8eb09af5ffae992780033683ef23775fb80da",
+      "cbc24aad5512c340141f0431b840bfa58852bc37"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "T12",
@@ -349,7 +1428,43 @@
     "module": "trophies",
     "behavior": "原隐藏入口替为明确操作，队列可停止",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "trophy_tips_inline"
+    ],
+    "evidence_commits": [
+      "1126db7345f7b9033d9b2e104bc80f814b8c9ff2",
+      "ea644dbfbea313dea80a9fe139602a2bd4b13207",
+      "459da7051f05a7c26daa3d8eaf57839730956053",
+      "e1bbcf7234995d7ac7ebd4056e8eab3ef4a2504e",
+      "fc8315c8c1da937509f9810f5fbe1dc251184313",
+      "44e0625668ae01a48763cc6b406b352ccaac20d4",
+      "5b069908188bf4202f5664921cdd7afe5f897ac8",
+      "133f3c2dfd01a364d35cab3b4a56d54d51e009f7",
+      "51f133d098a36e3088d2dbcea76c6022c7bd9e60",
+      "4611fba817e93d72e0c8590461823cd9045987c3",
+      "54241c110b53f31cb96ad220ab73be0c28ef6963",
+      "e8be066c94fadc64997edde68836d9790113e453",
+      "b358b7775f9d466242e4ebf5333af1a789f9dffd",
+      "847ced47231124cad98b1bf076e08cd0d1af7900",
+      "d880355e70a8cc1159cbd5d4e21eb26cb65a758e",
+      "ad2a5263ec4ddf2a6dff32072851b7421f6b8cc7",
+      "2a7f10eaf36caff2205f45f93bd2fa947725764c",
+      "c71f5a981a4abfe12823514897e2c8eecd69c552",
+      "04f8ffcd4fe23a013ae9d6953f6d26646c1b716a",
+      "4486e4da2e8d29ecd5586d38252b32a9f088ff7d",
+      "d3894424183a1fbf82437a0f46250624173178c8",
+      "839d80391f6d5378a28f35fb8a4b32eac6c84891",
+      "bf757c85e8637e1d861fda9e70244b40647e14fd",
+      "621fdb5e5449455872af6c280764d1e892f8e9ef",
+      "c9515666f2f385dae4750a90369c32e5320b87b7",
+      "f637b1d1c81b2d917e30e664b8c2304d462cb495",
+      "2f5b134180e351fb07793c2698eba19edff44f46",
+      "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa",
+      "d3a8eb09af5ffae992780033683ef23775fb80da",
+      "cbc24aad5512c340141f0431b840bfa58852bc37"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "T13",
@@ -357,7 +1472,40 @@
     "module": "trophies",
     "behavior": "热度排序及恢复原顺序",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "sort_tips_by_likes",
+      "trophy_sort_tips_by_likes"
+    ],
+    "evidence_commits": [
+      "1cdbb117c09c715151f2127a3b30cffc6951e1b8",
+      "09b7ccac11ad3b49091a7ace70260d6a27d961f2",
+      "80872d465df0ab7798073af513132bf16aae3320",
+      "0ae72149aab08bb4212e6a5b81020d7326073a84",
+      "f5fce0dd311e56c3864cff828accfc91f194e7bd",
+      "9d8f9741877fb7df14324d40518d8a1f1b5f5778",
+      "6cbfa7a7abdcfe75d79b878cf80ebcc2676455d4",
+      "a5a3b4c8b2174893d32677fad5437071af63b26b",
+      "a3e042890975e9fcee297e92b7ec9e14d764bde8",
+      "3c07228341e7a9f6c55791fbb6b56327f6c3fc09",
+      "e2c3b031b1df25b27184eec9bf2c83f0cca78526",
+      "598b4ec8a0145fa77464f59c486f2f6eed03e711",
+      "1738ee33cac5a3d9f525c51124097f78bcca8c2d",
+      "7e4ca463c28ee14663516856388bc148c5a067f9",
+      "3ee346e2e659abdea9ecf416e4074107f0823bb9",
+      "8983c45893fba4f9a5f269bb6628db80552d1c23",
+      "848eeeb91536cd790bc5c425b1feff05817043fb",
+      "b9afa4479087400f19ec1c10e5682d61d9761372",
+      "22a2bfdc150d4dbfe5847b6935f876a06627ac29",
+      "afd27493d171b54835193f075210ee94e8b34271",
+      "0727e64f118dcf8b215ea00c885dc2383a4ceba4",
+      "0200d05d5baf1bfbc9f84d2b0a0fc9da634024eb",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "fee71f81055a7a881cd3a240a06b36b685a76110",
+      "9996347bdbe29f855683f5df97d894de28ce8eb4",
+      "80889fb2357cb7a5d7181db1e6753f3e4e4615af"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "T14",
@@ -365,7 +1513,15 @@
     "module": "trophies",
     "behavior": "垂直调整，移动端尺寸",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "resizable_comment_box"
+    ],
+    "evidence_commits": [
+      "812c700ae3fbbf1e66da50a14e596c4dd3d8fa59",
+      "c0e9701820e4b4bd8446db0e9a549827cabaad11"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "P01",
@@ -373,7 +1529,18 @@
     "module": "games",
     "behavior": "仅明确无白金，透明度设置",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "trophy_card_opacity"
+    ],
+    "evidence_commits": [
+      "7ba84e98d25e051df31513b272c4a15923b35314",
+      "5a73ef066fe91736a4e10294227551a8d45e59a2",
+      "d61623f29cd53a66f5b224323754d1cc3ca44f45",
+      "e1055654e33917187da496cbe8dfbf334fe48f34",
+      "f20f094fae2ca05573cce7dd9873faa241a4722d"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "P02",
@@ -381,7 +1548,24 @@
     "module": "games",
     "behavior": "本地缓存优先、按需获取",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "game_completion_calc",
+      "game_trophy_completion_hover"
+    ],
+    "evidence_commits": [
+      "227eecff1675ebe8071f4f0783a6b41ee14a394e",
+      "118efee125482efde04f80d30801260b608b926b",
+      "0d834c28aee3abc3ebc3d98776c9d2ba377cd611",
+      "5212dd6d3d9d3da61e444feafbb3cb15b51261f2",
+      "adc3a751e50e5879d32e2b9f419b3a0b9061fe1e",
+      "8b8a88f4161864446547b9994ab1b01b467412d0",
+      "1af4efe68c7c6868a9b805ff519022f64d9b0c40",
+      "1f7baea8c2925645c1446c809ad597d7bef83029",
+      "64d2cb31428d85b275e2e57faac9c390ec500998",
+      "eab700122fb732a7772c71d61d177f082ad09b06"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "P03",
@@ -389,7 +1573,18 @@
     "module": "games",
     "behavior": "空值置后、双向稳定排序",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "game_list_personal_completion_bar"
+    ],
+    "evidence_commits": [
+      "202ee82977d46f2271dab57feb8cb82c58378de2",
+      "3238b4adf1c73d358f8c52d471d2315680621ecb",
+      "8f71e37e85257d8a46a9aaf04d5e94f99fd9e063",
+      "23f3762ec9834368fec45f1409534f9a31583eea",
+      "b62c411fdb0c4eac7da2126de7fafa3ee6afa6e8"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "P04",
@@ -397,7 +1592,25 @@
     "module": "games",
     "behavior": "按账号隔离，进度/白金与页记录",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "game_progress_cache",
+      "trophy_progress_cache"
+    ],
+    "evidence_commits": [
+      "92f0e8c3b463700be59d2ebd3fd8ffee5c0cd115",
+      "75de1ae36b6de8370dc477618d72aafd595348f5",
+      "cd1416a8466a37e33a6aa06784c566b5c0d5634d",
+      "8570c71e3881894bc07351fb82520c7f03b709c9",
+      "2f2d147b5a56f39fbacff2a12bd43e9b373e8b49",
+      "202ee82977d46f2271dab57feb8cb82c58378de2",
+      "8f71e37e85257d8a46a9aaf04d5e94f99fd9e063",
+      "23f3762ec9834368fec45f1409534f9a31583eea",
+      "b62c411fdb0c4eac7da2126de7fafa3ee6afa6e8",
+      "69126f0160effac4428025bfecc0722f28868286",
+      "ade62029353c7f50239e1e02330663494f86b136"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "P05",
@@ -405,7 +1618,25 @@
     "module": "games",
     "behavior": "有变化快刷、无变化延迟及缺页补全",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "game_progress_cache",
+      "trophy_progress_cache"
+    ],
+    "evidence_commits": [
+      "92f0e8c3b463700be59d2ebd3fd8ffee5c0cd115",
+      "75de1ae36b6de8370dc477618d72aafd595348f5",
+      "cd1416a8466a37e33a6aa06784c566b5c0d5634d",
+      "8570c71e3881894bc07351fb82520c7f03b709c9",
+      "2f2d147b5a56f39fbacff2a12bd43e9b373e8b49",
+      "202ee82977d46f2271dab57feb8cb82c58378de2",
+      "8f71e37e85257d8a46a9aaf04d5e94f99fd9e063",
+      "23f3762ec9834368fec45f1409534f9a31583eea",
+      "b62c411fdb0c4eac7da2126de7fafa3ee6afa6e8",
+      "69126f0160effac4428025bfecc0722f28868286",
+      "ade62029353c7f50239e1e02330663494f86b136"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "P06",
@@ -413,7 +1644,20 @@
     "module": "games",
     "behavior": "游戏列表/个人主页，动态追加可用",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "game_list_personal_completion_bar",
+      "user_profile_completion_bar"
+    ],
+    "evidence_commits": [
+      "202ee82977d46f2271dab57feb8cb82c58378de2",
+      "3238b4adf1c73d358f8c52d471d2315680621ecb",
+      "8f71e37e85257d8a46a9aaf04d5e94f99fd9e063",
+      "23f3762ec9834368fec45f1409534f9a31583eea",
+      "b62c411fdb0c4eac7da2126de7fafa3ee6afa6e8",
+      "4a97aa89ed9ff2e72974d83d70dc2cceb29016a0"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "P07",
@@ -421,7 +1665,14 @@
     "module": "games",
     "behavior": "光晕及触摸友好的静态反馈",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "platinum_trophy_glow_aura"
+    ],
+    "evidence_commits": [
+      "ed2108860a5ba0574ce80f71ff74fd7846c5ff79"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "P08",
@@ -429,7 +1680,14 @@
     "module": "games",
     "behavior": "仅添加手动等级/游戏同步链接",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "user_profile_sync"
+    ],
+    "evidence_commits": [
+      "e757775ebfd7cd1e0bf9165d3e1be3e04eced533"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "P09",
@@ -437,7 +1695,21 @@
     "module": "games",
     "behavior": "保留 query/hash，可设置关闭",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "game_page_default_my_trophies"
+    ],
+    "evidence_commits": [
+      "812c700ae3fbbf1e66da50a14e596c4dd3d8fa59",
+      "c0e9701820e4b4bd8446db0e9a549827cabaad11",
+      "4f3b6543e597ad2b50b2da737c55b8b650f8268f",
+      "9ae24f68d14635b3a28ade76365a878787146575",
+      "815c3a00d67d27dec7e1d3c94229b816abf4c65a",
+      "56ab8dc6c701f3c9aa796a949d1dc6ddc8008360",
+      "1febb9cf54e00be702f9faf513ff46007b602405",
+      "bb67ba390beb40356bf682ffbf82d7763692359f"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "P10",
@@ -445,7 +1717,19 @@
     "module": "games",
     "behavior": "关联游戏页面中的版本关系",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "game_variant_references"
+    ],
+    "evidence_commits": [
+      "75de1ae36b6de8370dc477618d72aafd595348f5",
+      "cd1416a8466a37e33a6aa06784c566b5c0d5634d",
+      "8570c71e3881894bc07351fb82520c7f03b709c9",
+      "2f2d147b5a56f39fbacff2a12bd43e9b373e8b49",
+      "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa",
+      "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "P11",
@@ -453,7 +1737,19 @@
     "module": "games",
     "behavior": "标准化精确标题匹配与缓存",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "game_variant_references"
+    ],
+    "evidence_commits": [
+      "75de1ae36b6de8370dc477618d72aafd595348f5",
+      "cd1416a8466a37e33a6aa06784c566b5c0d5634d",
+      "8570c71e3881894bc07351fb82520c7f03b709c9",
+      "2f2d147b5a56f39fbacff2a12bd43e9b373e8b49",
+      "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa",
+      "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "P12",
@@ -461,7 +1757,19 @@
     "module": "games",
     "behavior": "先验证对应奖杯，不能盲拼序号",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "game_variant_references"
+    ],
+    "evidence_commits": [
+      "75de1ae36b6de8370dc477618d72aafd595348f5",
+      "cd1416a8466a37e33a6aa06784c566b5c0d5634d",
+      "8570c71e3881894bc07351fb82520c7f03b709c9",
+      "2f2d147b5a56f39fbacff2a12bd43e9b373e8b49",
+      "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa",
+      "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "P13",
@@ -469,7 +1777,19 @@
     "module": "games",
     "behavior": "排名/评论/问答/主题/约战/游列路径保留",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "game_variant_references"
+    ],
+    "evidence_commits": [
+      "75de1ae36b6de8370dc477618d72aafd595348f5",
+      "cd1416a8466a37e33a6aa06784c566b5c0d5634d",
+      "8570c71e3881894bc07351fb82520c7f03b709c9",
+      "2f2d147b5a56f39fbacff2a12bd43e9b373e8b49",
+      "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa",
+      "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "P14",
@@ -477,7 +1797,31 @@
     "module": "games",
     "behavior": "平台标识补全与局部自然宽高比",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "game_ps5_chart_fix",
+      "game_pspc_icon_fix"
+    ],
+    "evidence_commits": [
+      "b5c0b90178299b29c0ba799749a5e09cb1d6444a",
+      "04219be5e8e2749e237dc1a277050d9b8798d116",
+      "5faea2df06bf4a2646a4c63cb1f1da42a17ec10e",
+      "e49e953fd336ae4bd17a1cc3d4cdca69bc230dfc",
+      "5ca6f90e8238c9d867b213f3d6d4e6c9c33da3d5",
+      "de5d10da43cb6ddc4ca5040c78df1ace11016850",
+      "66b55b6ea267cb52a995d833048b1a32431e222d",
+      "70d72768ad6a56714043e1084f2cb58d37fdc665",
+      "14dc76669b96d61ec99cb1847833bfde6494fe6c",
+      "1626d91702e1a20ce5c4e812bb8dff7dca91f1d1",
+      "6b9ccc05c6b4de48332295fe7e5852a752384c07",
+      "a906aa1c107d0c9ff6445598d9047a3ce46e649e",
+      "7c90138576577765b1deff2d1fa32f3726cbb3e6",
+      "f637b1d1c81b2d917e30e664b8c2304d462cb495",
+      "2f5b134180e351fb07793c2698eba19edff44f46",
+      "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa",
+      "cbc24aad5512c340141f0431b840bfa58852bc37"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "B01",
@@ -485,7 +1829,14 @@
     "module": "battle",
     "behavior": "按设置作用于头像列",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "battle_hide_avatar"
+    ],
+    "evidence_commits": [
+      "6a6887744610aa0a32c87f94ff5ee32b42f71263"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "B02",
@@ -493,7 +1844,18 @@
     "module": "battle",
     "behavior": "账号进度缓存、渐变背景",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "game_list_personal_completion_bar"
+    ],
+    "evidence_commits": [
+      "202ee82977d46f2271dab57feb8cb82c58378de2",
+      "3238b4adf1c73d358f8c52d471d2315680621ecb",
+      "8f71e37e85257d8a46a9aaf04d5e94f99fd9e063",
+      "23f3762ec9834368fec45f1409534f9a31583eea",
+      "b62c411fdb0c4eac7da2126de7fafa3ee6afa6e8"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "B03",
@@ -501,7 +1863,18 @@
     "module": "battle",
     "behavior": "游戏页及列表行增加/移除、状态同步",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "battle_monitor"
+    ],
+    "evidence_commits": [
+      "311767d4d69c410cc3502a9d58879f6c8505fc5b",
+      "ee3f764da2e2fa8035577370ede27b3875cc6122",
+      "42ddbb1e5eaec0f57202beef36e2f801dc412878",
+      "c91e2be124ff3496dad2db5cea442a1974d5eb87",
+      "1872142b6fde927e5b04e43d4aaa638c6081be63"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "B04",
@@ -509,7 +1882,18 @@
     "module": "battle",
     "behavior": "本地监控游戏与公开列表求交集，桌面/手机菜单",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "battle_monitor"
+    ],
+    "evidence_commits": [
+      "311767d4d69c410cc3502a9d58879f6c8505fc5b",
+      "ee3f764da2e2fa8035577370ede27b3875cc6122",
+      "42ddbb1e5eaec0f57202beef36e2f801dc412878",
+      "c91e2be124ff3496dad2db5cea442a1974d5eb87",
+      "1872142b6fde927e5b04e43d4aaa638c6081be63"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "B05",
@@ -517,7 +1901,18 @@
     "module": "battle",
     "behavior": "刷新间隔、无监控不请求、失败保留旧缓存",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "battle_monitor"
+    ],
+    "evidence_commits": [
+      "311767d4d69c410cc3502a9d58879f6c8505fc5b",
+      "ee3f764da2e2fa8035577370ede27b3875cc6122",
+      "42ddbb1e5eaec0f57202beef36e2f801dc412878",
+      "c91e2be124ff3496dad2db5cea442a1974d5eb87",
+      "1872142b6fde927e5b04e43d4aaa638c6081be63"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "R01",
@@ -525,7 +1920,22 @@
     "module": "reviews",
     "behavior": "有效评分的已载入样本，显示样本数量",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "game_critic_average"
+    ],
+    "evidence_commits": [
+      "76a2b863e0e3b9c084e2c8743f23bef0781ea695",
+      "e4f824865ecfc4defea9f2a280fad8ccd8923d6f",
+      "1fef25c5363620dda59c487a070b527ef56feed8",
+      "b7764c1aa2375adb354a419ff3ce85676b4339bf",
+      "3cbad1da32b30253ff1def96bf468303ce46c2e0",
+      "7884778416980f97acf4939c721c38ed5b56841e",
+      "84bc87ba4a42de97d664b5a003540884da22f4e1",
+      "c35f21ea195b849fdcac2cffe93caaf85478c152",
+      "7fa4049a17605712272dbfa19b5b0c98a233ad46"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "R02",
@@ -533,7 +1943,25 @@
     "module": "reviews",
     "behavior": "1–10 分直方图，最高计数高亮",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "score_distribution_chart"
+    ],
+    "evidence_commits": [
+      "b7764c1aa2375adb354a419ff3ce85676b4339bf",
+      "3cbad1da32b30253ff1def96bf468303ce46c2e0",
+      "e4e1601891e9e56a25558f36c66881a11b4a55fb",
+      "966e1ed08912a21ce2794537a2636da3665e80e2",
+      "edc45f2a649763071acf2ee33ab64a9773ab3c98",
+      "c4d310064eba4507694fc19403830f34900ab428",
+      "7884778416980f97acf4939c721c38ed5b56841e",
+      "9ea73eebc5f21c78c3dd4df9f5f8c3eecc0c2847",
+      "c84ac1d02664ddcdd68e83d8cb418a6dc068bbcc",
+      "73144a27c74a424c07359cfcde148644d1ea60de",
+      "30ad07612d0d7b5d557d5ebce3a8ca6cf169442a",
+      "3688044f8f36801e94edf14d55e4c58e892fc5e7"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "R03",
@@ -541,7 +1969,22 @@
     "module": "reviews",
     "behavior": "点击柱/刻度、隐藏无评分，与黑名单叠加",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "filter_reviews_by_score",
+      "review_score_filter"
+    ],
+    "evidence_commits": [
+      "9ea73eebc5f21c78c3dd4df9f5f8c3eecc0c2847",
+      "c84ac1d02664ddcdd68e83d8cb418a6dc068bbcc",
+      "73144a27c74a424c07359cfcde148644d1ea60de",
+      "30ad07612d0d7b5d557d5ebce3a8ca6cf169442a",
+      "f5fce0dd311e56c3864cff828accfc91f194e7bd",
+      "42082a3674b1c292ac5c99d185f49ae8b5685204",
+      "bd1c03458732b41b72a8a570be3bf13190aa1e87",
+      "12cb1e3a3bd20c41da256e7bcc95c056ad81e5f9"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "R04",
@@ -549,7 +1992,20 @@
     "module": "reviews",
     "behavior": "可开关，零方差不产生 NaN",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "gaussian_distribution_curve"
+    ],
+    "evidence_commits": [
+      "edc45f2a649763071acf2ee33ab64a9773ab3c98",
+      "9f79ab106880a5aa974153008ed3202efc4123d2",
+      "d59338169e92a159ac2d32f7d669d110a6f1feec",
+      "4dd6ec7f6d414c0b7e700b340781750aa27eb334",
+      "ee420e22a9e0c7eb8e298b4bf074228e30ad6306",
+      "a48240d8a54824ae528b8a514179a9313703ccdf",
+      "7884778416980f97acf4939c721c38ed5b56841e"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "R05",
@@ -557,7 +2013,27 @@
     "module": "reviews",
     "behavior": "按可信时间累计，缺失时间单独说明",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "game_score_trend_chart",
+      "score_trend_chart"
+    ],
+    "evidence_commits": [
+      "39796ac46d581983c9c81938b38a3b91684bdb30",
+      "c0e9696b3bb11a4934332716c0e1d0e6cf52b0b0",
+      "0258791af6e68ba8eddcf69781a51338370cde20",
+      "d459a2acff0e44b9617ce0228580929bc4933108",
+      "a535c11cda89d1cd38906a7e16ce3567f6b52da7",
+      "f5fce0dd311e56c3864cff828accfc91f194e7bd",
+      "9d8f9741877fb7df14324d40518d8a1f1b5f5778",
+      "3688044f8f36801e94edf14d55e4c58e892fc5e7",
+      "74056531d715b23803cb27bfa693fa52b388621a",
+      "40726ca69ae56498c41d4c644928c0f8f6678313",
+      "5b6c8e8b21c734b7abb4bd890612f9f66dd22295",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "977a40aa0062595c1ed249b02bb6f1f63686b328"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "R06",
@@ -565,7 +2041,17 @@
     "module": "reviews",
     "behavior": "ISO 周跨年及空周补零",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "comment_trend_chart"
+    ],
+    "evidence_commits": [
+      "ba431bbce05cc0b9ed922af0ffb0e0ba81ed768f",
+      "318768653d623c675fd2f80d4944dba279ff0567",
+      "e28049cda34e0055a6969f033f9daf5a4fbd0cc6",
+      "2761020ae23923686c19bbdfeb3540db7a761522"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "D01",
@@ -573,7 +2059,30 @@
     "module": "deals",
     "behavior": "双序列、促销起止和原价恢复",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "discount_price_history_chart",
+      "price_trend_chart"
+    ],
+    "evidence_commits": [
+      "51fce0194dcb096b09ac9063d5242bca85d1a3a1",
+      "4b39e5d42f258697b29974f881863283e42bab90",
+      "db5f31bef74f7453fc95ceb4e5ea6ba3f7083943",
+      "79e395b23700f5c78950aa2ea392a3ccc49dcf7d",
+      "c7e43bdaaadff4b6c20e354ec451f3f52c827990",
+      "3854a4ad5d9aaaf4331c05e0ad4ef6d3f0bf479a",
+      "0857e7dac214421a3f184466a3b01bb0882dbe45",
+      "f6417ccc0371cb6234e0e5b85a738f1ac93c76b6",
+      "fa6419095cae689d6c94e6a58ae52541e6ddefe6",
+      "e3239651c96c7908984d99dea0bde856da2a9882",
+      "d67ed4601ced4c8fab46c4c1626ee1a99382ead4",
+      "a4290614806e728c8726ded9b2ffa3fdfde7b388",
+      "985a356aa99b593a40f3cbf149c65d661ae9a202",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "fee71f81055a7a881cd3a240a06b36b685a76110",
+      "9996347bdbe29f855683f5df97d894de28ce8eb4"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "D02",
@@ -581,7 +2090,38 @@
     "module": "deals",
     "behavior": "HKD/USD/GBP/JPY，标注汇率日期与来源",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "foreign_currency_cny",
+      "game_currency_conversion",
+      "realtime_exchange_rates"
+    ],
+    "evidence_commits": [
+      "2bf1527e564d28d8d5ac38ee2ce4d8cc2f069ff2",
+      "75e02868e5aa06c18118af4f68e2b981b59bb604",
+      "fe1b6ec9d0c9d16cb9db830999b609fe3b5c99cb",
+      "071a6a07528737985c1a80a88b9f4f54285d2c8a",
+      "838af2648576e3c1dbc0f2491cd04f092a32171b",
+      "f20f094fae2ca05573cce7dd9873faa241a4722d",
+      "00f5e4912a4a663a5b0e458acec75347a484e36e",
+      "de458059ce14f71ddb40dcc5752385f8ceed0858",
+      "a4830e013401b8fdf53bca0c5a735996e13bf070",
+      "4c54723120572d3d99b5834c1f461a698c8fd424",
+      "fd51e488aad361e3b2046b23a6d22739c6ab5018",
+      "e3b5d446fa6cf09bcd544fae2793c1e5161ac647",
+      "d3cd2bbea624d528b96d4b0a05806f0e83414453",
+      "f34576162a4763a28d041ac4b1133e21ee22318d",
+      "2ebb95642627e9bdac200e4b7452d6431263de43",
+      "bd9c8c3adb7879e42fd8cd203abca26f15513715",
+      "eec99254b161e2af85ea7815c03d9a8e21c53282",
+      "985a356aa99b593a40f3cbf149c65d661ae9a202",
+      "461d5162b73ce5c2a2471e2b4af7990dfa3ebb1c",
+      "a2a02107e45ff427fce9912662830e084dfc8493",
+      "ccc17f87593117310bb9d4150e7de7fc1c1d8c48",
+      "40726ca69ae56498c41d4c644928c0f8f6678313",
+      "eab700122fb732a7772c71d61d177f082ad09b06"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "D03",
@@ -589,7 +2129,16 @@
     "module": "deals",
     "behavior": "保留原价，可在人民币/原币种间切换",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "sales_page_currency_conversion"
+    ],
+    "evidence_commits": [
+      "e3b5d446fa6cf09bcd544fae2793c1e5161ac647",
+      "9b43c726495a77d7f89c50e5f9a01a3262a55554",
+      "b0f1556f19fa243dd662353d16a68ac5b16bde56"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "D04",
@@ -597,7 +2146,25 @@
     "module": "deals",
     "behavior": "连续区间而非只识别20/50/80/100",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "discount_highlight",
+      "discount_title_color"
+    ],
+    "evidence_commits": [
+      "7ba84e98d25e051df31513b272c4a15923b35314",
+      "4fdd4c9188baa57224617799d7bdee563af4555d",
+      "1060ec578eca8cb2a19a6343f01a82431a2dbe8d",
+      "5bf4e089e276db6de008397ca7c4b13b748fc3f5",
+      "211dfe25d5f09c834260502a57bb867045e166d9",
+      "d67ed4601ced4c8fab46c4c1626ee1a99382ead4",
+      "a4290614806e728c8726ded9b2ffa3fdfde7b388",
+      "985a356aa99b593a40f3cbf149c65d661ae9a202",
+      "461d5162b73ce5c2a2471e2b4af7990dfa3ebb1c",
+      "a2a02107e45ff427fce9912662830e084dfc8493",
+      "eab700122fb732a7772c71d61d177f082ad09b06"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "D05",
@@ -605,7 +2172,23 @@
     "module": "deals",
     "behavior": "显式史低标记，筛选可复原",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "historic_low_filter"
+    ],
+    "evidence_commits": [
+      "3893e1ba4936467a3ef902d6fe6138a70e7a8ed2",
+      "4edb8faf3b6834d8d70ed26aa8fed7313331693a",
+      "b7209b96087c2b10d8265a046f900d4c23a782fb",
+      "89d971caec34864faa1e7c13fdff029c083317a8",
+      "00cb24fa5268c37850f73165fd3bc1713f44559a",
+      "d19b8c5da4a948541561ab620704b14c0ebbd479",
+      "fe1b6ec9d0c9d16cb9db830999b609fe3b5c99cb",
+      "3974cc342e87d0fa0da9896d8f7051b1c93fbbb8",
+      "796a5390fabb9f8762a7d3dacbd6bf3b37c5c162",
+      "bf337df6c2def5eb6d3d606a026e653fec859e32"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "X01",
@@ -613,7 +2196,19 @@
     "module": "core",
     "behavior": "新旧 selector 适配，不重排站点内容",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "navbar_user_id_fallback",
+      "psnine_v2_adaptation"
+    ],
+    "evidence_commits": [
+      "87ea998f756290d3ff611a31fe291bb76e3b6535",
+      "446f53524f980fe76030db1922e09e353cb1276d",
+      "6f48f8fb300e1be2cedf4df3975835350dc22c48",
+      "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa",
+      "cbc24aad5512c340141f0431b840bfa58852bc37"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "X02",
@@ -621,7 +2216,20 @@
     "module": "core",
     "behavior": "同步/异步GM、触控、单文件、16px表单、安全区域",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "chart_responsive_reflow",
+      "gm_compatibility",
+      "mobile_responsive_layout",
+      "touch_interaction"
+    ],
+    "evidence_commits": [
+      "761a2d89602dbf1ac622dd278aa65cba02545e4d",
+      "d3a8eb09af5ffae992780033683ef23775fb80da",
+      "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+      "cbc24aad5512c340141f0431b840bfa58852bc37"
+    ],
+    "origin": "preserved"
   },
   {
     "id": "X03",
@@ -629,7 +2237,50 @@
     "module": "core",
     "behavior": "局部观察与清理，避免监听/请求/徽标重复",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "auto_pagination",
+      "page_auto_paging"
+    ],
+    "evidence_commits": [
+      "c7b4900d26d7bd567b6488ed7057e8b969e41700",
+      "8378d5cd85373756122129ff4b9435278784f567",
+      "238d2b0788ed7dd0bd44ab1c9b4afa8275cf63f9",
+      "7122ff9948d7fa04860cf0c9414f109c5cd5167f",
+      "6ba5e13846936d6a77b42c53b77e238a84db4ad4",
+      "6b458244b875117774711d54e5e7803f2317be15",
+      "96a81a1eb44150846115c76a396e1c526a87198f",
+      "3172c261411957ad778cb39684004933cc42870f",
+      "d7380e4e518478b6dddec2e43399d339d2fe4e87",
+      "f49491b3d58c6168221f6904929bb36a26fe331e",
+      "77c5faf5bfe8ebbb41b2ad88aeb3d8193879e5ea",
+      "ae35c91838a3dd0dc9186c3746f5dc753a83f129",
+      "4377f9c7d3c25006915215b656791ff21d90ac44",
+      "371bcf3285077fbd2fd610b0280f4f9d3e2c493b",
+      "bd89b34ce59f1827c0b065d1853f339f7c9f3544",
+      "137f2d5f76a5cec154e43b52bc3b2d7fb02fbb32",
+      "6da803686b5bb41ee1e3a57a618144a4e6ff450f",
+      "af92becc54eafa11491cfcabd70de0cc6531e577",
+      "84f0ed57d5b66c40e0dd1a9e917625e246ed4422",
+      "4d2ceefee8342b8c8093fda09c4c5c27b4d5281c",
+      "64f47a0ebca6f29cc186d8f59d0719f784912225",
+      "25b276ae5d085dfea8a65fb1e15a85f9c3765881",
+      "1f7baea8c2925645c1446c809ad597d7bef83029",
+      "8529a46b3d5a3d99e2018001f0a1f6ba90bf7618",
+      "64d2cb31428d85b275e2e57faac9c390ec500998",
+      "fa6419095cae689d6c94e6a58ae52541e6ddefe6",
+      "e3239651c96c7908984d99dea0bde856da2a9882",
+      "d67ed4601ced4c8fab46c4c1626ee1a99382ead4",
+      "eab700122fb732a7772c71d61d177f082ad09b06",
+      "dfbe821581d9b33bcc571177b30578b8e9a02bd0",
+      "d06bb7814cb7765c52166f5c79e375aa8b63f460",
+      "f96120a4c1317a5dca97eb1f88587c2c18a1d7ea",
+      "fee71f81055a7a881cd3a240a06b36b685a76110",
+      "05184d1a86c6cf87728f94bafb7a095ab8afa47c",
+      "0a0f8c56cf3959cd2ea0a14760f350eb872c4544",
+      "9996347bdbe29f855683f5df97d894de28ce8eb4"
+    ],
+    "origin": "hardening"
   },
   {
     "id": "X04",
@@ -637,6 +2288,47 @@
     "module": "core",
     "behavior": "坏 JSON 不崩溃，类型校验、旧枚举与数字转换",
     "status": "planned",
-    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444"
+    "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
+    "history_keys": [
+      "settings_panel"
+    ],
+    "evidence_commits": [
+      "ebc5a326408cff15e8da12841ec52cdd5f361f49",
+      "18fcaf0126f7ae24c7c367aefdff43a65638c4ce",
+      "57858e1f53e8a7c4bf1eaf3984188d0f6a8e17d5",
+      "8b357ee8915ee719da0e65a9850630c0a2d306ea",
+      "c61cd72adf1dce8209252f6cc58d20408dbc18d8",
+      "c7e0801ffa3d43a82bf2f70c956a369a34f98aee",
+      "d61623f29cd53a66f5b224323754d1cc3ca44f45",
+      "0bbf0c885821b9db7ffebd8781415acdc3a286bb",
+      "85e974d6e06320c5af199fe1579a76a13f855c63",
+      "209a32c4cc706a23524c019d2d528a15595725b8",
+      "889bd0f92eceecd37efeb11562bdecca0f6ee596",
+      "52d7fb8baf9060906d822b14b83956e7daab8ccb",
+      "8f4aba9a52a4574ccfaa49e07ff9d6911bf2dfb3",
+      "9d2e4540e64ff7f360aea21c7851f90b60ab2735",
+      "b6c0a3db3bb63acf40772977b3e1b29f356a5bd3",
+      "b3f0156f2d088cee6cc75b85989a292ec7ea3e8f",
+      "71e742649f9b85aab0ace6f95624045d74b6bf6d",
+      "860ff14baf17a9d38cf7ce31e162891a52519e1c",
+      "ad10cfd8b91203b5cb715394c5b98d81113386b6",
+      "238d2b0788ed7dd0bd44ab1c9b4afa8275cf63f9",
+      "6ba5e13846936d6a77b42c53b77e238a84db4ad4",
+      "6a6887744610aa0a32c87f94ff5ee32b42f71263",
+      "7924928c60082840b9472cfb8c133c86df23cda7",
+      "e49d4fe93d703628b6df83aab32a876eb5b7c00e",
+      "f3264ee2f86cc8b3133df0aab4ea7691a9587516",
+      "6dc1bc43b39616c8b330753cfe285062dda81f45",
+      "4dd6ec7f6d414c0b7e700b340781750aa27eb334",
+      "bb41569afc163ca1dfffbc58afb59f37555ab634",
+      "c330d0ffce9bf15cbe597971b66568c723e26c81",
+      "54e8ef156bbb63e0a1222fada2e265ae11e36609",
+      "c0f7d105e1816010df0293bd92a7ab49673f01e8",
+      "c0057fd10c3133c8a2fd26b0c36bc15f193d3cc2",
+      "301b32e131d39359741049f2ef8c99dd40c4f7fc",
+      "b90b98c3a6dd8fef86a500d058109b2dc25d5628",
+      "8d1315b18bd0408558091dbadf1f500351edcd4a"
+    ],
+    "origin": "hardening"
   }
 ]

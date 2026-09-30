@@ -1,0 +1,11 @@
+{
+  "unique_commits": 778,
+  "review_records": 778,
+  "verified_patch_hashes": 778,
+  "missing_reviews": 0,
+  "duplicate_reviews": 0,
+  "upstream_master": 712,
+  "fork_v2": 715,
+  "other_branch_or_pr_only": 63,
+  "note": "Structural evidence verification, not an independent semantic review."
+}

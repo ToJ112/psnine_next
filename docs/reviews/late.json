@@ -7,7 +7,7 @@
       "game_currency_conversion"
     ],
     "status": "reviewed",
-    "notes": "Supports foreign currency conversion to CNY/HKD on single game page."
+    "notes": "[Branch: master (upstream & fork)] Supports foreign currency conversion to CNY/HKD on single game page."
   },
   {
     "sha": "b7d44ee45066ed309d84d611aae8fdf10e0e2d7c",
@@ -15,7 +15,7 @@
     "summary": "[fix] incorrect toggle label",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package.json, psnineplus.js"
   },
   {
     "sha": "e1dee2e06f75f8c6c53c076a8e7789a2ae7aa379",
@@ -23,7 +23,7 @@
     "summary": "update: version info",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package.json, psnineplus.js"
   },
   {
     "sha": "49ff0b211942267e91d641959458fb772634f912",
@@ -31,7 +31,7 @@
     "summary": "Merge pull request #67 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #67 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #67 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "47e27b9ebc3493c7260e8e3e7f581a49ea389375",
@@ -39,7 +39,7 @@
     "summary": "Merge branch 'master' of https://github.com/swsoyee/psnine-enhanced-version",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge branch 'master' of https://github.com/swsoyee/psnine-enhanced-version"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge branch 'master' of https://github.com/swsoyee/psnine-enhanced-version"
   },
   {
     "sha": "ea308f462a714eaeaa6ddb3ac3a1d6b25921d391",
@@ -47,7 +47,7 @@
     "summary": "Create .gitignore",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: .gitignore"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: .gitignore"
   },
   {
     "sha": "4e9da640dd55d1ec9903a250b504f22513516d43",
@@ -55,7 +55,7 @@
     "summary": "Create FUNDING.yml",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: .github/FUNDING.yml"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: .github/FUNDING.yml"
   },
   {
     "sha": "a8e4cfb4135af10f2e97a0959a041985ff29249a",
@@ -65,7 +65,7 @@
       "comment_spoiler_mask"
     ],
     "status": "reviewed",
-    "notes": "Masks spoiler text in quote replies or reveals mark message on interaction."
+    "notes": "[Branch: master (upstream & fork)] Masks spoiler text in quote replies or reveals mark message on interaction."
   },
   {
     "sha": "1f38682197c017d5a2f3715cff5821491bb3c512",
@@ -73,7 +73,7 @@
     "summary": "Merge branch 'master' into pr/70",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge branch 'master' into pr/70"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge branch 'master' into pr/70"
   },
   {
     "sha": "229a02131a890631d8e72dc09eef1e0aba3d3163",
@@ -81,7 +81,7 @@
     "summary": "update: 引用回复内容中保留涂黑内容",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "891b4cd4abb153771ea025b16782b554c8ac4619",
@@ -89,7 +89,7 @@
     "summary": "update: 提升版本号",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package.json, psnineplus.js"
   },
   {
     "sha": "980ab267372e64c67d773336527c035651982af0",
@@ -97,7 +97,7 @@
     "summary": "fix: 修改计算字符串逻辑",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "5b6a2635094879aed5cdd2b194d273ee933ce35b",
@@ -107,7 +107,7 @@
       "comment_quote_reply"
     ],
     "status": "reviewed",
-    "notes": "Improves string length calculation and truncation for quoted replies."
+    "notes": "[Branch: master (upstream & fork)] Improves string length calculation and truncation for quoted replies."
   },
   {
     "sha": "3a9016894c2493cfe3806f7fcaa91da8913c0da3",
@@ -115,7 +115,7 @@
     "summary": "修正错误",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "c655d568f7462af47df10a0e631e3817d63b1d9f",
@@ -123,7 +123,7 @@
     "summary": "Merge pull request #70 from oubeichen/patch-1",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #70 from oubeichen/patch-1 (oubeichen contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #70 from oubeichen/patch-1 (oubeichen contribution)"
   },
   {
     "sha": "371bcf3285077fbd2fd610b0280f4f9d3e2c493b",
@@ -134,7 +134,7 @@
       "topic_hot_tag"
     ],
     "status": "reviewed",
-    "notes": "Fixes or implements automatic pagination / infinite scroll."
+    "notes": "[Branch: master (upstream & fork)] Fixes or implements automatic pagination / infinite scroll."
   },
   {
     "sha": "8737d5351a9152ef4cbbe83328fc222e1c885ab8",
@@ -144,7 +144,7 @@
       "comment_subreply_order"
     ],
     "status": "reviewed",
-    "notes": "Controls chronological vs reverse order of sub-replies."
+    "notes": "[Branch: master (upstream & fork)] Controls chronological vs reverse order of sub-replies."
   },
   {
     "sha": "4f0e5f50ff1825627eed5143c47b161d15d810f4",
@@ -154,7 +154,7 @@
       "comment_subreply_order"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #71 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #71 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "b5c0b90178299b29c0ba799749a5e09cb1d6444a",
@@ -164,7 +164,7 @@
       "game_ps5_chart_fix"
     ],
     "status": "reviewed",
-    "notes": "Fixes chart alignment and layout issues for PS5 game pages."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Fixes chart alignment and layout issues for PS5 game pages."
   },
   {
     "sha": "04219be5e8e2749e237dc1a277050d9b8798d116",
@@ -174,7 +174,7 @@
       "game_ps5_chart_fix"
     ],
     "status": "reviewed",
-    "notes": "Fixes chart alignment and layout issues for PS5 game pages."
+    "notes": "[Branch: master (upstream & fork)] Fixes chart alignment and layout issues for PS5 game pages."
   },
   {
     "sha": "81655722a0f58efcbabc82147e92c4c161a844e6",
@@ -182,7 +182,7 @@
     "summary": "修复评论页面的布局bug",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "22998964eb58f4bca08f9492d6cbc89d90fdd234",
@@ -190,7 +190,7 @@
     "summary": "Merge pull request #73 from Jiangyu-Wang/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #73 from Jiangyu-Wang/master"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #73 from Jiangyu-Wang/master"
   },
   {
     "sha": "bd89b34ce59f1827c0b065d1853f339f7c9f3544",
@@ -205,7 +205,7 @@
       "user_auto_checkin"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: master (upstream & fork)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "d0924e4d7a307e81d295935e5bdb756e495a0e9a",
@@ -213,7 +213,7 @@
     "summary": "[chore] changed option default value to false",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "137f2d5f76a5cec154e43b52bc3b2d7fb02fbb32",
@@ -226,7 +226,7 @@
       "user_auto_checkin"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: master (upstream & fork)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "45b162fd22f3bd1ebc1296f1c294f2e8be32a45e",
@@ -236,7 +236,7 @@
       "comment_subreply_order"
     ],
     "status": "reviewed",
-    "notes": "Controls chronological vs reverse order of sub-replies."
+    "notes": "[Branch: master (upstream & fork)] Controls chronological vs reverse order of sub-replies."
   },
   {
     "sha": "d1ca2fe7f889737d5f36c19d1509638637007890",
@@ -246,7 +246,7 @@
       "comment_subreply_order"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #75 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #75 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "74056531d715b23803cb27bfa693fa52b388621a",
@@ -256,7 +256,7 @@
       "game_score_trend_chart"
     ],
     "status": "reviewed",
-    "notes": "Analyzes game critic ratings, distribution, and trend chart over time."
+    "notes": "[Branch: master (upstream & fork)] Analyzes game critic ratings, distribution, and trend chart over time."
   },
   {
     "sha": "a504b9f7b4efe0005c51dbfa905ef67a4aa58ff4",
@@ -264,7 +264,7 @@
     "summary": "Merge pull request #76 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #76 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #76 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "6da803686b5bb41ee1e3a57a618144a4e6ff450f",
@@ -279,7 +279,7 @@
       "user_auto_checkin"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: master (upstream & fork)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "898b9d145a690b712bf9896e4fdd1cf9a9b14b5a",
@@ -289,7 +289,7 @@
       "qa_enhanced_page"
     ],
     "status": "reviewed",
-    "notes": "Enhances QA page with multi-page answer loading, sorting, and solved badges."
+    "notes": "[Branch: master (upstream & fork)] Enhances QA page with multi-page answer loading, sorting, and solved badges."
   },
   {
     "sha": "16128d436a84c837a74e9d573d012cd45a407e74",
@@ -299,7 +299,7 @@
       "qa_enhanced_page"
     ],
     "status": "reviewed",
-    "notes": "Enhances QA page with multi-page answer loading, sorting, and solved badges."
+    "notes": "[Branch: master (upstream & fork)] Enhances QA page with multi-page answer loading, sorting, and solved badges."
   },
   {
     "sha": "a1b62916f2a852e866a8843b77e953d593dff9bf",
@@ -307,7 +307,7 @@
     "summary": "[chore] changed default settings",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "af92becc54eafa11491cfcabd70de0cc6531e577",
@@ -321,7 +321,7 @@
       "user_auto_checkin"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: master (upstream & fork)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "84f0ed57d5b66c40e0dd1a9e917625e246ed4422",
@@ -334,7 +334,7 @@
       "user_auto_checkin"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: master (upstream & fork)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "4d2ceefee8342b8c8093fda09c4c5c27b4d5281c",
@@ -347,7 +347,7 @@
       "user_auto_checkin"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: master (upstream & fork)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "64f47a0ebca6f29cc186d8f59d0719f784912225",
@@ -360,7 +360,7 @@
       "user_auto_checkin"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: master (upstream & fork)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "152415ef5fe23e69e9bbf5dcf52076d67bd25ab3",
@@ -370,7 +370,7 @@
       "post_image_preview"
     ],
     "status": "reviewed",
-    "notes": "Disabled / removed because P9 native site implemented its own image preview."
+    "notes": "[Branch: master (upstream & fork)] Disabled / removed because P9 native site implemented its own image preview."
   },
   {
     "sha": "4951ef4f1196d9e5ea77310954831fc9f1c36f42",
@@ -380,7 +380,7 @@
       "build_webpack_modularization"
     ],
     "status": "reviewed",
-    "notes": "Modularizes monolithic psnineplus.js into feature files under src/features/."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Modularizes monolithic psnineplus.js into feature files under src/features/."
   },
   {
     "sha": "c2b91250dbe300ffc0fc5a47802d1224c6b33676",
@@ -388,7 +388,7 @@
     "summary": "add: .gitignore",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: .gitignore"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: .gitignore"
   },
   {
     "sha": "45d8c001ecc1ec1a8aee84fd0d9cd32abd9a5efd",
@@ -398,7 +398,7 @@
       "build_webpack_modularization"
     ],
     "status": "reviewed",
-    "notes": "Modularizes monolithic psnineplus.js into feature files under src/features/."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Modularizes monolithic psnineplus.js into feature files under src/features/."
   },
   {
     "sha": "6bea570dffc06738a3974c7fe9821b147bd8dd10",
@@ -406,7 +406,7 @@
     "summary": "update: header.js",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: header.json, test/header.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: header.json, test/header.js"
   },
   {
     "sha": "25b276ae5d085dfea8a65fb1e15a85f9c3765881",
@@ -420,7 +420,7 @@
       "user_auto_checkin"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "2d1c633567df0962b28b9cf29080974d7a1641c0",
@@ -428,7 +428,7 @@
     "summary": "refactor: PageBottom function",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, src/components/PageBottomButton/PageBottomButton.js, src/index.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: package-lock.json, src/components/PageBottomButton/PageBottomButton.js, src/index.js"
   },
   {
     "sha": "28bbe841d974ac9e74355b16d98517c082df2c51",
@@ -438,7 +438,7 @@
       "page_quick_bottom_buttons"
     ],
     "status": "reviewed",
-    "notes": "Commit modifying: src/components/PageBottomButton/index.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: src/components/PageBottomButton/index.js"
   },
   {
     "sha": "a3ea5522724e6a4c1b8e57dde2164c651634ea3a",
@@ -449,7 +449,7 @@
       "page_quick_bottom_buttons"
     ],
     "status": "reviewed",
-    "notes": "Enhances QA page with multi-page answer loading, sorting, and solved badges."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Enhances QA page with multi-page answer loading, sorting, and solved badges."
   },
   {
     "sha": "fb5164aaae475951a635e107676caf7ff25a3f5d",
@@ -461,7 +461,7 @@
       "page_quick_bottom_buttons"
     ],
     "status": "reviewed",
-    "notes": "Masks spoiler text in quote replies or reveals mark message on interaction."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Masks spoiler text in quote replies or reveals mark message on interaction."
   },
   {
     "sha": "c98a0140229b53d6365fe32c95c8ffe11798343f",
@@ -474,7 +474,7 @@
       "comment_op_badge"
     ],
     "status": "reviewed",
-    "notes": "Masks spoiler text in quote replies or reveals mark message on interaction."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Masks spoiler text in quote replies or reveals mark message on interaction."
   },
   {
     "sha": "1f515ab8343d48de43458ac4af76f6343e94d573",
@@ -487,7 +487,7 @@
       "comment_op_badge"
     ],
     "status": "reviewed",
-    "notes": "Masks spoiler text in quote replies or reveals mark message on interaction."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Masks spoiler text in quote replies or reveals mark message on interaction."
   },
   {
     "sha": "cf3b5145d66fd200179b7dd32d73e2de0fbe03b2",
@@ -501,7 +501,7 @@
       "topic_hot_tag"
     ],
     "status": "reviewed",
-    "notes": "Masks spoiler text in quote replies or reveals mark message on interaction."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Masks spoiler text in quote replies or reveals mark message on interaction."
   },
   {
     "sha": "4aa034d013c6efbf147793dc75e4b932da452664",
@@ -515,7 +515,7 @@
       "comment_input_counter"
     ],
     "status": "reviewed",
-    "notes": "Masks spoiler text in quote replies or reveals mark message on interaction."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Masks spoiler text in quote replies or reveals mark message on interaction."
   },
   {
     "sha": "1f34eace81e1b51c4af4478d99db1a2c9ffc50fe",
@@ -530,7 +530,7 @@
       "comment_input_counter"
     ],
     "status": "reviewed",
-    "notes": "Masks spoiler text in quote replies or reveals mark message on interaction."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Masks spoiler text in quote replies or reveals mark message on interaction."
   },
   {
     "sha": "960fd6ad8e55187d17301cc3d7b87021486dda98",
@@ -544,7 +544,7 @@
       "comment_input_preview"
     ],
     "status": "reviewed",
-    "notes": "Masks spoiler text in quote replies or reveals mark message on interaction."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Masks spoiler text in quote replies or reveals mark message on interaction."
   },
   {
     "sha": "848eeeb91536cd790bc5c425b1feff05817043fb",
@@ -558,7 +558,7 @@
       "trophy_sort_tips_by_likes"
     ],
     "status": "reviewed",
-    "notes": "Masks spoiler text in quote replies or reveals mark message on interaction."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Masks spoiler text in quote replies or reveals mark message on interaction."
   },
   {
     "sha": "524ed718579082e8cce4cbd5c0865e3d9a87d6f8",
@@ -569,7 +569,7 @@
       "topic_hot_tag"
     ],
     "status": "reviewed",
-    "notes": "Commit modifying: src/index.js, src/resource/style/style.css"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: src/index.js, src/resource/style/style.css"
   },
   {
     "sha": "b9afa4479087400f19ec1c10e5682d61d9761372",
@@ -583,7 +583,7 @@
       "trophy_filter_unearned"
     ],
     "status": "reviewed",
-    "notes": "Commit modifying: src/components/ShowTrophyNotEarned/index.js, src/index.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: src/components/ShowTrophyNotEarned/index.js, src/index.js"
   },
   {
     "sha": "22a2bfdc150d4dbfe5847b6935f876a06627ac29",
@@ -597,7 +597,7 @@
       "trophy_pie_chart"
     ],
     "status": "reviewed",
-    "notes": "Commit modifying: src/components/TrophyPieChart/index.js, src/index.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: src/components/TrophyPieChart/index.js, src/index.js"
   },
   {
     "sha": "afd27493d171b54835193f075210ee94e8b34271",
@@ -611,7 +611,7 @@
       "trophy_earned_line_chart"
     ],
     "status": "reviewed",
-    "notes": "Commit modifying: src/components/TrophyEarnedLineChart/index.js, src/index.js, src/utils/trophyData.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: src/components/TrophyEarnedLineChart/index.js, src/index.js, src/utils/trophyData.js"
   },
   {
     "sha": "8c33bd47377ebf39f3bf95686fd9b0a43b185526",
@@ -625,7 +625,7 @@
       "user_hover_profile"
     ],
     "status": "reviewed",
-    "notes": "Masks spoiler text in quote replies or reveals mark message on interaction."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Masks spoiler text in quote replies or reveals mark message on interaction."
   },
   {
     "sha": "0727e64f118dcf8b215ea00c885dc2383a4ceba4",
@@ -640,7 +640,7 @@
       "trophy_earned_status_in_guide"
     ],
     "status": "reviewed",
-    "notes": "Commit modifying: src/components/EarnedStatusInGuide/index.js, src/index.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: src/components/EarnedStatusInGuide/index.js, src/index.js"
   },
   {
     "sha": "adc3a751e50e5879d32e2b9f419b3a0b9061fe1e",
@@ -654,7 +654,7 @@
       "game_completion_calc"
     ],
     "status": "reviewed",
-    "notes": "Commit modifying: src/components/EarnedStatusInGuide/index.js, src/components/GameCompletion/index.js, src/index.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: src/components/EarnedStatusInGuide/index.js, src/components/GameCompletion/index.js, src/index.js"
   },
   {
     "sha": "a6331e947461ad1d844cd235621d97328bdc3b2f",
@@ -669,7 +669,7 @@
       "user_auto_checkin"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "8b8a88f4161864446547b9994ab1b01b467412d0",
@@ -682,7 +682,7 @@
       "game_completion_calc"
     ],
     "status": "reviewed",
-    "notes": "Commit modifying: src/components/ReplyContent/index.js, src/index.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: src/components/ReplyContent/index.js, src/index.js"
   },
   {
     "sha": "1af4efe68c7c6868a9b805ff519022f64d9b0c40",
@@ -694,7 +694,7 @@
       "game_completion_calc"
     ],
     "status": "reviewed",
-    "notes": "Commit modifying: src/components/AllGame/index.js, src/index.js, src/resource/style/style.css"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: src/components/AllGame/index.js, src/index.js, src/resource/style/style.css"
   },
   {
     "sha": "1f7baea8c2925645c1446c809ad597d7bef83029",
@@ -707,7 +707,7 @@
       "game_completion_calc"
     ],
     "status": "reviewed",
-    "notes": "Fixes or implements automatic pagination / infinite scroll."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Fixes or implements automatic pagination / infinite scroll."
   },
   {
     "sha": "8529a46b3d5a3d99e2018001f0a1f6ba90bf7618",
@@ -719,7 +719,7 @@
       "user_auto_checkin"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "64d2cb31428d85b275e2e57faac9c390ec500998",
@@ -735,7 +735,7 @@
       "comment_floor_index"
     ],
     "status": "reviewed",
-    "notes": "Masks spoiler text in quote replies or reveals mark message on interaction."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Masks spoiler text in quote replies or reveals mark message on interaction."
   },
   {
     "sha": "f482a7c64be18d6a7c854537ef9793e3e10efd01",
@@ -743,7 +743,7 @@
     "summary": "add: p9TimeTextParser",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: src/utils/date.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: src/utils/date.js"
   },
   {
     "sha": "fa6419095cae689d6c94e6a58ae52541e6ddefe6",
@@ -755,7 +755,7 @@
       "discount_price_history_chart"
     ],
     "status": "reviewed",
-    "notes": "Fixes or implements automatic pagination / infinite scroll."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Fixes or implements automatic pagination / infinite scroll."
   },
   {
     "sha": "a26ee4bf40b4c4bd1e19556c50f98720022a8a6a",
@@ -763,7 +763,7 @@
     "summary": "fix: docs",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: src/utils/date.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: src/utils/date.js"
   },
   {
     "sha": "e3239651c96c7908984d99dea0bde856da2a9882",
@@ -778,7 +778,7 @@
       "discount_price_history_chart"
     ],
     "status": "reviewed",
-    "notes": "Masks spoiler text in quote replies or reveals mark message on interaction."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Masks spoiler text in quote replies or reveals mark message on interaction."
   },
   {
     "sha": "d67ed4601ced4c8fab46c4c1626ee1a99382ead4",
@@ -791,7 +791,7 @@
       "discount_title_color"
     ],
     "status": "reviewed",
-    "notes": "Fixes or implements automatic pagination / infinite scroll."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Fixes or implements automatic pagination / infinite scroll."
   },
   {
     "sha": "a4290614806e728c8726ded9b2ffa3fdfde7b388",
@@ -804,7 +804,7 @@
       "trophy_best_tips_filter"
     ],
     "status": "reviewed",
-    "notes": "Commit modifying: src/components/BestOnly/index.js, src/index.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: src/components/BestOnly/index.js, src/index.js"
   },
   {
     "sha": "985a356aa99b593a40f3cbf149c65d661ae9a202",
@@ -817,7 +817,7 @@
       "trophy_best_tips_filter"
     ],
     "status": "reviewed",
-    "notes": "Supports foreign currency conversion to CNY/HKD on single game page."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Supports foreign currency conversion to CNY/HKD on single game page."
   },
   {
     "sha": "461d5162b73ce5c2a2471e2b4af7990dfa3ebb1c",
@@ -832,7 +832,7 @@
       "trophy_summary_bar"
     ],
     "status": "reviewed",
-    "notes": "Supports foreign currency conversion to CNY/HKD on single game page."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Supports foreign currency conversion to CNY/HKD on single game page."
   },
   {
     "sha": "1f560a68dd518fa450ead6c400250217338423b7",
@@ -840,7 +840,7 @@
     "summary": "chore: revert readme",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: README.md"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: README.md"
   },
   {
     "sha": "027b3bfa9eb3fcdfcfa1751549546ba4c762196b",
@@ -850,7 +850,7 @@
       "comment_op_badge"
     ],
     "status": "reviewed",
-    "notes": "Commit modifying: src/components/OpBadge/index.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: src/components/OpBadge/index.js"
   },
   {
     "sha": "e3d216333708a1ae41f52d358b7b91db5294abc2",
@@ -863,7 +863,7 @@
       "user_auto_checkin"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "a2a02107e45ff427fce9912662830e084dfc8493",
@@ -881,7 +881,7 @@
       "trophy_summary_bar"
     ],
     "status": "reviewed",
-    "notes": "Supports foreign currency conversion to CNY/HKD on single game page."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Supports foreign currency conversion to CNY/HKD on single game page."
   },
   {
     "sha": "ccc17f87593117310bb9d4150e7de7fc1c1d8c48",
@@ -895,7 +895,7 @@
       "trophy_sort_by_timestamp"
     ],
     "status": "reviewed",
-    "notes": "Supports foreign currency conversion to CNY/HKD on single game page."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Supports foreign currency conversion to CNY/HKD on single game page."
   },
   {
     "sha": "bd211514bc5c39ea14e9c885b6e941b684408e13",
@@ -907,7 +907,7 @@
       "comment_floor_index"
     ],
     "status": "reviewed",
-    "notes": "Enhances QA page with multi-page answer loading, sorting, and solved badges."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Enhances QA page with multi-page answer loading, sorting, and solved badges."
   },
   {
     "sha": "0200d05d5baf1bfbc9f84d2b0a0fc9da634024eb",
@@ -917,7 +917,7 @@
       "trophy_sort_tips_by_likes"
     ],
     "status": "reviewed",
-    "notes": "Commit modifying: src/components/SortTipsByLikes/index.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: src/components/SortTipsByLikes/index.js"
   },
   {
     "sha": "40726ca69ae56498c41d4c644928c0f8f6678313",
@@ -932,7 +932,7 @@
       "trophy_sort_by_timestamp"
     ],
     "status": "reviewed",
-    "notes": "Supports foreign currency conversion to CNY/HKD on single game page."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Supports foreign currency conversion to CNY/HKD on single game page."
   },
   {
     "sha": "5b6c8e8b21c734b7abb4bd890612f9f66dd22295",
@@ -942,7 +942,7 @@
       "game_score_trend_chart"
     ],
     "status": "reviewed",
-    "notes": "Analyzes game critic ratings, distribution, and trend chart over time."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Analyzes game critic ratings, distribution, and trend chart over time."
   },
   {
     "sha": "eab700122fb732a7772c71d61d177f082ad09b06",
@@ -977,7 +977,7 @@
       "trophy_sort_by_timestamp"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "dfbe821581d9b33bcc571177b30578b8e9a02bd0",
@@ -990,7 +990,7 @@
       "link_d7vg_fix"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: master (upstream & fork)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "d0c26276e150cc14e2fc9926f33677e473f28547",
@@ -998,7 +998,7 @@
     "summary": "[chore] condensed code; updated version number",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package.json, psnineplus.js"
   },
   {
     "sha": "d06bb7814cb7765c52166f5c79e375aa8b63f460",
@@ -1011,7 +1011,7 @@
       "link_plaintext_detection"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: master (upstream & fork)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "4edd49710b8c8ac3fd06c6fa1660554a6560c665",
@@ -1019,7 +1019,7 @@
     "summary": "[chore] updated readme",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: README.md"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: README.md"
   },
   {
     "sha": "c8a62a3c0f1c81bb7f790123023ba0b2b1235cc9",
@@ -1029,7 +1029,7 @@
       "link_plaintext_detection"
     ],
     "status": "reviewed",
-    "notes": "Detects plain-text URLs in posts/comments and turns them into clickable links opening in new tabs."
+    "notes": "[Branch: master (upstream & fork)] Detects plain-text URLs in posts/comments and turns them into clickable links opening in new tabs."
   },
   {
     "sha": "f96120a4c1317a5dca97eb1f88587c2c18a1d7ea",
@@ -1041,7 +1041,7 @@
       "user_auto_checkin"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: master (upstream & fork)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "acea6032798c646558130cddae1375d8e5ac94c5",
@@ -1051,7 +1051,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "Applies ESLint rules and automatic code formatting fixes across codebase."
+    "notes": "[Branch: master (upstream & fork)] Applies ESLint rules and automatic code formatting fixes across codebase."
   },
   {
     "sha": "fee71f81055a7a881cd3a240a06b36b685a76110",
@@ -1068,7 +1068,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: master (upstream & fork)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "1b1f1402298f521e5aa0530ed89fd497eb4def97",
@@ -1076,7 +1076,7 @@
     "summary": "style: fix no-undef error",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "05184d1a86c6cf87728f94bafb7a095ab8afa47c",
@@ -1086,7 +1086,7 @@
       "page_auto_paging"
     ],
     "status": "reviewed",
-    "notes": "Fixes or implements automatic pagination / infinite scroll."
+    "notes": "[Branch: master (upstream & fork)] Fixes or implements automatic pagination / infinite scroll."
   },
   {
     "sha": "0a0f8c56cf3959cd2ea0a14760f350eb872c4544",
@@ -1096,7 +1096,7 @@
       "page_auto_paging"
     ],
     "status": "reviewed",
-    "notes": "Fixes or implements automatic pagination / infinite scroll."
+    "notes": "[Branch: master (upstream & fork)] Fixes or implements automatic pagination / infinite scroll."
   },
   {
     "sha": "9996347bdbe29f855683f5df97d894de28ce8eb4",
@@ -1113,7 +1113,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "Auto check-in feature, later disabled due to anti-bot mechanisms."
+    "notes": "[Branch: master (upstream & fork)] Auto check-in feature, later disabled due to anti-bot mechanisms."
   },
   {
     "sha": "babaff794534bef718570c3ca2be9d9a853212c8",
@@ -1121,7 +1121,7 @@
     "summary": "[fix] open detected plain text links in new tabs",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "634d3af01498b23fbf81b0ff0e925b4182be4ef4",
@@ -1129,7 +1129,7 @@
     "summary": "Merge pull request #81 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #81 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #81 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "5916729cda15d64ccbdec78c02ba85d5480cad50",
@@ -1139,7 +1139,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "Applies ESLint rules and automatic code formatting fixes across codebase."
+    "notes": "[Branch: master (upstream & fork)] Applies ESLint rules and automatic code formatting fixes across codebase."
   },
   {
     "sha": "8cae891c592bf8523f1d057794b8ebb2da769b60",
@@ -1149,7 +1149,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix camel case error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix camel case error"
   },
   {
     "sha": "43dc59e04f47d0712e0ef92ec2e2008c3d17e759",
@@ -1159,7 +1159,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix radix error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix radix error"
   },
   {
     "sha": "08834fb6beb8f9318d6accd2dbfc973a90ed7a7c",
@@ -1169,7 +1169,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix some no-unused-vars"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix some no-unused-vars"
   },
   {
     "sha": "507b3c3e62e138b02319fc863bb9b0a6490c41cb",
@@ -1179,7 +1179,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix array-callback-return error part 1"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix array-callback-return error part 1"
   },
   {
     "sha": "7f1714ad0dee799a1a0c89861fbae906bb9dcc0b",
@@ -1189,7 +1189,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix array-callback-return error part 2"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix array-callback-return error part 2"
   },
   {
     "sha": "5077b2d6daafedbc895550784975b2dd7037c8c5",
@@ -1199,7 +1199,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix array-callback-return error part 3"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix array-callback-return error part 3"
   },
   {
     "sha": "fd67f4bdbd11652dd421589f18295c2c5879f940",
@@ -1209,7 +1209,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix array-callback-return error part 4"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix array-callback-return error part 4"
   },
   {
     "sha": "1100a076c8a4c8e74393c24b073a56b033f95748",
@@ -1222,7 +1222,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
+    "notes": "[Branch: master (upstream & fork)] Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
   },
   {
     "sha": "32d8d2e29f59b5e9de4a63e935a9a7f1c4278b0d",
@@ -1232,7 +1232,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix eslint error 2"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix eslint error 2"
   },
   {
     "sha": "37d1f3bac2e10287ce6638275815c3cb15edf3c7",
@@ -1242,7 +1242,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix plus plus eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix plus plus eslint error"
   },
   {
     "sha": "0345df3ddd8c327df5112587c756ac531e2589d3",
@@ -1252,7 +1252,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix some eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix some eslint error"
   },
   {
     "sha": "c83993697eaafe68076dc7f0ef05920fb57920e7",
@@ -1260,7 +1260,7 @@
     "summary": "build: inactive some rule now but fix them later",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: .eslintrc.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: .eslintrc.js"
   },
   {
     "sha": "a93491f8654b312577c0b049e3620db50703f56c",
@@ -1272,7 +1272,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
+    "notes": "[Branch: master (upstream & fork)] Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
   },
   {
     "sha": "3261e326de710d52abc9c243294b57d1636975f0",
@@ -1284,7 +1284,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
+    "notes": "[Branch: master (upstream & fork)] Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
   },
   {
     "sha": "d15d02f15a6a922f9316689e442992bfb0ec2f42",
@@ -1296,7 +1296,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
+    "notes": "[Branch: master (upstream & fork)] Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
   },
   {
     "sha": "af6d507168ff646750ed639207f99b594dbf2a1c",
@@ -1304,7 +1304,7 @@
     "summary": "build: fix workflow",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: .github/workflows/lint.yml, .github/workflows/main.yml"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: .github/workflows/lint.yml, .github/workflows/main.yml"
   },
   {
     "sha": "9049b8a7e7c36160c2d8faabb47d5d074f731a9f",
@@ -1314,7 +1314,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix no-empty rule"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix no-empty rule"
   },
   {
     "sha": "c19481c2e059967eebbee7b9095d363aa0c2a404",
@@ -1324,7 +1324,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix no-useless-escape eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix no-useless-escape eslint error"
   },
   {
     "sha": "3bc71e134ce572be3d582b6e3c789b7ccfb4544e",
@@ -1334,7 +1334,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix no-shadow eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix no-shadow eslint error"
   },
   {
     "sha": "95f4fec190c579f701076a50ed4e334e13b3af8c",
@@ -1344,7 +1344,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix max-len eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix max-len eslint error"
   },
   {
     "sha": "3ba19da670dd2c9c61cceefd21b8dca7b0a7e9d9",
@@ -1354,7 +1354,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix array-callback-return eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix array-callback-return eslint error"
   },
   {
     "sha": "864d61591bfc6ebc44ed7df0bba190ad631ed0af",
@@ -1364,7 +1364,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix guard-for-in eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix guard-for-in eslint error"
   },
   {
     "sha": "8ec70fe13cccc1c2af39fdead70c0720ef49db72",
@@ -1374,7 +1374,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix no-restricted-syntax eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix no-restricted-syntax eslint error"
   },
   {
     "sha": "53443f2c0be3ffeb313c8625ef3d66eb21a7d227",
@@ -1384,7 +1384,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix no-plusplus eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix no-plusplus eslint error"
   },
   {
     "sha": "73006d290436f74ae93c0243b5603acc414e272e",
@@ -1394,7 +1394,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix no-use-before-define eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix no-use-before-define eslint error"
   },
   {
     "sha": "4f9be1301f8ab88f9534b0688442855887322135",
@@ -1402,7 +1402,7 @@
     "summary": "fix: loading error",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "b0b81f26e2f8133246e8e3b620d2e1ee123392d5",
@@ -1412,7 +1412,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: revert: no-use-before-define eslint rule"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: revert: no-use-before-define eslint rule"
   },
   {
     "sha": "2b3c125838609962760ed05456ac3db676462318",
@@ -1422,7 +1422,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix no-unused-expressions eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix no-unused-expressions eslint error"
   },
   {
     "sha": "a12df932612f3150d2de3ee05303b42a86cbdee0",
@@ -1432,7 +1432,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix no-return-assign eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix no-return-assign eslint error"
   },
   {
     "sha": "fb2d08e2e12d98d0ac8b810e4d762ceecafd8e43",
@@ -1440,7 +1440,7 @@
     "summary": "style: move function position",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "0c6430a536a7d23f8aecac7587fa9a2fe6f506ed",
@@ -1450,7 +1450,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix no-use-before-define eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix no-use-before-define eslint error"
   },
   {
     "sha": "d6463a88bede31c0bb297030fe34673cd9b1988f",
@@ -1460,7 +1460,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix consistent-return eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix consistent-return eslint error"
   },
   {
     "sha": "e9ea54e56544c073634d854c32ef0895b0adda2d",
@@ -1470,7 +1470,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix no-prototype-builtins eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix no-prototype-builtins eslint error"
   },
   {
     "sha": "7e9f0c38eeabe0df22e4058369b97321e87cb322",
@@ -1480,7 +1480,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix prefer-spread eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix prefer-spread eslint error"
   },
   {
     "sha": "47faaaf5f6f03517c8566015c971d6cf94b4127b",
@@ -1490,7 +1490,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix no-continue eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix no-continue eslint error"
   },
   {
     "sha": "bc32599fd66172ad7d821b821509ccd5f3be9dc3",
@@ -1500,7 +1500,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix no-unused-vars eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix no-unused-vars eslint error"
   },
   {
     "sha": "0dc8b43f4d67c5ef8ef594e8636ed901786ebe85",
@@ -1510,7 +1510,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix prefer-destructuring eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix prefer-destructuring eslint error"
   },
   {
     "sha": "ec73a0912000f41d0cfc371cbcf87659b88770b2",
@@ -1520,7 +1520,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: style: fix no-param-reassign eslint error"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: style: fix no-param-reassign eslint error"
   },
   {
     "sha": "4e934e6d0f151e6c48dd48307e613b35a5e7b5e9",
@@ -1528,7 +1528,7 @@
     "summary": "update: version number",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "977a40aa0062595c1ed249b02bb6f1f63686b328",
@@ -1538,7 +1538,7 @@
       "game_score_trend_chart"
     ],
     "status": "reviewed",
-    "notes": "Fixes comment/rating trend chart date parsing or axis."
+    "notes": "[Branch: master (upstream & fork)] Fixes comment/rating trend chart date parsing or axis."
   },
   {
     "sha": "2e98947ae81a046d7155b6f80d4241aef4dd5ee1",
@@ -1549,7 +1549,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
+    "notes": "[Branch: master (upstream & fork)] Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
   },
   {
     "sha": "11b5bdb59d0b5a8713ed78b430aa64fc25ff8214",
@@ -1557,7 +1557,7 @@
     "summary": "[fix] outdated comment",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "38fdd6203d7ce95b8952821b8eedb761faaab44f",
@@ -1565,7 +1565,7 @@
     "summary": "[fix] imprecise text replacement",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "bf02ac2c1969c9fcfd8f1c2817c42dd52da317f2",
@@ -1573,7 +1573,7 @@
     "summary": "[chore] updated version number",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "73d15cb1c34374c23649f805e175ccd4f5a0be10",
@@ -1583,7 +1583,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
+    "notes": "[Branch: master (upstream & fork)] Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
   },
   {
     "sha": "3f023d95d4a1f55e9ab91e69dff38950ecfb9229",
@@ -1593,7 +1593,7 @@
       "trophy_filter_unearned"
     ],
     "status": "reviewed",
-    "notes": "REMOVED: Old trophy filter feature removed from codebase."
+    "notes": "[Branch: master (upstream & fork)] on_upstream_master=true, on_fork_v2=true; REMOVED: completely removed the legacy trophy filter feature from codebase. (Note: psnine_next T10 feature is a planned recreation/replacement, not currently supported in legacy master)."
   },
   {
     "sha": "92f0e8c3b463700be59d2ebd3fd8ffee5c0cd115",
@@ -1603,7 +1603,7 @@
       "trophy_progress_cache"
     ],
     "status": "reviewed",
-    "notes": "Prevents unwanted trophy fetching on gamelist topics and consolidates trophy data cache."
+    "notes": "[Branch: master (upstream & fork)] Prevents unwanted trophy fetching on gamelist topics and consolidates trophy data cache."
   },
   {
     "sha": "960303f6398c30e252ea29fd8065bd4397ea4c5c",
@@ -1611,7 +1611,7 @@
     "summary": "[chore] updated version number",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "70a1f59ddd31ab7e764f684de21718bf94281a0c",
@@ -1619,7 +1619,7 @@
     "summary": "Merge pull request #86 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #86 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #86 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "e757775ebfd7cd1e0bf9165d3e1be3e04eced533",
@@ -1629,7 +1629,7 @@
       "user_profile_sync"
     ],
     "status": "reviewed",
-    "notes": "Adds manual sync/update buttons on unregistered users profile homepages."
+    "notes": "[Branch: master (upstream & fork)] Adds manual sync/update buttons on unregistered users profile homepages."
   },
   {
     "sha": "b1ee8cfd3c94bb3d6d2fb39df242f1e1280f00d3",
@@ -1640,7 +1640,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
+    "notes": "[Branch: master (upstream & fork)] Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
   },
   {
     "sha": "0d8fd901374a13d42d4942ba979dcb8a16e29718",
@@ -1648,7 +1648,7 @@
     "summary": "Merge pull request #87 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #87 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #87 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "439e281dbbdaa1d124d65d3d4123d8b34cd5e553",
@@ -1658,7 +1658,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
+    "notes": "[Branch: master (upstream & fork)] Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
   },
   {
     "sha": "d62588c708d64d162871d2db9aef6d2b4bc53c7a",
@@ -1668,7 +1668,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
+    "notes": "[Branch: master (upstream & fork)] Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
   },
   {
     "sha": "8358281d7f576c4747192facb7d6dee845fce966",
@@ -1678,7 +1678,7 @@
       "user_auto_checkin"
     ],
     "status": "reviewed",
-    "notes": "Handles alert or error in automaticSignIn."
+    "notes": "[Branch: master (upstream & fork)] Handles alert or error in automaticSignIn."
   },
   {
     "sha": "9b9463963ea81d04404c4b44b6434506d40e1243",
@@ -1688,7 +1688,7 @@
       "user_auto_checkin"
     ],
     "status": "reviewed",
-    "notes": "Handles alert or error in automaticSignIn."
+    "notes": "[Branch: master (upstream & fork)] Handles alert or error in automaticSignIn."
   },
   {
     "sha": "52a086aaa2bbbbc2f71258e3115826845c568ed3",
@@ -1698,7 +1698,7 @@
       "comment_spoiler_mask"
     ],
     "status": "reviewed",
-    "notes": "Runs showMarkMessage at document-start to prevent spoiler flashing during load."
+    "notes": "[Branch: master (upstream & fork)] Runs showMarkMessage at document-start to prevent spoiler flashing during load."
   },
   {
     "sha": "c388d10a78486e0caa15bd62fe40646ac356dfc1",
@@ -1708,7 +1708,7 @@
       "comment_spoiler_mask"
     ],
     "status": "reviewed",
-    "notes": "Runs showMarkMessage at document-start to prevent spoiler flashing during load."
+    "notes": "[Branch: master (upstream & fork)] Runs showMarkMessage at document-start to prevent spoiler flashing during load."
   },
   {
     "sha": "4c8cdc81a8394045c549e1b197a992f6f454225c",
@@ -1718,7 +1718,7 @@
       "deps_update"
     ],
     "status": "reviewed",
-    "notes": "Dependency update: build: bump version to 1.0.0"
+    "notes": "[Branch: master (upstream & fork)] Dependency update: build: bump version to 1.0.0"
   },
   {
     "sha": "af9dd70fe333cfac254cbed18b94d91b52918f4e",
@@ -1726,7 +1726,7 @@
     "summary": "[fix] review chart display bug",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "af01450b9e0a9906f997a7d34662cb9bbba804af",
@@ -1736,7 +1736,7 @@
       "trophy_earned_line_chart"
     ],
     "status": "reviewed",
-    "notes": "Fixes trophy get time chart display bug."
+    "notes": "[Branch: master (upstream & fork)] Fixes trophy get time chart display bug."
   },
   {
     "sha": "5358b3505cdcc31c9029a6cb267c8a4caafe23e4",
@@ -1746,7 +1746,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: [chore] comply with eslint"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: [chore] comply with eslint"
   },
   {
     "sha": "f657005df78a373fb57b1e0ec421da49d8b3e783",
@@ -1754,7 +1754,7 @@
     "summary": "Merge pull request #92 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #92 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #92 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "e3708f2511065e3328046ca6a8534610843d0373",
@@ -1762,7 +1762,7 @@
     "summary": "update(build): dependencies",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json"
   },
   {
     "sha": "5f0381d9dfe5586e0fc52bf1b5f2c67e98082a9a",
@@ -1770,7 +1770,7 @@
     "summary": "[fix] misplaced QA status icons",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "0664dedaeeb79638bea7396a858f534dea96f3ee",
@@ -1778,7 +1778,7 @@
     "summary": "Merge pull request #93 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #93 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #93 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "f319dc92007f2bd1b9a56403456fd9ff3cc9aa5b",
@@ -1788,7 +1788,7 @@
       "editor_full_site"
     ],
     "status": "reviewed",
-    "notes": "Enables full BBCode editor toolbar across all textareas on the entire site."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] on_upstream_master=false, on_fork_v2=false; experimental/PR commit only, never merged to master. Attempts to enable BBCode editor across all textareas site-wide."
   },
   {
     "sha": "af17a39451051252032e8ddfc06d5e21b17db571",
@@ -1796,7 +1796,7 @@
     "summary": "[fix] can't use $(this) in lambda function",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "4b6d272405232b9fff50ed89e4c59390beaf1f24",
@@ -1804,7 +1804,7 @@
     "summary": "[fix] redirection to 'psnine\\.com\\/set\\/(gene|qa)\\?ob=date'",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "73458f73658ce701cc05c12f48a4c798a4d4a960",
@@ -1812,7 +1812,7 @@
     "summary": "[fix] conflict with character counter and preview",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "e583f2dad5777c10ca0d91824be3c7edcf07173c",
@@ -1822,7 +1822,7 @@
       "editor_full_site"
     ],
     "status": "reviewed",
-    "notes": "Enables full BBCode editor toolbar across all textareas on the entire site."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Enables full BBCode editor toolbar across all textareas on the entire site."
   },
   {
     "sha": "5e9827e4cee365288d4eeb026414ef88172ec348",
@@ -1830,7 +1830,7 @@
     "summary": "[fix] redirection to 'psnine\\.com\\/game\\/\\d+\\/(gene|qa)\\?ob=date'",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "efcd2d3330f7f06515d1fbb8209f2eed64d5785e",
@@ -1842,7 +1842,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
   },
   {
     "sha": "91e991706658fb5983d6a3e15550a24507db2000",
@@ -1852,7 +1852,7 @@
       "https_resource_fix"
     ],
     "status": "reviewed",
-    "notes": "Fixes mixed content issues: dynamically reloads scripts over HTTPS and updates HTTP asset links."
+    "notes": "[Branch: master (upstream & fork)] Fixes mixed content issues: dynamically reloads scripts over HTTPS and updates HTTP asset links."
   },
   {
     "sha": "945da96abed89423568b5e04fdecb964601d92e5",
@@ -1860,7 +1860,7 @@
     "summary": "Reload scripts dynamically",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "bbab96bddce0b727a453a6d598f73fc02aa12656",
@@ -1870,7 +1870,7 @@
       "https_resource_fix"
     ],
     "status": "reviewed",
-    "notes": "Fixes mixed content issues: dynamically reloads scripts over HTTPS and updates HTTP asset links."
+    "notes": "[Branch: master (upstream & fork)] Fixes mixed content issues: dynamically reloads scripts over HTTPS and updates HTTP asset links."
   },
   {
     "sha": "c2abd4adae49d5f06736da7426a77c779e265738",
@@ -1878,7 +1878,7 @@
     "summary": "Merge pull request #94 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #94 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #94 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "42c820a2360c1dca7c2dd21294706c316050de7a",
@@ -1888,7 +1888,7 @@
       "user_auto_checkin"
     ],
     "status": "reviewed",
-    "notes": "Handles alert or error in automaticSignIn."
+    "notes": "[Branch: master (upstream & fork)] Handles alert or error in automaticSignIn."
   },
   {
     "sha": "58dcb27bed7f13d70ca280bc2bc04ad7e966659e",
@@ -1896,7 +1896,7 @@
     "summary": "[fix] delayed CSS loading breaks Highcharts when fixing HTTP CSS on a HTTPS page",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "96669fa3ab9f6e2e9f950a457318060e8551d516",
@@ -1904,7 +1904,7 @@
     "summary": "[chore] removed debugging output",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "bda48ca427295ff199b81ed7024d980f48455932",
@@ -1912,7 +1912,7 @@
     "summary": "[chore] removed redundant selectors",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "cabbd6937dd2cb20843e987c439f8387f10db951",
@@ -1922,7 +1922,7 @@
       "user_auto_checkin"
     ],
     "status": "reviewed",
-    "notes": "Handles alert or error in automaticSignIn."
+    "notes": "[Branch: master (upstream & fork)] Handles alert or error in automaticSignIn."
   },
   {
     "sha": "09881d98898a30280627284f38a85c6411853f78",
@@ -1930,7 +1930,7 @@
     "summary": "[fix] uncaught error in automaticSignIn()",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "900a7704aaad0ae55e8db69c7632f34a654db80b",
@@ -1938,7 +1938,7 @@
     "summary": "Merge pull request #96 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #96 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #96 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "100389d00569989d00c5e99a54a35410636e94bd",
@@ -1948,7 +1948,7 @@
       "tooling_eslint"
     ],
     "status": "reviewed",
-    "notes": "ESLint style fix: build: update eslint"
+    "notes": "[Branch: master (upstream & fork)] ESLint style fix: build: update eslint"
   },
   {
     "sha": "e9b9114d3e1f24f6437bfb7d05353c150eb810bc",
@@ -1956,7 +1956,7 @@
     "summary": "[fix] duplicated scheme in URL might break link detection",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "a45c0be01da549c01d6363f049d0f3baaa479b54",
@@ -1966,7 +1966,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
+    "notes": "[Branch: master (upstream & fork)] Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
   },
   {
     "sha": "4bf75ac03e43cd84bb620daa0a5d16c6393cc859",
@@ -1974,7 +1974,7 @@
     "summary": "[chore] updated description",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: README.md"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: README.md"
   },
   {
     "sha": "af2f6d3ea145dacccd31a3b48f8fdae60d73103b",
@@ -1982,7 +1982,7 @@
     "summary": "feat: change cursor to pointer when hovering on reply",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "2ea70eb6899fb7af260072d6d20a698c7fdb60e1",
@@ -1992,7 +1992,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
+    "notes": "[Branch: master (upstream & fork)] Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
   },
   {
     "sha": "1105f622761122df94bb0268166031fcf3ef6b8f",
@@ -2002,7 +2002,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
+    "notes": "[Branch: master (upstream & fork)] Allows clicking @user or reply reference to scroll directly to the parent comment, highlighting it."
   },
   {
     "sha": "32521d4ede01fbf32c8988bf9d7a6dbc8f564a6f",
@@ -2010,7 +2010,7 @@
     "summary": "fix: lint error",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "f17c1951bd652ca1ce9596b5d3fb4f7630c2e55e",
@@ -2018,7 +2018,7 @@
     "summary": "Merge pull request #97 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #97 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #97 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "53516c8715c40bdeb593f82acc3f79052fc7cee1",
@@ -2026,7 +2026,7 @@
     "summary": "Merge branch 'master' of https://github.com/swsoyee/psnine-enhanced-version",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge branch 'master' of https://github.com/swsoyee/psnine-enhanced-version (swsoyee contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge branch 'master' of https://github.com/swsoyee/psnine-enhanced-version (swsoyee contribution)"
   },
   {
     "sha": "9c0d5f6268de46609db5fa68f0093f951fce78c9",
@@ -2034,7 +2034,7 @@
     "summary": "[feature] refined scroll behavior on reply click",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "8f532c6dda987f54b24879b3b1936d8bd15a7817",
@@ -2042,7 +2042,7 @@
     "summary": "Merge pull request #98 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #98 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #98 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "d4c943ee217957e13ed0527b4cb124452cc612af",
@@ -2052,7 +2052,7 @@
       "bilibili_iframe_https"
     ],
     "status": "reviewed",
-    "notes": "Rewrites embedded HTTP Bilibili player iframes to HTTPS."
+    "notes": "[Branch: master (upstream & fork)] Rewrites embedded HTTP Bilibili player iframes to HTTPS."
   },
   {
     "sha": "2e343452f1d60af1a0ed116aa74bb4ee89087998",
@@ -2060,7 +2060,7 @@
     "summary": "Merge pull request #99 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #99 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #99 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "80889fb2357cb7a5d7181db1e6753f3e4e4615af",
@@ -2070,7 +2070,7 @@
       "trophy_sort_tips_by_likes"
     ],
     "status": "reviewed",
-    "notes": "Fixes trophy tips sorting by like count."
+    "notes": "[Branch: master (upstream & fork)] Fixes trophy tips sorting by like count."
   },
   {
     "sha": "cb972860d52eb9fa85c0e71b3069c8eeb466e32c",
@@ -2080,7 +2080,7 @@
       "deps_update"
     ],
     "status": "reviewed",
-    "notes": "Dependency update: build(deps): bump minimist from 1.2.5 to 1.2.6"
+    "notes": "[Branch: master (upstream & fork)] Dependency update: build(deps): bump minimist from 1.2.5 to 1.2.6"
   },
   {
     "sha": "cabb38b92be4f00460e937a6845b0bfe2954d92c",
@@ -2088,7 +2088,7 @@
     "summary": "Merge pull request #100 from swsoyee/dependabot/npm_and_yarn/minimist-1.2.6",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #100 from swsoyee/dependabot/npm_and_yarn/minimist-1.2.6 (swsoyee contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #100 from swsoyee/dependabot/npm_and_yarn/minimist-1.2.6 (swsoyee contribution)"
   },
   {
     "sha": "1a98136a4a2fe106c157737d6384cb1a84ca4e36",
@@ -2096,7 +2096,7 @@
     "summary": "build(deps): bump ansi-regex from 5.0.0 to 5.0.1",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json"
   },
   {
     "sha": "84956642a0e2e34c52715c79f4f994bc94d4cdc3",
@@ -2104,7 +2104,7 @@
     "summary": "Merge pull request #101 from swsoyee/dependabot/npm_and_yarn/ansi-regex-5.0.1",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #101 from swsoyee/dependabot/npm_and_yarn/ansi-regex-5.0.1 (swsoyee contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #101 from swsoyee/dependabot/npm_and_yarn/ansi-regex-5.0.1 (swsoyee contribution)"
   },
   {
     "sha": "b8fb5d44badf275307a8dbe2e5da76c72c41dd24",
@@ -2112,7 +2112,7 @@
     "summary": "[fix] comment timestamp parsing errors; comment trend Y axis ticks were too dense",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "5426e67511514d33c3f8216f2233c38b7868ef70",
@@ -2120,7 +2120,7 @@
     "summary": "[fix] score bar chart Y axis ticks were too dense",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "ea1e62e2967708857e021936f4fd3ce553ba11ec",
@@ -2128,7 +2128,7 @@
     "summary": "Merge pull request #102 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #102 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #102 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "eb2baac2341499e0d2cf9713522f44375c872f2b",
@@ -2138,7 +2138,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Enables reply traceback / scroll on game comment pages."
+    "notes": "[Branch: master (upstream & fork)] Enables reply traceback / scroll on game comment pages."
   },
   {
     "sha": "8da1d81ea983386c88a641c914c0c46da651cc35",
@@ -2148,7 +2148,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #106 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #106 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "e9fc9939ff7941e61d4653d32c3b07900764c181",
@@ -2156,7 +2156,7 @@
     "summary": "build(deps): bump json5 from 1.0.1 to 1.0.2",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json"
   },
   {
     "sha": "0ff6dcc9a3f18b8e686c84c7d58ba961e7e935c7",
@@ -2166,7 +2166,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #105 from swsoyee/dependabot/npm_and_yarn/json5-1.0.2 (swsoyee contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #105 from swsoyee/dependabot/npm_and_yarn/json5-1.0.2 (swsoyee contribution)"
   },
   {
     "sha": "d55968933b19eccb5bf2bf0f67898b3f557c86ed",
@@ -2174,7 +2174,7 @@
     "summary": "build(deps): bump json5 and tsconfig-paths",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json"
   },
   {
     "sha": "c74d04a485069cd0402b8a144afd2fe6bb79678b",
@@ -2184,7 +2184,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #104 from swsoyee/dependabot/npm_and_yarn/json5-and-tsconfig-paths-2.2.3 (swsoyee contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #104 from swsoyee/dependabot/npm_and_yarn/json5-and-tsconfig-paths-2.2.3 (swsoyee contribution)"
   },
   {
     "sha": "bef5208a5328f1f244366c54784a2d8709bb12ce",
@@ -2192,7 +2192,7 @@
     "summary": "build(deps): bump minimatch from 3.0.4 to 3.1.2",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json"
   },
   {
     "sha": "feec341d16611e4ddc30340f53fd18702e7f3894",
@@ -2202,7 +2202,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #103 from swsoyee/dependabot/npm_and_yarn/minimatch-3.1.2 (swsoyee contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #103 from swsoyee/dependabot/npm_and_yarn/minimatch-3.1.2 (swsoyee contribution)"
   },
   {
     "sha": "75de1ae36b6de8370dc477618d72aafd595348f5",
@@ -2214,7 +2214,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Displays related versions/regions of a game on game pages, caching variant metadata in local storage."
+    "notes": "[Branch: master (upstream & fork)] Displays related versions/regions of a game on game pages, caching variant metadata in local storage."
   },
   {
     "sha": "cd1416a8466a37e33a6aa06784c566b5c0d5634d",
@@ -2226,7 +2226,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Displays related versions/regions of a game on game pages, caching variant metadata in local storage."
+    "notes": "[Branch: master (upstream & fork)] Displays related versions/regions of a game on game pages, caching variant metadata in local storage."
   },
   {
     "sha": "a2c0d3cfae1b65ce660c517e6ef106879c31bb06",
@@ -2234,7 +2234,7 @@
     "summary": "[fix] style adjustment",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "1bd12cc81b4cbd56d1e92075ce3cab3c9be9ea12",
@@ -2242,7 +2242,7 @@
     "summary": "[chore] simplified some code; added comments",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "982e4b049e5a82fb2e8fb58af13385b4c673c73a",
@@ -2250,7 +2250,7 @@
     "summary": "[fix] stop adding info block onto game pages with no variants",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "1a9ed2bc4f12dec7cbf7a6d4e0aa4d30be0e56ff",
@@ -2258,7 +2258,7 @@
     "summary": "[fix] variants sorting",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "e8bdfe0c697729f9f48b99dac3b6b783c1058ecb",
@@ -2266,7 +2266,7 @@
     "summary": "[fix] game titles with hardcoded '《' '》' characters",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "95b8db22eed5e9aa60eb6cae122989ca5ae0526e",
@@ -2274,7 +2274,7 @@
     "summary": "[chore] extend cache expiration from an hour to a day",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "17ea4bd1af2ec2845ac96cd600082cebc27748e6",
@@ -2282,7 +2282,7 @@
     "summary": "[fix] style adjustments",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "f70854cf7e60e02f5ea92f1b66cfd58a803e2e3f",
@@ -2290,7 +2290,7 @@
     "summary": "[chore] updated version numbers",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "0a0a977df492b0d91b247cf1c15b0666de262483",
@@ -2300,7 +2300,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #107 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #107 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "4f55bcb633956a2e6c61ab3523b1461cc3a76b91",
@@ -2308,7 +2308,7 @@
     "summary": "[fix] style error on game comment pages with region info",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "94e8d8f33deca596e2667616320e940407050b91",
@@ -2318,7 +2318,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Enables reply traceback / scroll on game comment pages."
+    "notes": "[Branch: master (upstream & fork)] Enables reply traceback / scroll on game comment pages."
   },
   {
     "sha": "243f58895e83356a65843edd3699b31275da2f84",
@@ -2326,7 +2326,7 @@
     "summary": "[chore] resolved ESLint warnings",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "0b200ac41b67b5151c2ebdcac7d0df9deabae8a5",
@@ -2336,7 +2336,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #108 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #108 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "8570c71e3881894bc07351fb82520c7f03b709c9",
@@ -2347,7 +2347,7 @@
       "game_progress_cache"
     ],
     "status": "reviewed",
-    "notes": "Displays related versions/regions of a game on game pages, caching variant metadata in local storage."
+    "notes": "[Branch: master (upstream & fork)] Displays related versions/regions of a game on game pages, caching variant metadata in local storage."
   },
   {
     "sha": "96822085a04060b91b5b5da3bcdb1d5f26b24079",
@@ -2355,7 +2355,7 @@
     "summary": "增加eslint自动检测/修复命令",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: README.md, package-lock.json, package.json"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: README.md, package-lock.json, package.json"
   },
   {
     "sha": "2f2d147b5a56f39fbacff2a12bd43e9b373e8b49",
@@ -2366,7 +2366,7 @@
       "game_progress_cache"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #109 from swsoyee/mordom-gameversion (swsoyee contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #109 from swsoyee/mordom-gameversion (swsoyee contribution)"
   },
   {
     "sha": "5fd04cd367c3377fbe56ed558e83d9d4121c6b3a",
@@ -2376,7 +2376,7 @@
       "theme_dark_mode"
     ],
     "status": "reviewed",
-    "notes": "Dark mode / night style visual adjustments."
+    "notes": "[Branch: master (upstream & fork)] Dark mode / night style visual adjustments."
   },
   {
     "sha": "af061ce203a1f0834a540d54a5a61bec1fbc56bd",
@@ -2384,7 +2384,7 @@
     "summary": "[fix] improved sortTipsByLikes() compatibility with old pages",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "c85e7809a0927c5c113a1794d9d155beeec72276",
@@ -2392,7 +2392,7 @@
     "summary": "[chore] updated version numbers",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "ede14f193a2325df50e15e51eff9409f742b50c7",
@@ -2400,7 +2400,7 @@
     "summary": "Merge pull request #110 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #110 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #110 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "fb00c32c47ca3a4cb4aacc6fa24f4f04c07d604b",
@@ -2408,7 +2408,7 @@
     "summary": "[chore] updated game title filter due to website changes",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "c99a39bdfcf70c47810bfbc1ef1e185fb11e413c",
@@ -2416,7 +2416,7 @@
     "summary": "Merge pull request #111 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #111 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #111 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "ffe49ec4404d2824867426fdd72fa04c2cdb86f9",
@@ -2426,7 +2426,7 @@
       "theme_dark_mode"
     ],
     "status": "reviewed",
-    "notes": "Dark mode / night style visual adjustments."
+    "notes": "[Branch: master (upstream & fork)] Dark mode / night style visual adjustments."
   },
   {
     "sha": "866711ce65313466417ba9486b9edc6f4565cb77",
@@ -2434,7 +2434,7 @@
     "summary": "Merge pull request #112 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #112 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #112 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "96cddc045cb506e9ce19f5d41ae010a7e8f26528",
@@ -2444,7 +2444,7 @@
       "user_blacklist"
     ],
     "status": "reviewed",
-    "notes": "Fixes user blocking/blacklist filtering logic."
+    "notes": "[Branch: master (upstream & fork)] Fixes user blocking/blacklist filtering logic."
   },
   {
     "sha": "2b565084468f19884f37d6cdcba535c8a2c12c4e",
@@ -2454,7 +2454,7 @@
       "comment_expand_subcomments"
     ],
     "status": "reviewed",
-    "notes": "Adds lazy-loading auto-expansion of collapsed subcomments with toggle option."
+    "notes": "[Branch: master (upstream & fork)] Adds lazy-loading auto-expansion of collapsed subcomments with toggle option."
   },
   {
     "sha": "6c3b793aafa3b1fe6f2912b1f2ddfa3f8c3eede4",
@@ -2464,7 +2464,7 @@
       "comment_expand_subcomments"
     ],
     "status": "reviewed",
-    "notes": "Adds lazy-loading auto-expansion of collapsed subcomments with toggle option."
+    "notes": "[Branch: master (upstream & fork)] Adds lazy-loading auto-expansion of collapsed subcomments with toggle option."
   },
   {
     "sha": "a560fd3760c20318734da49a39663c07d1fa170f",
@@ -2475,7 +2475,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Adds lazy-loading auto-expansion of collapsed subcomments with toggle option."
+    "notes": "[Branch: master (upstream & fork)] Adds lazy-loading auto-expansion of collapsed subcomments with toggle option."
   },
   {
     "sha": "f4ef6ee3d096bc639cba4948029be945e6af2b74",
@@ -2485,7 +2485,7 @@
       "comment_expand_subcomments"
     ],
     "status": "reviewed",
-    "notes": "Adds lazy-loading auto-expansion of collapsed subcomments with toggle option."
+    "notes": "[Branch: master (upstream & fork)] Adds lazy-loading auto-expansion of collapsed subcomments with toggle option."
   },
   {
     "sha": "23bcfd04cee218f4113230f21a8b29968871d0f7",
@@ -2495,7 +2495,7 @@
       "comment_scroll_to_reply"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #114 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #114 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "5faea2df06bf4a2646a4c63cb1f1da42a17ec10e",
@@ -2505,7 +2505,7 @@
       "game_pspc_icon_fix"
     ],
     "status": "reviewed",
-    "notes": "Fixes cover and icon layout for PC / PlayStation PC platform games."
+    "notes": "[Branch: master (upstream & fork)] Fixes cover and icon layout for PC / PlayStation PC platform games."
   },
   {
     "sha": "e49e953fd336ae4bd17a1cc3d4cdca69bc230dfc",
@@ -2515,7 +2515,7 @@
       "game_pspc_icon_fix"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #115 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #115 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "5ca6f90e8238c9d867b213f3d6d4e6c9c33da3d5",
@@ -2525,7 +2525,7 @@
       "game_pspc_icon_fix"
     ],
     "status": "reviewed",
-    "notes": "Fixes cover and icon layout for PC / PlayStation PC platform games."
+    "notes": "[Branch: master (upstream & fork)] Fixes cover and icon layout for PC / PlayStation PC platform games."
   },
   {
     "sha": "de5d10da43cb6ddc4ca5040c78df1ace11016850",
@@ -2535,7 +2535,7 @@
       "game_pspc_icon_fix"
     ],
     "status": "reviewed",
-    "notes": "Fixes cover and icon layout for PC / PlayStation PC platform games."
+    "notes": "[Branch: master (upstream & fork)] Fixes cover and icon layout for PC / PlayStation PC platform games."
   },
   {
     "sha": "66b55b6ea267cb52a995d833048b1a32431e222d",
@@ -2545,7 +2545,7 @@
       "game_pspc_icon_fix"
     ],
     "status": "reviewed",
-    "notes": "Fixes cover and icon layout for PC / PlayStation PC platform games."
+    "notes": "[Branch: master (upstream & fork)] Fixes cover and icon layout for PC / PlayStation PC platform games."
   },
   {
     "sha": "e1acf158c3e00caedb32f80e8a7a35eb28d07098",
@@ -2553,7 +2553,7 @@
     "summary": "Update psnineplus.js",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "ab87e23c9b251acbdc9eebf0a719c57da4eb7a52",
@@ -2561,7 +2561,7 @@
     "summary": "Merge pull request #1 from kaikaiiiiiii/kaikaiiiiiii-patch-1",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #1 from kaikaiiiiiii/kaikaiiiiiii-patch-1 (kaikaiiiiiii contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #1 from kaikaiiiiiii/kaikaiiiiiii-patch-1 (kaikaiiiiiii contribution)"
   },
   {
     "sha": "34c2568b1bdeb7095575c35cb8d120a460a08226",
@@ -2571,7 +2571,7 @@
       "table_sort_toggle_direction"
     ],
     "status": "reviewed",
-    "notes": "Enhances table sort buttons to toggle between ascending and descending order on click."
+    "notes": "[Branch: master (upstream & fork)] Enhances table sort buttons to toggle between ascending and descending order on click."
   },
   {
     "sha": "ac899d6c5a28bfd356b9031e98f66e421fbf5780",
@@ -2579,7 +2579,7 @@
     "summary": "fix: lint",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, psnineplus.js"
   },
   {
     "sha": "ccd4e7317396cf1da9d94b1c3de6c165f78f39f5",
@@ -2587,7 +2587,7 @@
     "summary": "fix: lint",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "52bf8ccbec70831eb7f0dc42c7d6f639d26011f6",
@@ -2595,7 +2595,7 @@
     "summary": "Merge pull request #117 from kaikaiiiiiii/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #117 from kaikaiiiiiii/master (kaikaiiiiiii contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #117 from kaikaiiiiiii/master (kaikaiiiiiii contribution)"
   },
   {
     "sha": "caae2972a2b5899eb4dfd23027263e1ed533197a",
@@ -2603,7 +2603,7 @@
     "summary": "update: 更换初始排序 (https://github.com/swsoyee/psnine-enhanced-version/pull/117#issuecomment-2140126873)",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "7eba7d40d09054f649d5eb1b3710ef5141bfff21",
@@ -2613,7 +2613,7 @@
       "chart_highcharts_freeze"
     ],
     "status": "reviewed",
-    "notes": "Freezes Highcharts library version to prevent breaking score chart rendering."
+    "notes": "[Branch: master (upstream & fork)] Freezes Highcharts library version to prevent breaking score chart rendering."
   },
   {
     "sha": "8762905634ba125b10fbacc958f5720ad8414781",
@@ -2621,7 +2621,7 @@
     "summary": "Merge pull request #118 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #118 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #118 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "202ee82977d46f2271dab57feb8cb82c58378de2",
@@ -2632,7 +2632,7 @@
       "game_progress_cache"
     ],
     "status": "reviewed",
-    "notes": "Renders personal game completion progress bars directly behind items in gamelist."
+    "notes": "[Branch: master (upstream & fork)] Renders personal game completion progress bars directly behind items in gamelist."
   },
   {
     "sha": "28b4b6bd7ae0f224a946c8d3a688191c9c737488",
@@ -2640,7 +2640,7 @@
     "summary": "clear",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "23d5e47199b89ce2b3248e68512cfc1f24abf266",
@@ -2648,7 +2648,7 @@
     "summary": "clear",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "f1c60820d1f032ced3ee07445b1f1eae9105b810",
@@ -2656,7 +2656,7 @@
     "summary": "lint",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "876b4727c420e50978e799510abb37a8c70e48b5",
@@ -2666,7 +2666,7 @@
       "theme_dark_mode"
     ],
     "status": "reviewed",
-    "notes": "Dark mode / night style visual adjustments."
+    "notes": "[Branch: master (upstream & fork)] Dark mode / night style visual adjustments."
   },
   {
     "sha": "b925ac03859dec13d0296e5f008cda8cb72e4c60",
@@ -2674,7 +2674,7 @@
     "summary": "clear",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "c90470bfce072ad90bca3fa2decd05d386002009",
@@ -2682,7 +2682,7 @@
     "summary": "version up",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "3238b4adf1c73d358f8c52d471d2315680621ecb",
@@ -2692,7 +2692,7 @@
       "game_list_personal_completion_bar"
     ],
     "status": "reviewed",
-    "notes": "Renders personal game completion progress bars directly behind items in gamelist."
+    "notes": "[Branch: master (upstream & fork)] Renders personal game completion progress bars directly behind items in gamelist."
   },
   {
     "sha": "f4e8885ca4aae8d2f07f72d09d8570653e74eb0e",
@@ -2700,7 +2700,7 @@
     "summary": "clear",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "17c8791834cefaccc4deb36ed475f612d33cbaae",
@@ -2708,7 +2708,7 @@
     "summary": "bug fix",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "fdeb7989b6a0610af2b55ca4876f36e147cd5bba",
@@ -2716,7 +2716,7 @@
     "summary": "clear",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "94bacd3856048711e3919381a6780001a0175629",
@@ -2724,7 +2724,7 @@
     "summary": "update",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "790eb9d43146784c6727694e64612acaf83e9c43",
@@ -2732,7 +2732,7 @@
     "summary": "chore: bump version",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package.json"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package.json"
   },
   {
     "sha": "da1a7884299331b39b7c87816f7ce406e0615439",
@@ -2740,7 +2740,7 @@
     "summary": "Merge pull request #119 from kaikaiiiiiii/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #119 from kaikaiiiiiii/master (kaikaiiiiiii contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #119 from kaikaiiiiiii/master (kaikaiiiiiii contribution)"
   },
   {
     "sha": "f2ce23d5a61bcd81b2364adf795dddec952e5366",
@@ -2748,7 +2748,7 @@
     "summary": "fix: change jquery cdn",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "e64dc1cb70221545fe172b78cdee2401e8d76eec",
@@ -2756,7 +2756,7 @@
     "summary": "Merge branch 'master' of github.com:kaikaiiiiiii/psnine-enhanced-version",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge branch 'master' of github.com:kaikaiiiiiii/psnine-enhanced-version (kaikaiiiiiii contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge branch 'master' of github.com:kaikaiiiiiii/psnine-enhanced-version (kaikaiiiiiii contribution)"
   },
   {
     "sha": "311767d4d69c410cc3502a9d58879f6c8505fc5b",
@@ -2766,7 +2766,7 @@
       "battle_monitor"
     ],
     "status": "reviewed",
-    "notes": "Adds battle monitoring (约战监控) to track multiplayer sessions and notify users."
+    "notes": "[Branch: master (upstream & fork)] Adds battle monitoring (约战监控) to track multiplayer sessions and notify users."
   },
   {
     "sha": "ee3f764da2e2fa8035577370ede27b3875cc6122",
@@ -2776,7 +2776,7 @@
       "battle_monitor"
     ],
     "status": "reviewed",
-    "notes": "Adds battle monitoring (约战监控) to track multiplayer sessions and notify users."
+    "notes": "[Branch: master (upstream & fork)] Adds battle monitoring (约战监控) to track multiplayer sessions and notify users."
   },
   {
     "sha": "c3c8dfad2c13024b1098460899d8574b05889d76",
@@ -2784,7 +2784,7 @@
     "summary": "clear",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "8f71e37e85257d8a46a9aaf04d5e94f99fd9e063",
@@ -2795,7 +2795,7 @@
       "game_list_personal_completion_bar"
     ],
     "status": "reviewed",
-    "notes": "Fetches personal game completion via asynchronous background AJAX and caches results to optimize performance."
+    "notes": "[Branch: master (upstream & fork)] Fetches personal game completion via asynchronous background AJAX and caches results to optimize performance."
   },
   {
     "sha": "1a577f73fa8f8fdf489f8e1c93140d236bf4d5bf",
@@ -2803,7 +2803,7 @@
     "summary": "version up",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package.json"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package.json"
   },
   {
     "sha": "42ddbb1e5eaec0f57202beef36e2f801dc412878",
@@ -2813,7 +2813,7 @@
       "battle_monitor"
     ],
     "status": "reviewed",
-    "notes": "Adds battle monitoring (约战监控) to track multiplayer sessions and notify users."
+    "notes": "[Branch: master (upstream & fork)] Adds battle monitoring (约战监控) to track multiplayer sessions and notify users."
   },
   {
     "sha": "eaea55d5fb5f0a9335595ffa0c185a693f81354f",
@@ -2821,7 +2821,7 @@
     "summary": "merge",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: merge"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: merge"
   },
   {
     "sha": "25e3f34951568003985e76ea7cd38bd9794beb71",
@@ -2829,7 +2829,7 @@
     "summary": "clear",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "b02e72c79e0d792c218c32e6d568bddf75d8af4a",
@@ -2837,7 +2837,7 @@
     "summary": "lint",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "23f3762ec9834368fec45f1409534f9a31583eea",
@@ -2848,7 +2848,7 @@
       "game_list_personal_completion_bar"
     ],
     "status": "reviewed",
-    "notes": "Fetches personal game completion via asynchronous background AJAX and caches results to optimize performance."
+    "notes": "[Branch: master (upstream & fork)] Fetches personal game completion via asynchronous background AJAX and caches results to optimize performance."
   },
   {
     "sha": "ca4f7b5162e17e7cb479ae038eeb9605d0b53aa8",
@@ -2856,7 +2856,7 @@
     "summary": "bug fix",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "d7f638c28b2acbeaea57fd1d0727a39740a48d0b",
@@ -2864,7 +2864,7 @@
     "summary": "改回版本号，后一次更新覆盖了前次 bug fix 的内容",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package.json, psnineplus.js"
   },
   {
     "sha": "65c380b02f8ccae4ade0a8949445d7e4e2c9cea6",
@@ -2872,7 +2872,7 @@
     "summary": "clear",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "bb9df66e09c3317c669aa18758f77fefc6062e9a",
@@ -2880,7 +2880,7 @@
     "summary": "lint",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "b62c411fdb0c4eac7da2126de7fafa3ee6afa6e8",
@@ -2891,7 +2891,7 @@
       "game_list_personal_completion_bar"
     ],
     "status": "reviewed",
-    "notes": "Fetches personal game completion via asynchronous background AJAX and caches results to optimize performance."
+    "notes": "[Branch: master (upstream & fork)] Fetches personal game completion via asynchronous background AJAX and caches results to optimize performance."
   },
   {
     "sha": "e56b2abf140748e99593b14de4adc5d09cc93634",
@@ -2899,7 +2899,7 @@
     "summary": "bug fix",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "8e2ec8358d347aeb71eb8b3cfbd20001f3368f1b",
@@ -2907,7 +2907,7 @@
     "summary": "clear",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "42dd423e322fe56fe2a70edaf33dfd5bc9dde30f",
@@ -2915,7 +2915,7 @@
     "summary": "lint",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "9f5074ac31b606f9dc935bbeca68c20992d0fcb0",
@@ -2923,7 +2923,7 @@
     "summary": "rubust",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "65d4caa1fa0a7bcc3e17f61a11d96130f5e107de",
@@ -2931,7 +2931,7 @@
     "summary": "Merge pull request #121 from kaikaiiiiiii/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #121 from kaikaiiiiiii/master (kaikaiiiiiii contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #121 from kaikaiiiiiii/master (kaikaiiiiiii contribution)"
   },
   {
     "sha": "c6f3c1c5bd341e42898385ef7f5cb1dba0af6f33",
@@ -2939,7 +2939,7 @@
     "summary": "bug fix",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "30ace87db4cb1a8894b4d3b587d309b6dc9e3174",
@@ -2947,7 +2947,7 @@
     "summary": "联迪",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "63d9f4c76fbe5fb8760e37df47a9970a72e16345",
@@ -2955,7 +2955,7 @@
     "summary": "bump version",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package.json"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package.json"
   },
   {
     "sha": "69126f0160effac4428025bfecc0722f28868286",
@@ -2965,7 +2965,7 @@
       "game_progress_cache"
     ],
     "status": "reviewed",
-    "notes": "Separates user record updating logic between profile page and game history records page."
+    "notes": "[Branch: master (upstream & fork)] Separates user record updating logic between profile page and game history records page."
   },
   {
     "sha": "24f4a64acbf7400eb5b860b2d1ed8a822934c015",
@@ -2973,7 +2973,7 @@
     "summary": "Merge pull request #122 from kaikaiiiiiii/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #122 from kaikaiiiiiii/master (kaikaiiiiiii contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #122 from kaikaiiiiiii/master (kaikaiiiiiii contribution)"
   },
   {
     "sha": "8f7cdc56f700d2334babe1af03e95e95879543fe",
@@ -2981,7 +2981,7 @@
     "summary": "Merge branch 'master' of https://github.com/kaikaiiiiiii/psnine-enhanced-version",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge branch 'master' of https://github.com/kaikaiiiiiii/psnine-enhanced-version (kaikaiiiiiii contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge branch 'master' of https://github.com/kaikaiiiiiii/psnine-enhanced-version (kaikaiiiiiii contribution)"
   },
   {
     "sha": "b4302d5550e8feb61d5c0f108b8f474de59747c0",
@@ -2989,7 +2989,7 @@
     "summary": "plan to do",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "1126db7345f7b9033d9b2e104bc80f814b8c9ff2",
@@ -2999,7 +2999,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "ea644dbfbea313dea80a9fe139602a2bd4b13207",
@@ -3009,7 +3009,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "459da7051f05a7c26daa3d8eaf57839730956053",
@@ -3019,7 +3019,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "e1bbcf7234995d7ac7ebd4056e8eab3ef4a2504e",
@@ -3029,7 +3029,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "fc8315c8c1da937509f9810f5fbe1dc251184313",
@@ -3039,7 +3039,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "44e0625668ae01a48763cc6b406b352ccaac20d4",
@@ -3049,7 +3049,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "5b069908188bf4202f5664921cdd7afe5f897ac8",
@@ -3059,7 +3059,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "133f3c2dfd01a364d35cab3b4a56d54d51e009f7",
@@ -3069,7 +3069,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "51f133d098a36e3088d2dbcea76c6022c7bd9e60",
@@ -3079,7 +3079,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "4611fba817e93d72e0c8590461823cd9045987c3",
@@ -3089,7 +3089,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "aa7147b3db9838dd39bc4710b4c4e451805fa032",
@@ -3097,7 +3097,7 @@
     "summary": "lint",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "a09e29b119d328d3ed4e24d227e0e54a2463224f",
@@ -3105,7 +3105,7 @@
     "summary": "update",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "3fcc9529b64941d5d2a3abcaebfa7268f7a08260",
@@ -3113,7 +3113,7 @@
     "summary": "以秘籍形式隐藏展开所有按钮",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "54241c110b53f31cb96ad220ab73be0c28ef6963",
@@ -3123,7 +3123,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "e8be066c94fadc64997edde68836d9790113e453",
@@ -3133,7 +3133,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "b358b7775f9d466242e4ebf5333af1a789f9dffd",
@@ -3143,7 +3143,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Maintains compatibility with both legacy and new P9 trophy tip HTML DOM structures."
+    "notes": "[Branch: master (upstream & fork)] Maintains compatibility with both legacy and new P9 trophy tip HTML DOM structures."
   },
   {
     "sha": "1e677010f1fac219e86a109d3bc018791fe15659",
@@ -3151,7 +3151,7 @@
     "summary": "兼容黑名单与屏蔽词",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "847ced47231124cad98b1bf076e08cd0d1af7900",
@@ -3163,7 +3163,7 @@
       "keyword_filter"
     ],
     "status": "reviewed",
-    "notes": "Filters inline trophy tips using user blacklist and keyword blocking."
+    "notes": "[Branch: master (upstream & fork)] Filters inline trophy tips using user blacklist and keyword blocking."
   },
   {
     "sha": "35a7aa49f654aa1e3d1908789af5b86171243eb8",
@@ -3171,7 +3171,7 @@
     "summary": "独立实现屏蔽词",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "2bd503c45734d164aabcbb7a9fe6e194fd63e2bb",
@@ -3179,7 +3179,7 @@
     "summary": "optimize for mutation monitoring",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "d880355e70a8cc1159cbd5d4e21eb26cb65a758e",
@@ -3189,7 +3189,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "daf86c7b4c730b1dffe9a3d4dca6ed64f4a7680e",
@@ -3197,7 +3197,7 @@
     "summary": "opti",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "ad2a5263ec4ddf2a6dff32072851b7421f6b8cc7",
@@ -3207,7 +3207,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "d9ccc9b4e98805063652f8998cd10992c715f859",
@@ -3215,7 +3215,7 @@
     "summary": "Update psnineplus.js",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "2a7f10eaf36caff2205f45f93bd2fa947725764c",
@@ -3225,7 +3225,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #123 from kaikaiiiiiii/master (kaikaiiiiiii contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #123 from kaikaiiiiiii/master (kaikaiiiiiii contribution)"
   },
   {
     "sha": "c71f5a981a4abfe12823514897e2c8eecd69c552",
@@ -3235,7 +3235,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "04f8ffcd4fe23a013ae9d6953f6d26646c1b716a",
@@ -3245,7 +3245,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #124 from swsoyee/mordom0404 (swsoyee contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #124 from swsoyee/mordom0404 (swsoyee contribution)"
   },
   {
     "sha": "eef9b3667e8142d5b944d3858494a55629824be6",
@@ -3253,7 +3253,7 @@
     "summary": "更新版本号",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "4a9d7fd6c3e95a08b3db4e43a0d6c53abcbf5681",
@@ -3261,7 +3261,7 @@
     "summary": "Merge pull request #125 from swsoyee/mordom0404",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #125 from swsoyee/mordom0404 (swsoyee contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #125 from swsoyee/mordom0404 (swsoyee contribution)"
   },
   {
     "sha": "4486e4da2e8d29ecd5586d38252b32a9f088ff7d",
@@ -3271,7 +3271,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge branch 'swsoyee:master' into master (swsoyee contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge branch 'swsoyee:master' into master (swsoyee contribution)"
   },
   {
     "sha": "70d72768ad6a56714043e1084f2cb58d37fdc665",
@@ -3281,7 +3281,7 @@
       "game_pspc_icon_fix"
     ],
     "status": "reviewed",
-    "notes": "Fixes PSPC cover aspect ratio and icon layout across game comment, list, and QA pages."
+    "notes": "[Branch: master (upstream & fork)] Fixes PSPC cover aspect ratio and icon layout across game comment, list, and QA pages."
   },
   {
     "sha": "e2b947d9858c1249ec189bc18493abcbca10bbcb",
@@ -3289,7 +3289,7 @@
     "summary": "Merge pull request #126 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #126 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #126 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "14dc76669b96d61ec99cb1847833bfde6494fe6c",
@@ -3299,7 +3299,7 @@
       "game_pspc_icon_fix"
     ],
     "status": "reviewed",
-    "notes": "Fixes PSPC cover aspect ratio and icon layout across game comment, list, and QA pages."
+    "notes": "[Branch: master (upstream & fork)] Fixes PSPC cover aspect ratio and icon layout across game comment, list, and QA pages."
   },
   {
     "sha": "5a2c985e3f080cc64eae8df43c56d5fc57a15ff8",
@@ -3307,7 +3307,7 @@
     "summary": "Bump version number",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "fbdc5553b49975d7d3654822abe4f36bab2e0a8c",
@@ -3315,7 +3315,7 @@
     "summary": "Merge pull request #127 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #127 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #127 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "920a34cdb4b4b423c4af6d77f8354df20d6c90dd",
@@ -3323,7 +3323,7 @@
     "summary": "Merge branch 'swsoyee:master' into master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge branch 'swsoyee:master' into master (swsoyee contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge branch 'swsoyee:master' into master (swsoyee contribution)"
   },
   {
     "sha": "1f7716c71377090df65b632ddefb92d4f3133e2b",
@@ -3331,7 +3331,7 @@
     "summary": "Merge pull request #128 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #128 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #128 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "2448d6029cb4c1939946c94a351883c38eaf42c0",
@@ -3339,7 +3339,7 @@
     "summary": "fixed a bug preventing some visible subcomment sections to expand",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "ebdb12a4e036541a3121f15ce8c942f4ebb21625",
@@ -3347,7 +3347,7 @@
     "summary": "Merge pull request #129 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #129 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #129 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "5e641a2b96a05a33a830250e17648bd00e2ad1d3",
@@ -3355,7 +3355,7 @@
     "summary": "Fixed an issue where subcomments to user's own editable main comments are not expanded",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "1626d91702e1a20ce5c4e812bb8dff7dca91f1d1",
@@ -3365,7 +3365,7 @@
       "game_pspc_icon_fix"
     ],
     "status": "reviewed",
-    "notes": "Fixes PSPC cover aspect ratio and icon layout across game comment, list, and QA pages."
+    "notes": "[Branch: master (upstream & fork)] Fixes PSPC cover aspect ratio and icon layout across game comment, list, and QA pages."
   },
   {
     "sha": "937008cb8dc393eb8f5ec0236e41561c6621f5c7",
@@ -3373,7 +3373,7 @@
     "summary": "Bump version number",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "3b315897b9ba8be58ed65652f4d7265ea9bdd2da",
@@ -3381,7 +3381,7 @@
     "summary": "Merge pull request #130 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #130 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #130 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "6b9ccc05c6b4de48332295fe7e5852a752384c07",
@@ -3391,7 +3391,7 @@
       "game_pspc_icon_fix"
     ],
     "status": "reviewed",
-    "notes": "Fixes PSPC cover aspect ratio and icon layout across game comment, list, and QA pages."
+    "notes": "[Branch: master (upstream & fork)] Fixes PSPC cover aspect ratio and icon layout across game comment, list, and QA pages."
   },
   {
     "sha": "7f9e705c8b04405a9953ebe0653153e174f6d418",
@@ -3399,7 +3399,7 @@
     "summary": "Fixed ESLint complaints",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "a906aa1c107d0c9ff6445598d9047a3ce46e649e",
@@ -3409,7 +3409,7 @@
       "game_pspc_icon_fix"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #131 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #131 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "94fa6221612eb20035c2d670ce9073bfdd23d07b",
@@ -3417,7 +3417,7 @@
     "summary": "Improved robustness",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "7aed41c61d342761fc2b32a6c3b8468500c034f0",
@@ -3425,7 +3425,7 @@
     "summary": "Merge pull request #132 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #132 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #132 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "d9ab0c3b8e3b12a76e8d24ba3726bae022f56ae6",
@@ -3435,7 +3435,7 @@
       "link_plaintext_detection"
     ],
     "status": "reviewed",
-    "notes": "Enables plain text link auto-linking on admin logs."
+    "notes": "[Branch: master (upstream & fork)] Enables plain text link auto-linking on admin logs."
   },
   {
     "sha": "017e3407b243288cc39715cc2b1d98526e31fb84",
@@ -3443,7 +3443,7 @@
     "summary": "Merge pull request #133 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #133 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #133 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "c3c5b7f9f5f75c90f887e5b5088fac58d2af5fc7",
@@ -3453,7 +3453,7 @@
       "link_plaintext_detection"
     ],
     "status": "reviewed",
-    "notes": "Enables plain text link auto-linking on admin logs."
+    "notes": "[Branch: master (upstream & fork)] Enables plain text link auto-linking on admin logs."
   },
   {
     "sha": "bf6ce8eba9d122520fe0de51777981cc81806b71",
@@ -3461,7 +3461,7 @@
     "summary": "Merge pull request #134 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #134 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #134 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "6bc24a3ad0ebb1f410efcf47afb6f7ae3716e927",
@@ -3469,7 +3469,7 @@
     "summary": "Replaced highcharts CDN.",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "7c3880fee0cffd6a7c64dcfb742b73242848c4a9",
@@ -3477,7 +3477,7 @@
     "summary": "Merge pull request #136 from Nathaniel-Wu/master",
     "features": [],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #136 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #136 from Nathaniel-Wu/master (Nathaniel-Wu contribution)"
   },
   {
     "sha": "7c90138576577765b1deff2d1fa32f3726cbb3e6",
@@ -3487,7 +3487,7 @@
       "game_pspc_icon_fix"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge branch 'swsoyee:master' into master (swsoyee contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge branch 'swsoyee:master' into master (swsoyee contribution)"
   },
   {
     "sha": "d3894424183a1fbf82437a0f46250624173178c8",
@@ -3497,7 +3497,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Adds toggling arrow indicator icon for expanding/collapsing inline tips."
+    "notes": "[Branch: master (upstream & fork)] Adds toggling arrow indicator icon for expanding/collapsing inline tips."
   },
   {
     "sha": "c2deba919f0022c13cc07ca961c5d5ee822e6437",
@@ -3507,7 +3507,7 @@
       "trophy_chart_folding"
     ],
     "status": "reviewed",
-    "notes": "Adds folding/collapsible toggle with hover visual effect to charts on trophy list page."
+    "notes": "[Branch: master (upstream & fork)] Adds folding/collapsible toggle with hover visual effect to charts on trophy list page."
   },
   {
     "sha": "839d80391f6d5378a28f35fb8a4b32eac6c84891",
@@ -3517,7 +3517,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "c91e2be124ff3496dad2db5cea442a1974d5eb87",
@@ -3527,7 +3527,7 @@
       "battle_monitor"
     ],
     "status": "reviewed",
-    "notes": "Fixes battle monitoring data fetching and status tracking."
+    "notes": "[Branch: master (upstream & fork)] Fixes battle monitoring data fetching and status tracking."
   },
   {
     "sha": "1872142b6fde927e5b04e43d4aaa638c6081be63",
@@ -3537,7 +3537,7 @@
       "battle_monitor"
     ],
     "status": "reviewed",
-    "notes": "Adds interactive bell icon next to battle sessions to easily toggle monitoring."
+    "notes": "[Branch: master (upstream & fork)] Adds interactive bell icon next to battle sessions to easily toggle monitoring."
   },
   {
     "sha": "a8cc20ff56d3fd80fde5a63055a3763cd54b6c3e",
@@ -3545,7 +3545,7 @@
     "summary": "修复p9改子域导致的脚本跨域请求失败问题。",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "4a97aa89ed9ff2e72974d83d70dc2cceb29016a0",
@@ -3555,7 +3555,7 @@
       "user_profile_completion_bar"
     ],
     "status": "reviewed",
-    "notes": "Adds colored background completion progress bar on user's own profile page."
+    "notes": "[Branch: master (upstream & fork)] Adds colored background completion progress bar on user's own profile page."
   },
   {
     "sha": "85939b697b3cb8164191ae4c51a51c940e993ab8",
@@ -3563,7 +3563,7 @@
     "summary": "typo",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "659fc4c9d405ce35273bbd37d230d6bfa1585689",
@@ -3571,7 +3571,7 @@
     "summary": "细调颜色",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "3456b34afa19f3e7b41ec1540a3937f49d8c2629",
@@ -3579,7 +3579,7 @@
     "summary": "细调颜色",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "283a0755b89c12e3bcbde34c22b5c37a8c52e922",
@@ -3587,7 +3587,7 @@
     "summary": "lint",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "60d6ab519c7b9ec244804fa0238d9520b5da5fdf",
@@ -3595,7 +3595,7 @@
     "summary": "bump version",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json, package.json, psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: package-lock.json, package.json, psnineplus.js"
   },
   {
     "sha": "ade62029353c7f50239e1e02330663494f86b136",
@@ -3605,7 +3605,7 @@
       "game_progress_cache"
     ],
     "status": "reviewed",
-    "notes": "Optimizes background platinum progress synchronization to throttle requests and reduce PV overhead."
+    "notes": "[Branch: master (upstream & fork)] Optimizes background platinum progress synchronization to throttle requests and reduce PV overhead."
   },
   {
     "sha": "339f79bf9d3efa42cc4161c57349d7392e23583a",
@@ -3613,7 +3613,7 @@
     "summary": "title属性明确区",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "ed2108860a5ba0574ce80f71ff74fd7846c5ff79",
@@ -3623,7 +3623,7 @@
       "platinum_trophy_glow_aura"
     ],
     "status": "reviewed",
-    "notes": "Adds glowing aura and luminous highlight overlay to earned platinum trophies in user profile."
+    "notes": "[Branch: master (upstream & fork)] Adds glowing aura and luminous highlight overlay to earned platinum trophies in user profile."
   },
   {
     "sha": "d2b203bf83659b924271afc9b054679e312b007f",
@@ -3631,7 +3631,7 @@
     "summary": "微调效果",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "d936b48aeb2bb8f90081cfe3e34efddc86659984",
@@ -3639,7 +3639,7 @@
     "summary": "调色",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: psnineplus.js"
+    "notes": "[Branch: master (upstream & fork)] Commit modifying: psnineplus.js"
   },
   {
     "sha": "bf757c85e8637e1d861fda9e70244b40647e14fd",
@@ -3649,7 +3649,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #137 from kaikaiiiiiii/master (kaikaiiiiiii contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #137 from kaikaiiiiiii/master (kaikaiiiiiii contribution)"
   },
   {
     "sha": "621fdb5e5449455872af6c280764d1e892f8e9ef",
@@ -3659,7 +3659,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
+    "notes": "[Branch: master (upstream & fork)] Implements inline loading of trophy tips directly on trophy list rows without opening new pages."
   },
   {
     "sha": "c9515666f2f385dae4750a90369c32e5320b87b7",
@@ -3669,7 +3669,7 @@
       "trophy_tips_inline"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge pull request #138 from swsoyee/mordom0404 (swsoyee contribution)"
+    "notes": "[Branch: master (upstream & fork)] Merge commit: Merge pull request #138 from swsoyee/mordom0404 (swsoyee contribution)"
   },
   {
     "sha": "1a4986cbd60a9e2b98ce6bb46a58edd2eab4af27",
@@ -3677,7 +3677,7 @@
     "summary": "build(deps-dev): bump word-wrap from 1.2.3 to 1.2.4",
     "features": [],
     "status": "reviewed",
-    "notes": "Commit modifying: package-lock.json"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Commit modifying: package-lock.json"
   },
   {
     "sha": "f637b1d1c81b2d917e30e664b8c2304d462cb495",
@@ -3688,7 +3688,7 @@
       "game_pspc_icon_fix"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge 1a4986cbd60a9e2b98ce6bb46a58edd2eab4af27 into c9515666f2f385dae4750a90369c32e5320b87b7"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Merge commit: Merge 1a4986cbd60a9e2b98ce6bb46a58edd2eab4af27 into c9515666f2f385dae4750a90369c32e5320b87b7"
   },
   {
     "sha": "12cb1e3a3bd20c41da256e7bcc95c056ad81e5f9",
@@ -3698,7 +3698,7 @@
       "review_score_filter"
     ],
     "status": "reviewed",
-    "notes": "Adds review/comment score filter buttons (1-10) to quickly filter user game reviews."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Adds review/comment score filter buttons (1-10) to quickly filter user game reviews."
   },
   {
     "sha": "2f5b134180e351fb07793c2698eba19edff44f46",
@@ -3709,7 +3709,7 @@
       "game_pspc_icon_fix"
     ],
     "status": "reviewed",
-    "notes": "Merge commit: Merge 12cb1e3a3bd20c41da256e7bcc95c056ad81e5f9 into c9515666f2f385dae4750a90369c32e5320b87b7"
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Merge commit: Merge 12cb1e3a3bd20c41da256e7bcc95c056ad81e5f9 into c9515666f2f385dae4750a90369c32e5320b87b7"
   },
   {
     "sha": "87ea998f756290d3ff611a31fe291bb76e3b6535",
@@ -3719,7 +3719,7 @@
       "navbar_user_id_fallback"
     ],
     "status": "reviewed",
-    "notes": "Prevents crashes when the new website navigation bar prevents reading user ID."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Prevents crashes when the new website navigation bar prevents reading user ID."
   },
   {
     "sha": "446f53524f980fe76030db1922e09e353cb1276d",
@@ -3729,7 +3729,7 @@
       "navbar_user_id_fallback"
     ],
     "status": "reviewed",
-    "notes": "Prevents crashes when the new website navigation bar prevents reading user ID."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Prevents crashes when the new website navigation bar prevents reading user ID."
   },
   {
     "sha": "6f48f8fb300e1be2cedf4df3975835350dc22c48",
@@ -3739,7 +3739,7 @@
       "navbar_user_id_fallback"
     ],
     "status": "reviewed",
-    "notes": "Prevents crashes when the new website navigation bar prevents reading user ID."
+    "notes": "[Branch: master (upstream & fork)] Prevents crashes when the new website navigation bar prevents reading user ID."
   },
   {
     "sha": "11f753d982b38e1ae1b1d0f8a30444c18e84dfaa",
@@ -3754,7 +3754,7 @@
       "game_variant_references"
     ],
     "status": "reviewed",
-    "notes": "Comprehensive adaptation to PSNINE v2 revamp: modern dark theme (:root[data-theme='dark']), navbar user resolution, settings entry injection, tri-state trophy time sorting."
+    "notes": "[Branch: fork adapt-v2-psnine] Comprehensive adaptation to PSNINE v2 revamp: modern dark theme (:root[data-theme='dark']), navbar user resolution, settings entry injection, tri-state trophy time sorting."
   },
   {
     "sha": "d3a8eb09af5ffae992780033683ef23775fb80da",
@@ -3767,7 +3767,7 @@
       "comment_spoiler_mask"
     ],
     "status": "reviewed",
-    "notes": "Optimizes mobile responsive layout and touch interactions for iOS Safari: click/touchend for spoiler mask, responsive chart containers (width: 100%, max-width: 100%)."
+    "notes": "[Branch: fork adapt-v2-psnine] Optimizes mobile responsive layout and touch interactions for iOS Safari: click/touchend for spoiler mask, responsive chart containers (width: 100%, max-width: 100%)."
   },
   {
     "sha": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
@@ -3780,7 +3780,7 @@
       "game_variant_references"
     ],
     "status": "reviewed",
-    "notes": "Completely resolves mobile trophy icon overlap, chart misalignment, and card layout for related game versions."
+    "notes": "[Branch: fork adapt-v2-psnine] Completely resolves mobile trophy icon overlap, chart misalignment, and card layout for related game versions."
   },
   {
     "sha": "cbc24aad5512c340141f0431b840bfa58852bc37",
@@ -3794,6 +3794,6 @@
       "touch_interaction"
     ],
     "status": "reviewed",
-    "notes": "Merges adapt-v2-psnine branch into 6f48f8fb, combining v2 redesign adaptation with mobile touch optimizations."
+    "notes": "[Branch: experimental_branch (NOT merged to master)] Merges adapt-v2-psnine branch into 6f48f8fb, combining v2 redesign adaptation with mobile touch optimizations."
   }
 ]
