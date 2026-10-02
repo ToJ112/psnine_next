@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PSNINE Next (PSN中文网功能增强)
 // @namespace    https://github.com/ToJ112/psnine_next
-// @version      1.0.4
+// @version      1.0.5
 // @description  现代化重构版 PSN中文网功能增强脚本，深度适配桌面 Tampermonkey 与 iOS Safari Stay
 // @author       ToJ112, swsoyee, InfinityLoop, mordom0404, Nathaniel-Wu, JayusTree, aesct
 // @match        https://psnine.com/*
@@ -1227,6 +1227,85 @@ a.psnine-nav-settings-link {
   box-sizing: border-box;
 }
 
+/* Game List & Profile Action Buttons (Neutral Outline, Contrast >= 4.5:1, Touch >= 44px) */
+.psnine-sync-btn,
+.psnine-to-mine-btn,
+#psnine-to-mine-trophy-btn,
+.psnine-difficulty-sort-btn,
+#psnine-difficulty-sort-btn,
+.psnine-ondemand-progress-btn,
+.psnine-variant-btn,
+.psnine-cross-tip-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 44px !important;
+  border-radius: var(--p9n-radius-md, 8px) !important;
+  background-color: var(--p9n-surface) !important;
+  color: var(--p9n-text) !important;
+  border: 1px solid var(--p9n-border) !important;
+  text-decoration: none !important;
+  touch-action: manipulation !important;
+  box-sizing: border-box !important;
+  transition: all 0.15s ease;
+}
+
+.psnine-sync-btn {
+  padding: 8px 16px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+
+.psnine-to-mine-btn,
+#psnine-to-mine-trophy-btn {
+  padding: 6px 14px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  margin-left: 8px !important;
+}
+
+.psnine-difficulty-sort-btn,
+#psnine-difficulty-sort-btn {
+  padding: 6px 14px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  margin: 6px 0 !important;
+  cursor: pointer !important;
+}
+
+.psnine-ondemand-progress-btn {
+  padding: 4px 10px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  border-radius: var(--p9n-radius-sm, 4px) !important;
+  color: var(--p9n-link) !important;
+  cursor: pointer !important;
+  margin-left: 6px !important;
+}
+
+.psnine-variant-btn,
+.psnine-cross-tip-btn {
+  padding: 6px 12px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  border-radius: var(--p9n-radius-sm, 6px) !important;
+  color: var(--p9n-link) !important;
+}
+
+.psnine-sync-btn:hover,
+.psnine-to-mine-btn:hover,
+#psnine-to-mine-trophy-btn:hover,
+.psnine-difficulty-sort-btn:hover,
+#psnine-difficulty-sort-btn:hover,
+.psnine-ondemand-progress-btn:hover,
+.psnine-variant-btn:hover,
+.psnine-cross-tip-btn:hover {
+  background-color: var(--p9n-surface-alt) !important;
+  color: var(--p9n-link) !important;
+  border-color: var(--p9n-link) !important;
+  text-decoration: none !important;
+}
+
 .psnine-author-badge {
   display: inline-block;
   background: var(--p9n-link);
@@ -1345,7 +1424,58 @@ a.psnine-nav-settings-link {
   gap: 6px;
 }
 
-/* Neutral outline pill button (at least 36px touch height) */
+/* Trophy Tips Compact Trigger, Popup Menu & Jump Highlight (Matches native .o_btn) */
+#psnine-trophy-tips-trigger,
+button#psnine-trophy-tips-trigger,
+.o_btn.psnine-trophy-tips-btn {
+  display: inline-block !important;
+  margin: 0 !important;
+  width: 52px !important;
+  min-height: 24px !important;
+  height: 24px !important;
+  padding: 2px 4px !important;
+  font-size: 12px !important;
+  line-height: 17px !important;
+  border-radius: 15px !important;
+  border: 1px solid darkslategray !important;
+  border-color: darkslategray !important;
+  background-color: var(--p9n-surface) !important;
+  color: var(--p9n-text) !important;
+  cursor: pointer !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+  outline: none !important;
+  vertical-align: middle !important;
+}
+#psnine-trophy-tips-trigger:focus-visible,
+button#psnine-trophy-tips-trigger:focus-visible,
+.o_btn.psnine-trophy-tips-btn:focus-visible {
+  outline: 2px solid var(--p9n-link, #1966c2) !important;
+  outline-offset: 1px !important;
+}
+#psnine-trophy-tips-menu {
+  background-color: var(--p9n-surface);
+  border: 1px solid var(--p9n-border);
+  border-radius: var(--p9n-radius-md, 8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.psnine-tip-jump-target {
+  background-color: var(--p9n-surface-alt, #f8fafc) !important;
+  outline: 2px solid var(--p9n-link, #1966c2) !important;
+  outline-offset: -2px !important;
+  transition: background-color 0.25s ease, outline 0.25s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .psnine-tip-jump-target {
+    transition: none !important;
+  }
+}
+html[data-theme="dark"] .psnine-tip-jump-target {
+  background-color: var(--p9n-surface-alt, #202c3a) !important;
+  outline: 2px solid var(--p9n-link, #70b8ff) !important;
+}
+
+/* Neutral outline pill button */
 .psnine-trophy-pill-btn,
 .psnine-pill-btn,
 .psnine-trophy-toolbar button {
@@ -1487,6 +1617,52 @@ a.psnine-nav-settings-link {
   box-sizing: border-box;
 }
 
+/* Trophy Navigation Dropmenu (Keeps sort dropdown, filter buttons, and Tips on one row) */
+ul.dropmenu.psnine-trophy-nav-dropmenu,
+ul.dropmenu[data-psnine-trophy-nav="true"] {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+}
+ul.dropmenu.psnine-trophy-nav-dropmenu > li,
+ul.dropmenu[data-psnine-trophy-nav="true"] > li {
+  float: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+ul.dropmenu.psnine-trophy-nav-dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"],
+ul.dropmenu[data-psnine-trophy-nav="true"] > li.dropdown[data-psnine-trophy-sort-dropdown="true"] {
+  min-width: 0 !important;
+  flex: 0 1 auto !important;
+}
+ul.dropmenu.psnine-trophy-nav-dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > a[data-psnine-trophy-sort-trigger="true"],
+ul.dropmenu[data-psnine-trophy-nav="true"] > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > a[data-psnine-trophy-sort-trigger="true"] {
+  display: inline-block !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  vertical-align: middle !important;
+  height: 36px !important;
+  line-height: 36px !important;
+  box-sizing: border-box !important;
+}
+@media (max-width: 480px) {
+  ul.dropmenu.psnine-trophy-nav-dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > a[data-psnine-trophy-sort-trigger="true"],
+  ul.dropmenu[data-psnine-trophy-nav="true"] > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > a[data-psnine-trophy-sort-trigger="true"] {
+    max-width: 105px !important;
+  }
+}
+ul.dropmenu.psnine-trophy-nav-dropmenu > li:not(.dropdown),
+ul.dropmenu[data-psnine-trophy-nav="true"] > li:not(.dropdown) {
+  flex-shrink: 0 !important;
+}
+ul.dropmenu.psnine-trophy-nav-dropmenu .o_btn:not(#psnine-trophy-tips-trigger),
+ul.dropmenu[data-psnine-trophy-nav="true"] .o_btn:not(#psnine-trophy-tips-trigger) {
+  margin: 0 4px !important;
+}
+
 /* Native Sort Dropdown */
 ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] {
   position: relative;
@@ -1497,6 +1673,9 @@ ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > a[data-psni
   user-select: none;
 }
 ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > ul[data-psnine-trophy-sort-menu="true"] {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
   display: none;
   max-width: calc(100vw - 24px);
   box-sizing: border-box;
@@ -1923,6 +2102,19 @@ html[data-theme="dark"] .psnine-settings-close:hover {
 }
 
 /* Trophy Module Dark Mode */
+html[data-theme="dark"] #psnine-trophy-tips-menu {
+  background-color: var(--p9n-surface) !important;
+  border-color: var(--p9n-border) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+html[data-theme="dark"] #psnine-trophy-tips-trigger,
+html[data-theme="dark"] button#psnine-trophy-tips-trigger,
+html[data-theme="dark"] .o_btn.psnine-trophy-tips-btn {
+  border: 1px solid darkslategray !important;
+  border-color: darkslategray !important;
+  color: var(--p9n-text) !important;
+  background-color: var(--p9n-surface) !important;
+}
 html[data-theme="dark"] .psnine-trophy-panel {
   background-color: var(--p9n-surface) !important;
   border-color: var(--p9n-border) !important;
@@ -2118,6 +2310,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
   color: var(--p9n-text, #e6ebf2) !important;
   border-color: var(--p9n-border, #3b4859) !important;
 }
+
 `;
 
   // src/features/global.ts
@@ -5086,8 +5279,99 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
       tbody.appendChild(node);
     });
   }
+  var activeHighlight = {
+    timer: null,
+    row: null,
+    origTabIndex: null
+  };
+  function clearTrophyRowHighlight() {
+    if (activeHighlight.timer) {
+      clearTimeout(activeHighlight.timer);
+      activeHighlight.timer = null;
+    }
+    if (activeHighlight.row) {
+      activeHighlight.row.classList.remove("psnine-tip-jump-target");
+      activeHighlight.row.removeAttribute("data-psnine-highlight");
+      if (activeHighlight.origTabIndex === null) {
+        activeHighlight.row.removeAttribute("tabindex");
+      } else {
+        activeHighlight.row.setAttribute("tabindex", activeHighlight.origTabIndex);
+      }
+      activeHighlight.row = null;
+      activeHighlight.origTabIndex = null;
+    }
+  }
+  function applyTrophyRowHighlight(row, win) {
+    clearTrophyRowHighlight();
+    const origTabIndex = row.getAttribute("tabindex");
+    activeHighlight.row = row;
+    activeHighlight.origTabIndex = origTabIndex;
+    row.classList.add("psnine-tip-jump-target");
+    row.setAttribute("data-psnine-highlight", "true");
+    row.setAttribute("tabindex", "-1");
+    try {
+      row.focus({ preventScroll: true });
+    } catch {
+      row.focus();
+    }
+    activeHighlight.timer = (win.setTimeout || setTimeout)(() => {
+      clearTrophyRowHighlight();
+    }, 1500);
+  }
+  function bindInlineTipTrophyLinks(root, getTrophies, win, doc, currentOrigin) {
+    const origin = currentOrigin || (win.location ? win.location.origin : "https://psnine.com");
+    const links = root.querySelectorAll('a[href*="/trophy/"]');
+    links.forEach((a) => {
+      const rawHref = a.getAttribute("href") || "";
+      if (!rawHref) return;
+      let targetUrl;
+      try {
+        targetUrl = new URL(rawHref, origin);
+      } catch {
+        return;
+      }
+      if (targetUrl.origin !== origin) {
+        return;
+      }
+      const m = targetUrl.pathname.match(/^\/trophy\/(\d+)\/?$/);
+      if (!m) return;
+      if (targetUrl.hash) return;
+      const targetTrophyId = m[1];
+      const liveTrophies = getTrophies();
+      const targetItem = liveTrophies.find((t) => t.trophyId === targetTrophyId);
+      if (!targetItem) {
+        return;
+      }
+      if (a.getAttribute("data-psnine-tip-jump") === "true") return;
+      a.setAttribute("data-psnine-tip-jump", "true");
+      a.setAttribute("data-psnine-internal-link", "true");
+      a.addEventListener("click", (e) => {
+        if (e.defaultPrevented || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) {
+          return;
+        }
+        const freshList = getTrophies();
+        const freshItem = freshList.find((t) => t.trophyId === targetTrophyId);
+        if (!freshItem || !freshItem.row || freshItem.row.isConnected === false || doc.contains && !doc.contains(freshItem.row)) {
+          return;
+        }
+        e.preventDefault();
+        const targetRow = freshItem.row;
+        const activeFilterBtn = doc.querySelector("ul.dropmenu .own.select, .o_btn.own.select, ul.dropmenu .unown.select, .o_btn.unown.select");
+        if (activeFilterBtn && (targetRow.style.display === "none" || targetRow.hasAttribute("data-psnine-native-sync-hidden"))) {
+          activeFilterBtn.click();
+        } else if (targetRow.style.display === "none" && targetRow.hasAttribute("data-psnine-native-sync-hidden")) {
+          targetRow.style.removeProperty("display");
+          targetRow.removeAttribute("data-psnine-native-sync-hidden");
+        }
+        if (typeof targetRow.scrollIntoView === "function") {
+          targetRow.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        applyTrophyRowHighlight(targetRow, win);
+      });
+    });
+  }
   var mountTrophies = async (ctx) => {
-    const { document: doc, url, settings, store, userId, onContent, report } = ctx;
+    const { document: doc, window: win, url, settings, store, userId, onContent, report } = ctx;
     const isTrophyListPage = url.pathname.includes("/psngame/") && !url.pathname.includes("/comment");
     const isTrophyDetailPage = url.pathname.includes("/trophy/");
     const isGuideTopicPage = url.pathname.includes("/topic/") || url.pathname.includes("/node/guide");
@@ -5296,6 +5580,9 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         let currentSortMode = null;
         let cleanupNativeSortDropdown = null;
         let cleanupNativeFilterSync = null;
+        let closeTipsMenu = null;
+        let closeNativeSortMenu = null;
+        let cleanupTipsToolbar = null;
         let isBatchRunning = false;
         const applyActiveSortToTables = (mode) => {
           doc.querySelectorAll("table.list").forEach((tbl) => {
@@ -5333,16 +5620,22 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
           }
           if (!targetDropdown) return;
           const { dropdownLi, trigger, submenu } = targetDropdown;
-          if (dropdownLi.getAttribute("data-psnine-trophy-sort-dropdown") === "true" && submenu.querySelector('[data-psnine-sort="initial"]')) {
+          if (dropdownLi.getAttribute("data-psnine-trophy-sort-dropdown") === "true" && submenu.querySelector('[data-psnine-sort="type-asc"]')) {
             return;
           }
           cleanupNativeSortDropdown?.();
+          const confirmedUl = dropdownLi.closest("ul.dropmenu");
+          if (confirmedUl) {
+            confirmedUl.classList.add("psnine-trophy-nav-dropmenu");
+            confirmedUl.setAttribute("data-psnine-trophy-nav", "true");
+          }
           const origHadHover = dropdownLi.classList.contains("hover");
           const origDropdownAttr = dropdownLi.getAttribute("data-psnine-trophy-sort-dropdown");
           const origTriggerAttr = trigger.getAttribute("data-psnine-trophy-sort-trigger");
           const origAriaHaspopup = trigger.getAttribute("aria-haspopup");
           const origAriaExpanded = trigger.getAttribute("aria-expanded");
           const origTriggerText = trigger.textContent;
+          const origTitle = trigger.getAttribute("title");
           const origMenuAttr = submenu.getAttribute("data-psnine-trophy-sort-menu");
           const origNativeLinks = Array.from(submenu.querySelectorAll(":scope > li > a"));
           const origCurrentNativeLinks = new Set(
@@ -5352,11 +5645,13 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
           trigger.setAttribute("data-psnine-trophy-sort-trigger", "true");
           trigger.setAttribute("aria-haspopup", "menu");
           trigger.setAttribute("aria-expanded", "false");
+          trigger.setAttribute("title", origTriggerText || "");
           submenu.setAttribute("data-psnine-trophy-sort-menu", "true");
           let isDropdownOpen = false;
           const setDropdownOpen = (open, restoreFocus = false) => {
             isDropdownOpen = open;
             if (open) {
+              closeTipsMenu?.();
               dropdownLi.classList.add("psnine-dropdown-open", "hover");
               dropdownLi.setAttribute("data-psnine-dropdown-open", "true");
               dropdownLi.setAttribute("data-psnine-dropdown-state", "open");
@@ -5371,20 +5666,21 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
               }
             }
           };
+          closeNativeSortMenu = () => setDropdownOpen(false, false);
           const extraItems = [
             ...isPersonalPage ? [
               { mode: "time-desc", label: "\u83B7\u5F97\u65F6\u95F4\uFF08\u65B0\u2192\u65E7\uFF09" },
               { mode: "time-asc", label: "\u83B7\u5F97\u65F6\u95F4\uFF08\u65E7\u2192\u65B0\uFF09" }
             ] : [],
             { mode: "type-asc", label: "\u7C7B\u578B\uFF08\u94DC\u2192\u767D\u91D1\uFF09" },
-            { mode: "rarity-desc", label: "\u5B8C\u7F8E\u7387\uFF08\u9AD8\u2192\u4F4E\uFF09" },
-            { mode: "initial", label: "\u9875\u9762\u521D\u59CB\u987A\u5E8F" }
+            { mode: "rarity-desc", label: "\u5B8C\u7F8E\u7387\uFF08\u9AD8\u2192\u4F4E\uFF09" }
           ];
           const createdLis = [];
           const itemCleanups = [];
           const selectLocalSort = (mode, label, restoreFocus) => {
             currentSortMode = mode;
             trigger.textContent = label;
+            trigger.setAttribute("title", label);
             submenu.querySelectorAll(":scope > li > a").forEach((el) => {
               if (el.getAttribute("data-psnine-sort") === mode) {
                 el.classList.add("current");
@@ -5507,6 +5803,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
           doc.addEventListener("click", onDocClick);
           doc.addEventListener("keydown", onDocKeyDown);
           cleanupNativeSortDropdown = () => {
+            closeNativeSortMenu = null;
             trigger.removeEventListener("click", onTriggerClick);
             trigger.removeEventListener("keydown", onTriggerKeyDown);
             dropdownLi.removeEventListener("keydown", onDropdownKeyDown);
@@ -5530,12 +5827,18 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             if (origAriaExpanded === null) trigger.removeAttribute("aria-expanded");
             else trigger.setAttribute("aria-expanded", origAriaExpanded);
             trigger.textContent = origTriggerText;
+            if (origTitle === null) trigger.removeAttribute("title");
+            else trigger.setAttribute("title", origTitle);
             origNativeLinks.forEach((a) => {
               if (origCurrentNativeLinks.has(a)) a.classList.add("current");
               else a.classList.remove("current");
             });
             if (origMenuAttr === null) submenu.removeAttribute("data-psnine-trophy-sort-menu");
             else submenu.setAttribute("data-psnine-trophy-sort-menu", origMenuAttr);
+            if (confirmedUl) {
+              confirmedUl.classList.remove("psnine-trophy-nav-dropmenu");
+              confirmedUl.removeAttribute("data-psnine-trophy-nav");
+            }
           };
         };
         let currentTrophies = [];
@@ -5653,32 +5956,143 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
           doc.getElementById("psnine-trophy-stats-panel")?.remove();
           let tipsToolbar = doc.getElementById("psnine-trophy-tips-toolbar");
           if (!tipsToolbar) {
-            tipsToolbar = doc.createElement("div");
-            tipsToolbar.id = "psnine-trophy-tips-toolbar";
-            tipsToolbar.setAttribute("data-psnine-next", "true");
-            tipsToolbar.className = "psnine-trophy-toolbar";
-            const target = doc.querySelector(".main, .box.pd10, .min-inner");
-            const firstTbl = doc.querySelector("table.list");
-            if (firstTbl && firstTbl.parentElement) {
-              firstTbl.parentElement.insertBefore(tipsToolbar, firstTbl);
-            } else if (target) {
-              target.appendChild(tipsToolbar);
+            const sortDropdown = doc.querySelector('[data-psnine-trophy-sort-dropdown="true"]');
+            const ownBtn = doc.querySelector('ul.dropmenu .own, .o_btn.own, [onclick*="getOwn"]');
+            const confirmedUl = sortDropdown?.closest("ul.dropmenu") || ownBtn?.closest("ul.dropmenu") || null;
+            if (confirmedUl) {
+              confirmedUl.classList.add("psnine-trophy-nav-dropmenu");
+              confirmedUl.setAttribute("data-psnine-trophy-nav", "true");
+              tipsToolbar = doc.createElement("li");
+              tipsToolbar.id = "psnine-trophy-tips-toolbar";
+              tipsToolbar.setAttribute("data-psnine-next", "true");
+              tipsToolbar.className = "psnine-trophy-toolbar";
+              tipsToolbar.style.cssText = "position:relative;float:none;margin:0 0 0 10px;height:36px;display:inline-flex;align-items:center;vertical-align:middle;flex-shrink:0;";
+              confirmedUl.appendChild(tipsToolbar);
+            } else {
+              tipsToolbar = doc.createElement("div");
+              tipsToolbar.id = "psnine-trophy-tips-toolbar";
+              tipsToolbar.setAttribute("data-psnine-next", "true");
+              tipsToolbar.className = "psnine-trophy-toolbar";
+              tipsToolbar.style.cssText = "position:relative;display:inline-flex;align-items:center;margin:6px 0;";
+              const target = doc.querySelector(".main, .box.pd10, .min-inner");
+              const firstTbl = doc.querySelector("table.list");
+              if (firstTbl && firstTbl.parentElement) {
+                firstTbl.parentElement.insertBefore(tipsToolbar, firstTbl);
+              } else if (target) {
+                target.appendChild(tipsToolbar);
+              }
             }
           }
           if (!tipsToolbar.hasChildNodes()) {
             tipsToolbar.innerHTML = `
-            <div data-psnine-next="true" class="psnine-trophy-action-group">
-              <button type="button" id="psnine-batch-load-all-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true">
+            <button type="button" id="psnine-trophy-tips-trigger" class="o_btn psnine-trophy-tips-btn" data-psnine-next="true" aria-expanded="false" aria-controls="psnine-trophy-tips-menu" aria-haspopup="menu" style="display:inline-block;margin:0;width:52px;min-height:24px;height:24px;padding:2px 4px;font-size:12px;line-height:17px;border-radius:15px;border:1px solid darkslategray;background:var(--p9n-surface,#fff);color:var(--p9n-text,#333);cursor:pointer;touch-action:manipulation;box-sizing:border-box;outline:none;text-align:center;">Tips \u25BE</button>
+            <div id="psnine-trophy-tips-menu" class="psnine-trophy-action-group psnine-trophy-menu" data-psnine-next="true" hidden style="position:absolute;top:100%;left:0;z-index:998;margin-top:4px;padding:6px;background:var(--p9n-surface,#fff);border:1px solid var(--p9n-border,#ccd6dd);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);display:none;flex-direction:column;gap:6px;white-space:nowrap;max-width:calc(100vw - 24px);box-sizing:border-box;">
+              <button type="button" id="psnine-batch-load-all-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true" style="display:inline-flex;align-items:center;justify-content:center;padding:4px 12px;font-size:12px;line-height:18px;min-height:28px;border-radius:14px;border:1px solid var(--p9n-border,#ccd6dd);background:var(--p9n-surface,#fff);color:var(--p9n-text,#333);cursor:pointer;white-space:nowrap;box-sizing:border-box;">
                 \u5C55\u5F00\u6240\u6709Tips
               </button>
-              <button type="button" id="psnine-batch-load-unearned-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true"${!isPersonalPage ? ' disabled title="\u516C\u5F00\u9875\u9762\u65E0\u6CD5\u786E\u8BA4\u83B7\u5F97\u72B6\u6001\uFF0C\u8BF7\u8BBF\u95EE\u4E2A\u4EBA\u5956\u676F\u9875\u4F7F\u7528\u6B64\u529F\u80FD"' : ""}>
+              <button type="button" id="psnine-batch-load-unearned-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true"${!isPersonalPage ? ' disabled title="\u516C\u5F00\u9875\u9762\u65E0\u6CD5\u786E\u8BA4\u83B7\u5F97\u72B6\u6001\uFF0C\u8BF7\u8BBF\u95EE\u4E2A\u4EBA\u5956\u676F\u9875\u4F7F\u7528\u6B64\u529F\u80FD"' : ""} style="display:inline-flex;align-items:center;justify-content:center;padding:4px 12px;font-size:12px;line-height:18px;min-height:28px;border-radius:14px;border:1px solid var(--p9n-border,#ccd6dd);background:var(--p9n-surface,#fff);color:var(--p9n-text,#333);cursor:pointer;white-space:nowrap;box-sizing:border-box;">
                 \u5C55\u5F00\u672A\u83B7Tips
               </button>
-              <button type="button" id="psnine-stop-batch-tips-btn" class="psnine-trophy-pill-btn danger" data-psnine-next="true" style="display:none;">
+              <button type="button" id="psnine-stop-batch-tips-btn" class="psnine-trophy-pill-btn danger" data-psnine-next="true" style="display:none;align-items:center;justify-content:center;padding:4px 12px;font-size:12px;line-height:18px;min-height:28px;border-radius:14px;border:1px solid #e74c3c;background:var(--p9n-surface,#fff);color:#e74c3c;cursor:pointer;white-space:nowrap;box-sizing:border-box;">
                 \u505C\u6B62\u52A0\u8F7D
               </button>
             </div>
           `;
+            const trigger = doc.getElementById("psnine-trophy-tips-trigger");
+            const menu = doc.getElementById("psnine-trophy-tips-menu");
+            let isMenuOpen = false;
+            const setMenuOpen = (open, restoreFocus = false) => {
+              isMenuOpen = open;
+              if (trigger && menu) {
+                if (open) {
+                  closeNativeSortMenu?.();
+                  trigger.setAttribute("aria-expanded", "true");
+                  menu.removeAttribute("hidden");
+                  menu.style.display = "flex";
+                  menu.style.left = "0";
+                  menu.style.right = "auto";
+                  const rect = menu.getBoundingClientRect();
+                  if (rect.right > (win.innerWidth || 390) - 8) {
+                    menu.style.left = "auto";
+                    menu.style.right = "0";
+                  }
+                } else {
+                  trigger.setAttribute("aria-expanded", "false");
+                  menu.setAttribute("hidden", "");
+                  menu.style.display = "none";
+                  if (restoreFocus) {
+                    trigger.focus();
+                  }
+                }
+              }
+            };
+            closeTipsMenu = () => setMenuOpen(false, false);
+            const onTriggerClick = (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setMenuOpen(!isMenuOpen);
+            };
+            const onTriggerKeyDown = (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                e.stopPropagation();
+                setMenuOpen(!isMenuOpen);
+              } else if (e.key === "ArrowDown") {
+                e.preventDefault();
+                e.stopPropagation();
+                setMenuOpen(true);
+                const firstBtn = menu?.querySelector("button:not([disabled])");
+                firstBtn?.focus();
+              } else if (e.key === "Escape") {
+                if (isMenuOpen) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setMenuOpen(false, true);
+                }
+              }
+            };
+            const onMenuKeyDown = (e) => {
+              if (e.key === "Escape" && isMenuOpen) {
+                e.preventDefault();
+                e.stopPropagation();
+                setMenuOpen(false, true);
+              }
+            };
+            const onDocClick = (e) => {
+              if (!isMenuOpen) return;
+              const target = e.target;
+              if (target && !tipsToolbar?.contains(target)) {
+                setMenuOpen(false, false);
+              }
+            };
+            const onDocKeyDownForTips = (e) => {
+              if (e.key === "Escape" && isMenuOpen) {
+                e.preventDefault();
+                e.stopPropagation();
+                setMenuOpen(false, true);
+              }
+            };
+            const onToolbarFocusOut = (e) => {
+              const nextTarget = e.relatedTarget;
+              if (nextTarget && !tipsToolbar?.contains(nextTarget)) {
+                setMenuOpen(false, false);
+              }
+            };
+            trigger?.addEventListener("click", onTriggerClick);
+            trigger?.addEventListener("keydown", onTriggerKeyDown);
+            menu?.addEventListener("keydown", onMenuKeyDown);
+            doc.addEventListener("click", onDocClick);
+            doc.addEventListener("keydown", onDocKeyDownForTips);
+            tipsToolbar.addEventListener("focusout", onToolbarFocusOut);
+            cleanupTipsToolbar = () => {
+              trigger?.removeEventListener("click", onTriggerClick);
+              trigger?.removeEventListener("keydown", onTriggerKeyDown);
+              menu?.removeEventListener("keydown", onMenuKeyDown);
+              doc.removeEventListener("click", onDocClick);
+              doc.removeEventListener("keydown", onDocKeyDownForTips);
+              tipsToolbar?.removeEventListener("focusout", onToolbarFocusOut);
+              clearTrophyRowHighlight();
+            };
             const runBatchQueue = async (unearnedOnly) => {
               if (isBatchRunning) return;
               isBatchRunning = true;
@@ -5903,6 +6317,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
                     m.removeAttribute("data-psnine-mask-ready");
                     m.classList.remove("unmasked", "pinned");
                   });
+                  bindInlineTipTrophyLinks(clone, () => currentTrophies, win, doc, url.origin);
                   hiddenBody.appendChild(clone);
                   enhanceMasks(ctx, hiddenBody);
                 }
@@ -5953,6 +6368,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
                     m.removeAttribute("data-psnine-mask-ready");
                     m.classList.remove("unmasked", "pinned");
                   });
+                  bindInlineTipTrophyLinks(clone, () => currentTrophies, win, doc, url.origin);
                   bodyDiv.appendChild(clone);
                   enhanceMasks(ctx, bodyDiv);
                   itemDiv.appendChild(bodyDiv);
@@ -5999,10 +6415,13 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         });
         return () => {
           isActive = false;
+          cleanupTipsToolbar?.();
+          cleanupTipsToolbar = null;
           cleanupNativeSortDropdown?.();
           cleanupNativeSortDropdown = null;
           cleanupNativeFilterSync?.();
           cleanupNativeFilterSync = null;
+          clearTrophyRowHighlight();
           pageAbortController.abort();
           batchAbortController?.abort();
           activeManualControllers.forEach((ctrl) => ctrl.abort());
@@ -6175,7 +6594,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
     const gid = extractGameId(gameA.href || gameA.getAttribute("href") || "");
     if (!gid) return null;
     let percent = null;
-    const progDiv = Array.from(tr.querySelectorAll(".progress-bar, .progress > div, div.progress")).find((el) => !isPluginNode(el));
+    const progDiv = Array.from(tr.querySelectorAll(".progress-bar, .progress > div, div.progress, .progress")).find((el) => !isPluginNode(el));
     if (progDiv) {
       const innerBar = Array.from(progDiv.querySelectorAll("div")).find((el) => !isPluginNode(el)) ?? null;
       percent = extractElementProgressPercent(innerBar) ?? extractElementProgressPercent(progDiv);
@@ -6598,15 +7017,15 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
               const upbaseA = doc.createElement("a");
               upbaseA.setAttribute("data-psnine-next", "true");
               upbaseA.href = `https://psnine.com/psnid/${profileId}/upbase`;
-              upbaseA.className = "btn btn-default btn-sm";
-              upbaseA.style.cssText = "padding:3px 10px;font-size:12px;border-radius:4px;border:1px solid #3890ff;color:#3890ff;text-decoration:none;";
+              upbaseA.className = "psnine-btn psnine-sync-btn";
+              upbaseA.style.cssText = "display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-md,8px);background-color:var(--p9n-surface);color:var(--p9n-text);border:1px solid var(--p9n-border);text-decoration:none;touch-action:manipulation;box-sizing:border-box;";
               upbaseA.textContent = "\u{1F504} \u7B49\u7EA7\u540C\u6B65";
               group.appendChild(upbaseA);
               const upgameA = doc.createElement("a");
               upgameA.setAttribute("data-psnine-next", "true");
               upgameA.href = `https://psnine.com/psnid/${profileId}/upgame`;
-              upgameA.className = "btn btn-default btn-sm";
-              upgameA.style.cssText = "padding:3px 10px;font-size:12px;border-radius:4px;border:1px solid #28a745;color:#28a745;text-decoration:none;";
+              upgameA.className = "psnine-btn psnine-sync-btn";
+              upgameA.style.cssText = "display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-md,8px);background-color:var(--p9n-surface);color:var(--p9n-text);border:1px solid var(--p9n-border);text-decoration:none;touch-action:manipulation;box-sizing:border-box;";
               upgameA.textContent = "\u{1F3AE} \u6E38\u620F\u540C\u6B65";
               group.appendChild(upgameA);
               profileDataArea.appendChild(group);
@@ -6687,10 +7106,10 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
                     if (!demandBtn) {
                       demandBtn = doc.createElement("button");
                       demandBtn.type = "button";
-                      demandBtn.className = "psnine-ondemand-progress-btn";
+                      demandBtn.className = "psnine-btn psnine-ondemand-progress-btn";
                       demandBtn.setAttribute("data-psnine-next", "true");
                       demandBtn.setAttribute("aria-label", "\u67E5\u8BE2\u4E2A\u4EBA\u8FDB\u5EA6");
-                      demandBtn.style.cssText = "padding:1px 5px;font-size:10px;border-radius:3px;border:1px solid #3890ff;background:transparent;color:#3890ff;cursor:pointer;margin-left:6px;";
+                      demandBtn.style.cssText = "display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:4px 10px;font-size:12px;font-weight:500;border-radius:var(--p9n-radius-sm,4px);border:1px solid var(--p9n-border);background-color:var(--p9n-surface);color:var(--p9n-link);cursor:pointer;margin-left:6px;touch-action:manipulation;box-sizing:border-box;";
                       demandBtn.textContent = "\u{1F50D} \u67E5\u8FDB\u5EA6";
                       gameA.parentElement?.appendChild(demandBtn);
                     }
@@ -6763,7 +7182,8 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
                         if (!isActive || abortController.signal.aborted || err?.name === "AbortError") return;
                         if (demandBtn) {
                           demandBtn.textContent = "\u274C \u91CD\u8BD5";
-                          demandBtn.style.color = "#e03131";
+                          demandBtn.style.color = "#c92a2a";
+                          demandBtn.style.borderColor = "#c92a2a";
                         }
                         report("demand_progress", err);
                       }
@@ -6803,9 +7223,10 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
               if (navOrHeader) {
                 const sortBtn = doc.createElement("button");
                 sortBtn.id = "psnine-difficulty-sort-btn";
+                sortBtn.className = "psnine-btn psnine-difficulty-sort-btn";
                 sortBtn.type = "button";
                 sortBtn.setAttribute("data-psnine-next", "true");
-                sortBtn.style.cssText = "padding:4px 10px;font-size:12px;border-radius:4px;border:1px solid #3890ff;background:transparent;color:#3890ff;cursor:pointer;margin:5px 0;";
+                sortBtn.style.cssText = "display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 14px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-md,8px);border:1px solid var(--p9n-border);background-color:var(--p9n-surface);color:var(--p9n-text);cursor:pointer;margin:6px 0;touch-action:manipulation;box-sizing:border-box;";
                 sortBtn.textContent = "\u{1F4CA} \u6309\u96BE\u5EA6\u6392\u5E8F (\u4ECE\u96BE\u5230\u6613)";
                 sortBtn.onclick = () => {
                   const currentRows = Array.from(table.querySelectorAll("tr")).filter(
@@ -6845,9 +7266,10 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
               if (inav) {
                 toMineBtn = doc.createElement("a");
                 toMineBtn.id = "psnine-to-mine-trophy-btn";
+                toMineBtn.className = "psnine-btn psnine-to-mine-btn";
                 toMineBtn.setAttribute("data-psnine-next", "true");
                 toMineBtn.setAttribute("href", targetUrl.href);
-                toMineBtn.style.cssText = "display:inline-block;padding:3px 8px;font-size:12px;border-radius:4px;background:#3890ff;color:#fff;text-decoration:none;margin-left:8px;font-weight:500;";
+                toMineBtn.style.cssText = "display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 14px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-md,8px);background-color:var(--p9n-surface);color:var(--p9n-text);border:1px solid var(--p9n-border);text-decoration:none;margin-left:8px;touch-action:manipulation;box-sizing:border-box;";
                 toMineBtn.textContent = "\u{1F3C6} \u5207\u6362\u81F3\u6211\u7684\u5956\u676F\u8FDB\u5EA6";
                 inav.appendChild(toMineBtn);
               }
@@ -6860,7 +7282,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             const variantsDiv = doc.createElement("div");
             variantsDiv.id = "psnine-game-variants-section";
             variantsDiv.setAttribute("data-psnine-next", "true");
-            variantsDiv.style.cssText = "margin:12px 0;padding:10px 14px;background:rgba(0,0,0,0.02);border:1px solid rgba(0,0,0,0.06);border-radius:8px;";
+            variantsDiv.style.cssText = "margin:12px 0;padding:10px 14px;background-color:var(--p9n-surface-alt);border:1px solid var(--p9n-border);border-radius:var(--p9n-radius-md,8px);color:var(--p9n-text);box-sizing:border-box;";
             const subPageMatch = url.pathname.match(/\/psngame\/\d+(\/[^/?#]+)/);
             const subPath = subPageMatch ? subPageMatch[1] : "";
             const heading = doc.createElement("div");
@@ -6873,9 +7295,10 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             btnContainer.style.cssText = "display:flex;flex-wrap:wrap;gap:8px;";
             variants.forEach((v) => {
               const a = doc.createElement("a");
+              a.className = "psnine-btn psnine-variant-btn";
               a.setAttribute("data-psnine-next", "true");
               a.href = new URL(`/psngame/${v.gameId}${subPath}${url.search}`, ctx.url.origin).href;
-              a.style.cssText = "display:inline-block;padding:4px 8px;font-size:12px;border-radius:4px;background:rgba(56, 144, 255, 0.1);color:#0056b3;text-decoration:none;border:1px solid rgba(56, 144, 255, 0.2);";
+              a.style.cssText = "display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 12px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-sm,6px);background-color:var(--p9n-surface);color:var(--p9n-link);text-decoration:none;border:1px solid var(--p9n-border);touch-action:manipulation;box-sizing:border-box;";
               const platformPrefix = v.platform ? `[${v.platform}] ` : "";
               a.textContent = `${platformPrefix}${v.title || "\u7248\u672C"} (#${v.gameId})`;
               btnContainer.appendChild(a);
@@ -6924,7 +7347,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
                       crossDiv = doc.createElement("div");
                       crossDiv.id = "psnine-cross-version-tips-section";
                       crossDiv.setAttribute("data-psnine-next", "true");
-                      crossDiv.style.cssText = "margin:12px 0;padding:10px 14px;background:rgba(30, 90, 230, 0.06);border:1px solid rgba(30, 90, 230, 0.18);border-radius:6px;";
+                      crossDiv.style.cssText = "margin:12px 0;padding:10px 14px;background-color:var(--p9n-surface-alt);border:1px solid var(--p9n-border);border-radius:var(--p9n-radius-md,8px);color:var(--p9n-text);box-sizing:border-box;";
                       const header = doc.createElement("div");
                       header.setAttribute("data-psnine-next", "true");
                       header.style.cssText = "font-weight:600;font-size:13px;margin-bottom:6px;";
@@ -6934,9 +7357,10 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
                       contentArea?.insertBefore(crossDiv, contentArea.firstChild);
                     }
                     const linkA = doc.createElement("a");
+                    linkA.className = "psnine-btn psnine-cross-tip-btn";
                     linkA.setAttribute("data-psnine-next", "true");
                     linkA.href = new URL(`/trophy/${matched.trophyId}`, ctx.url.origin).href;
-                    linkA.style.cssText = "display:inline-block;padding:4px 8px;margin-right:8px;font-size:12px;border-radius:4px;background:#3890ff;color:#fff;text-decoration:none;";
+                    linkA.style.cssText = "display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 12px;margin-right:8px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-sm,6px);background-color:var(--p9n-surface);color:var(--p9n-link);border:1px solid var(--p9n-border);text-decoration:none;touch-action:manipulation;box-sizing:border-box;";
                     linkA.textContent = `${variant.title || `\u7248\u672C #${variant.gameId}`} \u7684Tips (#${matched.trophyId}) \u2197`;
                     crossDiv.appendChild(linkA);
                   }

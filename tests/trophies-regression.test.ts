@@ -199,14 +199,8 @@ describe('Trophies Last-Mile Regression Suite', () => {
       expect(isHiddenByReason(tipRow1, 'trophy-status-filter')).toBe(false);
       expect(isHiddenByReason(tipRow2, 'trophy-status-filter')).toBe(false);
 
-      // Click restore initial order via native dropdown: new row (origSeq=2) must sort to the end of original items!
-      const initialItem = document.querySelector('[data-psnine-sort="initial"]') as HTMLElement;
-      expect(initialItem).not.toBeNull();
-      initialItem.click();
-      const rowsAfterXmb = Array.from(tbody.querySelectorAll('tr.trophy'));
-      expect(rowsAfterXmb[0].id).toBe('trophy-1');
-      expect(rowsAfterXmb[1].id).toBe('trophy-2');
-      expect(rowsAfterXmb[2].id).toBe('trophy-3');
+      // Redundant "initial" option is removed; XMB is the native default
+      expect(document.querySelector('[data-psnine-sort="initial"]')).toBeNull();
 
       if (cleanup) cleanup();
     });
@@ -670,9 +664,10 @@ describe('Trophies Last-Mile Regression Suite', () => {
       expect(menu).not.toBeNull();
       expect(trigger.getAttribute('aria-expanded')).toBe('false');
 
-      // Only missing directions + time + initial added (5 items on personal page)
+      // Only missing directions + time added (4 items on personal page, initial removed)
       const addedItems = Array.from(menu.querySelectorAll('a[data-psnine-sort]')).map(a => a.getAttribute('data-psnine-sort'));
-      expect(addedItems).toEqual(['time-desc', 'time-asc', 'type-asc', 'rarity-desc', 'initial']);
+      expect(addedItems).toEqual(['time-desc', 'time-asc', 'type-asc', 'rarity-desc']);
+      expect(menu.querySelector('[data-psnine-sort="initial"]')).toBeNull();
 
       // Attach an inline tip row to trophy #1 (46507001) to verify co-movement
       const baseTbody = document.querySelector('#base-table tbody')!;
@@ -718,12 +713,8 @@ describe('Trophies Last-Mile Regression Suite', () => {
       const dlcTbody = document.querySelector('#dlc-table tbody')!;
       expect(Array.from(dlcTbody.querySelectorAll('tr.trophy')).map(r => r.id)).toEqual(['102', '101']);
 
-      // Select initial: restores page load order (#2, #1, #3), NOT XMB (#1, #2, #3)
-      const initialLink = menu.querySelector('[data-psnine-sort="initial"]') as HTMLAnchorElement;
-      initialLink.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
-      expect(trigger.textContent).toBe('页面初始顺序');
-      expect(Array.from(baseTbody.querySelectorAll('tr.trophy')).map(r => r.id)).toEqual(['2', '1', '3']);
-      expect(document.getElementById('1')!.nextElementSibling).toBe(tipRow);
+      // Redundant "initial" sort option is removed; native XMB remains default
+      expect(menu.querySelector('[data-psnine-sort="initial"]')).toBeNull();
 
       // Native links are still the exact same DOM nodes with original hrefs and unintercepted click
       const currentFirstThree = Array.from(menu.querySelectorAll(':scope > li > a')).slice(0, 3);
@@ -755,7 +746,7 @@ describe('Trophies Last-Mile Regression Suite', () => {
       await new Promise(r => setTimeout(r, 120));
 
       expect(Array.from(baseTbody.querySelectorAll('tr.trophy')).map(r => r.id)).toEqual(['3', '4', '1', '2']);
-      expect(menu.querySelectorAll('a[data-psnine-sort]').length).toBe(5);
+      expect(menu.querySelectorAll('a[data-psnine-sort]').length).toBe(4);
 
       let extraMutations = 0;
       const obs = new MutationObserver(ms => { extraMutations += ms.length; });
@@ -841,9 +832,9 @@ describe('Trophies Last-Mile Regression Suite', () => {
       expect(realDropdown.querySelectorAll('[data-psnine-sort="time-desc"], [data-psnine-sort="time-asc"]').length).toBe(0);
       expect(Array.from(realDropdown.querySelectorAll('a[data-psnine-sort]')).map(a => a.getAttribute('data-psnine-sort'))).toEqual([
         'type-asc',
-        'rarity-desc',
-        'initial'
+        'rarity-desc'
       ]);
+      expect(realDropdown.querySelector('[data-psnine-sort="initial"]')).toBeNull();
       if (cleanup) cleanup();
 
       // Now test with NO valid sort menu at all: must not create fallback buttons

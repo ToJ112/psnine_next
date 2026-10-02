@@ -385,6 +385,85 @@ a.psnine-nav-settings-link {
   box-sizing: border-box;
 }
 
+/* Game List & Profile Action Buttons (Neutral Outline, Contrast >= 4.5:1, Touch >= 44px) */
+.psnine-sync-btn,
+.psnine-to-mine-btn,
+#psnine-to-mine-trophy-btn,
+.psnine-difficulty-sort-btn,
+#psnine-difficulty-sort-btn,
+.psnine-ondemand-progress-btn,
+.psnine-variant-btn,
+.psnine-cross-tip-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 44px !important;
+  border-radius: var(--p9n-radius-md, 8px) !important;
+  background-color: var(--p9n-surface) !important;
+  color: var(--p9n-text) !important;
+  border: 1px solid var(--p9n-border) !important;
+  text-decoration: none !important;
+  touch-action: manipulation !important;
+  box-sizing: border-box !important;
+  transition: all 0.15s ease;
+}
+
+.psnine-sync-btn {
+  padding: 8px 16px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+
+.psnine-to-mine-btn,
+#psnine-to-mine-trophy-btn {
+  padding: 6px 14px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  margin-left: 8px !important;
+}
+
+.psnine-difficulty-sort-btn,
+#psnine-difficulty-sort-btn {
+  padding: 6px 14px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  margin: 6px 0 !important;
+  cursor: pointer !important;
+}
+
+.psnine-ondemand-progress-btn {
+  padding: 4px 10px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  border-radius: var(--p9n-radius-sm, 4px) !important;
+  color: var(--p9n-link) !important;
+  cursor: pointer !important;
+  margin-left: 6px !important;
+}
+
+.psnine-variant-btn,
+.psnine-cross-tip-btn {
+  padding: 6px 12px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  border-radius: var(--p9n-radius-sm, 6px) !important;
+  color: var(--p9n-link) !important;
+}
+
+.psnine-sync-btn:hover,
+.psnine-to-mine-btn:hover,
+#psnine-to-mine-trophy-btn:hover,
+.psnine-difficulty-sort-btn:hover,
+#psnine-difficulty-sort-btn:hover,
+.psnine-ondemand-progress-btn:hover,
+.psnine-variant-btn:hover,
+.psnine-cross-tip-btn:hover {
+  background-color: var(--p9n-surface-alt) !important;
+  color: var(--p9n-link) !important;
+  border-color: var(--p9n-link) !important;
+  text-decoration: none !important;
+}
+
 .psnine-author-badge {
   display: inline-block;
   background: var(--p9n-link);
@@ -503,7 +582,58 @@ a.psnine-nav-settings-link {
   gap: 6px;
 }
 
-/* Neutral outline pill button (at least 36px touch height) */
+/* Trophy Tips Compact Trigger, Popup Menu & Jump Highlight (Matches native .o_btn) */
+#psnine-trophy-tips-trigger,
+button#psnine-trophy-tips-trigger,
+.o_btn.psnine-trophy-tips-btn {
+  display: inline-block !important;
+  margin: 0 !important;
+  width: 52px !important;
+  min-height: 24px !important;
+  height: 24px !important;
+  padding: 2px 4px !important;
+  font-size: 12px !important;
+  line-height: 17px !important;
+  border-radius: 15px !important;
+  border: 1px solid darkslategray !important;
+  border-color: darkslategray !important;
+  background-color: var(--p9n-surface) !important;
+  color: var(--p9n-text) !important;
+  cursor: pointer !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+  outline: none !important;
+  vertical-align: middle !important;
+}
+#psnine-trophy-tips-trigger:focus-visible,
+button#psnine-trophy-tips-trigger:focus-visible,
+.o_btn.psnine-trophy-tips-btn:focus-visible {
+  outline: 2px solid var(--p9n-link, #1966c2) !important;
+  outline-offset: 1px !important;
+}
+#psnine-trophy-tips-menu {
+  background-color: var(--p9n-surface);
+  border: 1px solid var(--p9n-border);
+  border-radius: var(--p9n-radius-md, 8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.psnine-tip-jump-target {
+  background-color: var(--p9n-surface-alt, #f8fafc) !important;
+  outline: 2px solid var(--p9n-link, #1966c2) !important;
+  outline-offset: -2px !important;
+  transition: background-color 0.25s ease, outline 0.25s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .psnine-tip-jump-target {
+    transition: none !important;
+  }
+}
+html[data-theme="dark"] .psnine-tip-jump-target {
+  background-color: var(--p9n-surface-alt, #202c3a) !important;
+  outline: 2px solid var(--p9n-link, #70b8ff) !important;
+}
+
+/* Neutral outline pill button */
 .psnine-trophy-pill-btn,
 .psnine-pill-btn,
 .psnine-trophy-toolbar button {
@@ -645,6 +775,52 @@ a.psnine-nav-settings-link {
   box-sizing: border-box;
 }
 
+/* Trophy Navigation Dropmenu (Keeps sort dropdown, filter buttons, and Tips on one row) */
+ul.dropmenu.psnine-trophy-nav-dropmenu,
+ul.dropmenu[data-psnine-trophy-nav="true"] {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+}
+ul.dropmenu.psnine-trophy-nav-dropmenu > li,
+ul.dropmenu[data-psnine-trophy-nav="true"] > li {
+  float: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+ul.dropmenu.psnine-trophy-nav-dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"],
+ul.dropmenu[data-psnine-trophy-nav="true"] > li.dropdown[data-psnine-trophy-sort-dropdown="true"] {
+  min-width: 0 !important;
+  flex: 0 1 auto !important;
+}
+ul.dropmenu.psnine-trophy-nav-dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > a[data-psnine-trophy-sort-trigger="true"],
+ul.dropmenu[data-psnine-trophy-nav="true"] > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > a[data-psnine-trophy-sort-trigger="true"] {
+  display: inline-block !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  vertical-align: middle !important;
+  height: 36px !important;
+  line-height: 36px !important;
+  box-sizing: border-box !important;
+}
+@media (max-width: 480px) {
+  ul.dropmenu.psnine-trophy-nav-dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > a[data-psnine-trophy-sort-trigger="true"],
+  ul.dropmenu[data-psnine-trophy-nav="true"] > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > a[data-psnine-trophy-sort-trigger="true"] {
+    max-width: 105px !important;
+  }
+}
+ul.dropmenu.psnine-trophy-nav-dropmenu > li:not(.dropdown),
+ul.dropmenu[data-psnine-trophy-nav="true"] > li:not(.dropdown) {
+  flex-shrink: 0 !important;
+}
+ul.dropmenu.psnine-trophy-nav-dropmenu .o_btn:not(#psnine-trophy-tips-trigger),
+ul.dropmenu[data-psnine-trophy-nav="true"] .o_btn:not(#psnine-trophy-tips-trigger) {
+  margin: 0 4px !important;
+}
+
 /* Native Sort Dropdown */
 ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] {
   position: relative;
@@ -655,6 +831,9 @@ ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > a[data-psni
   user-select: none;
 }
 ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > ul[data-psnine-trophy-sort-menu="true"] {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
   display: none;
   max-width: calc(100vw - 24px);
   box-sizing: border-box;
@@ -1082,6 +1261,19 @@ html[data-theme="dark"] .psnine-settings-close:hover {
 }
 
 /* Trophy Module Dark Mode */
+html[data-theme="dark"] #psnine-trophy-tips-menu {
+  background-color: var(--p9n-surface) !important;
+  border-color: var(--p9n-border) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+html[data-theme="dark"] #psnine-trophy-tips-trigger,
+html[data-theme="dark"] button#psnine-trophy-tips-trigger,
+html[data-theme="dark"] .o_btn.psnine-trophy-tips-btn {
+  border: 1px solid darkslategray !important;
+  border-color: darkslategray !important;
+  color: var(--p9n-text) !important;
+  background-color: var(--p9n-surface) !important;
+}
 html[data-theme="dark"] .psnine-trophy-panel {
   background-color: var(--p9n-surface) !important;
   border-color: var(--p9n-border) !important;
@@ -1277,4 +1469,5 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
   color: var(--p9n-text, #e6ebf2) !important;
   border-color: var(--p9n-border, #3b4859) !important;
 }
+
 `;

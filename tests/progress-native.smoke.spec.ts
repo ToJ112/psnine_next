@@ -75,9 +75,10 @@ test('another profile keeps its own official percentage without my cached overla
   expect(await page.locator('#game-101').evaluate(el => getComputedStyle(el).backgroundImage)).toBe('none');
 });
 
-test('native trophy status controls remain the only controls and keep inline Tips together', async ({ page }, testInfo) => {
+for (const scheme of ['light', 'dark'] as const) {
+test(`native trophy status controls and Tips share a row in ${scheme} and keep inline Tips together`, async ({ page }, testInfo) => {
   await page.setViewportSize({ width:390, height:844 });
-  await page.emulateMedia({ colorScheme:'dark' });
+  await page.emulateMedia({ colorScheme:scheme });
   const row = (id: number, earned: boolean) => `<tr class="trophy" id="cup-${id}"><td class="t4"><img class="imgbg ${earned ? 'earned' : ''}" width="54" height="54"></td><td><a href="/trophy/1234500${id}">奖杯 ${id}</a><p>说明</p><em class="alert-success"><b>1</b> Tips</em></td><td class="twoge">30%</td></tr>`;
   // Model the site's getOwn/getUnOwn/showAll behavior; no live account action occurs.
   const nativeScript = `<script>
@@ -94,8 +95,12 @@ test('native trophy status controls remain the only controls and keep inline Tip
   }
   function getOwn(){filterNative('own')} function getUnOwn(){filterNative('unown')}
   </script>`;
-  const html = `<!doctype html><html><head>${base}</head><body><main class="main box"><ul class="dropmenu"><li><button class="o_btn own" onclick="getOwn()">已获得</button><button class="o_btn unown" onclick="getUnOwn()">未获得</button></li></ul><table class="list"><tbody>${row(1,true)}${row(2,false)}</tbody></table></main>${nativeScript}</body></html>`;
-  await page.route('**/*', route => route.fulfill({ contentType:'text/html; charset=utf-8', body:route.request().url().includes('/trophy/') ? '<ul class="list"><li><div class="content">测试 Tips</div></li></ul>' : html }));
+  const html = `<!doctype html><html><head>${base}</head><body><main class="main box"><style>
+  .dropmenu,.dropmenu ul{padding:0;margin:0;list-style:none}.dropmenu{height:36px;line-height:36px}.dropmenu li{float:left;position:relative}
+  .dropdown>a{padding:0 20px 0 10px}.dropdown>ul{display:none;position:absolute}.dropdown>ul li{float:none}
+  .o_btn{display:inline-block;margin:8px -12px 5px 16px;padding:2px 4px;font-size:12px;text-align:center;width:52px;line-height:17px;border:1px solid darkslategray;border-radius:15px;box-sizing:content-box}
+  </style><ul class="dropmenu"><li><em>排序</em></li><li class="dropdown"><a class="arr-down" href="#">XMB</a><ul><li><a href="?psnid=fixture_user&ob=trophyid">XMB</a></li><li><a href="?psnid=fixture_user&ob=type">类型</a></li><li><a href="?psnid=fixture_user&ob=rarity">完美率</a></li></ul></li><li><button class="o_btn own" onclick="getOwn()">已获得</button><button class="o_btn unown" onclick="getUnOwn()">未获得</button></li></ul><table class="list"><tbody>${row(1,true)}${row(2,false)}</tbody></table></main>${nativeScript}</body></html>`;
+  await page.route('**/*', route => route.fulfill({ contentType:'text/html; charset=utf-8', body:route.request().url().includes('/trophy/') ? '<ul class="list"><li><div class="content">测试 Tips <a href="/trophy/12345001">同游戏奖杯</a><a href="/trophy/54321001">跨游戏奖杯</a></div></li></ul>' : html }));
   await page.goto('https://psnine.com/psngame/12345?psnid=fixture_user');
   await page.evaluate(() => {
     (window as any).nativeOwn = document.querySelector('.own');
@@ -104,6 +109,32 @@ test('native trophy status controls remain the only controls and keep inline Tip
   });
   await page.addScriptTag({ content:bundle });
   await expect(page.locator('#psnine-trophy-tips-toolbar')).toBeVisible();
+  const tipsTrigger=page.locator('#psnine-trophy-tips-trigger');
+  const tipsMenu=page.locator('#psnine-trophy-tips-menu');
+  await expect(tipsMenu).toBeHidden();
+  const geometry=await page.locator('[data-psnine-trophy-sort-trigger], .o_btn.own, .o_btn.unown, #psnine-trophy-tips-trigger').evaluateAll(els=>els.map(el=>{const r=el.getBoundingClientRect(),s=getComputedStyle(el);return {center:r.y+r.height/2,left:r.left,right:r.right,height:r.height,color:s.color,border:s.borderTopColor,radius:s.borderRadius,fontSize:s.fontSize};}));
+  expect(geometry).toHaveLength(4);
+  for(const g of geometry){expect(Math.abs(g.center-geometry[0].center)).toBeLessThanOrEqual(3);expect(g.right).toBeLessThanOrEqual(390);expect(g.left).toBeGreaterThanOrEqual(0);}
+  for (let i=2; i<geometry.length; i++) expect(geometry[i].left-geometry[i-1].right).toBeGreaterThanOrEqual(4);
+  const native=geometry[1],tips=geometry[3];
+  for(const prop of ['border','radius','fontSize'] as const)expect(tips[prop]).toBe(native[prop]);
+  expect(Math.abs(tips.height-native.height)).toBeLessThanOrEqual(1);
+  await tipsTrigger.click();
+  await expect(tipsMenu).toBeVisible();
+  expect(await tipsMenu.evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth;})).toBe(true);
+  await page.keyboard.press('Escape');
+  await expect(tipsTrigger).toBeFocused();
+  await expect(tipsMenu).toBeHidden();
+  await tipsTrigger.click();
+  await page.locator('#cup-1').click();
+  await expect(tipsMenu).toBeHidden();
+  // Switching to a longer local sort label must not push Tips onto another row.
+  await page.locator('[data-psnine-trophy-sort-trigger]').click();
+  await page.locator('[data-psnine-sort="time-desc"]').click();
+  const aligned=await page.locator('[data-psnine-trophy-sort-trigger], .o_btn.own, .o_btn.unown, #psnine-trophy-tips-trigger').evaluateAll(els=>els.map(el=>{const r=el.getBoundingClientRect();return {center:r.y+r.height/2,right:r.right};}));
+  for(const g of aligned){expect(Math.abs(g.center-aligned[0].center)).toBeLessThanOrEqual(3);expect(g.right).toBeLessThanOrEqual(390);}
+
+
   await expect(page.locator('#psnine-trophy-stats-panel, #psnine-trophy-header-title')).toHaveCount(0);
   await expect(page.locator('#psnine-filter-status-btn')).toHaveCount(0);
   await expect(page.locator('#psnine-trophy-charts-container')).toHaveCount(0);
@@ -119,15 +150,25 @@ test('native trophy status controls remain the only controls and keep inline Tip
   await expect(page.locator('#cup-1')).toBeHidden();
   await expect(page.locator('#cup-2')).toBeVisible();
   await expect(tip).toBeVisible();
-  await page.locator('.unown').click();
+  const before=page.url();
+  await tip.getByText('同游戏奖杯',{exact:true}).click();
   await expect(page.locator('#cup-1')).toBeVisible();
+  await expect(page.locator('.unown')).not.toHaveClass(/select/);
   await expect(tip).toBeVisible();
   expect(await page.evaluate(() => (window as any).nativeCalls)).toBe(3);
+  // A same-game Tip link focuses the real target without navigating; other games keep their link.
+  expect(page.url()).toBe(before);
+  await expect(page.locator('#cup-1')).toHaveClass(/psnine-tip-jump-target/);
+  await expect(tip.getByText('跨游戏奖杯',{exact:true})).toHaveAttribute('href','https://psnine.com/trophy/54321001');
+
   expect(await page.evaluate(() => (window as any).nativeOwn === document.querySelector('.own'))).toBe(true);
   await expect(page.locator('.own')).toHaveAttribute('onclick','getOwn()');
+  await expect(page.locator('#cup-1')).not.toHaveClass(/psnine-tip-jump-target/);
   await page.waitForTimeout(300);
   const settled = await page.evaluate(() => (window as any).nativeFixtureMutations);
   await page.waitForTimeout(300);
   expect(await page.evaluate(() => (window as any).nativeFixtureMutations)).toBe(settled);
   await page.screenshot({ path:testInfo.outputPath('native-trophy-compact.png') });
 });
+
+}

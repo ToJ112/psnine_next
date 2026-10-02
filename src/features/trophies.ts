@@ -474,11 +474,161 @@ export function renderTrophyChartsSvg(stats: TrophyStats): string {
   `;
 }
 
+interface ActiveHighlightState {
+  timer: any;
+  row: HTMLElement | null;
+  origTabIndex: string | null;
+}
+
+let activeHighlight: ActiveHighlightState = {
+  timer: null,
+  row: null,
+  origTabIndex: null
+};
+
+export function clearTrophyRowHighlight(): void {
+  if (activeHighlight.timer) {
+    clearTimeout(activeHighlight.timer);
+    activeHighlight.timer = null;
+  }
+  if (activeHighlight.row) {
+    activeHighlight.row.classList.remove("psnine-tip-jump-target");
+    activeHighlight.row.removeAttribute("data-psnine-highlight");
+    if (activeHighlight.origTabIndex === null) {
+      activeHighlight.row.removeAttribute("tabindex");
+    } else {
+      activeHighlight.row.setAttribute("tabindex", activeHighlight.origTabIndex);
+    }
+    activeHighlight.row = null;
+    activeHighlight.origTabIndex = null;
+  }
+}
+
+/**
+ * Applies a transient highlight and focus to a target trophy row upon internal link navigation.
+ * Uses CSS class without hardcoding inline blue styles.
+ * Clears any existing highlight timer and restores previous row original tabindex.
+ */
+export function applyTrophyRowHighlight(row: HTMLElement, win: Window): void {
+  clearTrophyRowHighlight();
+
+  const origTabIndex = row.getAttribute("tabindex");
+  activeHighlight.row = row;
+  activeHighlight.origTabIndex = origTabIndex;
+
+  row.classList.add("psnine-tip-jump-target");
+  row.setAttribute("data-psnine-highlight", "true");
+  row.setAttribute("tabindex", "-1");
+
+  try {
+    row.focus({ preventScroll: true });
+  } catch {
+    row.focus();
+  }
+
+  activeHighlight.timer = (win.setTimeout || setTimeout)(() => {
+    clearTrophyRowHighlight();
+  }, 1500);
+}
+
+/**
+ * Binds in-page trophy navigation for links inside inline Tips.
+ * - Resolves live trophies via getter to avoid stale closures.
+ * - Strict pathname check: /^\/trophy\/(\d+)\/?$/.
+ * - Retains original navigation if link has hash (e.g. #comment-xxx).
+ * - External origin or cross-game/unconfirmed links retain default navigation.
+ * - Modifier keys (ctrl, meta, shift, alt) or non-primary click retain default navigation.
+ * - If target row is hidden under native own/unown filter, triggers click on the active
+ *   native filter button to restore all rows and synchronize site state.
+ * - Marks link with data-psnine-tip-jump="true", navigates via scrollIntoView, focus, and highlight.
+ */
+export function bindInlineTipTrophyLinks(
+  root: HTMLElement,
+  getTrophies: () => TrophyItem[],
+  win: Window,
+  doc: Document,
+  currentOrigin?: string
+): void {
+  const origin = currentOrigin || (win.location ? win.location.origin : "https://psnine.com");
+  const links = root.querySelectorAll<HTMLAnchorElement>("a[href*=\"/trophy/\"]");
+
+  links.forEach((a) => {
+    const rawHref = a.getAttribute("href") || "";
+    if (!rawHref) return;
+
+    let targetUrl: URL;
+    try {
+      targetUrl = new URL(rawHref, origin);
+    } catch {
+      return;
+    }
+
+    // 1. External link check: if origin differs, do NOT intercept
+    if (targetUrl.origin !== origin) {
+      return;
+    }
+
+    // 2. Exact pathname format: /^\/trophy\/(\d+)\/?$/
+    const m = targetUrl.pathname.match(/^\/trophy\/(\d+)\/?$/);
+    if (!m) return;
+
+    // 3. If link has hash (anchor to specific tip/comment), retain default navigation
+    if (targetUrl.hash) return;
+
+    const targetTrophyId = m[1];
+    const liveTrophies = getTrophies();
+    const targetItem = liveTrophies.find(t => t.trophyId === targetTrophyId);
+    if (!targetItem) {
+      // Cross-game or unconfirmed: keep default link navigation
+      return;
+    }
+
+    // Avoid double binding
+    if (a.getAttribute("data-psnine-tip-jump") === "true") return;
+
+    // Mark link as same-game internal jump
+    a.setAttribute("data-psnine-tip-jump", "true");
+    a.setAttribute("data-psnine-internal-link", "true");
+
+    a.addEventListener("click", (e: MouseEvent) => {
+      // Modifier keys or non-primary click: do NOT intercept
+      if (e.defaultPrevented || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) {
+        return;
+      }
+
+      // Re-query fresh target row from live trophies at click time
+      const freshList = getTrophies();
+      const freshItem = freshList.find(t => t.trophyId === targetTrophyId);
+      if (!freshItem || !freshItem.row || freshItem.row.isConnected === false || (doc.contains && !doc.contains(freshItem.row))) {
+        return;
+      }
+
+      e.preventDefault();
+
+      const targetRow = freshItem.row;
+
+      // 4. If target is hidden by native own/unown filter, toggle off active filter to reveal
+      const activeFilterBtn = doc.querySelector<HTMLElement>("ul.dropmenu .own.select, .o_btn.own.select, ul.dropmenu .unown.select, .o_btn.unown.select");
+      if (activeFilterBtn && (targetRow.style.display === "none" || targetRow.hasAttribute("data-psnine-native-sync-hidden"))) {
+        activeFilterBtn.click();
+      } else if (targetRow.style.display === "none" && targetRow.hasAttribute("data-psnine-native-sync-hidden")) {
+        targetRow.style.removeProperty("display");
+        targetRow.removeAttribute("data-psnine-native-sync-hidden");
+      }
+
+      if (typeof targetRow.scrollIntoView === "function") {
+        targetRow.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      applyTrophyRowHighlight(targetRow, win);
+    });
+  });
+}
+
 /**
  * Mounts the Trophies Feature Module.
  */
 export const mountTrophies: Mount = async (ctx: Context) => {
-  const { document: doc, url, settings, store, userId, onContent, report } = ctx;
+  const { document: doc, window: win, url, settings, store, userId, onContent, report } = ctx;
 
   const isTrophyListPage = url.pathname.includes('/psngame/') && !url.pathname.includes('/comment');
   const isTrophyDetailPage = url.pathname.includes('/trophy/');
@@ -750,6 +900,9 @@ export const mountTrophies: Mount = async (ctx: Context) => {
       let currentSortMode: TrophySortMode | null = null;
       let cleanupNativeSortDropdown: (() => void) | null = null;
       let cleanupNativeFilterSync: (() => void) | null = null;
+      let closeTipsMenu: (() => void) | null = null;
+      let closeNativeSortMenu: (() => void) | null = null;
+      let cleanupTipsToolbar: (() => void) | null = null;
       let isBatchRunning = false;
 
       const applyActiveSortToTables = (mode: TrophySortMode) => {
@@ -800,12 +953,18 @@ export const mountTrophies: Mount = async (ctx: Context) => {
 
         if (
           dropdownLi.getAttribute('data-psnine-trophy-sort-dropdown') === 'true' &&
-          submenu.querySelector('[data-psnine-sort="initial"]')
+          submenu.querySelector('[data-psnine-sort="type-asc"]')
         ) {
           return;
         }
 
         cleanupNativeSortDropdown?.();
+
+        const confirmedUl = dropdownLi.closest<HTMLUListElement>('ul.dropmenu');
+        if (confirmedUl) {
+          confirmedUl.classList.add('psnine-trophy-nav-dropmenu');
+          confirmedUl.setAttribute('data-psnine-trophy-nav', 'true');
+        }
 
         const origHadHover = dropdownLi.classList.contains('hover');
         const origDropdownAttr = dropdownLi.getAttribute('data-psnine-trophy-sort-dropdown');
@@ -813,6 +972,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
         const origAriaHaspopup = trigger.getAttribute('aria-haspopup');
         const origAriaExpanded = trigger.getAttribute('aria-expanded');
         const origTriggerText = trigger.textContent;
+        const origTitle = trigger.getAttribute('title');
         const origMenuAttr = submenu.getAttribute('data-psnine-trophy-sort-menu');
         const origNativeLinks = Array.from(submenu.querySelectorAll(':scope > li > a')) as HTMLAnchorElement[];
         const origCurrentNativeLinks = new Set<HTMLAnchorElement>(
@@ -823,12 +983,14 @@ export const mountTrophies: Mount = async (ctx: Context) => {
         trigger.setAttribute('data-psnine-trophy-sort-trigger', 'true');
         trigger.setAttribute('aria-haspopup', 'menu');
         trigger.setAttribute('aria-expanded', 'false');
+        trigger.setAttribute('title', origTriggerText || '');
         submenu.setAttribute('data-psnine-trophy-sort-menu', 'true');
 
         let isDropdownOpen = false;
         const setDropdownOpen = (open: boolean, restoreFocus = false) => {
           isDropdownOpen = open;
           if (open) {
+            closeTipsMenu?.();
             dropdownLi.classList.add('psnine-dropdown-open', 'hover');
             dropdownLi.setAttribute('data-psnine-dropdown-open', 'true');
             dropdownLi.setAttribute('data-psnine-dropdown-state', 'open');
@@ -843,6 +1005,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
             }
           }
         };
+        closeNativeSortMenu = () => setDropdownOpen(false, false);
 
         const extraItems: Array<{ mode: TrophySortMode; label: string }> = [
           ...(isPersonalPage
@@ -852,8 +1015,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
               ]
             : []),
           { mode: 'type-asc', label: '类型（铜→白金）' },
-          { mode: 'rarity-desc', label: '完美率（高→低）' },
-          { mode: 'initial', label: '页面初始顺序' }
+          { mode: 'rarity-desc', label: '完美率（高→低）' }
         ];
 
         const createdLis: HTMLLIElement[] = [];
@@ -862,6 +1024,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
         const selectLocalSort = (mode: TrophySortMode, label: string, restoreFocus: boolean) => {
           currentSortMode = mode;
           trigger.textContent = label;
+          trigger.setAttribute('title', label);
           submenu.querySelectorAll(':scope > li > a').forEach((el) => {
             if (el.getAttribute('data-psnine-sort') === mode) {
               el.classList.add('current');
@@ -1005,6 +1168,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
         doc.addEventListener('keydown', onDocKeyDown);
 
         cleanupNativeSortDropdown = () => {
+          closeNativeSortMenu = null;
           trigger.removeEventListener('click', onTriggerClick);
           trigger.removeEventListener('keydown', onTriggerKeyDown);
           dropdownLi.removeEventListener('keydown', onDropdownKeyDown);
@@ -1034,6 +1198,9 @@ export const mountTrophies: Mount = async (ctx: Context) => {
           else trigger.setAttribute('aria-expanded', origAriaExpanded);
 
           trigger.textContent = origTriggerText;
+          if (origTitle === null) trigger.removeAttribute('title');
+          else trigger.setAttribute('title', origTitle);
+
           origNativeLinks.forEach((a) => {
             if (origCurrentNativeLinks.has(a)) a.classList.add('current');
             else a.classList.remove('current');
@@ -1041,6 +1208,11 @@ export const mountTrophies: Mount = async (ctx: Context) => {
 
           if (origMenuAttr === null) submenu.removeAttribute('data-psnine-trophy-sort-menu');
           else submenu.setAttribute('data-psnine-trophy-sort-menu', origMenuAttr);
+
+          if (confirmedUl) {
+            confirmedUl.classList.remove('psnine-trophy-nav-dropmenu');
+            confirmedUl.removeAttribute('data-psnine-trophy-nav');
+          }
         };
       };
 
@@ -1181,34 +1353,160 @@ export const mountTrophies: Mount = async (ctx: Context) => {
 
         let tipsToolbar = doc.getElementById('psnine-trophy-tips-toolbar');
         if (!tipsToolbar) {
-          tipsToolbar = doc.createElement('div');
-          tipsToolbar.id = 'psnine-trophy-tips-toolbar';
-          tipsToolbar.setAttribute('data-psnine-next', 'true');
-          tipsToolbar.className = 'psnine-trophy-toolbar';
+          const sortDropdown = doc.querySelector<HTMLElement>('[data-psnine-trophy-sort-dropdown="true"]');
+          const ownBtn = doc.querySelector<HTMLElement>('ul.dropmenu .own, .o_btn.own, [onclick*="getOwn"]');
+          const confirmedUl = sortDropdown?.closest<HTMLUListElement>('ul.dropmenu') || ownBtn?.closest<HTMLUListElement>('ul.dropmenu') || null;
 
-          const target = doc.querySelector('.main, .box.pd10, .min-inner');
-          const firstTbl = doc.querySelector('table.list');
-          if (firstTbl && firstTbl.parentElement) {
-            firstTbl.parentElement.insertBefore(tipsToolbar, firstTbl);
-          } else if (target) {
-            target.appendChild(tipsToolbar);
+          if (confirmedUl) {
+            confirmedUl.classList.add('psnine-trophy-nav-dropmenu');
+            confirmedUl.setAttribute('data-psnine-trophy-nav', 'true');
+            tipsToolbar = doc.createElement('li');
+            tipsToolbar.id = 'psnine-trophy-tips-toolbar';
+            tipsToolbar.setAttribute('data-psnine-next', 'true');
+            tipsToolbar.className = 'psnine-trophy-toolbar';
+            tipsToolbar.style.cssText = 'position:relative;float:none;margin:0 0 0 10px;height:36px;display:inline-flex;align-items:center;vertical-align:middle;flex-shrink:0;';
+            confirmedUl.appendChild(tipsToolbar);
+          } else {
+            tipsToolbar = doc.createElement('div');
+            tipsToolbar.id = 'psnine-trophy-tips-toolbar';
+            tipsToolbar.setAttribute('data-psnine-next', 'true');
+            tipsToolbar.className = 'psnine-trophy-toolbar';
+            tipsToolbar.style.cssText = 'position:relative;display:inline-flex;align-items:center;margin:6px 0;';
+
+            const target = doc.querySelector('.main, .box.pd10, .min-inner');
+            const firstTbl = doc.querySelector('table.list');
+            if (firstTbl && firstTbl.parentElement) {
+              firstTbl.parentElement.insertBefore(tipsToolbar, firstTbl);
+            } else if (target) {
+              target.appendChild(tipsToolbar);
+            }
           }
         }
 
         if (!tipsToolbar.hasChildNodes()) {
           tipsToolbar.innerHTML = `
-            <div data-psnine-next="true" class="psnine-trophy-action-group">
-              <button type="button" id="psnine-batch-load-all-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true">
+            <button type="button" id="psnine-trophy-tips-trigger" class="o_btn psnine-trophy-tips-btn" data-psnine-next="true" aria-expanded="false" aria-controls="psnine-trophy-tips-menu" aria-haspopup="menu" style="display:inline-block;margin:0;width:52px;min-height:24px;height:24px;padding:2px 4px;font-size:12px;line-height:17px;border-radius:15px;border:1px solid darkslategray;background:var(--p9n-surface,#fff);color:var(--p9n-text,#333);cursor:pointer;touch-action:manipulation;box-sizing:border-box;outline:none;text-align:center;">Tips ▾</button>
+            <div id="psnine-trophy-tips-menu" class="psnine-trophy-action-group psnine-trophy-menu" data-psnine-next="true" hidden style="position:absolute;top:100%;left:0;z-index:998;margin-top:4px;padding:6px;background:var(--p9n-surface,#fff);border:1px solid var(--p9n-border,#ccd6dd);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);display:none;flex-direction:column;gap:6px;white-space:nowrap;max-width:calc(100vw - 24px);box-sizing:border-box;">
+              <button type="button" id="psnine-batch-load-all-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true" style="display:inline-flex;align-items:center;justify-content:center;padding:4px 12px;font-size:12px;line-height:18px;min-height:28px;border-radius:14px;border:1px solid var(--p9n-border,#ccd6dd);background:var(--p9n-surface,#fff);color:var(--p9n-text,#333);cursor:pointer;white-space:nowrap;box-sizing:border-box;">
                 展开所有Tips
               </button>
-              <button type="button" id="psnine-batch-load-unearned-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true"${!isPersonalPage ? ' disabled title="公开页面无法确认获得状态，请访问个人奖杯页使用此功能"' : ''}>
+              <button type="button" id="psnine-batch-load-unearned-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true"${!isPersonalPage ? ' disabled title="公开页面无法确认获得状态，请访问个人奖杯页使用此功能"' : ''} style="display:inline-flex;align-items:center;justify-content:center;padding:4px 12px;font-size:12px;line-height:18px;min-height:28px;border-radius:14px;border:1px solid var(--p9n-border,#ccd6dd);background:var(--p9n-surface,#fff);color:var(--p9n-text,#333);cursor:pointer;white-space:nowrap;box-sizing:border-box;">
                 展开未获Tips
               </button>
-              <button type="button" id="psnine-stop-batch-tips-btn" class="psnine-trophy-pill-btn danger" data-psnine-next="true" style="display:none;">
+              <button type="button" id="psnine-stop-batch-tips-btn" class="psnine-trophy-pill-btn danger" data-psnine-next="true" style="display:none;align-items:center;justify-content:center;padding:4px 12px;font-size:12px;line-height:18px;min-height:28px;border-radius:14px;border:1px solid #e74c3c;background:var(--p9n-surface,#fff);color:#e74c3c;cursor:pointer;white-space:nowrap;box-sizing:border-box;">
                 停止加载
               </button>
             </div>
           `;
+
+          const trigger = doc.getElementById('psnine-trophy-tips-trigger') as HTMLButtonElement | null;
+          const menu = doc.getElementById('psnine-trophy-tips-menu') as HTMLElement | null;
+
+          let isMenuOpen = false;
+          const setMenuOpen = (open: boolean, restoreFocus = false) => {
+            isMenuOpen = open;
+            if (trigger && menu) {
+              if (open) {
+                closeNativeSortMenu?.();
+                trigger.setAttribute('aria-expanded', 'true');
+                menu.removeAttribute('hidden');
+                menu.style.display = 'flex';
+
+                // Reset position before measuring to avoid alternating overflow
+                menu.style.left = '0';
+                menu.style.right = 'auto';
+
+                const rect = menu.getBoundingClientRect();
+                if (rect.right > (win.innerWidth || 390) - 8) {
+                  menu.style.left = 'auto';
+                  menu.style.right = '0';
+                }
+              } else {
+                trigger.setAttribute('aria-expanded', 'false');
+                menu.setAttribute('hidden', '');
+                menu.style.display = 'none';
+                if (restoreFocus) {
+                  trigger.focus();
+                }
+              }
+            }
+          };
+
+          closeTipsMenu = () => setMenuOpen(false, false);
+
+          const onTriggerClick = (e: MouseEvent) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setMenuOpen(!isMenuOpen);
+          };
+
+          const onTriggerKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              e.stopPropagation();
+              setMenuOpen(!isMenuOpen);
+            } else if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              e.stopPropagation();
+              setMenuOpen(true);
+              const firstBtn = menu?.querySelector('button:not([disabled])') as HTMLElement | null;
+              firstBtn?.focus();
+            } else if (e.key === 'Escape') {
+              if (isMenuOpen) {
+                e.preventDefault();
+                e.stopPropagation();
+                setMenuOpen(false, true);
+              }
+            }
+          };
+
+          const onMenuKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && isMenuOpen) {
+              e.preventDefault();
+              e.stopPropagation();
+              setMenuOpen(false, true);
+            }
+          };
+
+          const onDocClick = (e: MouseEvent) => {
+            if (!isMenuOpen) return;
+            const target = e.target as Node | null;
+            if (target && !tipsToolbar?.contains(target)) {
+              setMenuOpen(false, false);
+            }
+          };
+
+          const onDocKeyDownForTips = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && isMenuOpen) {
+              e.preventDefault();
+              e.stopPropagation();
+              setMenuOpen(false, true);
+            }
+          };
+
+          const onToolbarFocusOut = (e: FocusEvent) => {
+            const nextTarget = e.relatedTarget as Node | null;
+            if (nextTarget && !tipsToolbar?.contains(nextTarget)) {
+              setMenuOpen(false, false);
+            }
+          };
+
+          trigger?.addEventListener('click', onTriggerClick);
+          trigger?.addEventListener('keydown', onTriggerKeyDown);
+          menu?.addEventListener('keydown', onMenuKeyDown);
+          doc.addEventListener('click', onDocClick);
+          doc.addEventListener('keydown', onDocKeyDownForTips);
+          tipsToolbar.addEventListener('focusout', onToolbarFocusOut);
+
+          cleanupTipsToolbar = () => {
+            trigger?.removeEventListener('click', onTriggerClick);
+            trigger?.removeEventListener('keydown', onTriggerKeyDown);
+            menu?.removeEventListener('keydown', onMenuKeyDown);
+            doc.removeEventListener('click', onDocClick);
+            doc.removeEventListener('keydown', onDocKeyDownForTips);
+            tipsToolbar?.removeEventListener('focusout', onToolbarFocusOut);
+            clearTrophyRowHighlight();
+          };
 
           // T12 Batch Tips Loading
           const runBatchQueue = async (unearnedOnly: boolean) => {
@@ -1476,6 +1774,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
                   m.removeAttribute('data-psnine-mask-ready');
                   m.classList.remove('unmasked', 'pinned');
                 });
+                bindInlineTipTrophyLinks(clone, () => currentTrophies, win, doc, url.origin);
                 hiddenBody.appendChild(clone);
                 enhanceMasks(ctx, hiddenBody);
               }
@@ -1539,6 +1838,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
                   m.removeAttribute('data-psnine-mask-ready');
                   m.classList.remove('unmasked', 'pinned');
                 });
+                bindInlineTipTrophyLinks(clone, () => currentTrophies, win, doc, url.origin);
                 bodyDiv.appendChild(clone);
                 enhanceMasks(ctx, bodyDiv);
                 itemDiv.appendChild(bodyDiv);
@@ -1591,10 +1891,13 @@ export const mountTrophies: Mount = async (ctx: Context) => {
 
       return () => {
         isActive = false;
+        cleanupTipsToolbar?.();
+        cleanupTipsToolbar = null;
         cleanupNativeSortDropdown?.();
         cleanupNativeSortDropdown = null;
         cleanupNativeFilterSync?.();
         cleanupNativeFilterSync = null;
+        clearTrophyRowHighlight();
         pageAbortController.abort();
         batchAbortController?.abort();
         activeManualControllers.forEach(ctrl => ctrl.abort());

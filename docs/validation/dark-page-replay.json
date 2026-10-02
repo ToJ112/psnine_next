@@ -1,6 +1,6 @@
 [
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "chromium",
     "name": "home",
     "url": "/",
@@ -34,7 +34,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "chromium",
     "name": "games",
     "url": "/psngame",
@@ -68,7 +68,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "chromium",
     "name": "game",
     "url": "/psngame/46507",
@@ -108,11 +108,15 @@
       "menuWithinViewport": true,
       "sortChanged": true,
       "menuClosesAfterChoice": true,
-      "originalRestored": true,
+      "noDuplicateDefaultOrder": true,
+      "nativeXMBDefault": true,
       "nativeLinksPreserved": true,
       "noTrophyOverview": true,
       "tipsToolbar": true,
-      "tipsActions": true
+      "tipsMenuOpens": true,
+      "tipsMenuWithinViewport": true,
+      "tipsActions": true,
+      "tipsMenuCloses": true
     },
     "requestCount": 47,
     "characterSet": "UTF-8",
@@ -124,6 +128,8 @@
       "psnine-game-page-battle-bell",
       "psnine-game-variants-section",
       "psnine-trophy-tips-toolbar",
+      "psnine-trophy-tips-trigger",
+      "psnine-trophy-tips-menu",
       "psnine-batch-load-all-tips-btn",
       "psnine-batch-load-unearned-tips-btn",
       "psnine-stop-batch-tips-btn",
@@ -133,13 +139,14 @@
     "charts": 0,
     "controls": [
       "🔕 监控",
+      "Tips ▾",
       "展开所有Tips",
       "展开未获Tips"
     ],
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "chromium",
     "name": "game-personal",
     "url": "/psngame/46507?psnid=toonn95",
@@ -179,11 +186,15 @@
       "menuWithinViewport": true,
       "sortChanged": true,
       "menuClosesAfterChoice": true,
-      "originalRestored": true,
+      "noDuplicateDefaultOrder": true,
+      "nativeXMBDefault": true,
       "nativeLinksPreserved": true,
       "noTrophyOverview": true,
       "tipsToolbar": true,
-      "tipsActions": true
+      "tipsMenuOpens": true,
+      "tipsMenuWithinViewport": true,
+      "tipsActions": true,
+      "tipsMenuCloses": true
     },
     "requestCount": 47,
     "characterSet": "UTF-8",
@@ -195,6 +206,8 @@
       "psnine-game-page-battle-bell",
       "psnine-game-variants-section",
       "psnine-trophy-tips-toolbar",
+      "psnine-trophy-tips-trigger",
+      "psnine-trophy-tips-menu",
       "psnine-batch-load-all-tips-btn",
       "psnine-batch-load-unearned-tips-btn",
       "psnine-stop-batch-tips-btn",
@@ -204,13 +217,14 @@
     "charts": 0,
     "controls": [
       "🔕 监控",
+      "Tips ▾",
       "展开所有Tips",
       "展开未获Tips"
     ],
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "chromium",
     "name": "trophy",
     "url": "/trophy/12518001",
@@ -240,7 +254,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "chromium",
     "name": "reviews",
     "url": "/psngame/46507/comment",
@@ -294,7 +308,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "chromium",
     "name": "deals",
     "url": "/dd",
@@ -346,7 +360,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "chromium",
     "name": "deal-history",
     "url": "/dd/HP9000-CUSA10218_00-HRZCE00000000000",
@@ -387,7 +401,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "chromium",
     "name": "battle",
     "url": "/battle",
@@ -440,7 +454,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "chromium",
     "name": "profile",
     "url": "/psnid/toonn95",
@@ -474,7 +488,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "chromium",
     "name": "topic",
     "url": "/topic/39074",
@@ -507,7 +521,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "chromium",
     "name": "qa",
     "url": "/qa",
@@ -534,7 +548,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "chromium",
     "name": "profile-games",
     "url": "/psnid/toonn95/psngame",
@@ -567,7 +581,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "webkit",
     "name": "home",
     "url": "/",
@@ -601,7 +615,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "webkit",
     "name": "games",
     "url": "/psngame",
@@ -635,7 +649,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "webkit",
     "name": "game",
     "url": "/psngame/46507",
@@ -675,11 +689,15 @@
       "menuWithinViewport": true,
       "sortChanged": true,
       "menuClosesAfterChoice": true,
-      "originalRestored": true,
+      "noDuplicateDefaultOrder": true,
+      "nativeXMBDefault": true,
       "nativeLinksPreserved": true,
       "noTrophyOverview": true,
       "tipsToolbar": true,
-      "tipsActions": true
+      "tipsMenuOpens": true,
+      "tipsMenuWithinViewport": true,
+      "tipsActions": true,
+      "tipsMenuCloses": true
     },
     "requestCount": 47,
     "characterSet": "UTF-8",
@@ -691,6 +709,8 @@
       "psnine-game-page-battle-bell",
       "psnine-game-variants-section",
       "psnine-trophy-tips-toolbar",
+      "psnine-trophy-tips-trigger",
+      "psnine-trophy-tips-menu",
       "psnine-batch-load-all-tips-btn",
       "psnine-batch-load-unearned-tips-btn",
       "psnine-stop-batch-tips-btn",
@@ -700,13 +720,14 @@
     "charts": 0,
     "controls": [
       "🔕 监控",
+      "Tips ▾",
       "展开所有Tips",
       "展开未获Tips"
     ],
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "webkit",
     "name": "game-personal",
     "url": "/psngame/46507?psnid=toonn95",
@@ -746,11 +767,15 @@
       "menuWithinViewport": true,
       "sortChanged": true,
       "menuClosesAfterChoice": true,
-      "originalRestored": true,
+      "noDuplicateDefaultOrder": true,
+      "nativeXMBDefault": true,
       "nativeLinksPreserved": true,
       "noTrophyOverview": true,
       "tipsToolbar": true,
-      "tipsActions": true
+      "tipsMenuOpens": true,
+      "tipsMenuWithinViewport": true,
+      "tipsActions": true,
+      "tipsMenuCloses": true
     },
     "requestCount": 47,
     "characterSet": "UTF-8",
@@ -762,6 +787,8 @@
       "psnine-game-page-battle-bell",
       "psnine-game-variants-section",
       "psnine-trophy-tips-toolbar",
+      "psnine-trophy-tips-trigger",
+      "psnine-trophy-tips-menu",
       "psnine-batch-load-all-tips-btn",
       "psnine-batch-load-unearned-tips-btn",
       "psnine-stop-batch-tips-btn",
@@ -771,13 +798,14 @@
     "charts": 0,
     "controls": [
       "🔕 监控",
+      "Tips ▾",
       "展开所有Tips",
       "展开未获Tips"
     ],
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "webkit",
     "name": "trophy",
     "url": "/trophy/12518001",
@@ -807,7 +835,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "webkit",
     "name": "reviews",
     "url": "/psngame/46507/comment",
@@ -861,7 +889,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "webkit",
     "name": "deals",
     "url": "/dd",
@@ -913,7 +941,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "webkit",
     "name": "deal-history",
     "url": "/dd/HP9000-CUSA10218_00-HRZCE00000000000",
@@ -954,7 +982,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "webkit",
     "name": "battle",
     "url": "/battle",
@@ -1007,7 +1035,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "webkit",
     "name": "profile",
     "url": "/psnid/toonn95",
@@ -1041,7 +1069,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "webkit",
     "name": "topic",
     "url": "/topic/39074",
@@ -1074,7 +1102,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "webkit",
     "name": "qa",
     "url": "/qa",
@@ -1101,7 +1129,7 @@
     "overflow": []
   },
   {
-    "bundleSha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da",
+    "bundleSha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8",
     "engine": "webkit",
     "name": "profile-games",
     "url": "/psnid/toonn95/psngame",

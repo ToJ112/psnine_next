@@ -250,7 +250,7 @@ export function extractElementProgressPercent(el: Element | null): number | null
   if (!el || isPluginNode(el)) return null;
   const htmlEl = el as HTMLElement;
 
-  // 1. Check style.width (e.g. "38%", "38.5%")
+  // 1. Check style.width (e.g. "38%", "38.5%") - strictly percentage only
   if (htmlEl.style && typeof htmlEl.style.width === 'string' && htmlEl.style.width.trim()) {
     const raw = htmlEl.style.width.trim();
     const m = raw.match(/^([\d.]+)%$/);
@@ -263,7 +263,7 @@ export function extractElementProgressPercent(el: Element | null): number | null
     }
   }
 
-  // 2. Check getAttribute('style') (e.g. "width: 38%", "width: 38.5%; ...")
+  // 2. Check getAttribute('style') (e.g. "width: 38%", "width: 38.5%; ...") - strictly percentage only
   const styleAttr = el.getAttribute('style');
   if (styleAttr) {
     const m = styleAttr.match(/(?:^|;)\s*width:\s*([\d.]+)%/i);
@@ -316,7 +316,7 @@ export function parseGameRowProgress(tr: Element): { gameId: string; percent: nu
 
   let percent: number | null = null;
   // Strictly read user completion from .progress-bar or div.progress excluding plugin nodes
-  const progDiv = Array.from(tr.querySelectorAll('.progress-bar, .progress > div, div.progress')).find(el => !isPluginNode(el));
+  const progDiv = Array.from(tr.querySelectorAll('.progress-bar, .progress > div, div.progress, .progress')).find(el => !isPluginNode(el));
   if (progDiv) {
     const innerBar = Array.from(progDiv.querySelectorAll('div')).find(el => !isPluginNode(el)) ?? null;
     percent = extractElementProgressPercent(innerBar) ?? extractElementProgressPercent(progDiv);
@@ -875,16 +875,16 @@ export const mountGames: Mount = async (ctx: Context) => {
             const upbaseA = doc.createElement('a');
             upbaseA.setAttribute('data-psnine-next', 'true');
             upbaseA.href = `https://psnine.com/psnid/${profileId}/upbase`;
-            upbaseA.className = 'btn btn-default btn-sm';
-            upbaseA.style.cssText = 'padding:3px 10px;font-size:12px;border-radius:4px;border:1px solid #3890ff;color:#3890ff;text-decoration:none;';
+            upbaseA.className = 'psnine-btn psnine-sync-btn';
+            upbaseA.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-md,8px);background-color:var(--p9n-surface);color:var(--p9n-text);border:1px solid var(--p9n-border);text-decoration:none;touch-action:manipulation;box-sizing:border-box;';
             upbaseA.textContent = '🔄 等级同步';
             group.appendChild(upbaseA);
 
             const upgameA = doc.createElement('a');
             upgameA.setAttribute('data-psnine-next', 'true');
             upgameA.href = `https://psnine.com/psnid/${profileId}/upgame`;
-            upgameA.className = 'btn btn-default btn-sm';
-            upgameA.style.cssText = 'padding:3px 10px;font-size:12px;border-radius:4px;border:1px solid #28a745;color:#28a745;text-decoration:none;';
+            upgameA.className = 'psnine-btn psnine-sync-btn';
+            upgameA.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-md,8px);background-color:var(--p9n-surface);color:var(--p9n-text);border:1px solid var(--p9n-border);text-decoration:none;touch-action:manipulation;box-sizing:border-box;';
             upgameA.textContent = '🎮 游戏同步';
             group.appendChild(upgameA);
 
@@ -984,10 +984,10 @@ export const mountGames: Mount = async (ctx: Context) => {
                   if (!demandBtn) {
                     demandBtn = doc.createElement('button');
                     demandBtn.type = 'button';
-                    demandBtn.className = 'psnine-ondemand-progress-btn';
+                    demandBtn.className = 'psnine-btn psnine-ondemand-progress-btn';
                     demandBtn.setAttribute('data-psnine-next', 'true');
                     demandBtn.setAttribute('aria-label', '查询个人进度');
-                    demandBtn.style.cssText = 'padding:1px 5px;font-size:10px;border-radius:3px;border:1px solid #3890ff;background:transparent;color:#3890ff;cursor:pointer;margin-left:6px;';
+                    demandBtn.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:4px 10px;font-size:12px;font-weight:500;border-radius:var(--p9n-radius-sm,4px);border:1px solid var(--p9n-border);background-color:var(--p9n-surface);color:var(--p9n-link);cursor:pointer;margin-left:6px;touch-action:manipulation;box-sizing:border-box;';
                     demandBtn.textContent = '🔍 查进度';
                     gameA.parentElement?.appendChild(demandBtn);
                   }
@@ -1083,7 +1083,8 @@ export const mountGames: Mount = async (ctx: Context) => {
 
                       if (demandBtn) {
                         demandBtn.textContent = '❌ 重试';
-                        demandBtn.style.color = '#e03131';
+                        demandBtn.style.color = '#c92a2a';
+                        demandBtn.style.borderColor = '#c92a2a';
                       }
                       report('demand_progress', err);
                     }
@@ -1124,9 +1125,10 @@ export const mountGames: Mount = async (ctx: Context) => {
             if (navOrHeader) {
               const sortBtn = doc.createElement('button');
               sortBtn.id = 'psnine-difficulty-sort-btn';
+              sortBtn.className = 'psnine-btn psnine-difficulty-sort-btn';
               sortBtn.type = 'button';
               sortBtn.setAttribute('data-psnine-next', 'true');
-              sortBtn.style.cssText = 'padding:4px 10px;font-size:12px;border-radius:4px;border:1px solid #3890ff;background:transparent;color:#3890ff;cursor:pointer;margin:5px 0;';
+              sortBtn.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 14px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-md,8px);border:1px solid var(--p9n-border);background-color:var(--p9n-surface);color:var(--p9n-text);cursor:pointer;margin:6px 0;touch-action:manipulation;box-sizing:border-box;';
               sortBtn.textContent = '📊 按难度排序 (从难到易)';
 
               sortBtn.onclick = () => {
@@ -1177,9 +1179,10 @@ export const mountGames: Mount = async (ctx: Context) => {
             if (inav) {
               toMineBtn = doc.createElement('a');
               toMineBtn.id = 'psnine-to-mine-trophy-btn';
+              toMineBtn.className = 'psnine-btn psnine-to-mine-btn';
               toMineBtn.setAttribute('data-psnine-next', 'true');
               toMineBtn.setAttribute('href', targetUrl.href);
-              toMineBtn.style.cssText = 'display:inline-block;padding:3px 8px;font-size:12px;border-radius:4px;background:#3890ff;color:#fff;text-decoration:none;margin-left:8px;font-weight:500;';
+              toMineBtn.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 14px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-md,8px);background-color:var(--p9n-surface);color:var(--p9n-text);border:1px solid var(--p9n-border);text-decoration:none;margin-left:8px;touch-action:manipulation;box-sizing:border-box;';
               toMineBtn.textContent = '🏆 切换至我的奖杯进度';
               inav.appendChild(toMineBtn);
             }
@@ -1195,7 +1198,7 @@ export const mountGames: Mount = async (ctx: Context) => {
           const variantsDiv = doc.createElement('div');
           variantsDiv.id = 'psnine-game-variants-section';
           variantsDiv.setAttribute('data-psnine-next', 'true');
-          variantsDiv.style.cssText = 'margin:12px 0;padding:10px 14px;background:rgba(0,0,0,0.02);border:1px solid rgba(0,0,0,0.06);border-radius:8px;';
+          variantsDiv.style.cssText = 'margin:12px 0;padding:10px 14px;background-color:var(--p9n-surface-alt);border:1px solid var(--p9n-border);border-radius:var(--p9n-radius-md,8px);color:var(--p9n-text);box-sizing:border-box;';
 
           const subPageMatch = url.pathname.match(/\/psngame\/\d+(\/[^/?#]+)/);
           const subPath = subPageMatch ? subPageMatch[1] : '';
@@ -1213,9 +1216,10 @@ export const mountGames: Mount = async (ctx: Context) => {
           // Point 1: Include platform and gameId in title
           variants.forEach((v) => {
             const a = doc.createElement('a');
+            a.className = 'psnine-btn psnine-variant-btn';
             a.setAttribute('data-psnine-next', 'true');
             a.href = new URL(`/psngame/${v.gameId}${subPath}${url.search}`, ctx.url.origin).href;
-            a.style.cssText = 'display:inline-block;padding:4px 8px;font-size:12px;border-radius:4px;background:rgba(56, 144, 255, 0.1);color:#0056b3;text-decoration:none;border:1px solid rgba(56, 144, 255, 0.2);';
+            a.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 12px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-sm,6px);background-color:var(--p9n-surface);color:var(--p9n-link);text-decoration:none;border:1px solid var(--p9n-border);touch-action:manipulation;box-sizing:border-box;';
             const platformPrefix = v.platform ? `[${v.platform}] ` : '';
             a.textContent = `${platformPrefix}${v.title || '版本'} (#${v.gameId})`;
             btnContainer.appendChild(a);
@@ -1273,7 +1277,7 @@ export const mountGames: Mount = async (ctx: Context) => {
                     crossDiv = doc.createElement('div');
                     crossDiv.id = 'psnine-cross-version-tips-section';
                     crossDiv.setAttribute('data-psnine-next', 'true');
-                    crossDiv.style.cssText = 'margin:12px 0;padding:10px 14px;background:rgba(30, 90, 230, 0.06);border:1px solid rgba(30, 90, 230, 0.18);border-radius:6px;';
+                    crossDiv.style.cssText = 'margin:12px 0;padding:10px 14px;background-color:var(--p9n-surface-alt);border:1px solid var(--p9n-border);border-radius:var(--p9n-radius-md,8px);color:var(--p9n-text);box-sizing:border-box;';
 
                     const header = doc.createElement('div');
                     header.setAttribute('data-psnine-next', 'true');
@@ -1286,9 +1290,10 @@ export const mountGames: Mount = async (ctx: Context) => {
                   }
 
                   const linkA = doc.createElement('a');
+                  linkA.className = 'psnine-btn psnine-cross-tip-btn';
                   linkA.setAttribute('data-psnine-next', 'true');
                   linkA.href = new URL(`/trophy/${matched.trophyId}`, ctx.url.origin).href;
-                  linkA.style.cssText = 'display:inline-block;padding:4px 8px;margin-right:8px;font-size:12px;border-radius:4px;background:#3890ff;color:#fff;text-decoration:none;';
+                  linkA.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 12px;margin-right:8px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-sm,6px);background-color:var(--p9n-surface);color:var(--p9n-link);border:1px solid var(--p9n-border);text-decoration:none;touch-action:manipulation;box-sizing:border-box;';
                   linkA.textContent = `${variant.title || `版本 #${variant.gameId}`} 的Tips (#${matched.trophyId}) ↗`;
                   crossDiv.appendChild(linkA);
                 }

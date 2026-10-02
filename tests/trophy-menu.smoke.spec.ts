@@ -91,13 +91,14 @@ for (const personal of [true, false]) {
     await expect(menu).toBeHidden();
     await expect(trigger).toBeFocused();
     await page.keyboard.press('Enter');
-    const initial = page.locator('[data-psnine-sort="initial"]');
-    await initial.focus();
+    await expect(page.locator('[data-psnine-sort="initial"]')).toHaveCount(0);
+    const reverseRarity = page.locator('[data-psnine-sort="rarity-desc"]');
+    await reverseRarity.focus();
     await page.keyboard.press('Enter');
-    await expect(trigger).toContainText('页面初始顺序');
+    await expect(trigger).toContainText('完美率（高→低）');
     await expect(menu.locator('a.current')).toHaveCount(1);
-    await expect(initial).toHaveClass(/current/);
-    expect(await page.locator('tr.trophy').evaluateAll(rows => rows.map(row => row.id))).toEqual(['cup-2', 'cup-1', 'cup-3']);
+    await expect(reverseRarity).toHaveClass(/current/);
+    expect(await page.locator('tr.trophy').evaluateAll(rows => rows.map(row => row.id))).toEqual(['cup-3', 'cup-1', 'cup-2']);
 
     expect(await page.evaluate(() => {
       const links = [...document.querySelectorAll('.dropdown > ul > li > a')].slice(0, 3);
@@ -107,9 +108,9 @@ for (const personal of [true, false]) {
     // Tabbing out must close the menu without a later Escape stealing focus.
     await trigger.focus();
     await page.keyboard.press('Enter');
-    await initial.focus();
+    await reverseRarity.focus();
     await page.keyboard.press('Tab');
-    const summaryToggle = page.locator('#psnine-batch-load-all-tips-btn');
+    const summaryToggle = page.locator('#psnine-trophy-tips-trigger');
     await expect(summaryToggle).toBeFocused();
     await expect(menu).toBeHidden();
     await page.keyboard.press('Escape');
@@ -126,7 +127,7 @@ for (const personal of [true, false]) {
 
     // Original links still perform native navigation with the full query intact.
     await activate();
-    await menu.locator('a[href*="ob=type"]').click();
-    await expect(page).toHaveURL(`https://psnine.com/psngame/12345?${query}ob=type&psngamelang=zh-Hans`);
+    await menu.locator('a[href*="ob=trophyid"]').click();
+    await expect(page).toHaveURL(`https://psnine.com/psngame/12345?${query}ob=trophyid&psngamelang=zh-Hans`);
   });
 }

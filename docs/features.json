@@ -1650,7 +1650,7 @@
     "id": "T09",
     "name": "原序/类型/稀有度排序",
     "module": "trophies",
-    "behavior": "复用原生 XMB/类型/完美率链接，菜单内补充反向排序与恢复页面初始顺序；DLC 分组不混排",
+    "behavior": "复用原生 XMB/类型/完美率链接，菜单内补充反向排序；默认顺序沿用原站 XMB；DLC 分组不混排",
     "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
@@ -1700,7 +1700,7 @@
       "tests/trophy-menu.smoke.spec.ts"
     ],
     "verification_scope": "code_review_and_module_regression",
-    "verification_note": "原生链接节点、URL 参数及导航语义保留；页面初始顺序与真实 XMB 明确区分，无原菜单时不新建排序栏。"
+    "verification_note": "原生链接节点、URL 参数及导航语义保留；1.0.5 按用户要求删除重复的页面初始顺序选项，无原菜单时不新建排序栏。"
   },
   {
     "id": "T10",
@@ -1752,7 +1752,7 @@
     "id": "T11",
     "name": "内联展开单个 Tips",
     "module": "trophies",
-    "behavior": "按需请求、失败重试、状态显示、内容过滤",
+    "behavior": "按需请求、失败重试、状态显示、内容过滤；当前列表内的同游戏奖杯链接页内定位及高亮",
     "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
@@ -1796,16 +1796,18 @@
     ],
     "test_files": [
       "tests/trophies.test.ts",
-      "tests/trophies-regression.test.ts"
+      "tests/trophies-regression.test.ts",
+      "tests/trophy-jump.test.ts",
+      "tests/progress-native.smoke.spec.ts"
     ],
     "verification_scope": "code_review_and_module_regression",
-    "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
+    "verification_note": "1.0.5 覆盖同游戏定位、原生筛选取消、目标动态替换、修饰键/跨游戏/锚点保留，以及高亮与焦点清理。"
   },
   {
     "id": "T12",
     "name": "批量全部/未获 Tips",
     "module": "trophies",
-    "behavior": "原隐藏入口替为明确操作，队列可停止",
+    "behavior": "原站排序行内单一 Tips 菜单，批量全部/未获 Tips，队列可停止",
     "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
@@ -1849,10 +1851,11 @@
     ],
     "test_files": [
       "tests/trophies.test.ts",
-      "tests/trophies-regression.test.ts"
+      "tests/trophies-regression.test.ts",
+      "tests/progress-native.smoke.spec.ts"
     ],
     "verification_scope": "code_review_and_module_regression",
-    "verification_note": "显式按钮、限速、可取消；异常后允许重试。"
+    "verification_note": "390px 手机视口同排，长排序名称省略；显式菜单、限速、可取消，异常后允许重试。"
   },
   {
     "id": "T13",

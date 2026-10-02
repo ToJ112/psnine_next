@@ -1,6 +1,6 @@
 {
-  "date": "2026-09-30",
-  "release_version": "1.0.4",
+  "date": "2026-10-02",
+  "release_version": "1.0.5",
   "node": "24.19.0",
   "dependencies": {
     "typescript": "5.9.3",
@@ -11,22 +11,22 @@
   },
   "artifact": {
     "path": "dist/psnine_next.user.js",
-    "bytes": 364924,
-    "sha256": "3e020a529afd3787f872e17207b500e8d28736c6adfd763a677e7a633d0574da"
+    "bytes": 385325,
+    "sha256": "2370e696c1e43f4a532cc9053da5f1ee8b2efdcecaac5efcc8f4d68513aeeee8"
   },
   "requirements": 80,
   "typecheck": "passed",
-  "clean_install": "npm ci passed for 1.0.0; dependency resolutions unchanged in 1.0.4",
+  "clean_install": "npm ci passed for 1.0.0; dependency resolutions unchanged in 1.0.5",
   "unit": {
-    "files": 17,
-    "passed": 170,
+    "files": 18,
+    "passed": 182,
     "failed": 0,
     "skipped": 0
   },
   "browser": {
-    "startTime": "2026-09-30T15:08:24.132Z",
-    "duration": 80118.659,
-    "expected": 34,
+    "startTime": "2026-10-02T01:19:14.261Z",
+    "duration": 21126.579999999998,
+    "expected": 42,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
@@ -79,13 +79,13 @@
     "reason": "Dependency resolutions and history evidence unchanged; package version fields only were updated."
   },
   "validated_changes": [
-    "official game progress is retained without duplicate percentages or whole-row progress backgrounds",
-    "cached hints on rows without official progress remain readable across light/dark theme changes",
-    "dynamic official progress removes redundant cached hints and another profile never receives my progress overlay",
-    "native row backgrounds and the original cache merge lifecycle are preserved",
-    "trophy overview, charts, icon summary, duplicate filter and obsolete settings are absent by user request",
-    "compact Tips actions retained with native earned/unearned controls, inline Tips visibility and settled DOM mutations",
-    "native sorting, theme, navigation, settings and floating-control regressions retained"
+    "native XMB remains the default-order link; redundant initial-order menu option removed",
+    "390px trophy toolbar keeps native sort, earned/unearned and one Tips menu on the same row, including long sort labels",
+    "native/Tips button border, radius, font size, height, gaps and popup viewport bounds verified in light/dark Chromium and WebKit",
+    "same-game inline Tip links scroll, focus and highlight live trophy rows; native status filter is deselected when required",
+    "cross-game, external, anchor and modified clicks retain navigation; replaced or removed target rows and highlight cleanup covered",
+    "sync, to-my-trophies and version controls use readable theme colors, follow media changes and have at least 44px height",
+    "official progress, removed overview, original filters, theme, settings, menu navigation and DOM stability remain covered"
   ],
   "dark_page_replay": {
     "color_scheme": "dark",
@@ -100,7 +100,7 @@
     "enhancement_overflows": 0,
     "unsettled_mutations": 0
   },
-  "execution_note": "New browser regressions reproduced duplicate profile percentages and the old overview against the 1.0.3 bundle. Final 1.0.4 unit, browser and both replay suites passed without retries. Login identity and progress caches are synthetic fixtures, not real account operations.",
+  "execution_note": "Final 1.0.5 artifact passed 182 unit tests, 42 browser tests and 52 public page replay cases. UI regressions were corrected during development; final suites passed with no retries. Identity/cache/filter fixtures are synthetic and perform no real account actions.",
   "requirements_current": {
     "historical_records": 80,
     "implemented_or_native_integration": 73,

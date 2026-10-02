@@ -46,10 +46,10 @@
 |T06|奖杯汇总折叠|[trophies](../src/features/trophies.ts)|**按用户要求移除（1.0.4）**：整个概览及相关设置已删除；历史证据保留。|
 |T07|奖杯图表折叠|[trophies](../src/features/trophies.ts)|**按用户要求移除（1.0.4）**：整个概览及相关设置已删除；历史证据保留。|
 |T08|获得时间排序|[trophies](../src/features/trophies.ts)|补充在个人页的原生排序菜单中；公开页不显示，无原菜单时跳过。|
-|T09|原序/类型/稀有度排序|[trophies](../src/features/trophies.ts)|保留原生 XMB/类型/完美率链接；菜单内补充反向和页面初始顺序，本地排序保持现有 DLC 分组与 Tips 归属。|
+|T09|原序/类型/稀有度排序|[trophies](../src/features/trophies.ts)|保留原生 XMB/类型/完美率链接；菜单内只补充反向排序，默认顺序沿用 XMB（1.0.5 移除重复选项），本地排序保持现有 DLC 分组与 Tips 归属。|
 |T10|获得状态筛选|[trophies](../src/features/trophies.ts)|沿用原站已获得/未获得控件，仅同步内联 Tips 与动态行；不再添加独立筛选。|
-|T11|内联展开单个 Tips|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
-|T12|批量全部/未获 Tips|[trophies](../src/features/trophies.ts)|显式按钮、限速、可取消；异常后允许重试。|
+|T11|内联展开单个 Tips|[trophies](../src/features/trophies.ts)|同游戏奖杯链接在当前列表定位并短暂高亮；跨游戏和修饰键操作保留原链接。|
+|T12|批量全部/未获 Tips|[trophies](../src/features/trophies.ts)|同一原站排序行的 Tips 菜单；批量全部/未获、限速、可取消，异常后允许重试。|
 |T13|Tips 顶数排序|[trophies](../src/features/trophies.ts)|读取已载入 Tips 自身的顶数，不包含子评论；匿名站点不提供顶数时不能推断。|
 |T14|Tips 输入框缩放|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
 |P01|无白金游戏降低透明度|[games](../src/features/games.ts)|代码审阅、关联模块回归|

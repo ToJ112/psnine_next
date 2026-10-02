@@ -255,9 +255,8 @@ describe('Trophies Feature Module (T01 - T14 + C19) - Followup Verification', ()
       const table = document.querySelector('table.list')!;
       expect(table.querySelector('tbody')?.children[0].id).toBe('trophy-2');
 
-      const sortInitialItem = document.querySelector('[data-psnine-sort="initial"]') as HTMLElement;
-      sortInitialItem.click(); // restore initial order (trophy-1 then trophy-2)
-      expect(table.querySelector('tbody')?.children[0].id).toBe('trophy-1');
+      // Redundant "initial" sort option is removed; XMB serves as default
+      expect(document.querySelector('[data-psnine-sort="initial"]')).toBeNull();
 
       // T11: Click tips badge loads sanitized tips
       const tr1 = document.getElementById('trophy-1')!;

@@ -121,13 +121,17 @@ for (const [engine,launcher] of [['chromium',chromium],['webkit',webkit]]) {
     await page.locator('[data-psnine-sort="type-asc"]').tap();await page.waitForTimeout(150);
     checks.sortChanged=original!==await order();
     checks.menuClosesAfterChoice=!(await menu.isVisible());
-    await trigger.tap();
-    await page.locator('[data-psnine-sort="initial"]').tap();await page.waitForTimeout(150);
-    checks.originalRestored=original===await order();
+    checks.noDuplicateDefaultOrder=await page.locator('[data-psnine-sort="initial"]').count()===0;
+    checks.nativeXMBDefault=await menu.locator('a[href*="ob=trophyid"]').count()===1;
     checks.nativeLinksPreserved=await page.evaluate(()=>window.__nativeSortLinks.length===3 && window.__nativeSortLinks.every(({node,href})=>node.isConnected && node.getAttribute('href')===href));
     checks.noTrophyOverview=await page.locator('#psnine-trophy-stats-panel, #psnine-trophy-header-title, #psnine-filter-status-btn, #psnine-trophy-charts-container, #psnine-trophy-icon-grid-wrapper').count()===0;
     checks.tipsToolbar=await page.locator('#psnine-trophy-tips-toolbar').isVisible();
+    await page.locator('#psnine-trophy-tips-trigger').tap();
+    checks.tipsMenuOpens=await page.locator('#psnine-trophy-tips-menu').isVisible();
+    checks.tipsMenuWithinViewport=await page.locator('#psnine-trophy-tips-menu').evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth;});
     checks.tipsActions=await page.locator('#psnine-batch-load-all-tips-btn').isEnabled() && (name==='game-personal' ? await page.locator('#psnine-batch-load-unearned-tips-btn').isEnabled() : await page.locator('#psnine-batch-load-unearned-tips-btn').isDisabled());
+    await page.keyboard.press('Escape');
+    checks.tipsMenuCloses=!(await page.locator('#psnine-trophy-tips-menu').isVisible());
   }
   if(name==='deals'){
     await page.locator('#psnine-toggle-best-deal-btn').click();

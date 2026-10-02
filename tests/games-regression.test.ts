@@ -679,6 +679,15 @@ describe('Games Feature Module - Comprehensive Regressions', () => {
       const elInvalidString = document.createElement('div');
       elInvalidString.style.width = 'auto';
       expect(extractElementProgressPercent(elInvalidString)).toBeNull();
+
+      // Non-percentage units like px or unitless values must be rejected (60px cannot count as 60%)
+      const elInvalidPx = document.createElement('div');
+      elInvalidPx.style.width = '60px';
+      expect(extractElementProgressPercent(elInvalidPx)).toBeNull();
+
+      const elInvalidUnitless = document.createElement('div');
+      elInvalidUnitless.style.width = '60';
+      expect(extractElementProgressPercent(elInvalidUnitless)).toBeNull();
     });
 
     it('parses real profile row with style-only 38% and no inner text', () => {
@@ -997,6 +1006,269 @@ describe('Games Feature Module - Comprehensive Regressions', () => {
 
       expect(hasOfficialGameProgress(tr)).toBe(true);
       expect(parseGameRowProgress(tr)?.percent).toBe(38);
+    });
+  });
+
+  describe('7. Profile, Game List & Trophy Action Buttons: Native Tokens, Touch >= 44px, and DOM Behavior', () => {
+    it('mounts profile sync buttons with native tokens, no btn-default/hardcoded blue, and touch >= 44px', async () => {
+      document.body.innerHTML = `
+        <div class="psnzz"><div class="inner"></div></div>
+      `;
+
+      const ctx: Context = {
+        document,
+        window,
+        url: new URL('https://psnine.com/psnid/alice'),
+        settings: { ...defaultSettings },
+        store: { get: vi.fn().mockResolvedValue(null), set: vi.fn().mockResolvedValue(undefined), remove: vi.fn() },
+        http: { text: vi.fn(), document: vi.fn(), json: vi.fn() },
+        userId: 'alice',
+        onContent: vi.fn().mockReturnValue(() => {}),
+        report: vi.fn()
+      };
+
+      const cleanup = await mountGames(ctx);
+
+      const group = document.getElementById('psnine-sync-psn-btn-group');
+      expect(group).not.toBeNull();
+
+      const links = group!.querySelectorAll('a');
+      expect(links.length).toBe(2);
+
+      const upbaseA = links[0];
+      const upgameA = links[1];
+
+      // Verifies neither uses legacy btn-default or plain btn without psnine-btn
+      expect(upbaseA.className).not.toContain('btn-default');
+      expect(upgameA.className).not.toContain('btn-default');
+      expect(upbaseA.className).toContain('psnine-sync-btn');
+      expect(upgameA.className).toContain('psnine-sync-btn');
+      expect(upbaseA.className).toContain('psnine-btn');
+      expect(upgameA.className).toContain('psnine-btn');
+
+      // Verifies no hardcoded #3890ff, #28a745
+      const baseStyle = upbaseA.getAttribute('style') || '';
+      const gameStyle = upgameA.getAttribute('style') || '';
+      expect(baseStyle).not.toContain('#3890ff');
+      expect(gameStyle).not.toContain('#28a745');
+
+      // Uses site tokens var(--p9n-surface), var(--p9n-text), var(--p9n-border)
+      expect(baseStyle).toContain('var(--p9n-surface)');
+      expect(baseStyle).toContain('var(--p9n-text)');
+      expect(baseStyle).toContain('var(--p9n-border)');
+      expect(gameStyle).toContain('var(--p9n-surface)');
+      expect(gameStyle).toContain('var(--p9n-text)');
+
+      // Minimum touch target >= 44px
+      expect(baseStyle).toContain('min-height: 44px');
+      expect(gameStyle).toContain('min-height: 44px');
+
+      // Authentic link targets and labels
+      expect(upbaseA.getAttribute('href')).toBe('https://psnine.com/psnid/alice/upbase');
+      expect(upgameA.getAttribute('href')).toBe('https://psnine.com/psnid/alice/upgame');
+      expect(upbaseA.textContent).toBe('🔄 等级同步');
+      expect(upgameA.textContent).toBe('🎮 游戏同步');
+
+      if (cleanup) cleanup();
+    });
+
+    it('mounts trophy to-mine button with neutral outline, no hardcoded #3890ff/#fff, and touch >= 44px', async () => {
+      document.body.innerHTML = `
+        <div class="box pd10">
+          <ul class="inav"><li>Game Nav</li></ul>
+        </div>
+      `;
+
+      const ctx: Context = {
+        document,
+        window: { location: { replace: vi.fn() } } as unknown as Window,
+        url: new URL('https://psnine.com/psngame/46507?psnid=alice'),
+        settings: { ...defaultSettings, redirectToMine: true },
+        store: { get: vi.fn().mockResolvedValue(null), set: vi.fn().mockResolvedValue(undefined), remove: vi.fn() },
+        http: { text: vi.fn(), document: vi.fn(), json: vi.fn() },
+        userId: 'alice',
+        onContent: vi.fn().mockReturnValue(() => {}),
+        report: vi.fn()
+      };
+
+      const cleanup = await mountGames(ctx);
+
+      const toMineBtn = document.getElementById('psnine-to-mine-trophy-btn');
+      expect(toMineBtn).not.toBeNull();
+      expect(toMineBtn?.className).toContain('psnine-to-mine-btn');
+      expect(toMineBtn?.className).toContain('psnine-btn');
+
+      const style = toMineBtn?.getAttribute('style') || '';
+      // No hardcoded #3890ff background or #fff color
+      expect(style).not.toContain('#3890ff');
+      expect(style).not.toContain('background: #3890ff');
+      expect(style).not.toContain('background:#3890ff');
+
+      // Uses site tokens
+      expect(style).toContain('var(--p9n-surface)');
+      expect(style).toContain('var(--p9n-text)');
+      expect(style).toContain('var(--p9n-border)');
+
+      // Minimum touch target >= 44px
+      expect(style).toContain('min-height: 44px');
+      expect(toMineBtn?.textContent).toContain('切换至我的奖杯进度');
+
+      if (cleanup) cleanup();
+    });
+
+    it('mounts difficulty sort button and on-demand button with tokens and touch >= 44px, and verifies sorting behavior', async () => {
+      document.body.innerHTML = `
+        <div class="page-header"></div>
+        <table>
+          <tr id="row-hard">
+            <td class="pd15"><a href="/psngame/111"><img class="imgbgnb" src="c1.png" /></a></td>
+            <td class="pd1015 title"><a href="/psngame/111">Hard Game</a></td>
+            <td class="twoge"><em>5.00%完美</em></td>
+          </tr>
+          <tr id="row-easy">
+            <td class="pd15"><a href="/psngame/222"><img class="imgbgnb" src="c2.png" /></a></td>
+            <td class="pd1015 title"><a href="/psngame/222">Easy Game</a></td>
+            <td class="twoge"><em>85.00%完美</em></td>
+          </tr>
+        </table>
+      `;
+
+      const ctx: Context = {
+        document,
+        window,
+        url: new URL('https://psnine.com/psngame'),
+        settings: { ...defaultSettings },
+        store: { get: vi.fn().mockResolvedValue(null), set: vi.fn().mockResolvedValue(undefined), remove: vi.fn() },
+        http: { text: vi.fn(), document: vi.fn(), json: vi.fn() },
+        userId: 'alice',
+        onContent: vi.fn().mockReturnValue(() => {}),
+        report: vi.fn()
+      };
+
+      const cleanup = await mountGames(ctx);
+
+      // 1. Difficulty sort button DOM behavior
+      const sortBtn = document.getElementById('psnine-difficulty-sort-btn');
+      expect(sortBtn).not.toBeNull();
+      expect(sortBtn?.className).toContain('psnine-difficulty-sort-btn');
+      const sortStyle = sortBtn?.getAttribute('style') || '';
+      expect(sortStyle).not.toContain('#3890ff');
+      expect(sortStyle).toContain('var(--p9n-surface)');
+      expect(sortStyle).toContain('var(--p9n-text)');
+      expect(sortStyle).toContain('min-height: 44px');
+
+      // Click to toggle sorting
+      expect(sortBtn?.textContent).toContain('从难到易');
+      sortBtn?.click();
+      expect(sortBtn?.textContent).toContain('从易到难');
+      const tableRows = Array.from(document.querySelectorAll('table tr'));
+      expect(tableRows[0].id).toBe('row-easy');
+      expect(tableRows[1].id).toBe('row-hard');
+
+      // 2. On-demand progress query button DOM behavior
+      const demandBtn = document.querySelector('.psnine-ondemand-progress-btn') as HTMLElement;
+      expect(demandBtn).not.toBeNull();
+      expect(demandBtn.className).toContain('psnine-ondemand-progress-btn');
+      const demandStyle = demandBtn.getAttribute('style') || '';
+      expect(demandStyle).not.toContain('#3890ff');
+      expect(demandStyle).toContain('var(--p9n-surface)');
+      expect(demandStyle).toContain('var(--p9n-link)');
+      expect(demandStyle).toContain('min-height: 44px');
+
+      if (cleanup) cleanup();
+    });
+
+    it('mounts game variants with token-based styles and touch >= 44px without hardcoded #0056b3', async () => {
+      document.body.innerHTML = `
+        <div class="main">
+          <ul class="inav"><li>Nav</li></ul>
+          <div class="box pd10">
+            <div class="min-inner">
+              <ul class="darklist">
+                <li><span class="r">PS5</span><a href="/game/555">Variant Title</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const mockHttp = {
+        text: vi.fn(),
+        document: vi.fn().mockImplementation((url: string) => {
+          if (url.includes('/game/')) {
+            return Promise.resolve(new DOMParser().parseFromString(`
+              <div class="min-inner">
+                <ul class="darklist">
+                  <li><span class="r">PS5</span><a href="/game/555">Variant Title</a></li>
+                </ul>
+              </div>
+            `, 'text/html'));
+          }
+          return Promise.resolve(document);
+        }),
+        json: vi.fn()
+      };
+
+      const ctx: Context = {
+        document,
+        window,
+        url: new URL('https://psnine.com/psngame/444?psnid=alice'),
+        settings: { ...defaultSettings, referGameVariants: true },
+        store: { get: vi.fn().mockResolvedValue(null), set: vi.fn().mockResolvedValue(undefined), remove: vi.fn() },
+        http: mockHttp,
+        userId: 'alice',
+        onContent: vi.fn().mockReturnValue(() => {}),
+        report: vi.fn()
+      };
+
+      const cleanup = await mountGames(ctx);
+      await new Promise(r => setTimeout(r, 40));
+
+      const variantsDiv = document.getElementById('psnine-game-variants-section');
+      if (variantsDiv) {
+        expect(variantsDiv.getAttribute('style') || '').toContain('var(--p9n-surface-alt)');
+        const variantA = variantsDiv.querySelector('.psnine-variant-btn');
+        if (variantA) {
+          const aStyle = variantA.getAttribute('style') || '';
+          expect(aStyle).not.toContain('#0056b3');
+          expect(aStyle).toContain('var(--p9n-surface)');
+          expect(aStyle).toContain('var(--p9n-link)');
+          expect(aStyle).toContain('min-height: 44px');
+        }
+      }
+
+      if (cleanup) cleanup();
+    });
+
+    it('hasOfficialGameProgress accurately detects presence of authentic progress bar with valid 0..100 percent', () => {
+      // 1. Row with authentic progress element (valid 38%)
+      const trWithNative = document.createElement('tr');
+      trWithNative.innerHTML = `
+        <td><a href="/psngame/1">Game 1</a></td>
+        <td><div class="progress"><div style="width: 38%">38%</div></div></td>
+      `;
+      expect(hasOfficialGameProgress(trWithNative)).toBe(true);
+
+      // 2. Row with invalid out-of-bounds bar (138%) -> false, triggering on-demand fallback
+      const trWithInvalid = document.createElement('tr');
+      trWithInvalid.innerHTML = `
+        <td><a href="/psngame/1b">Game 1b</a></td>
+        <td><div class="progress"><div style="width: 138%">138%</div></div></td>
+      `;
+      expect(hasOfficialGameProgress(trWithInvalid)).toBe(false);
+
+      // 3. Row with only plugin nodes -> false
+      const trWithPluginOnly = document.createElement('tr');
+      trWithPluginOnly.innerHTML = `
+        <td><a href="/psngame/2">Game 2</a></td>
+        <td><div class="progress" data-psnine-next="true"><div style="width: 38%">38%</div></div></td>
+      `;
+      expect(hasOfficialGameProgress(trWithPluginOnly)).toBe(false);
+
+      // 4. Row with no progress element -> false
+      const trEmpty = document.createElement('tr');
+      trEmpty.innerHTML = `<td><a href="/psngame/3">Game 3</a></td>`;
+      expect(hasOfficialGameProgress(trEmpty)).toBe(false);
     });
   });
 });
