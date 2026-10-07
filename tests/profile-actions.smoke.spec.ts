@@ -298,7 +298,7 @@ test.describe('Profile & Game Action Controls Smoke Tests (390px Viewport)', () 
     expect(darkContrast).toBeGreaterThanOrEqual(4.5);
   });
 
-  test("4. profile game progress filter: touch target >= 44px, computedStyle contrast >= 4.5, theme follow, and row filtering", async ({ page }) => {
+  test("4. profile game progress filter: compact segmented control dimensions, computedStyle contrast >= 4.5, theme follow, and row filtering", async ({ page }) => {
     await page.emulateMedia({ colorScheme: "light" });
     await page.goto("https://psnine.com/psnid/test_gamer");
 
@@ -315,69 +315,96 @@ test.describe('Profile & Game Action Controls Smoke Tests (390px Viewport)', () 
     const row100 = page.locator("#game-row-100");
     const row38 = page.locator("#game-row-38");
 
-    // Touch target >= 44px and WCAG contrast >= 4.5 across light and dark
+    // 1. Compact segmented capsule container and button dimensions
+    const containerBox = await filterGroup.boundingBox();
+    expect(containerBox).not.toBeNull();
+
     for (const btn of await buttons.all()) {
       const box = await btn.boundingBox();
       expect(box).not.toBeNull();
-      expect(box!.height).toBeGreaterThanOrEqual(44);
+      expect(box!.height).toBeGreaterThanOrEqual(26);
+      expect(box!.height).toBeLessThanOrEqual(30);
 
-      // Light mode computedStyle
-      const lightStyles = await btn.evaluate((el) => {
+      const btnStyles = await btn.evaluate((el) => {
         const cs = window.getComputedStyle(el);
-        return { color: cs.color, backgroundColor: cs.backgroundColor };
+        return {
+          fontSize: cs.fontSize,
+          paddingLeft: cs.paddingLeft,
+          paddingRight: cs.paddingRight,
+          borderRadius: cs.borderRadius,
+          borderStyle: cs.borderStyle
+        };
       });
-      const lightContrast = calculateContrast(lightStyles.color, lightStyles.backgroundColor);
-      expect(lightContrast).toBeGreaterThanOrEqual(4.5);
-
-      // Dark mode switch via emulateMedia
-      await page.emulateMedia({ colorScheme: "dark" });
-      await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-
-      await btn.evaluate(async el => {
-        await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
-        await Promise.allSettled(el.getAnimations().map(animation => animation.finished));
-      });
-      const darkStyles = await btn.evaluate((el) => {
-        const cs = window.getComputedStyle(el);
-        return { color: cs.color, backgroundColor: cs.backgroundColor };
-      });
-
-      // Computed style background changes between themes
-      expect(darkStyles.backgroundColor).not.toBe(lightStyles.backgroundColor);
-
-      // Dark mode contrast >= 4.5
-      const darkContrast = calculateContrast(darkStyles.color, darkStyles.backgroundColor);
-      expect(darkContrast).toBeGreaterThanOrEqual(4.5);
-
-      // Restore to light mode
-      await page.emulateMedia({ colorScheme: "light" });
-      await expect(page.locator("html")).not.toHaveAttribute("data-theme", "dark");
-      await btn.evaluate(async el => {
-        await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
-        await Promise.allSettled(el.getAnimations().map(animation => animation.finished));
-      });
+      expect(btnStyles.fontSize).toBe("12px");
+      expect(btnStyles.paddingLeft).toBe("12px");
+      expect(btnStyles.paddingRight).toBe("12px");
+      expect(btnStyles.borderRadius).toBe("14px");
+      expect(btnStyles.borderStyle).toBe("none");
     }
 
-    // 2. Initial state: "全部" active -> all rows visible
+    // 2. Active button computedStyle contrast >= 4.5 across light and dark
+    const lightActiveStyles = await btnAll.evaluate((el) => {
+      const cs = window.getComputedStyle(el);
+      return { color: cs.color, backgroundColor: cs.backgroundColor };
+    });
+    const lightContrast = calculateContrast(lightActiveStyles.color, lightActiveStyles.backgroundColor);
+    expect(lightContrast).toBeGreaterThanOrEqual(4.5);
+
+    // Inactive button has transparent background
+    const lightInactiveStyles = await btnNon100.evaluate((el) => {
+      const cs = window.getComputedStyle(el);
+      return { color: cs.color, backgroundColor: cs.backgroundColor };
+    });
+    expect(lightInactiveStyles.backgroundColor).toBe("rgba(0, 0, 0, 0)");
+
+    // Dark mode switch via emulateMedia
+    await page.emulateMedia({ colorScheme: "dark" });
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+
+    await btnAll.evaluate(async el => {
+      await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+      await Promise.allSettled(el.getAnimations().map(animation => animation.finished));
+    });
+    const darkActiveStyles = await btnAll.evaluate((el) => {
+      const cs = window.getComputedStyle(el);
+      return { color: cs.color, backgroundColor: cs.backgroundColor };
+    });
+
+    // Computed style background changes between themes
+    expect(darkActiveStyles.backgroundColor).not.toBe(lightActiveStyles.backgroundColor);
+
+    // Dark mode contrast >= 4.5
+    const darkContrast = calculateContrast(darkActiveStyles.color, darkActiveStyles.backgroundColor);
+    expect(darkContrast).toBeGreaterThanOrEqual(4.5);
+
+    // Restore to light mode
+    await page.emulateMedia({ colorScheme: "light" });
+    await expect(page.locator("html")).not.toHaveAttribute("data-theme", "dark");
+    await btnAll.evaluate(async el => {
+      await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+      await Promise.allSettled(el.getAnimations().map(animation => animation.finished));
+    });
+
+    // 3. Initial state: "全部" active -> all rows visible
     await expect(btnAll).toHaveAttribute("aria-pressed", "true");
     await expect(row100).toBeVisible();
     await expect(row38).toBeVisible();
 
-    // 3. Click "非 100%" -> 100% row hidden, 38% row visible
+    // 4. Click "非 100%" -> 100% row hidden, 38% row visible
     await btnNon100.click();
     await expect(btnNon100).toHaveAttribute("aria-pressed", "true");
     await expect(btnAll).toHaveAttribute("aria-pressed", "false");
     await expect(row100).toBeHidden();
     await expect(row38).toBeVisible();
 
-    // 4. Click "100%" -> 100% row visible, 38% row hidden
+    // 5. Click "100%" -> 100% row visible, 38% row hidden
     await btn100.click();
     await expect(btn100).toHaveAttribute("aria-pressed", "true");
     await expect(btnNon100).toHaveAttribute("aria-pressed", "false");
     await expect(row100).toBeVisible();
     await expect(row38).toBeHidden();
 
-    // 5. Click "全部" -> all rows visible
+    // 6. Click "全部" -> all rows visible
     await btnAll.click();
     await expect(btnAll).toHaveAttribute("aria-pressed", "true");
     await expect(btn100).toHaveAttribute("aria-pressed", "false");

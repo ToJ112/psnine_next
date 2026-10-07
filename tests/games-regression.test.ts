@@ -1399,10 +1399,15 @@ describe('Games Feature Module - Comprehensive Regressions', () => {
       expect(btnNon100.textContent).toBe("非 100%");
       expect(btn100.textContent).toBe("100%");
 
-      // Touch target >= 44px
+      // Compact segmented control dimensions and track container
+      expect(filter!.style.display).toBe("inline-flex");
+      expect(filter!.style.borderRadius).toBe("16px");
+
       buttons.forEach(btn => {
-        expect(btn.style.cssText).toContain("min-height: 44px");
-        expect(btn.style.cssText).toContain("padding: 8px 16px");
+        expect(btn.style.height).toBe("28px");
+        expect(btn.style.padding).toMatch(/0p?x?\s*12px/);
+        expect(btn.style.fontSize).toBe("12px");
+        expect(btn.style.borderRadius).toBe("14px");
       });
 
       // Initially "全部" active

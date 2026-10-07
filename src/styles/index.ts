@@ -19,6 +19,7 @@ export const CORE_STYLES = `
   --p9n-surface-alt: var(--c-bg, #f8fafc);
   --p9n-text: var(--c-text, #1f2937);
   --p9n-muted: var(--c-text-2, #5f6b7a);
+  --p9n-text-muted: var(--c-text-2, #596375);
   --p9n-border: var(--c-line, #ccd6dd);
   --p9n-link: var(--c-brand, #1966c2);
   --p9n-primary: #1d4ed8;
@@ -32,8 +33,8 @@ export const CORE_STYLES = `
 
 /* Base button styling */
 .psnine-btn,
-[data-psnine-next] button:where(:not(.psnine-settings-close)),
-button[data-psnine-next]:where(:not(.psnine-settings-close)) {
+[data-psnine-next] button:where(:not(.psnine-settings-close):not(.psnine-progress-filter-btn)),
+button[data-psnine-next]:where(:not(.psnine-settings-close):not(.psnine-progress-filter-btn)) {
   color: var(--p9n-text);
   background-color: var(--p9n-surface);
   border: 1px solid var(--p9n-border);
@@ -1230,9 +1231,9 @@ html[data-theme="dark"] .psnine-settings-memory-warning {
 }
 
 /* Generic Button Contrast in Dark Mode (Exclude custom status/chip/filter buttons) */
-html[data-theme="dark"] [data-psnine-next] button:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-trophy-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(#psnine-settings-gear):not(.psnine-filtered-tip-btn):not(.psnine-trophy-pill-btn)),
-html[data-theme="dark"] button[data-psnine-next]:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-trophy-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(#psnine-settings-gear):not(.psnine-filtered-tip-btn):not(.psnine-trophy-pill-btn)),
-html[data-theme="dark"] .psnine-btn:where(:not(.psnine-btn-primary):not(.psnine-btn-danger)) {
+html[data-theme="dark"] [data-psnine-next] button:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-trophy-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(#psnine-settings-gear):not(.psnine-filtered-tip-btn):not(.psnine-trophy-pill-btn):not(.psnine-progress-filter-btn)),
+html[data-theme="dark"] button[data-psnine-next]:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-trophy-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(#psnine-settings-gear):not(.psnine-filtered-tip-btn):not(.psnine-trophy-pill-btn):not(.psnine-progress-filter-btn)),
+html[data-theme="dark"] .psnine-btn:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-progress-filter-btn)) {
   color: var(--p9n-text) !important;
   background-color: var(--p9n-surface-alt) !important;
   border-color: var(--p9n-border) !important;
@@ -1461,6 +1462,65 @@ html[data-theme="dark"] #psnine-game-variants-section [style*="color: #666"],
 html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color:#666"],
 html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"] {
   color: var(--p9n-muted) !important;
+}
+
+
+/* Game Progress Filter (iOS-style Segmented Capsule Control) */
+#psnine-game-progress-filter {
+  display: inline-flex !important;
+  align-items: center !important;
+  background: var(--p9n-surface-alt, #f0f2f5) !important;
+  border: 1px solid var(--p9n-border, #e5e8ef) !important;
+  border-radius: 16px !important;
+  padding: 2px !important;
+  margin: 6px 0 10px 0 !important;
+  gap: 2px !important;
+  box-sizing: border-box !important;
+}
+
+html[data-theme="dark"] #psnine-game-progress-filter {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.psnine-progress-filter-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 28px !important;
+  padding: 0 12px !important;
+  font-size: 12px !important;
+  line-height: 28px !important;
+  border-radius: 14px !important;
+  border: none !important;
+  outline: none !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
+  box-sizing: border-box !important;
+  text-decoration: none !important;
+  background: transparent !important;
+  color: var(--p9n-text-muted, #6b7280) !important;
+  font-weight: normal !important;
+  transition: all 0.15s ease !important;
+}
+
+.psnine-progress-filter-btn.active {
+  background: var(--p9n-surface, #ffffff) !important;
+  color: var(--p9n-link, #1e5ae6) !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+}
+
+html[data-theme="dark"] .psnine-progress-filter-btn:not(.active) {
+  background: transparent !important;
+  color: var(--p9n-muted, #a8b3c2) !important;
+}
+
+html[data-theme="dark"] .psnine-progress-filter-btn.active {
+  background: var(--p9n-surface, #1e293b) !important;
+  color: #70b8ff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
 }
 
 /* Game List Progress Badge in Dark Mode */

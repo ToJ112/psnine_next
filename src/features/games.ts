@@ -764,45 +764,55 @@ export const mountGames: Mount = async (ctx: Context) => {
           border-color: var(--p9n-border, #3b4859) !important;
         }
         #psnine-game-progress-filter {
-          display: flex !important;
-          flex-wrap: wrap !important;
+          display: inline-flex !important;
           align-items: center !important;
-          gap: 8px !important;
-          margin: 12px 0 8px 0 !important;
+          background: var(--p9n-surface-alt, #f0f2f5) !important;
+          border: 1px solid var(--p9n-border, #e5e8ef) !important;
+          border-radius: 16px !important;
+          padding: 2px !important;
+          margin: 6px 0 10px 0 !important;
+          gap: 2px !important;
           box-sizing: border-box !important;
+        }
+        html[data-theme="dark"] #psnine-game-progress-filter {
+          background: rgba(255, 255, 255, 0.08) !important;
+          border-color: rgba(255, 255, 255, 0.12) !important;
         }
         .psnine-progress-filter-btn {
           display: inline-flex !important;
           align-items: center !important;
           justify-content: center !important;
-          min-height: 44px !important;
-          padding: 8px 16px !important;
-          font-size: 13px !important;
-          font-weight: 500 !important;
-          border-radius: var(--p9n-radius-md, 8px) !important;
-          background-color: var(--p9n-surface) !important;
-          color: var(--p9n-text) !important;
-          border: 1px solid var(--p9n-border) !important;
+          height: 28px !important;
+          padding: 0 12px !important;
+          font-size: 12px !important;
+          line-height: 28px !important;
+          border-radius: 14px !important;
+          border: none !important;
+          outline: none !important;
           cursor: pointer !important;
           touch-action: manipulation !important;
           box-sizing: border-box !important;
           text-decoration: none !important;
+          background: transparent !important;
+          color: var(--p9n-text-muted, #6b7280) !important;
+          font-weight: normal !important;
+          transition: all 0.15s ease !important;
         }
         .psnine-progress-filter-btn.active {
-          background-color: var(--p9n-primary, #1e5ae6) !important;
-          color: #ffffff !important;
-          border-color: var(--p9n-primary, #1e5ae6) !important;
+          background: var(--p9n-surface, #ffffff) !important;
+          color: var(--p9n-link, #1e5ae6) !important;
           font-weight: 600 !important;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
         }
         html[data-theme="dark"] .psnine-progress-filter-btn:not(.active) {
-          background-color: var(--p9n-surface) !important;
-          color: var(--p9n-text) !important;
-          border-color: var(--p9n-border) !important;
+          background: transparent !important;
+          color: var(--p9n-muted, #a8b3c2) !important;
         }
         html[data-theme="dark"] .psnine-progress-filter-btn.active {
-          background-color: #1a4299 !important;
-          color: #ffffff !important;
-          border-color: var(--p9n-primary, #1e5ae6) !important;
+          background: var(--p9n-surface, #1e293b) !important;
+          color: #70b8ff !important;
+          font-weight: 600 !important;
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
         }
       `;
       doc.head.appendChild(style);
@@ -950,9 +960,9 @@ export const mountGames: Mount = async (ctx: Context) => {
 
       const updateFilterBtnStyle = (btn: HTMLButtonElement, isActive: boolean) => {
         if (isActive) {
-          btn.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;font-size:13px;font-weight:600;border-radius:var(--p9n-radius-md,8px);background-color:var(--p9n-primary,#1e5ae6);color:#ffffff;border:1px solid var(--p9n-primary,#1e5ae6);cursor:pointer;touch-action:manipulation;box-sizing:border-box;';
+          btn.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;height:28px;padding:0 12px;font-size:12px;font-weight:600;border-radius:14px;border:none;cursor:pointer;touch-action:manipulation;box-sizing:border-box;background-color:var(--p9n-surface,#ffffff);color:var(--p9n-link,#1e5ae6);box-shadow:0 1px 3px rgba(0,0,0,0.12);';
         } else {
-          btn.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-md,8px);background-color:var(--p9n-surface);color:var(--p9n-text);border:1px solid var(--p9n-border);cursor:pointer;touch-action:manipulation;box-sizing:border-box;';
+          btn.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;height:28px;padding:0 12px;font-size:12px;font-weight:normal;border-radius:14px;border:none;cursor:pointer;touch-action:manipulation;box-sizing:border-box;background-color:transparent;color:var(--p9n-text-muted,#6b7280);';
         }
       };
 
@@ -999,7 +1009,7 @@ export const mountGames: Mount = async (ctx: Context) => {
           filterContainer = doc.createElement('div');
           filterContainer.id = 'psnine-game-progress-filter';
           filterContainer.setAttribute('data-psnine-next', 'true');
-          filterContainer.style.cssText = 'display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0 8px 0;box-sizing:border-box;';
+          filterContainer.style.cssText = 'display:inline-flex;align-items:center;background:var(--p9n-surface-alt,#f0f2f5);border:1px solid var(--p9n-border,#e5e8ef);border-radius:16px;padding:2px;margin:6px 0 10px 0;gap:2px;box-sizing:border-box;';
 
           const filters: { label: string; value: 'all' | 'non-100' | '100' }[] = [
             { label: '全部', value: 'all' },
@@ -1014,7 +1024,7 @@ export const mountGames: Mount = async (ctx: Context) => {
             btn.setAttribute('data-filter', value);
             const isActive = value === activeProgressFilter;
             btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-            btn.className = `psnine-btn psnine-progress-filter-btn ${isActive ? 'active' : ''}`.trim();
+            btn.className = `psnine-progress-filter-btn ${isActive ? 'active' : ''}`.trim();
             btn.textContent = label;
             updateFilterBtnStyle(btn, isActive);
 
