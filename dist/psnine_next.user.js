@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PSNINE Next (PSN中文网功能增强)
 // @namespace    https://github.com/ToJ112/psnine_next
-// @version      1.0.5
+// @version      1.0.6
 // @description  现代化重构版 PSN中文网功能增强脚本，深度适配桌面 Tampermonkey 与 iOS Safari Stay
 // @author       ToJ112, swsoyee, InfinityLoop, mordom0404, Nathaniel-Wu, JayusTree, aesct
 // @match        https://psnine.com/*
