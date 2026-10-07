@@ -78,7 +78,11 @@ export function getTodayShanghaiString(now = new Date()): string {
     month: '2-digit',
     day: '2-digit'
   });
-  return formatter.format(now);
+  const parts = formatter.formatToParts(now);
+  const y = parts.find(p => p.type === 'year')?.value;
+  const m = parts.find(p => p.type === 'month')?.value;
+  const d = parts.find(p => p.type === 'day')?.value;
+  return `${y}-${m}-${d}`;
 }
 
 /**

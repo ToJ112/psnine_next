@@ -6932,6 +6932,47 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
           color: var(--p9n-text, #e6ebf2) !important;
           border-color: var(--p9n-border, #3b4859) !important;
         }
+        #psnine-game-progress-filter {
+          display: flex !important;
+          flex-wrap: wrap !important;
+          align-items: center !important;
+          gap: 8px !important;
+          margin: 12px 0 8px 0 !important;
+          box-sizing: border-box !important;
+        }
+        .psnine-progress-filter-btn {
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          min-height: 44px !important;
+          padding: 8px 16px !important;
+          font-size: 13px !important;
+          font-weight: 500 !important;
+          border-radius: var(--p9n-radius-md, 8px) !important;
+          background-color: var(--p9n-surface) !important;
+          color: var(--p9n-text) !important;
+          border: 1px solid var(--p9n-border) !important;
+          cursor: pointer !important;
+          touch-action: manipulation !important;
+          box-sizing: border-box !important;
+          text-decoration: none !important;
+        }
+        .psnine-progress-filter-btn.active {
+          background-color: var(--p9n-primary, #1e5ae6) !important;
+          color: #ffffff !important;
+          border-color: var(--p9n-primary, #1e5ae6) !important;
+          font-weight: 600 !important;
+        }
+        html[data-theme="dark"] .psnine-progress-filter-btn:not(.active) {
+          background-color: var(--p9n-surface) !important;
+          color: var(--p9n-text) !important;
+          border-color: var(--p9n-border) !important;
+        }
+        html[data-theme="dark"] .psnine-progress-filter-btn.active {
+          background-color: #1a4299 !important;
+          color: #ffffff !important;
+          border-color: var(--p9n-primary, #1e5ae6) !important;
+        }
       `;
         doc.head.appendChild(style);
         doc.querySelectorAll("span.pf_pspc").forEach((tag) => {
@@ -7005,8 +7046,14 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         });
       };
       if (isProfilePage) {
-        if (isBareProfile) {
+        const ensureSyncButtons = () => {
+          if (!isBareProfile) return;
           const syncBtnId = "psnine-sync-psn-btn-group";
+          const hasNativeSync = Array.from(doc.querySelectorAll('a[href*="/upbase"], a[href*="/upgame"]')).some((a) => !a.hasAttribute("data-psnine-next") && !a.closest("[data-psnine-next]")) || doc.querySelector(".psnbtnright a") !== null;
+          if (hasNativeSync) {
+            doc.getElementById(syncBtnId)?.remove();
+            return;
+          }
           if (!doc.getElementById(syncBtnId)) {
             const profileDataArea = doc.querySelector(".psnzz .inner, .psnbtnright form, .psninfo, .min-inner .box.pd10, .main > div.box");
             if (profileDataArea) {
@@ -7031,7 +7078,80 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
               profileDataArea.appendChild(group);
             }
           }
-        }
+        };
+        ensureSyncButtons();
+        let activeProgressFilter = "all";
+        const updateFilterBtnStyle = (btn, isActive2) => {
+          if (isActive2) {
+            btn.style.cssText = "display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;font-size:13px;font-weight:600;border-radius:var(--p9n-radius-md,8px);background-color:var(--p9n-primary,#1e5ae6);color:#ffffff;border:1px solid var(--p9n-primary,#1e5ae6);cursor:pointer;touch-action:manipulation;box-sizing:border-box;";
+          } else {
+            btn.style.cssText = "display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-md,8px);background-color:var(--p9n-surface);color:var(--p9n-text);border:1px solid var(--p9n-border);cursor:pointer;touch-action:manipulation;box-sizing:border-box;";
+          }
+        };
+        const applyProgressFilter = (filter) => {
+          activeProgressFilter = filter;
+          const filterContainer = doc.getElementById("psnine-game-progress-filter");
+          if (filterContainer) {
+            filterContainer.querySelectorAll("button[data-filter]").forEach((btn) => {
+              const btnFilter = btn.getAttribute("data-filter");
+              const isActive2 = btnFilter === filter;
+              btn.setAttribute("aria-pressed", isActive2 ? "true" : "false");
+              if (isActive2) {
+                btn.classList.add("active");
+              } else {
+                btn.classList.remove("active");
+              }
+              updateFilterBtnStyle(btn, isActive2);
+            });
+          }
+          doc.querySelectorAll("table tr").forEach((tr) => {
+            if (!tr.querySelector('a[href*="/psngame/"]')) return;
+            const parsed = parseGameRowProgress(tr);
+            const is100 = parsed?.percent === 100;
+            if (filter === "all") {
+              setHidden(tr, "percent-100-filter", false);
+            } else if (filter === "non-100") {
+              setHidden(tr, "percent-100-filter", is100);
+            } else if (filter === "100") {
+              setHidden(tr, "percent-100-filter", !is100);
+            }
+          });
+        };
+        const mountGameProgressFilter = () => {
+          const targetTable = doc.querySelector("table.list") && doc.querySelector('table.list a[href*="/psngame/"]') ? doc.querySelector("table.list") : Array.from(doc.querySelectorAll("table")).find((t) => t.querySelector('a[href*="/psngame/"]'));
+          if (!targetTable || !targetTable.parentElement) return;
+          let filterContainer = doc.getElementById("psnine-game-progress-filter");
+          if (!filterContainer) {
+            filterContainer = doc.createElement("div");
+            filterContainer.id = "psnine-game-progress-filter";
+            filterContainer.setAttribute("data-psnine-next", "true");
+            filterContainer.style.cssText = "display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0 8px 0;box-sizing:border-box;";
+            const filters = [
+              { label: "\u5168\u90E8", value: "all" },
+              { label: "\u975E 100%", value: "non-100" },
+              { label: "100%", value: "100" }
+            ];
+            filters.forEach(({ label, value }) => {
+              const btn = doc.createElement("button");
+              btn.type = "button";
+              btn.setAttribute("data-psnine-next", "true");
+              btn.setAttribute("data-filter", value);
+              const isActive2 = value === activeProgressFilter;
+              btn.setAttribute("aria-pressed", isActive2 ? "true" : "false");
+              btn.className = `psnine-btn psnine-progress-filter-btn ${isActive2 ? "active" : ""}`.trim();
+              btn.textContent = label;
+              updateFilterBtnStyle(btn, isActive2);
+              btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                applyProgressFilter(value);
+              });
+              filterContainer.appendChild(btn);
+            });
+            targetTable.parentElement.insertBefore(filterContainer, targetTable);
+          }
+          applyProgressFilter(activeProgressFilter);
+        };
+        mountGameProgressFilter();
         if (isMyProfile && userId) {
           const scrapeTime = Date.now();
           const parsedVisibleRows = {};
@@ -7079,9 +7199,14 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         }
         if (isActive && !abortController.signal.aborted) {
           refreshGameListBadgesAndBackgrounds();
+          mountGameProgressFilter();
         }
         subscriptions.push(onContent(() => {
-          if (isActive) refreshGameListBadgesAndBackgrounds();
+          if (isActive) {
+            ensureSyncButtons();
+            refreshGameListBadgesAndBackgrounds();
+            mountGameProgressFilter();
+          }
         }));
       }
       if (isGameListPage) {
@@ -7377,6 +7502,13 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         abortController.abort();
         subscriptions.forEach((unsub) => unsub());
         doc.querySelectorAll(".psnine-game-list-progress-badge").forEach((el) => el.remove());
+        doc.getElementById("psnine-sync-psn-btn-group")?.remove();
+        doc.getElementById("psnine-game-progress-filter")?.remove();
+        doc.querySelectorAll("table tr").forEach((tr) => {
+          if (tr.querySelector('a[href*="/psngame/"]')) {
+            setHidden(tr, "percent-100-filter", false);
+          }
+        });
       };
     } catch (err) {
       report("games", err);
@@ -7396,7 +7528,11 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
       month: "2-digit",
       day: "2-digit"
     });
-    return formatter.format(now);
+    const parts = formatter.formatToParts(now);
+    const y = parts.find((p) => p.type === "year")?.value;
+    const m = parts.find((p) => p.type === "month")?.value;
+    const d = parts.find((p) => p.type === "day")?.value;
+    return `${y}-${m}-${d}`;
   }
   function isValidFxDate(dateStr, now = /* @__PURE__ */ new Date()) {
     if (!dateStr || typeof dateStr !== "string") return false;

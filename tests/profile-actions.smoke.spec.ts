@@ -81,7 +81,11 @@ const FIXTURE_HTML = `<!doctype html>
       <div class="psninfo">
         <a href="/psnid/test_gamer">test_gamer</a>
         <table class="list"><tbody>
-          <tr>
+          <tr id="game-row-100">
+            <td class="pd15"><a href="/psngame/99999">Finished Game</a></td>
+            <td><div class="progress"><div style="width:100%">100%</div></div></td>
+          </tr>
+          <tr id="game-row-38">
             <td class="pd15"><a href="/psngame/46507">Balatro</a></td>
             <td><div class="progress"><div style="width:38%">38%</div></div></td>
           </tr>
@@ -292,5 +296,117 @@ test.describe('Profile & Game Action Controls Smoke Tests (390px Viewport)', () 
 
     const darkContrast = calculateContrast(darkStyles.color, darkStyles.backgroundColor);
     expect(darkContrast).toBeGreaterThanOrEqual(4.5);
+  });
+
+  test("4. profile game progress filter: touch target >= 44px, computedStyle contrast >= 4.5, theme follow, and row filtering", async ({ page }) => {
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.goto("https://psnine.com/psnid/test_gamer");
+
+    const filterGroup = page.locator("#psnine-game-progress-filter");
+    await expect(filterGroup).toBeVisible();
+
+    const buttons = filterGroup.locator("button.psnine-progress-filter-btn");
+    await expect(buttons).toHaveCount(3);
+
+    const btnAll = filterGroup.locator("button[data-filter='all']");
+    const btnNon100 = filterGroup.locator("button[data-filter='non-100']");
+    const btn100 = filterGroup.locator("button[data-filter='100']");
+
+    const row100 = page.locator("#game-row-100");
+    const row38 = page.locator("#game-row-38");
+
+    // Touch target >= 44px and WCAG contrast >= 4.5 across light and dark
+    for (const btn of await buttons.all()) {
+      const box = await btn.boundingBox();
+      expect(box).not.toBeNull();
+      expect(box!.height).toBeGreaterThanOrEqual(44);
+
+      // Light mode computedStyle
+      const lightStyles = await btn.evaluate((el) => {
+        const cs = window.getComputedStyle(el);
+        return { color: cs.color, backgroundColor: cs.backgroundColor };
+      });
+      const lightContrast = calculateContrast(lightStyles.color, lightStyles.backgroundColor);
+      expect(lightContrast).toBeGreaterThanOrEqual(4.5);
+
+      // Dark mode switch via emulateMedia
+      await page.emulateMedia({ colorScheme: "dark" });
+      await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+
+      await btn.evaluate(async el => {
+        await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+        await Promise.allSettled(el.getAnimations().map(animation => animation.finished));
+      });
+      const darkStyles = await btn.evaluate((el) => {
+        const cs = window.getComputedStyle(el);
+        return { color: cs.color, backgroundColor: cs.backgroundColor };
+      });
+
+      // Computed style background changes between themes
+      expect(darkStyles.backgroundColor).not.toBe(lightStyles.backgroundColor);
+
+      // Dark mode contrast >= 4.5
+      const darkContrast = calculateContrast(darkStyles.color, darkStyles.backgroundColor);
+      expect(darkContrast).toBeGreaterThanOrEqual(4.5);
+
+      // Restore to light mode
+      await page.emulateMedia({ colorScheme: "light" });
+      await expect(page.locator("html")).not.toHaveAttribute("data-theme", "dark");
+      await btn.evaluate(async el => {
+        await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+        await Promise.allSettled(el.getAnimations().map(animation => animation.finished));
+      });
+    }
+
+    // 2. Initial state: "全部" active -> all rows visible
+    await expect(btnAll).toHaveAttribute("aria-pressed", "true");
+    await expect(row100).toBeVisible();
+    await expect(row38).toBeVisible();
+
+    // 3. Click "非 100%" -> 100% row hidden, 38% row visible
+    await btnNon100.click();
+    await expect(btnNon100).toHaveAttribute("aria-pressed", "true");
+    await expect(btnAll).toHaveAttribute("aria-pressed", "false");
+    await expect(row100).toBeHidden();
+    await expect(row38).toBeVisible();
+
+    // 4. Click "100%" -> 100% row visible, 38% row hidden
+    await btn100.click();
+    await expect(btn100).toHaveAttribute("aria-pressed", "true");
+    await expect(btnNon100).toHaveAttribute("aria-pressed", "false");
+    await expect(row100).toBeVisible();
+    await expect(row38).toBeHidden();
+
+    // 5. Click "全部" -> all rows visible
+    await btnAll.click();
+    await expect(btnAll).toHaveAttribute("aria-pressed", "true");
+    await expect(btn100).toHaveAttribute("aria-pressed", "false");
+    await expect(row100).toBeVisible();
+    await expect(row38).toBeVisible();
+  });
+
+  test("5. profile native sync: preserves native sync buttons and does not inject plugin buttons", async ({ page }) => {
+    await page.route("**/psnid/native_sync_user", async (route) => {
+      const htmlWithNative = FIXTURE_HTML.replace(
+        '<div class="psninfo">',
+        '<div class="psnbtnright"><a href="/psnid/native_sync_user/upbase">等级同步</a><a href="/psnid/native_sync_user/upgame">游戏同步</a></div><div class="psninfo">'
+      );
+      await route.fulfill({
+        contentType: "text/html; charset=utf-8",
+        body: htmlWithNative
+      });
+    });
+
+    await page.goto("https://psnine.com/psnid/native_sync_user");
+
+    // Plugin sync group must NOT exist
+    const syncGroup = page.locator("#psnine-sync-psn-btn-group");
+    await expect(syncGroup).toHaveCount(0);
+
+    // Native sync links must be preserved
+    const nativeLinks = page.locator(".psnbtnright a");
+    await expect(nativeLinks).toHaveCount(2);
+    await expect(nativeLinks.nth(0)).toHaveText("等级同步");
+    await expect(nativeLinks.nth(1)).toHaveText("游戏同步");
   });
 });

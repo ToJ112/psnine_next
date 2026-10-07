@@ -1271,4 +1271,215 @@ describe('Games Feature Module - Comprehensive Regressions', () => {
       expect(hasOfficialGameProgress(trEmpty)).toBe(false);
     });
   });
+
+  describe("8. Profile Sync Button Deduplication & Game Progress Filter (All / Non-100% / 100%)", () => {
+    it("does NOT mount #psnine-sync-psn-btn-group when native sync buttons exist and removes existing plugin group", async () => {
+      document.body.innerHTML = `
+        <div class="psnzz">
+          <div class="inner">
+            <div id="psnine-sync-psn-btn-group" data-psnine-next="true"></div>
+            <div class="psnbtnright">
+              <a href="/psnid/alice/upbase">等级同步</a>
+              <a href="/psnid/alice/upgame">游戏同步</a>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const ctx: Context = {
+        document,
+        window,
+        url: new URL("https://psnine.com/psnid/alice"),
+        settings: { ...defaultSettings },
+        store: { get: vi.fn().mockResolvedValue(null), set: vi.fn().mockResolvedValue(undefined), remove: vi.fn() },
+        http: { text: vi.fn(), document: vi.fn(), json: vi.fn() },
+        userId: "alice",
+        onContent: vi.fn().mockReturnValue(() => {}),
+        report: vi.fn()
+      };
+
+      const cleanup = await mountGames(ctx);
+
+      expect(document.getElementById("psnine-sync-psn-btn-group")).toBeNull();
+      const nativeLinks = document.querySelectorAll(".psnbtnright a");
+      expect(nativeLinks.length).toBe(2);
+      expect(nativeLinks[0].textContent).toBe("等级同步");
+      expect(nativeLinks[1].textContent).toBe("游戏同步");
+
+      if (cleanup) cleanup();
+    });
+
+    it("mounts #psnine-sync-psn-btn-group when native sync buttons are absent", async () => {
+      document.body.innerHTML = `
+        <div class="psnzz">
+          <div class="inner">
+            <div class="psninfo"><span>No native buttons</span></div>
+          </div>
+        </div>
+      `;
+
+      const ctx: Context = {
+        document,
+        window,
+        url: new URL("https://psnine.com/psnid/alice"),
+        settings: { ...defaultSettings },
+        store: { get: vi.fn().mockResolvedValue(null), set: vi.fn().mockResolvedValue(undefined), remove: vi.fn() },
+        http: { text: vi.fn(), document: vi.fn(), json: vi.fn() },
+        userId: "alice",
+        onContent: vi.fn().mockReturnValue(() => {}),
+        report: vi.fn()
+      };
+
+      const cleanup = await mountGames(ctx);
+
+      const group = document.getElementById("psnine-sync-psn-btn-group");
+      expect(group).not.toBeNull();
+      expect(group!.querySelectorAll("a").length).toBe(2);
+
+      if (cleanup) cleanup();
+    });
+
+    it("mounts progress filter #psnine-game-progress-filter with 全部, 非 100%, 100% buttons and filters correctly", async () => {
+      document.body.innerHTML = `
+        <div class="psnzz">
+          <div class="inner">
+            <div class="psninfo">
+              <table class="list">
+                <tbody>
+                  <tr class="header"><th>游戏名称</th><th>完成度</th></tr>
+                  <tr id="row-100">
+                    <td><a href="/psngame/100">Game 100%</a></td>
+                    <td><div class="progress"><div style="width: 100%">100%</div></div></td>
+                  </tr>
+                  <tr id="row-50">
+                    <td><a href="/psngame/50">Game 50%</a></td>
+                    <td><div class="progress"><div style="width: 50%">50%</div></div></td>
+                  </tr>
+                  <tr id="row-0">
+                    <td><a href="/psngame/0">Game 0%</a></td>
+                    <td><div class="progress"><div style="width: 0%">0%</div></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+
+      let onContentCb: (() => void) | null = null;
+      const ctx: Context = {
+        document,
+        window,
+        url: new URL("https://psnine.com/psnid/alice"),
+        settings: { ...defaultSettings },
+        store: { get: vi.fn().mockResolvedValue(null), set: vi.fn().mockResolvedValue(undefined), remove: vi.fn() },
+        http: { text: vi.fn(), document: vi.fn(), json: vi.fn() },
+        userId: "alice",
+        onContent: vi.fn().mockImplementation((cb) => {
+          onContentCb = cb;
+          return () => {};
+        }),
+        report: vi.fn()
+      };
+
+      const cleanup = await mountGames(ctx);
+
+      const filter = document.getElementById("psnine-game-progress-filter");
+      expect(filter).not.toBeNull();
+      expect(filter!.getAttribute("data-psnine-next")).toBe("true");
+
+      const table = document.querySelector("table.list");
+      expect(filter!.nextElementSibling).toBe(table);
+
+      const buttons = filter!.querySelectorAll<HTMLButtonElement>("button");
+      expect(buttons.length).toBe(3);
+
+      const [btnAll, btnNon100, btn100] = Array.from(buttons);
+      expect(btnAll.textContent).toBe("全部");
+      expect(btnNon100.textContent).toBe("非 100%");
+      expect(btn100.textContent).toBe("100%");
+
+      // Touch target >= 44px
+      buttons.forEach(btn => {
+        expect(btn.style.cssText).toContain("min-height: 44px");
+        expect(btn.style.cssText).toContain("padding: 8px 16px");
+      });
+
+      // Initially "全部" active
+      expect(btnAll.getAttribute("aria-pressed")).toBe("true");
+      expect(btnAll.className).toContain("active");
+      expect(btnNon100.getAttribute("aria-pressed")).toBe("false");
+      expect(btn100.getAttribute("aria-pressed")).toBe("false");
+
+      const r100 = document.getElementById("row-100") as HTMLTableRowElement;
+      const r50 = document.getElementById("row-50") as HTMLTableRowElement;
+      const r0 = document.getElementById("row-0") as HTMLTableRowElement;
+
+      expect(r100.hidden).toBe(false);
+      expect(r50.hidden).toBe(false);
+      expect(r0.hidden).toBe(false);
+
+      // Click "非 100%"
+      btnNon100.click();
+      expect(btnNon100.getAttribute("aria-pressed")).toBe("true");
+      expect(btnNon100.className).toContain("active");
+      expect(btnAll.getAttribute("aria-pressed")).toBe("false");
+      expect(btnAll.className).not.toContain("active");
+
+      expect(r100.hidden).toBe(true);
+      expect(r100.style.display).toBe("none");
+      expect(r50.hidden).toBe(false);
+      expect(r0.hidden).toBe(false);
+
+      // Click "100%"
+      btn100.click();
+      expect(btn100.getAttribute("aria-pressed")).toBe("true");
+      expect(btn100.className).toContain("active");
+      expect(btnNon100.getAttribute("aria-pressed")).toBe("false");
+
+      expect(r100.hidden).toBe(false);
+      expect(r50.hidden).toBe(true);
+      expect(r50.style.display).toBe("none");
+      expect(r0.hidden).toBe(true);
+      expect(r0.style.display).toBe("none");
+
+      // Click "全部"
+      btnAll.click();
+      expect(btnAll.getAttribute("aria-pressed")).toBe("true");
+      expect(btnAll.className).toContain("active");
+      expect(btn100.getAttribute("aria-pressed")).toBe("false");
+
+      expect(r100.hidden).toBe(false);
+      expect(r50.hidden).toBe(false);
+      expect(r0.hidden).toBe(false);
+
+      // Dynamically added rows via onContent
+      btnNon100.click();
+      expect(r100.hidden).toBe(true);
+
+      const tbody = table!.querySelector("tbody")!;
+      const dynamicRow100 = document.createElement("tr");
+      dynamicRow100.id = "row-dyn-100";
+      dynamicRow100.innerHTML = `<td><a href="/psngame/999">Dyn 100</a></td><td><div class="progress"><div style="width: 100%">100%</div></div></td>`;
+      tbody.appendChild(dynamicRow100);
+
+      const dynamicRow20 = document.createElement("tr");
+      dynamicRow20.id = "row-dyn-20";
+      dynamicRow20.innerHTML = `<td><a href="/psngame/888">Dyn 20</a></td><td><div class="progress"><div style="width: 20%">20%</div></div></td>`;
+      tbody.appendChild(dynamicRow20);
+
+      expect(onContentCb).not.toBeNull();
+      onContentCb!();
+
+      expect(dynamicRow100.hidden).toBe(true);
+      expect(dynamicRow100.style.display).toBe("none");
+      expect(dynamicRow20.hidden).toBe(false);
+
+      // Cleanup
+      if (cleanup) cleanup();
+      expect(document.getElementById("psnine-game-progress-filter")).toBeNull();
+      expect(r100.hidden).toBe(false);
+      expect(dynamicRow100.hidden).toBe(false);
+    });
+  });
 });
