@@ -1038,36 +1038,25 @@ describe('Games Feature Module - Comprehensive Regressions', () => {
       const upbaseA = links[0];
       const upgameA = links[1];
 
-      // Verifies neither uses legacy btn-default or plain btn without psnine-btn
+      // Shared pill primitive, no legacy btn-default / psnine-btn box styling
       expect(upbaseA.className).not.toContain('btn-default');
       expect(upgameA.className).not.toContain('btn-default');
+      expect(upbaseA.classList.contains('p9n-pill')).toBe(true);
+      expect(upgameA.classList.contains('p9n-pill')).toBe(true);
       expect(upbaseA.className).toContain('psnine-sync-btn');
       expect(upgameA.className).toContain('psnine-sync-btn');
-      expect(upbaseA.className).toContain('psnine-btn');
-      expect(upgameA.className).toContain('psnine-btn');
+      expect(upbaseA.classList.contains('psnine-btn')).toBe(false);
 
-      // Verifies no hardcoded #3890ff, #28a745
-      const baseStyle = upbaseA.getAttribute('style') || '';
-      const gameStyle = upgameA.getAttribute('style') || '';
-      expect(baseStyle).not.toContain('#3890ff');
-      expect(gameStyle).not.toContain('#28a745');
+      // Static look lives in CSS: no inline style strings or hardcoded colors
+      expect(upbaseA.getAttribute('style')).toBeNull();
+      expect(upgameA.getAttribute('style')).toBeNull();
+      expect(group!.getAttribute('style')).toBeNull();
 
-      // Uses site tokens var(--p9n-surface), var(--p9n-text), var(--p9n-border)
-      expect(baseStyle).toContain('var(--p9n-surface)');
-      expect(baseStyle).toContain('var(--p9n-text)');
-      expect(baseStyle).toContain('var(--p9n-border)');
-      expect(gameStyle).toContain('var(--p9n-surface)');
-      expect(gameStyle).toContain('var(--p9n-text)');
-
-      // Minimum touch target >= 44px
-      expect(baseStyle).toContain('min-height: 44px');
-      expect(gameStyle).toContain('min-height: 44px');
-
-      // Authentic link targets and labels
+      // Authentic link targets and plain labels (no emoji)
       expect(upbaseA.getAttribute('href')).toBe('https://psnine.com/psnid/alice/upbase');
       expect(upgameA.getAttribute('href')).toBe('https://psnine.com/psnid/alice/upgame');
-      expect(upbaseA.textContent).toBe('🔄 等级同步');
-      expect(upgameA.textContent).toBe('🎮 游戏同步');
+      expect(upbaseA.textContent).toBe('等级同步');
+      expect(upgameA.textContent).toBe('游戏同步');
 
       if (cleanup) cleanup();
     });
@@ -1100,7 +1089,7 @@ describe('Games Feature Module - Comprehensive Regressions', () => {
       if (cleanup) cleanup();
     });
 
-    it('mounts difficulty sort button and on-demand button with tokens and touch >= 44px, and verifies sorting behavior', async () => {
+    it('mounts the difficulty sort text toggle and on-demand pill, and verifies sorting behavior', async () => {
       document.body.innerHTML = `
         <div class="page-header"></div>
         <table>
@@ -1131,33 +1120,39 @@ describe('Games Feature Module - Comprehensive Regressions', () => {
 
       const cleanup = await mountGames(ctx);
 
-      // 1. Difficulty sort button DOM behavior
-      const sortBtn = document.getElementById('psnine-difficulty-sort-btn');
+      // 1. Difficulty sort: quiet text toggle (难度 ↓ / 难度 ↑), no inline box styling
+      const sortBtn = document.getElementById('psnine-difficulty-sort-btn') as HTMLButtonElement;
       expect(sortBtn).not.toBeNull();
-      expect(sortBtn?.className).toContain('psnine-difficulty-sort-btn');
-      const sortStyle = sortBtn?.getAttribute('style') || '';
-      expect(sortStyle).not.toContain('#3890ff');
-      expect(sortStyle).toContain('var(--p9n-surface)');
-      expect(sortStyle).toContain('var(--p9n-text)');
-      expect(sortStyle).toContain('min-height: 44px');
+      expect(sortBtn.classList.contains('p9n-text-toggle')).toBe(true);
+      expect(sortBtn.classList.contains('is-sort')).toBe(true);
+      expect(sortBtn.classList.contains('psnine-btn')).toBe(false);
+      expect(sortBtn.getAttribute('style')).toBeNull();
+      expect(sortBtn.textContent).toBe('难度 ↓');
+      expect(sortBtn.getAttribute('aria-pressed')).toBe('false');
 
-      // Click to toggle sorting
-      expect(sortBtn?.textContent).toContain('从难到易');
-      sortBtn?.click();
-      expect(sortBtn?.textContent).toContain('从易到难');
-      const tableRows = Array.from(document.querySelectorAll('table tr'));
+      // First click sorts hardest first
+      sortBtn.click();
+      expect(sortBtn.textContent).toBe('难度 ↓');
+      expect(sortBtn.getAttribute('aria-pressed')).toBe('true');
+      let tableRows = Array.from(document.querySelectorAll('table tr'));
+      expect(tableRows[0].id).toBe('row-hard');
+      expect(tableRows[1].id).toBe('row-easy');
+
+      // Clicking again reverses (easiest first), still active
+      sortBtn.click();
+      expect(sortBtn.textContent).toBe('难度 ↑');
+      expect(sortBtn.getAttribute('aria-pressed')).toBe('true');
+      tableRows = Array.from(document.querySelectorAll('table tr'));
       expect(tableRows[0].id).toBe('row-easy');
       expect(tableRows[1].id).toBe('row-hard');
 
-      // 2. On-demand progress query button DOM behavior
+      // 2. On-demand progress query: small pill, plain label, no inline styling
       const demandBtn = document.querySelector('.psnine-ondemand-progress-btn') as HTMLElement;
       expect(demandBtn).not.toBeNull();
-      expect(demandBtn.className).toContain('psnine-ondemand-progress-btn');
-      const demandStyle = demandBtn.getAttribute('style') || '';
-      expect(demandStyle).not.toContain('#3890ff');
-      expect(demandStyle).toContain('var(--p9n-surface)');
-      expect(demandStyle).toContain('var(--p9n-link)');
-      expect(demandStyle).toContain('min-height: 44px');
+      expect(demandBtn.classList.contains('p9n-pill')).toBe(true);
+      expect(demandBtn.classList.contains('is-sm')).toBe(true);
+      expect(demandBtn.getAttribute('style')).toBeNull();
+      expect(demandBtn.textContent).toBe('查进度');
 
       if (cleanup) cleanup();
     });

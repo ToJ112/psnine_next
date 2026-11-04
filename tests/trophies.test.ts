@@ -69,14 +69,17 @@ describe('Trophies Feature Module (T01 - T14 + C19) - Followup Verification', ()
       const badgeUnknown = linkUnknown.nextElementSibling as HTMLElement;
 
       expect(badge1?.classList.contains('psnine-guide-trophy-badge')).toBe(true);
-      expect(badge1?.textContent).toBe('✅ 已获得');
+      expect(badge1?.textContent).toBe('已获得');
+      expect(badge1?.classList.contains('p9n-tag')).toBe(true);
+      expect(badge1?.classList.contains('is-success')).toBe(true);
+      expect(badge1?.getAttribute('style')).toBeNull();
 
       expect(badge2?.classList.contains('psnine-guide-trophy-badge')).toBe(true);
-      expect(badge2?.textContent).toBe('⏳ 未获得');
+      expect(badge2?.textContent).toBe('未获得');
 
       // T999 is NOT in game page -> marked as unknown, NOT unearned!
       expect(badgeUnknown?.classList.contains('psnine-guide-trophy-badge')).toBe(true);
-      expect(badgeUnknown?.textContent).toBe('❓ 状态未知');
+      expect(badgeUnknown?.textContent).toBe('状态未知');
     });
   });
 

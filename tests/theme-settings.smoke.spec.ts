@@ -40,10 +40,11 @@ body { margin:0; background:#a9bbca; color:#333; font:14px sans-serif; }
 <a id="semantic-deal" href="/deals/12345" style="color:#f39800">折扣标题</a>
 <em id="semantic-tips" class="alert-success"><b>1</b> Tips</em>
 <button id="semantic-icon" class="psnine-trophy-icon-chip" data-psnine-next="true" style="width:36px;height:36px;padding:0;border:1px solid #28a745">已获</button>
-<button id="semantic-score" class="psnine-score-filter-chip" data-psnine-next="true" style="border:1px solid #ff9800;background:#ff9800;color:#fff">10分</button>
-<button id="psnine-toggle-best-deal-btn" data-psnine-next="true" style="background:#da314b;color:#fff">仅史低</button>
-<button id="psnine-toggle-cny-btn" data-psnine-next="true" style="border:1px solid #28a745;background:transparent;color:#28a745">人民币</button>
-<button id="semantic-bell" class="psnine-battle-bell-btn" data-psnine-next="true" style="border:1px solid #f59f00;background:rgba(245,159,0,.15);color:#d97706">已监控</button>
+<button id="semantic-score" class="p9n-pill is-sm psnine-score-filter-chip" data-psnine-next="true" aria-pressed="true">10分</button>
+<button type="button" id="psnine-toggle-best-deal-btn" class="p9n-pill is-danger" aria-pressed="true" data-psnine-next="true">只看史低</button>
+<button type="button" id="psnine-toggle-cny-btn" class="p9n-pill is-success" aria-pressed="true" data-psnine-next="true">人民币换算</button>
+<button id="semantic-bell" class="p9n-pill is-sm is-warning psnine-battle-bell-btn" data-psnine-next="true" aria-pressed="true">已监控</button>
+<button id="semantic-bell-off" class="p9n-pill is-sm is-warning psnine-battle-bell-btn" data-psnine-next="true" aria-pressed="false">监控</button>
 </div></div></body></html>`;
 
 async function colors(locator: import('@playwright/test').Locator) {
@@ -207,12 +208,31 @@ test('dark theme preserves trophy, discount and selected-state colors while keep
   expect(contrast(platinumTitle.color,panelBackground)).toBeGreaterThanOrEqual(4.5);
   expect(contrast(goldTitle.color,panelBackground)).toBeGreaterThanOrEqual(4.5);
   expect((await colors(page.locator('#semantic-deal'))).color).toBe('rgb(243, 152, 0)');
-  expect((await colors(page.locator('#semantic-score'))).background).toBe('rgb(255, 152, 0)');
-  expect((await colors(page.locator('#psnine-toggle-best-deal-btn'))).background).toBe('rgb(218, 49, 75)');
-  expect(await page.locator('#psnine-toggle-cny-btn').evaluate(el=>getComputedStyle(el).borderTopColor)).toBe('rgb(40, 167, 69)');
+  // Selected score chip follows the shared pill design: dark --p9n-link (--c-brand #79aaff) text + border
+  const score = await page.locator('#semantic-score').evaluate(el => { const s = getComputedStyle(el); return { color: s.color, border: s.borderTopColor }; });
+  expect(score).toEqual({ color: 'rgb(121, 170, 255)', border: 'rgb(121, 170, 255)' });
+  // Deals toggles: active state comes from aria-pressed (no inline colors) and keeps the pinned red/green
+  const bestDeal = page.locator('#psnine-toggle-best-deal-btn'), cnyToggle = page.locator('#psnine-toggle-cny-btn');
+  expect(await bestDeal.getAttribute('style')).toBeNull();
+  expect((await colors(bestDeal)).background).toBe('rgb(218, 49, 75)');
+  expect(await cnyToggle.evaluate(el=>getComputedStyle(el).borderTopColor)).toBe('rgb(40, 167, 69)');
+  await bestDeal.evaluate(el=>el.setAttribute('aria-pressed','false'));
+  await cnyToggle.evaluate(el=>el.setAttribute('aria-pressed','false'));
+  // Pills transition color changes; wait for them to settle before reading computed styles
+  for (const el of [bestDeal, cnyToggle]) await el.evaluate(async node=>{await Promise.allSettled(node.getAnimations().map(a=>a.finished));});
+  expect((await colors(bestDeal)).background).not.toBe('rgb(218, 49, 75)');
+  expect(await cnyToggle.evaluate(el=>getComputedStyle(el).borderTopColor)).not.toBe('rgb(40, 167, 69)');
   expect(await page.locator('#semantic-icon').evaluate(el=>getComputedStyle(el).borderTopColor)).toBe('rgb(40, 167, 69)');
   expect(await page.locator('#semantic-icon').evaluate(el=>getComputedStyle(el).paddingLeft)).toBe('0px');
-  expect(await page.locator('#semantic-bell').evaluate(el=>getComputedStyle(el).borderTopColor)).toBe('rgb(245, 159, 0)');
+  // Monitored bell pill: aria-pressed drives the warning border and the dark-tuned warning text
+  const bellOn = await page.locator('#semantic-bell').evaluate(el=>{const c=getComputedStyle(el);return {border:c.borderTopColor,color:c.color,background:c.backgroundColor};});
+  const bellOff = await page.locator('#semantic-bell-off').evaluate(el=>{const c=getComputedStyle(el);return {border:c.borderTopColor,color:c.color};});
+  // Dark theme retunes --p9n-warning to #fbbf24 for contrast; border and text both follow it
+  expect(bellOn.border).toBe('rgb(251, 191, 36)');
+  expect(bellOn.color).toBe('rgb(251, 191, 36)');
+  expect(contrast(bellOn.color,bellOn.background)).toBeGreaterThanOrEqual(4.5);
+  expect(bellOff.border).not.toBe(bellOn.border);
+  expect(bellOff.color).not.toBe(bellOn.color);
   const platinum = await colors(page.locator('td.t1')), bronze = await colors(page.locator('td.t4'));
   expect(platinum.background).not.toBe(bronze.background);
   expect(luminance(platinum.background)).toBeLessThan(.2);

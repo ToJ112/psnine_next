@@ -295,7 +295,7 @@ describe('Trophies Last-Mile Regression Suite', () => {
       expect(document.querySelector('.psnine-inline-tip-row')).toBeNull();
 
       // 2. NO false network error displayed
-      expect(document.body.textContent).not.toContain('❌ 加载 Tips 失败');
+      expect(document.body.textContent).not.toContain('Tips 加载失败');
 
       // 3. NO following requests made after stop
       await new Promise(r => setTimeout(r, 100));
@@ -322,6 +322,12 @@ describe('Trophies Last-Mile Regression Suite', () => {
       const tipRow = document.querySelector('.psnine-inline-tip-row');
       expect(tipRow).not.toBeNull();
       expect(tipRow?.textContent).toContain('Awesome tip on retry');
+      // Plain muted header with the full-page link on the right, no emoji labels
+      const head = tipRow!.querySelector('.psnine-inline-tip-head');
+      expect(head?.firstElementChild?.textContent).toBe('Tips · 1 条');
+      expect(head?.lastElementChild?.textContent).toBe('奖杯完整页');
+      expect(tipRow!.querySelector('.psnine-inline-tip-meta')?.textContent).toContain('2024-05-18 · 顶 3');
+      expect(tipRow!.textContent).not.toMatch(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/u);
 
       if (cleanup) cleanup();
     });
@@ -386,8 +392,13 @@ describe('Trophies Last-Mile Regression Suite', () => {
       const filterBtn = document.querySelector('.psnine-filtered-tip-btn') as HTMLElement;
       expect(filterBtn).not.toBeNull();
 
+      expect(filterBtn.textContent).toMatch(/^已过滤 · /);
+      expect(filterBtn.getAttribute('aria-expanded')).toBe('false');
+
       // Click reveal filter button
       filterBtn.click();
+      expect(filterBtn.textContent).toMatch(/^已显示 · /);
+      expect(filterBtn.getAttribute('aria-expanded')).toBe('true');
 
       // Now hiddenBody is visible, check .mark inside
       const mark = document.querySelector('.mark') as HTMLElement;
@@ -464,9 +475,16 @@ describe('Trophies Last-Mile Regression Suite', () => {
       const tipsList = document.querySelector('ul.list')!;
       const sortBtn = document.getElementById('psnine-sort-tips-by-likes-btn') as HTMLElement;
       expect(sortBtn).not.toBeNull();
+      // Quiet text toggle with a constant label; aria-pressed carries the state
+      expect(sortBtn.classList.contains('p9n-text-toggle')).toBe(true);
+      expect(sortBtn.classList.contains('is-sort')).toBe(true);
+      expect(sortBtn.textContent).toBe('按热度排序');
+      expect(sortBtn.getAttribute('aria-pressed')).toBe('false');
+      expect(sortBtn.getAttribute('style')).toBeNull();
 
       // Click to sort by likes
       sortBtn.click();
+      expect(sortBtn.getAttribute('aria-pressed')).toBe('true');
       // Tip 2 (5 likes) > Tip 1 (2 likes) > Tip 3 (0 likes)
       // Note: Tip 1's sonlist has 99 likes and Tip 3's sonlist has 88 likes, which MUST be ignored!
       expect(tipsList.children[0].id).toBe('tip-2');
@@ -496,6 +514,8 @@ describe('Trophies Last-Mile Regression Suite', () => {
 
       // Click restore default order
       sortBtn.click();
+      expect(sortBtn.getAttribute('aria-pressed')).toBe('false');
+      expect(sortBtn.textContent).toBe('按热度排序');
       // Tip 4 has maxseq+1 (3), so it must be placed at the very end!
       expect(tipsList.children[0].id).toBe('tip-1');
       expect(tipsList.children[1].id).toBe('tip-2');
@@ -567,11 +587,11 @@ describe('Trophies Last-Mile Regression Suite', () => {
 
       // Game 1234 unverified personal view: status unknown!
       const badge1 = document.getElementById('link-t1')!.nextElementSibling as HTMLElement;
-      expect(badge1?.textContent).toBe('❓ 状态未知');
+      expect(badge1?.textContent).toBe('状态未知');
 
       // Game 12345 exact ID match (NOT overriden to 1234): verified personal view, earned!
       const badge2 = document.getElementById('link-t2')!.nextElementSibling as HTMLElement;
-      expect(badge2?.textContent).toBe('✅ 已获得');
+      expect(badge2?.textContent).toBe('已获得');
 
       // Dynamic onContent does NOT re-fetch already cached games
       const newP = document.createElement('p');
@@ -581,7 +601,7 @@ describe('Trophies Last-Mile Regression Suite', () => {
       await new Promise(r => setTimeout(r, 120));
 
       const badgeDyn = document.getElementById('link-t2-dyn')!.nextElementSibling as HTMLElement;
-      expect(badgeDyn?.textContent).toBe('✅ 已获得');
+      expect(badgeDyn?.textContent).toBe('已获得');
       // No extra HTTP request made for 12345!
       expect(mockHttpDocument).toHaveBeenCalledTimes(2);
 

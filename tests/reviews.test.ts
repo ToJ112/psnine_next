@@ -328,7 +328,16 @@ describe('Reviews Feature Module (R01 - R06)', () => {
 
       const panel = document.getElementById('psnine-enhanced-reviews-panel');
       expect(panel).not.toBeNull();
-      expect(panel?.textContent).toContain('均分 9 (2人打分 / 共3条)');
+      expect(panel?.textContent).toContain('均分 9 · 2 人打分 / 共 3 条');
+      // Flush panel built from shared primitives; no emoji or inline layout styles
+      expect(panel?.querySelector('.p9n-section-title')?.textContent).toBe('玩家评测');
+      expect(panel?.textContent).not.toMatch(/\p{Extended_Pictographic}/u);
+      expect(panel?.getAttribute('style')).toBeNull();
+      expect(panel?.querySelectorAll(':scope > .p9n-row').length).toBe(3);
+      const chips = panel?.querySelectorAll('.psnine-score-filter-scroll > .psnine-score-filter-chip.p9n-pill.is-sm');
+      expect(chips?.length).toBe(10);
+      expect(Array.from(chips!).every((c) => c.getAttribute('aria-pressed') === 'false' && !c.hasAttribute('style'))).toBe(true);
+      expect(document.getElementById('psnine-clear-score-filter-btn')).toBeNull();
 
       const rev1 = document.getElementById('rev-1')!;
       const rev2 = document.getElementById('rev-2')!;
@@ -344,6 +353,10 @@ describe('Reviews Feature Module (R01 - R06)', () => {
       // Rev 2 (score 10) and Rev 3 (no score) should be hidden by 'score-filter'
       expect(isHiddenByReason(rev2, 'score-filter')).toBe(true);
       expect(isHiddenByReason(rev3, 'score-filter')).toBe(true);
+      expect(panel?.querySelector('.psnine-score-filter-chip[data-score="8"]')?.getAttribute('aria-pressed')).toBe('true');
+      expect(panel?.querySelector('.score-bar-group[data-score="8"]')?.getAttribute('aria-pressed')).toBe('true');
+      // Re-render keeps keyboard focus on the chosen chip
+      expect(document.activeElement).toBe(panel?.querySelector('.psnine-score-filter-chip[data-score="8"]'));
 
       // Click clear filter button
       const clearBtn = document.getElementById('psnine-clear-score-filter-btn') as HTMLElement;
@@ -355,8 +368,63 @@ describe('Reviews Feature Module (R01 - R06)', () => {
       expect(isHiddenByReason(rev2, 'score-filter')).toBe(false);
       expect(isHiddenByReason(rev3, 'score-filter')).toBe(false);
 
+      expect(document.getElementById('psnine-clear-score-filter-btn')).toBeNull();
+      expect(panel?.querySelector('.psnine-score-filter-chip[aria-pressed="true"]')).toBeNull();
+
       if (typeof cleanup === 'function') cleanup();
       expect(document.getElementById('psnine-enhanced-reviews-panel')).toBeNull();
+    });
+
+    it('switches chart view with the segmented control and toggles the normal curve pill', () => {
+      document.body.innerHTML = `
+        <div class="min-inner mt40"><div class="box"><ul class="list">
+          <li><div class="ml64"><div class="meta"><span class="alert-success">评分 6</span> <span>2024-01-01 10:00</span></div></div></li>
+          <li><div class="ml64"><div class="meta"><span class="alert-success">评分 9</span> <span>2024-01-15 10:00</span></div></div></li>
+        </ul></div></div>
+      `;
+      const ctx: Context = {
+        document,
+        window,
+        url: new URL('https://psnine.com/psngame/777/comment'),
+        settings: { ...defaultSettings },
+        store: { get: vi.fn(), set: vi.fn(), remove: vi.fn() },
+        http: { text: vi.fn(), document: vi.fn(), json: vi.fn() },
+        userId: 'test_user',
+        onContent: vi.fn().mockReturnValue(() => {}),
+        report: vi.fn()
+      };
+      const cleanup = mountReviews(ctx);
+      const panel = document.getElementById('psnine-enhanced-reviews-panel')!;
+      const seg = () => Array.from(panel.querySelectorAll('#psnine-toggle-tab-btn.p9n-seg .p9n-seg-btn'));
+      expect(seg().map((b) => [b.textContent, b.getAttribute('aria-pressed')])).toEqual([
+        ['评分分布', 'true'],
+        ['每周热度', 'false']
+      ]);
+      expect(panel.querySelector('.psnine-score-svg polyline')).not.toBeNull();
+
+      const gaussian = () => document.getElementById('psnine-toggle-gaussian-btn')!;
+      expect(gaussian().classList.contains('p9n-pill')).toBe(true);
+      expect(gaussian().textContent).toBe('正态曲线');
+      expect(gaussian().getAttribute('aria-pressed')).toBe('true');
+      gaussian().click();
+      expect(gaussian().getAttribute('aria-pressed')).toBe('false');
+      expect(panel.querySelector('.psnine-score-svg polyline')).toBeNull();
+      expect(document.activeElement).toBe(gaussian());
+
+      (seg()[1] as HTMLElement).click();
+      expect(seg().map((b) => b.getAttribute('aria-pressed'))).toEqual(['false', 'true']);
+      expect(panel.querySelector('.psnine-weekly-svg')).not.toBeNull();
+      expect(panel.querySelector('.psnine-score-svg')).toBeNull();
+      expect(document.activeElement).toBe(seg()[1]);
+
+      (seg()[0] as HTMLElement).click();
+      expect(panel.querySelector('.psnine-score-svg')).not.toBeNull();
+
+      // Charts sit in borderless sections with no static inline styling
+      expect(panel.querySelectorAll('.psnine-review-chart').length).toBe(2);
+      expect(Array.from(panel.querySelectorAll('.psnine-review-chart, .psnine-review-chart-title, .psnine-review-table, table, tr, th, td')).some((el) => el.hasAttribute('style'))).toBe(false);
+
+      if (typeof cleanup === 'function') cleanup();
     });
 
     it('inherits active score filter independently of blocklist on dynamic updates', () => {

@@ -78,7 +78,7 @@ export function setupGeneWordCount(ctx: Context, root: ParentNode): void {
   const container = ctx.document.createElement('div');
   container.className = 'psnine-gene-count-box';
   container.setAttribute('data-psnine-next', 'chrome');
-  container.style.cssText = 'margin-top:6px; font-size:13px; color:var(--p9n-muted); font-weight:500;';
+  container.setAttribute('aria-live', 'polite');
 
   textarea.after(container);
 
@@ -92,15 +92,11 @@ export function setupGeneWordCount(ctx: Context, root: ParentNode): void {
     const len = cleanText.length;
     isOverLimit = len > maxLimit;
 
-    if (isOverLimit) {
-      container.style.color = '#e74c3c';
-      container.style.fontWeight = 'bold';
-      container.textContent = `机因字数: ${len} / ${maxLimit} (已超限，无法发表)`;
-    } else {
-      container.style.color = 'var(--p9n-muted)';
-      container.style.fontWeight = '500';
-      container.textContent = `机因字数: ${len} / ${maxLimit}`;
-    }
+    // Over-limit color comes from the danger token via .is-over (see styles: Editor counter & preview)
+    container.classList.toggle('is-over', isOverLimit);
+    container.textContent = isOverLimit
+      ? `机因字数 ${len} / ${maxLimit}（已超限，无法发表）`
+      : `机因字数 ${len} / ${maxLimit}`;
   };
 
   // Block form submission in capturing phase if over limit
@@ -138,11 +134,11 @@ export function setupBBCodePreview(ctx: Context, root: ParentNode): void {
   const previewBox = ctx.document.createElement('div');
   previewBox.id = 'psnine-bbcode-preview';
   previewBox.setAttribute('data-psnine-next', 'chrome');
-  previewBox.style.cssText = 'margin-top:10px; padding:12px; border:1px dashed var(--p9n-border); border-radius:6px; min-height:40px; word-wrap:break-word; word-break:break-word; display:none;';
+  previewBox.style.display = 'none';
 
   const previewHeader = ctx.document.createElement('div');
-  previewHeader.textContent = '实时预览 (BBCode)';
-  previewHeader.style.cssText = 'font-size:12px; color:var(--p9n-muted); font-weight:bold; margin-bottom:8px; border-bottom:1px solid var(--p9n-border); padding-bottom:4px;';
+  previewHeader.className = 'psnine-bbcode-preview-label';
+  previewHeader.textContent = '预览';
   previewBox.appendChild(previewHeader);
 
   const previewContent = ctx.document.createElement('div');

@@ -308,10 +308,9 @@ export const mountBattle: Mount = async (ctx: Context) => {
         const gid = btn.getAttribute('data-game-id');
         if (!gid) return;
         const isMonitored = monitoredGames.includes(gid);
-        btn.textContent = isMonitored ? '🔔 已监控' : '🔕 监控';
-        btn.style.borderColor = isMonitored ? '#f59f00' : 'var(--p9n-border)';
-        btn.style.background = isMonitored ? 'rgba(245, 159, 0, 0.15)' : 'transparent';
-        btn.style.color = isMonitored ? '#d97706' : 'inherit';
+        // Look lives in CSS: .p9n-pill.is-warning[aria-pressed="true"] = monitored
+        btn.textContent = isMonitored ? '已监控' : '监控';
+        btn.setAttribute('aria-pressed', isMonitored ? 'true' : 'false');
         btn.setAttribute('title', isMonitored ? '点击取消对此游戏的约战监控' : '点击开启对此游戏的约战监控');
       });
     };
@@ -403,9 +402,8 @@ export const mountBattle: Mount = async (ctx: Context) => {
             row.style.background = `linear-gradient(to right, var(--p9n-link-soft) ${rec.percent}%, transparent ${rec.percent}%)`;
             if (!row.querySelector('.psnine-battle-progress-badge')) {
               const badge = doc.createElement('span');
-              badge.className = 'psnine-battle-progress-badge';
+              badge.className = 'p9n-tag psnine-battle-progress-badge';
               badge.setAttribute('data-psnine-next', 'true');
-              badge.style.cssText = 'display:inline-block;padding:1px 4px;font-size:10px;border-radius:3px;background:var(--p9n-link-soft);color:var(--p9n-link);margin-left:4px;';
               badge.textContent = `我的进度:${rec.percent}%`;
               const battleTitleLink = row.querySelector('td.pd15 a[href*="/battle/"]') || gameLink;
               battleTitleLink.parentElement?.appendChild(badge);
@@ -416,10 +414,10 @@ export const mountBattle: Mount = async (ctx: Context) => {
           if (!row.querySelector('.psnine-battle-bell-btn')) {
             const bellBtn = doc.createElement('button');
             bellBtn.type = 'button';
-            bellBtn.className = 'psnine-battle-bell-btn';
+            bellBtn.className = 'p9n-pill is-sm is-warning psnine-battle-bell-btn';
             bellBtn.setAttribute('data-psnine-next', 'true');
             bellBtn.setAttribute('data-game-id', gameId);
-            bellBtn.style.cssText = 'padding:2px 6px;font-size:11px;border-radius:4px;border:1px solid var(--p9n-border);cursor:pointer;margin-left:6px;user-select:none;transition:all 0.15s;';
+            bellBtn.setAttribute('aria-pressed', 'false');
             bellBtn.onclick = (e) => {
               e.preventDefault();
               e.stopPropagation();

@@ -259,15 +259,38 @@ export function setupAutoPagination(ctx: Context): Cleanup {
   const controlBar = doc.createElement('div');
   controlBar.id = 'psnine-pagination-indicator';
   controlBar.setAttribute('data-psnine-next', 'chrome');
-  controlBar.style.cssText = 'text-align:center; padding:16px; font-size:13px; color:var(--p9n-muted); display:none; user-select:none;';
+  controlBar.setAttribute('role', 'status');
+  controlBar.style.display = 'none';
 
   const statusText = doc.createElement('span');
+  statusText.className = 'psnine-paging-status';
   statusText.textContent = '正在加载下一页...';
   controlBar.appendChild(statusText);
 
+  // Optional action pill (continue / retry); created on demand so it never lingers hidden
+  let actionBtn: HTMLButtonElement | null = null;
+  const clearAction = () => {
+    actionBtn?.remove();
+    actionBtn = null;
+  };
+  const showAction = (status: string, label: string, onClick: () => void) => {
+    clearAction();
+    statusText.textContent = status;
+    const btn = doc.createElement('button');
+    btn.type = 'button';
+    btn.className = 'p9n-pill is-sm psnine-paging-action';
+    btn.textContent = label;
+    btn.addEventListener('click', () => {
+      clearAction();
+      onClick();
+    }, { once: true });
+    statusText.after(btn);
+    actionBtn = btn;
+  };
+
   const stopBtn = doc.createElement('button');
-  stopBtn.className = 'psnine-btn';
-  stopBtn.style.cssText = 'margin-left:12px; font-size:12px; padding:2px 8px; min-height:24px; min-width:auto; cursor:pointer;';
+  stopBtn.type = 'button';
+  stopBtn.className = 'p9n-pill is-sm psnine-paging-stop';
   stopBtn.textContent = '停止翻页';
   stopBtn.addEventListener('click', () => {
     isStoppedByUser = true;
@@ -291,13 +314,11 @@ export function setupAutoPagination(ctx: Context): Cleanup {
 
     // Check if auto-pagination budget is reached; allow manual continue
     if (maxPages > 0 && pagesLoaded >= maxPages) {
-      controlBar.style.display = 'block';
-      statusText.innerHTML = `<span style="cursor:pointer; color:var(--p9n-link); text-decoration:underline;">已加载预设 ${pagesLoaded} 页，点击继续加载下一页</span>`;
-      statusText.onclick = () => {
-        statusText.onclick = null;
+      controlBar.style.display = '';
+      showAction(`已加载预设 ${pagesLoaded} 页`, '继续加载下一页', () => {
         pagesLoaded = 0; // Reset batch counter to allow another round
         loadNextPage();
-      };
+      });
       return;
     }
 
@@ -311,7 +332,8 @@ export function setupAutoPagination(ctx: Context): Cleanup {
     }
 
     isLoading = true;
-    controlBar.style.display = 'block';
+    controlBar.style.display = '';
+    clearAction();
     statusText.textContent = `正在自动加载第 ${pagesLoaded + 1} 页...`;
 
     abortCtrl = new AbortController();
@@ -369,22 +391,18 @@ export function setupAutoPagination(ctx: Context): Cleanup {
         controlBar.style.display = 'none';
       } else if (maxPages > 0 && pagesLoaded >= maxPages) {
         // Budget reached: show manual continue prompt
-        statusText.innerHTML = `<span style="cursor:pointer; color:var(--p9n-link); text-decoration:underline;">已加载预设 ${pagesLoaded} 页，点击继续加载下一页</span>`;
-        statusText.onclick = () => {
-          statusText.onclick = null;
+        showAction(`已加载预设 ${pagesLoaded} 页`, '继续加载下一页', () => {
           pagesLoaded = 0;
           loadNextPage();
-        };
+        });
       } else {
         controlBar.style.display = 'none';
       }
     } catch (err: any) {
       if (err?.name === 'AbortError' || thisCtrl.signal.aborted) return;
-      statusText.innerHTML = `<span style="color:var(--p9n-danger); cursor:pointer;">加载失败，点击重试</span>`;
-      statusText.onclick = () => {
-        statusText.onclick = null;
+      showAction('下一页加载失败', '重试', () => {
         loadNextPage();
-      };
+      });
       ctx.report('autoPaging', err);
     } finally {
       isLoading = false;
@@ -433,9 +451,9 @@ export function setupLoadAllQAAnswers(ctx: Context): Cleanup {
 
   btn = doc.createElement('button');
   btn.id = 'psnine-load-all-qa';
-  btn.className = 'psnine-btn';
+  btn.type = 'button';
+  btn.className = 'p9n-pill';
   btn.setAttribute('data-psnine-next', 'chrome');
-  btn.style.cssText = 'margin:10px 0; font-size:12px; cursor:pointer; padding:4px 10px;';
   btn.textContent = '载入全部答案';
 
   paginationBar.before(btn);

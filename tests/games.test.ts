@@ -146,6 +146,9 @@ describe('Games Feature Module (P01 - P14) - Last Mile Verification', () => {
       await new Promise(r => setTimeout(r, 40));
 
       expect(btn.textContent).toContain('重试');
+      // Error state is a class on the pill, not inline color strings
+      expect(btn.classList.contains('is-error')).toBe(true);
+      expect(btn.getAttribute('style')).toBeNull();
       // Must NOT write percent=0 to cache on failure!
       expect(savedCache?.games['9999']).toBeUndefined();
 

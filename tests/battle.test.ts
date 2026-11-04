@@ -408,14 +408,22 @@ describe('Battle Feature Module (B01 - B05)', () => {
       expect(bellBtn.hasAttribute('data-psnine-next')).toBe(true);
       expect(bellBtn.closest('td.pd15')).not.toBeNull();
       expect(bellBtn.closest('td.pdd15')).toBeNull();
-      expect(bellBtn.textContent).toContain('监控');
+      expect(bellBtn.textContent).toBe('监控');
+      // Small warning pill; state is carried by aria-pressed, not inline color strings
+      expect(bellBtn.classList.contains('p9n-pill')).toBe(true);
+      expect(bellBtn.classList.contains('is-sm')).toBe(true);
+      expect(bellBtn.classList.contains('is-warning')).toBe(true);
+      expect(bellBtn.getAttribute('aria-pressed')).toBe('false');
+      expect(bellBtn.getAttribute('style')).toBeNull();
 
       // Click to monitor game 21035
       bellBtn.click();
       await new Promise((r) => setTimeout(r, 60));
 
       expect(storedMonitored).toContain('21035');
-      expect(bellBtn.textContent).toContain('已监控');
+      expect(bellBtn.textContent).toBe('已监控');
+      expect(bellBtn.getAttribute('aria-pressed')).toBe('true');
+      expect(bellBtn.getAttribute('style') || '').not.toMatch(/color|background/);
 
       // B04: Nav battle link badge should count unique game (1 distinct game despite 2 recruitment rows)
       const navBadge = document.querySelector('.psnine-battle-notify-badge');
@@ -562,6 +570,7 @@ describe('Battle Feature Module (B01 - B05)', () => {
       const bell = newRow.querySelector('.psnine-battle-bell-btn') as HTMLElement;
       expect(bell).not.toBeNull();
       expect(bell.textContent).toContain('已监控');
+      expect(bell.getAttribute('aria-pressed')).toBe('true');
     });
   });
 });

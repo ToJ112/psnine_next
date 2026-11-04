@@ -50,6 +50,9 @@ export function getPageAuthor(doc: Document, url: URL): string | null {
   return null;
 }
 
+const DEFAULT_AUTHOR_BACK = '#3890ff';
+const DEFAULT_AUTHOR_FRONT = '#ffffff';
+
 /**
  * Highlights topic author (C01) and specific admin/vip IDs (C02).
  */
@@ -70,24 +73,27 @@ export function applyUserHighlights(ctx: Context, root: ParentNode): void {
     // 1. Author badge (C01): only in topic/gene/trade
     if (authorId && lowerId === authorId && !link.parentElement?.querySelector('.psnine-author-badge')) {
       const badge = doc.createElement('span');
-      badge.className = 'psnine-author-badge';
+      badge.className = 'p9n-tag is-accent psnine-author-badge';
       badge.setAttribute('data-psnine-next', 'chrome');
       badge.textContent = '楼主';
-      badge.style.setProperty('background-color', settings.highlightBack || '#3890ff', 'important');
-      badge.style.setProperty('color', settings.highlightFront || '#ffffff', 'important');
-      badge.style.setProperty('padding', '1px 4px', 'important');
-      badge.style.setProperty('margin-left', '4px', 'important');
-      badge.style.setProperty('border-radius', '3px', 'important');
-      badge.style.setProperty('font-size', '11px', 'important');
+      // Default colors come from the accent token (theme-aware); only user-customized colors go inline
+      const back = (settings.highlightBack || '').trim();
+      const front = (settings.highlightFront || '').trim();
+      if (back && back.toLowerCase() !== DEFAULT_AUTHOR_BACK) {
+        badge.style.setProperty('background-color', back, 'important');
+      }
+      if (front && front.toLowerCase() !== DEFAULT_AUTHOR_FRONT) {
+        badge.style.setProperty('color', front, 'important');
+      }
       link.after(badge);
     }
 
     // 2. Specific user highlight (C02)
     if (specificIds.has(lowerId)) {
+      link.classList.add('psnine-specific-user');
+      // User-configurable colors stay inline (dynamic values)
       link.style.setProperty('background-color', settings.highlightSpecificBack || '#d9534f', 'important');
       link.style.setProperty('color', settings.highlightSpecificFront || '#ffffff', 'important');
-      link.style.setProperty('padding', '1px 5px', 'important');
-      link.style.setProperty('border-radius', '4px', 'important');
     }
   });
 }
@@ -119,10 +125,9 @@ export function applyFloorNumbers(doc: Document, root: ParentNode): void {
       post.setAttribute('data-psnine-floor', String(maxMainFloor));
 
       const badge = doc.createElement('span');
-      badge.className = 'psnine-floor-badge';
+      badge.className = 'p9n-tag psnine-floor-badge';
       badge.setAttribute('data-psnine-next', 'chrome');
       badge.textContent = `#${maxMainFloor}`;
-      badge.style.cssText = 'color:var(--p9n-muted); font-size:12px; margin-right:6px; font-weight:600;';
       meta.prepend(badge);
     }
 
@@ -138,10 +143,9 @@ export function applyFloorNumbers(doc: Document, root: ParentNode): void {
         subLi.setAttribute('data-psnine-subfloor', subfloorNum);
 
         const subBadge = doc.createElement('span');
-        subBadge.className = 'psnine-subfloor-badge';
+        subBadge.className = 'p9n-tag psnine-subfloor-badge';
         subBadge.setAttribute('data-psnine-next', 'chrome');
         subBadge.textContent = `#${subfloorNum}`;
-        subBadge.style.cssText = 'color:var(--p9n-muted); font-size:11px; margin-right:4px;';
         subMeta.prepend(subBadge);
       }
     });
@@ -201,17 +205,25 @@ export function applyReplyTraceback(ctx: Context, root: ParentNode): void {
 
         if (avatarImgEl && avatarImgEl.src) {
           const avatar = doc.createElement('img');
+          avatar.className = 'psnine-traceback-avatar';
           avatar.src = avatarImgEl.src;
+          avatar.alt = '';
           avatar.width = 16;
           avatar.height = 16;
-          avatar.style.borderRadius = '50%';
-          avatar.style.marginRight = '4px';
           header.appendChild(avatar);
         }
 
         const titleText = doc.createElement('span');
-        titleText.textContent = `${text} ${prevFloor}`;
+        titleText.className = 'psnine-traceback-user';
+        titleText.textContent = text;
         header.appendChild(titleText);
+
+        if (prevFloor) {
+          const floorTag = doc.createElement('span');
+          floorTag.className = 'p9n-tag';
+          floorTag.textContent = prevFloor;
+          header.appendChild(floorTag);
+        }
         card.appendChild(header);
 
         // Content clone (preserves .mark spoilers and safe structure without raw innerHTML)
@@ -437,23 +449,32 @@ function extractOwnText(el: HTMLElement, excludeSonlist = false): string {
 }
 
 function createPlaceholder(type: 'tr' | 'li' | 'div', keyword: string, doc: Document, originalEl: HTMLElement): HTMLElement {
+  const buildBody = (parent: HTMLElement, remove: () => void) => {
+    const label = doc.createElement('span');
+    label.className = 'psnine-keyword-placeholder-label';
+    label.textContent = `已屏蔽：包含关键词“${keyword}”`;
+    const btn = doc.createElement('button');
+    btn.type = 'button';
+    btn.className = 'p9n-text-toggle psnine-keyword-reveal';
+    btn.setAttribute('aria-pressed', 'false');
+    btn.setAttribute('aria-label', `显示包含关键词“${keyword}”的已屏蔽内容`);
+    btn.textContent = '显示';
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setHidden(originalEl, 'keyword-block', false);
+      remove();
+    });
+    parent.append(label, btn);
+  };
+
   if (type === 'tr') {
     const tr = doc.createElement('tr');
     tr.className = 'psnine-keyword-placeholder-row';
     tr.setAttribute('data-psnine-next', 'chrome');
     const td = doc.createElement('td');
+    td.className = 'psnine-keyword-placeholder-cell';
     td.setAttribute('colspan', '100%');
-    td.style.cssText = 'padding:6px 12px; background:var(--p9n-surface-alt); color:var(--p9n-muted); font-size:12px;';
-    const btn = doc.createElement('button');
-    btn.type = 'button';
-    btn.style.cssText = 'background:none; border:none; color:inherit; font:inherit; cursor:pointer; text-decoration:underline;';
-    btn.textContent = `[已屏蔽] 该行包含关键词 "${keyword}" (点击查看)`;
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      setHidden(originalEl, 'keyword-block', false);
-      tr.remove();
-    });
-    td.appendChild(btn);
+    buildBody(td, () => tr.remove());
     tr.appendChild(td);
     return tr;
   }
@@ -461,18 +482,33 @@ function createPlaceholder(type: 'tr' | 'li' | 'div', keyword: string, doc: Docu
   const el = doc.createElement(type);
   el.className = 'psnine-keyword-placeholder';
   el.setAttribute('data-psnine-next', 'chrome');
-  el.style.cssText = 'padding:8px 12px; margin:4px 0; background:var(--p9n-surface-alt); font-size:12px; color:var(--p9n-muted); border-radius:4px;';
-  const btn = doc.createElement('button');
-  btn.type = 'button';
-  btn.style.cssText = 'background:none; border:none; color:inherit; font:inherit; cursor:pointer; text-decoration:underline;';
-  btn.textContent = `[已屏蔽] 该内容包含关键词 "${keyword}" (点击查看)`;
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    setHidden(originalEl, 'keyword-block', false);
-    el.remove();
-  });
-  el.appendChild(btn);
+  buildBody(el, () => el.remove());
   return el;
+}
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+/** Small outline "user" glyph for the profile preview trigger (built with DOM APIs, no innerHTML). */
+function createUserIcon(doc: Document): SVGSVGElement {
+  const svg = doc.createElementNS(SVG_NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('width', '14');
+  svg.setAttribute('height', '14');
+  svg.setAttribute('fill', 'none');
+  svg.setAttribute('stroke', 'currentColor');
+  svg.setAttribute('stroke-width', '2');
+  svg.setAttribute('stroke-linecap', 'round');
+  svg.setAttribute('stroke-linejoin', 'round');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.setAttribute('focusable', 'false');
+  const path = doc.createElementNS(SVG_NS, 'path');
+  path.setAttribute('d', 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2');
+  const circle = doc.createElementNS(SVG_NS, 'circle');
+  circle.setAttribute('cx', '12');
+  circle.setAttribute('cy', '7');
+  circle.setAttribute('r', '4');
+  svg.append(path, circle);
+  return svg;
 }
 
 /**
@@ -535,13 +571,13 @@ export function setupAvatarProfileCards(ctx: Context, root: ParentNode): () => v
     card.setAttribute('data-psnine-next', 'chrome');
     card.setAttribute('role', 'dialog');
     card.setAttribute('aria-label', `${username} 的个人资料`);
-    card.style.cssText = 'position:fixed; z-index:10000; background:var(--p9n-surface); color:var(--p9n-text); padding:12px; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,0.25); min-width:240px; max-width:320px; font-size:12px; border:1px solid var(--p9n-border);';
 
     // Keep card open when cursor moves into it
     card.addEventListener('mouseenter', cancelHide);
     card.addEventListener('mouseleave', scheduleHide);
 
     const loadingText = doc.createElement('div');
+    loadingText.className = 'psnine-profile-card-status';
     loadingText.textContent = `正在载入 ${username} 的资料...`;
     card.appendChild(loadingText);
 
@@ -562,21 +598,22 @@ export function setupAvatarProfileCards(ctx: Context, root: ParentNode): () => v
       const userDoc = await http.document(profileUrl, { ttl: 60000, signal: abortSignal });
 
       if (abortSignal.aborted || card !== activeCard) return;
-      card.innerHTML = ''; // safe reset
+      card.replaceChildren(); // safe reset
 
       // Header with username and close button
       const userHeader = doc.createElement('div');
-      userHeader.style.cssText = 'font-weight:bold; font-size:15px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;';
+      userHeader.className = 'psnine-profile-card-header';
 
       const nameSpan = doc.createElement('span');
+      nameSpan.className = 'psnine-profile-card-name';
       nameSpan.textContent = username;
       userHeader.appendChild(nameSpan);
 
       const closeBtn = doc.createElement('button');
       closeBtn.type = 'button';
+      closeBtn.className = 'psnine-icon-btn psnine-profile-card-close';
       closeBtn.setAttribute('aria-label', '关闭资料卡片');
-      closeBtn.style.cssText = 'background:none; border:none; cursor:pointer; color:var(--p9n-muted); font-size:16px; padding:0 4px;';
-      closeBtn.innerHTML = ICONS.close;
+      closeBtn.innerHTML = ICONS.close; // static trusted SVG constant
       closeBtn.addEventListener('click', closeActiveCard);
       userHeader.appendChild(closeBtn);
       card.appendChild(userHeader);
@@ -591,18 +628,18 @@ export function setupAvatarProfileCards(ctx: Context, root: ParentNode): () => v
 
       if (levelText || rankText) {
         const statsRow = doc.createElement('div');
-        statsRow.style.cssText = 'display:flex; gap:10px; align-items:center; margin-bottom:6px;';
+        statsRow.className = 'psnine-profile-card-stats';
 
         if (levelText) {
           const lvlSpan = doc.createElement('span');
-          lvlSpan.style.cssText = 'color:var(--p9n-warning-text); font-weight:bold; font-size:13px;';
+          lvlSpan.className = 'p9n-tag is-accent';
           lvlSpan.textContent = levelText;
           statsRow.appendChild(lvlSpan);
         }
 
         if (rankText) {
           const rankSpan = doc.createElement('span');
-          rankSpan.style.cssText = 'color:var(--p9n-muted); font-size:11px;';
+          rankSpan.className = 'p9n-tag';
           rankSpan.textContent = `排名 #${rankText}`;
           statsRow.appendChild(rankSpan);
         }
@@ -613,18 +650,18 @@ export function setupAvatarProfileCards(ctx: Context, root: ParentNode): () => v
       const psntrophyEl = userDoc.querySelector('.psntrophy');
       if (psntrophyEl) {
         const trophyRow = doc.createElement('div');
-        trophyRow.style.cssText = 'background:var(--p9n-surface-alt); border-radius:4px; padding:4px 8px; margin:6px 0; font-size:11px; display:flex; gap:8px;';
+        trophyRow.className = 'psnine-profile-card-trophies';
         trophyRow.textContent = psntrophyEl.textContent?.trim() || '';
         card.appendChild(trophyRow);
       }
 
       // Link to profile
       const linkRow = doc.createElement('div');
-      linkRow.style.cssText = 'margin-top:8px; text-align:right; border-top:1px solid var(--p9n-border); padding-top:6px;';
+      linkRow.className = 'psnine-profile-card-footer';
       const profileLink = doc.createElement('a');
+      profileLink.className = 'psnine-profile-card-link';
       profileLink.href = profileUrl;
-      profileLink.textContent = '访问个人主页 »';
-      profileLink.style.cssText = 'color:var(--p9n-link); font-size:11px; text-decoration:none; font-weight:600;';
+      profileLink.textContent = '访问个人主页';
       linkRow.appendChild(profileLink);
       card.appendChild(linkRow);
 
@@ -635,7 +672,10 @@ export function setupAvatarProfileCards(ctx: Context, root: ParentNode): () => v
       }
     } catch {
       if (!abortSignal.aborted && card === activeCard) {
-        card.textContent = '资料加载失败';
+        const errorText = doc.createElement('div');
+        errorText.className = 'psnine-profile-card-status';
+        errorText.textContent = '资料加载失败';
+        card.replaceChildren(errorText);
       }
     }
   };
@@ -655,15 +695,17 @@ export function setupAvatarProfileCards(ctx: Context, root: ParentNode): () => v
     });
     link.addEventListener('mouseleave', scheduleHide);
 
+    // Avatar links keep hover preview only; the tap trigger sits once next to the username
+    if (link.matches('a.l') || link.querySelector('img')) return;
+
     // Provide a small explicit tap trigger button for mobile/touch screens
     const triggerBtn = doc.createElement('button');
-    triggerBtn.className = 'psnine-profile-trigger';
+    triggerBtn.className = 'psnine-icon-btn psnine-profile-trigger';
     triggerBtn.setAttribute('data-psnine-next', 'chrome');
     triggerBtn.type = 'button';
-    triggerBtn.style.cssText = 'background:none; border:none; padding:0 2px; cursor:pointer; color:var(--p9n-muted); font-size:10px; vertical-align:middle;';
-    triggerBtn.setAttribute('title', '查看个人卡片');
-    triggerBtn.setAttribute('aria-label', `查看 ${username} 资料卡片`);
-    triggerBtn.textContent = '👤';
+    triggerBtn.setAttribute('title', '查看用户资料');
+    triggerBtn.setAttribute('aria-label', `查看用户资料：${username}`);
+    triggerBtn.appendChild(createUserIcon(doc));
 
     triggerBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -722,10 +764,9 @@ export function applyHotTags(ctx: Context, root: ParentNode): void {
       const titleLink = topic.querySelector('.title a, p.title a, td.title a, h4 a');
       if (titleLink) {
         const badge = doc.createElement('span');
-        badge.className = 'psnine-hot-badge';
+        badge.className = 'p9n-tag is-danger psnine-hot-badge';
         badge.setAttribute('data-psnine-next', 'chrome');
         badge.textContent = 'HOT';
-        badge.style.cssText = 'background:var(--p9n-danger); color:var(--p9n-on-accent); font-size:10px; font-weight:bold; padding:1px 4px; border-radius:3px; margin-left:6px; vertical-align:middle;';
         titleLink.after(badge);
       }
     }
@@ -750,19 +791,20 @@ export function applyQaStatusIcons(ctx: Context, root: ParentNode): void {
     const statusSpan = node.querySelector('div.meta > .r > span:nth-child(2), .meta span.r span:last-child');
     const statusText = statusSpan ? statusSpan.textContent?.trim() : (node.textContent || '');
 
-    const wrapper = doc.createElement('span');
-    wrapper.className = 'psnine-qa-status';
-    wrapper.setAttribute('data-psnine-next', 'chrome');
+    const insertStatus = (label: string, variant: string) => {
+      const tag = doc.createElement('span');
+      tag.className = `p9n-tag psnine-qa-status ${variant}`.trim();
+      tag.setAttribute('data-psnine-next', 'chrome');
+      tag.textContent = label;
+      titleLink.before(tag);
+    };
 
     if (statusText?.includes('已解决') || node.querySelector('.fa-check-circle')) {
-      wrapper.innerHTML = `${ICONS.checkCircle} <span style="font-size:11px; color:var(--p9n-success); margin-right:4px;">已解决</span>`;
-      titleLink.before(wrapper);
+      insertStatus('已解决', 'is-success');
     } else if (statusText?.includes('解决中')) {
-      wrapper.innerHTML = `<span style="font-size:11px; color:var(--p9n-link); font-weight:600; margin-right:4px;">[解决中]</span>`;
-      titleLink.before(wrapper);
+      insertStatus('解决中', 'is-pending');
     } else if (statusText?.includes('未回答')) {
-      wrapper.innerHTML = `<span style="font-size:11px; color:var(--p9n-muted); margin-right:4px;">[未回答]</span>`;
-      titleLink.before(wrapper);
+      insertStatus('未回答', '');
     }
 
     // Upstream line 2237: div.meta > .r > span:nth-child(1) matching /悬赏(\d+)铜/
@@ -771,15 +813,20 @@ export function applyQaStatusIcons(ctx: Context, root: ParentNode): void {
       const match = rewardSpan.textContent.match(/悬赏(\d+)铜/);
       if (match && match[1] && !node.querySelector('.psnine-qa-bounty')) {
         const count = parseInt(match[1], 10);
-        let color = 'var(--p9n-muted)';
-        if (count > 30) color = '#f39c12'; // gold
-        else if (count === 10) color = '#d35400'; // bronze
+        // Semantic bounty tiers: gold (> 30) / bronze (exactly 10), otherwise muted
+        let tier = '';
+        if (count > 30) tier = 'is-gold';
+        else if (count === 10) tier = 'is-bronze';
 
         const bounty = doc.createElement('span');
-        bounty.className = 'psnine-qa-bounty';
+        bounty.className = `psnine-qa-bounty ${tier}`.trim();
         bounty.setAttribute('data-psnine-next', 'chrome');
-        bounty.style.cssText = 'margin-left:6px; vertical-align:middle;';
-        bounty.innerHTML = `${ICONS.coins} <span style="font-size:11px; color:${color}; font-weight:bold;">${count}</span>`;
+        bounty.setAttribute('title', `悬赏 ${count} 铜`);
+        bounty.innerHTML = ICONS.coins; // static trusted SVG constant
+        const countSpan = doc.createElement('span');
+        countSpan.className = 'psnine-qa-bounty-count';
+        countSpan.textContent = String(count);
+        bounty.appendChild(countSpan);
         titleLink.after(bounty);
       }
     }

@@ -218,6 +218,9 @@ describe('Paging features module with real fixture semantics (C12, C20, C21)', (
       // Check that manual continue prompt is provided when maxPages is reached
       const indicator = document.getElementById('psnine-pagination-indicator');
       expect(indicator?.textContent).toContain('已加载预设');
+      // Continue action is a real button (pill), not underlined link-colored text
+      const continueBtn = indicator?.querySelector('button.psnine-paging-action.p9n-pill');
+      expect(continueBtn?.textContent).toBe('继续加载下一页');
 
       cleanup();
     });
@@ -277,6 +280,10 @@ describe('Paging features module with real fixture semantics (C12, C20, C21)', (
 
       const btn = document.getElementById('psnine-load-all-qa') as HTMLButtonElement;
       expect(btn).not.toBeNull();
+      // Restyled as a shared capsule pill (no boxy .psnine-btn, no inline styles)
+      expect(btn.classList.contains('p9n-pill')).toBe(true);
+      expect(btn.classList.contains('psnine-btn')).toBe(false);
+      expect(btn.getAttribute('style')).toBeNull();
 
       btn.click();
       await new Promise(r => setTimeout(r, 80));

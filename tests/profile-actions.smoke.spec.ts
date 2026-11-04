@@ -155,21 +155,29 @@ test.describe('Profile & Game Action Controls Smoke Tests (390px Viewport)', () 
     await page.addInitScript({ content: bundle });
   });
 
-  test('1. profile sync buttons: height >= 44px, computedStyle contrast >= 4.5, and theme light/dark follows media', async ({ page }) => {
+  test('1. profile sync pills: 32px capsule with 44px hit area, computedStyle contrast >= 4.5, and theme light/dark follows media', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light' });
     await page.goto('https://psnine.com/psnid/test_gamer');
 
     const syncGroup = page.locator('#psnine-sync-psn-btn-group');
     await expect(syncGroup).toBeVisible();
 
-    const syncLinks = syncGroup.locator('a.psnine-sync-btn');
+    const syncLinks = syncGroup.locator('a.p9n-pill.psnine-sync-btn');
     await expect(syncLinks).toHaveCount(2);
+    // Plain labels, no emoji prefix
+    await expect(syncLinks.nth(0)).toHaveText('等级同步');
+    await expect(syncLinks.nth(1)).toHaveText('游戏同步');
 
     for (const link of await syncLinks.all()) {
-      // 1. Touch target >= 44px
+      // 1. 32px capsule; the ::after overlay extends the tap target to 44px
       const box = await link.boundingBox();
       expect(box).not.toBeNull();
-      expect(box!.height).toBeGreaterThanOrEqual(44);
+      expect(Math.round(box!.height)).toBe(32);
+      const hit = await link.evaluate((el) => {
+        const after = window.getComputedStyle(el, '::after');
+        return { top: after.top, bottom: after.bottom, radius: window.getComputedStyle(el).borderTopLeftRadius };
+      });
+      expect(hit).toEqual({ top: '-6px', bottom: '-6px', radius: '16px' });
 
       // 2. Light mode computedStyle verification (dynamically calculated)
       const lightStyles = await link.evaluate((el) => {

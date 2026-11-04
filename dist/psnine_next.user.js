@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PSNINE Next (PSN中文网功能增强)
 // @namespace    https://github.com/ToJ112/psnine_next
-// @version      1.0.11
+// @version      1.0.12
 // @description  现代化重构版 PSN中文网功能增强脚本，深度适配桌面 Tampermonkey 与 iOS Safari Stay
 // @author       ToJ112, swsoyee, InfinityLoop, mordom0404, Nathaniel-Wu, JayusTree, aesct
 // @match        https://psnine.com/*
@@ -883,8 +883,8 @@
 
 /* Base button styling */
 .psnine-btn,
-[data-psnine-next] button:where(:not(.psnine-settings-close):not(.psnine-progress-filter-btn)),
-button[data-psnine-next]:where(:not(.psnine-settings-close):not(.psnine-progress-filter-btn)) {
+[data-psnine-next] button:where(:not(.psnine-settings-close):not(.psnine-progress-filter-btn):not(.p9n-pill):not(.p9n-text-toggle):not(.p9n-seg-btn)),
+button[data-psnine-next]:where(:not(.psnine-settings-close):not(.psnine-progress-filter-btn):not(.p9n-pill):not(.p9n-text-toggle):not(.p9n-seg-btn)) {
   color: var(--p9n-text);
   background-color: var(--p9n-surface);
   border: 1px solid var(--p9n-border);
@@ -914,6 +914,225 @@ button[data-psnine-next].psnine-btn-danger {
   color: var(--p9n-danger) !important;
   background-color: var(--p9n-surface) !important;
   border-color: var(--p9n-danger) !important;
+}
+
+/* ==== Shared UI primitives (use these for all plugin controls) ====
+   .p9n-row         flush full-width row, 1px top divider, no outer margin
+   .p9n-row-label   small muted label at the start of a row
+   .p9n-pill        32px capsule button/link; [aria-pressed="true"] or .is-active = selected
+   .p9n-pill.is-danger / .is-success / .is-warning  semantic selected colors
+   .p9n-seg + .p9n-seg-btn  segmented capsule (same look as the game progress filter)
+   .p9n-text-toggle plain text + chevron toggle; [aria-pressed="true"] flips chevron, link color
+   .p9n-tag         small inline chip (floor no., role, status)
+   .p9n-section-title  plain section heading (no emoji) */
+.p9n-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  margin: 0;
+  padding: 10px 14px;
+  background-color: var(--p9n-surface);
+  border-top: 1px solid var(--p9n-border);
+  color: var(--p9n-text);
+  box-sizing: border-box;
+}
+.p9n-row-label {
+  font-size: 12px;
+  color: var(--p9n-muted);
+  white-space: nowrap;
+}
+.p9n-row-end {
+  margin-left: auto;
+}
+.p9n-section-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--p9n-text);
+}
+
+.p9n-pill {
+  position: relative;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px;
+  height: 32px;
+  min-height: 32px;
+  margin: 0;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  border: 1px solid var(--p9n-border) !important;
+  border-radius: 16px !important;
+  background-color: var(--p9n-surface) !important;
+  color: var(--p9n-text) !important;
+  text-decoration: none !important;
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+/* Extends the tap target to 44px without changing the visual size */
+.p9n-pill::after {
+  content: "";
+  position: absolute;
+  inset: -6px 0;
+}
+.p9n-pill:hover,
+.p9n-pill[aria-pressed="true"],
+.p9n-pill.is-active {
+  border-color: var(--p9n-link) !important;
+  color: var(--p9n-link) !important;
+  text-decoration: none !important;
+}
+.p9n-pill.is-danger[aria-pressed="true"],
+.p9n-pill.is-danger.is-active {
+  border-color: var(--p9n-danger) !important;
+  background-color: var(--p9n-danger) !important;
+  color: var(--p9n-on-accent) !important;
+}
+.p9n-pill.is-success[aria-pressed="true"],
+.p9n-pill.is-success.is-active {
+  border-color: var(--p9n-success) !important;
+  color: var(--p9n-success) !important;
+}
+.p9n-pill.is-warning[aria-pressed="true"],
+.p9n-pill.is-warning.is-active {
+  border-color: var(--p9n-warning) !important;
+  color: var(--p9n-warning-text) !important;
+}
+.p9n-pill:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.p9n-pill.is-sm {
+  height: 26px;
+  min-height: 26px;
+  padding: 0 10px;
+  font-size: 12px;
+  border-radius: 13px !important;
+}
+.p9n-pill.is-sm::after {
+  inset: -9px 0;
+}
+.p9n-pill:focus-visible,
+.p9n-text-toggle:focus-visible,
+.p9n-seg-btn:focus-visible {
+  outline: 2px solid var(--p9n-link) !important;
+  outline-offset: 1px !important;
+}
+
+.p9n-seg {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 2px !important;
+  padding: 2px !important;
+  background: var(--p9n-surface-alt) !important;
+  border: 1px solid var(--p9n-border) !important;
+  border-radius: 16px !important;
+  box-sizing: border-box !important;
+  vertical-align: middle;
+}
+.p9n-seg-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 28px !important;
+  margin: 0 !important;
+  padding: 0 12px !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  border: none !important;
+  border-radius: 14px !important;
+  background: transparent !important;
+  color: var(--p9n-muted) !important;
+  font-weight: normal !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
+  box-sizing: border-box !important;
+  transition: background-color 0.15s ease, color 0.15s ease !important;
+}
+.p9n-seg-btn[aria-pressed="true"],
+.p9n-seg-btn.is-active {
+  background: var(--p9n-surface) !important;
+  color: var(--p9n-link) !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+}
+
+.p9n-text-toggle {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px;
+  min-height: 32px;
+  margin: 0;
+  padding: 0 4px;
+  font-size: 12px;
+  line-height: 1;
+  border: none !important;
+  background: transparent !important;
+  color: var(--p9n-muted) !important;
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
+  box-sizing: border-box;
+}
+.p9n-text-toggle::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  margin-left: 2px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.15s ease;
+}
+.p9n-text-toggle[aria-pressed="true"] {
+  color: var(--p9n-link) !important;
+}
+.p9n-text-toggle[aria-pressed="true"]::after {
+  transform: translateY(1px) rotate(-135deg);
+}
+.p9n-text-toggle.is-sort::after {
+  display: none;
+}
+
+.p9n-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 9px;
+  background-color: var(--p9n-surface-alt);
+  color: var(--p9n-muted);
+  vertical-align: middle;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+.p9n-tag.is-accent {
+  background-color: var(--p9n-link);
+  /* surface (not on-accent): dark-theme link is light blue */
+  color: var(--p9n-surface);
+}
+.p9n-tag.is-danger {
+  background-color: var(--p9n-danger);
+  color: var(--p9n-on-accent);
+}
+.p9n-tag.is-success {
+  background-color: var(--p9n-success);
+  color: var(--p9n-surface);
+}
+html[data-theme="dark"] .p9n-seg-btn[aria-pressed="true"],
+html[data-theme="dark"] .p9n-seg-btn.is-active {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
 }
 
 /* Floating Action Buttons (.float-btn native style) */
@@ -1211,15 +1430,6 @@ a.psnine-nav-settings-link {
   outline-offset: 2px;
 }
 
-/* Floor Number & Author Badges */
-.psnine-floor-badge {
-  display: inline-block;
-  font-size: 12px;
-  color: var(--p9n-muted);
-  margin-right: 6px;
-  user-select: none;
-}
-
 /* Game List Progress Badge (P06: Neutral, Accessible Contrast >= 4.5:1) */
 .psnine-game-list-progress-badge {
   display: inline-block;
@@ -1236,68 +1446,37 @@ a.psnine-nav-settings-link {
   box-sizing: border-box;
 }
 
-/* Game List & Profile Action Buttons (Neutral Outline, Contrast >= 4.5:1, Touch >= 44px) */
-.psnine-sync-btn,
-.psnine-difficulty-sort-btn,
-#psnine-difficulty-sort-btn,
-.psnine-ondemand-progress-btn,
-.psnine-cross-tip-btn {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-height: 44px !important;
-  border-radius: var(--p9n-radius-md, 8px) !important;
-  background-color: var(--p9n-surface) !important;
-  color: var(--p9n-text) !important;
-  border: 1px solid var(--p9n-border) !important;
-  text-decoration: none !important;
-  touch-action: manipulation !important;
-  box-sizing: border-box !important;
-  transition: all 0.15s ease;
+/* Profile Sync Links (\u7B49\u7EA7\u540C\u6B65 / \u6E38\u620F\u540C\u6B65): .p9n-pill on the profile hero.
+   The hero is a dark image, so the pill keeps an opaque surface fill (token text on token
+   surface keeps >= 4.5:1 in both themes) plus a soft shadow to lift it off the photo. */
+#psnine-sync-psn-btn-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  /* Row gap >= 2 x the pill ::after hit-area overhang */
+  gap: 12px 8px;
+  margin: 8px 0;
+  max-width: 100%;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+#psnine-sync-psn-btn-group > .p9n-pill {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 }
 
-.psnine-sync-btn {
-  padding: 8px 16px !important;
-  font-size: 13px !important;
-  font-weight: 500 !important;
-}
-
-.psnine-difficulty-sort-btn,
+/* Game List Difficulty Sort (\u96BE\u5EA6 \u2193 / \u96BE\u5EA6 \u2191): quiet .p9n-text-toggle.is-sort,
+   flush-left so its text lines up with the 14px content inset (10px + 4px toggle padding) */
 #psnine-difficulty-sort-btn {
-  padding: 6px 14px !important;
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  margin: 6px 0 !important;
-  cursor: pointer !important;
+  margin: 0 0 0 10px;
 }
 
+/* On-demand Progress Query (\u67E5\u8FDB\u5EA6 / \u67E5\u8BE2\u4E2D\u2026 / \u91CD\u8BD5): .p9n-pill.is-sm next to the game title */
 .psnine-ondemand-progress-btn {
-  padding: 4px 10px !important;
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  border-radius: var(--p9n-radius-sm, 4px) !important;
-  color: var(--p9n-link) !important;
-  cursor: pointer !important;
   margin-left: 6px !important;
+  vertical-align: middle;
 }
-
-.psnine-cross-tip-btn {
-  padding: 6px 12px !important;
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  border-radius: var(--p9n-radius-sm, 6px) !important;
-  color: var(--p9n-link) !important;
-}
-
-.psnine-sync-btn:hover,
-.psnine-difficulty-sort-btn:hover,
-#psnine-difficulty-sort-btn:hover,
-.psnine-ondemand-progress-btn:hover,
-.psnine-cross-tip-btn:hover {
-  background-color: var(--p9n-surface-alt) !important;
-  color: var(--p9n-link) !important;
-  border-color: var(--p9n-link) !important;
-  text-decoration: none !important;
+.psnine-ondemand-progress-btn.is-error {
+  border-color: var(--p9n-danger) !important;
+  color: var(--p9n-danger) !important;
 }
 
 /* Game Section Nav Toggle (collapsed \u5956\u676F/\u6392\u884C/\u8BC4\u8BBA\u2026 grid) */
@@ -1364,8 +1543,10 @@ a.psnine-nav-settings-link {
   box-shadow: none !important;
 }
 
-/* Game Variants Row (compact label + capsule links, 32px visual / 44px hit area) */
-#psnine-game-variants-section {
+/* Game Variants Row (compact label + capsule links, 32px visual / 44px hit area).
+   The trophy page "\u5176\u4ED6\u7248\u672C Tips" row reuses the same markup and look. */
+#psnine-game-variants-section,
+#psnine-cross-version-tips-section {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1451,59 +1632,276 @@ a.psnine-variant-btn:focus-visible {
   color: var(--p9n-muted);
 }
 
-.psnine-author-badge {
-  display: inline-block;
-  background: var(--p9n-link);
-  color: var(--p9n-on-accent);
-  padding: 1px 6px;
+/* ==== Community: floor / author / hot / QA tags (built on .p9n-tag) ==== */
+.p9n-tag.psnine-floor-badge {
+  margin-right: 6px;
+  user-select: none;
+}
+.p9n-tag.psnine-subfloor-badge {
+  height: 16px;
+  padding: 0 5px;
+  margin-right: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  user-select: none;
+}
+/* Default colors from .is-accent; user-customized highlight colors are applied inline */
+.p9n-tag.psnine-author-badge {
+  margin-left: 4px;
+}
+.p9n-tag.psnine-hot-badge {
+  margin-left: 6px;
+}
+.p9n-tag.psnine-qa-status {
+  margin-right: 6px;
+}
+.p9n-tag.psnine-qa-status.is-pending {
+  background-color: var(--p9n-link-soft);
+  color: var(--p9n-link);
+}
+/* Specific-user highlight: shape only; colors come from settings (inline) */
+a.psnine-specific-user {
+  padding: 1px 5px !important;
+  border-radius: 4px !important;
+}
+/* QA bounty: coin glyph + count; gold/bronze tiers are semantic colors */
+.psnine-qa-bounty {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 6px;
   font-size: 11px;
-  border-radius: var(--p9n-radius-sm, 4px);
-  margin-left: 5px;
+  font-weight: 600;
+  color: var(--p9n-muted);
   vertical-align: middle;
 }
+.psnine-qa-bounty svg {
+  width: 14px;
+  height: 14px;
+}
+.psnine-qa-bounty.is-gold { color: #f39c12; }
+.psnine-qa-bounty.is-bronze { color: #d35400; }
 
-/* Reply Traceback Card */
-.psnine-traceback-card {
+/* ==== Community: quiet icon button (profile preview trigger, card close) ====
+   Doubled class + html body prefix outranks the generic plugin button rules (light and dark). */
+html body button.psnine-icon-btn.psnine-icon-btn {
+  position: relative;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px;
+  height: 24px;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0 !important;
+  font-size: 0;
+  line-height: 1;
+  border: none !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--p9n-muted) !important;
+  cursor: pointer;
+  vertical-align: middle;
+}
+/* 32x32 hit area without overlapping the adjacent username link */
+html body button.psnine-icon-btn.psnine-icon-btn::after {
+  content: "";
+  position: absolute;
+  inset: -4px 0;
+}
+html body button.psnine-icon-btn.psnine-icon-btn:hover {
+  color: var(--p9n-link) !important;
+}
+html body button.psnine-icon-btn.psnine-icon-btn:focus-visible {
+  outline: 2px solid var(--p9n-link) !important;
+  outline-offset: -2px !important;
+}
+html body button.psnine-icon-btn.psnine-icon-btn svg {
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+html body button.psnine-profile-card-close.psnine-icon-btn {
+  width: 32px;
+  height: 32px;
+  margin: -6px -8px -6px 0;
+}
+html body button.psnine-profile-card-close.psnine-icon-btn::after {
+  inset: 0;
+}
+html body button.psnine-profile-card-close.psnine-icon-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ==== Community: user preview card ==== */
+.psnine-profile-card {
+  position: fixed;
+  z-index: 10000;
+  min-width: 240px;
+  max-width: 320px;
+  padding: 12px;
+  background: var(--p9n-surface);
+  color: var(--p9n-text);
+  border: 1px solid var(--p9n-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  font-size: 12px;
+  line-height: 1.5;
+}
+html[data-theme="dark"] .psnine-profile-card {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+.psnine-profile-card-status {
+  color: var(--p9n-muted);
+}
+.psnine-profile-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.psnine-profile-card-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+}
+.psnine-profile-card-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.psnine-profile-card-trophies {
+  padding: 6px 8px;
+  background: var(--p9n-surface-alt);
+  border-radius: 6px;
+  color: var(--p9n-text);
+}
+.psnine-profile-card-footer {
   margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--p9n-border);
+  text-align: right;
+}
+.psnine-profile-card-link {
+  color: var(--p9n-link) !important;
+  font-weight: 500;
+  text-decoration: none !important;
+}
+.psnine-profile-card-link:hover,
+.psnine-profile-card-link:focus-visible {
+  text-decoration: underline !important;
+}
+
+/* ==== Community: reply traceback card & keyword-folded placeholders (flush, surface-alt) ==== */
+.psnine-traceback-card {
+  margin: 6px 0 0;
   padding: 8px 12px;
   background: var(--p9n-surface-alt);
-  border-left: 3px solid var(--p9n-link);
-  border-radius: var(--p9n-radius-sm, 4px);
+  border: none;
+  border-radius: 8px;
   font-size: 13px;
+  color: var(--p9n-text);
+  cursor: pointer;
+}
+.psnine-traceback-card:focus-visible {
+  outline: 2px solid var(--p9n-link);
+  outline-offset: 1px;
 }
 .psnine-traceback-header {
   display: flex;
   align-items: center;
   gap: 6px;
+  margin-bottom: 4px;
+  font-size: 12px;
+  color: var(--p9n-muted);
+}
+.psnine-traceback-avatar {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+.psnine-traceback-user {
   font-weight: 600;
   color: var(--p9n-text);
-  margin-bottom: 4px;
 }
 .psnine-traceback-content {
   color: var(--p9n-muted);
-  white-space: pre-wrap;
   word-break: break-word;
 }
-
-/* Hot Tag */
-.psnine-hot-badge {
-  display: inline-block;
-  background: var(--p9n-danger);
-  color: var(--p9n-on-accent);
-  padding: 1px 6px;
-  font-size: 11px;
-  font-weight: bold;
-  border-radius: 3px;
-  margin-left: 4px;
+.psnine-keyword-placeholder {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin: 0;
+  padding: 4px 12px;
+  list-style: none;
+  background: var(--p9n-surface-alt);
+  color: var(--p9n-muted);
+  font-size: 12px;
+}
+td.psnine-keyword-placeholder-cell {
+  padding: 4px 12px;
+  background: var(--p9n-surface-alt);
+  color: var(--p9n-muted);
+  font-size: 12px;
+}
+td.psnine-keyword-placeholder-cell .psnine-keyword-reveal {
+  margin-left: 8px;
   vertical-align: middle;
 }
 
-/* Q&A Status Icons */
-.psnine-qa-status {
-  display: inline-flex;
+/* ==== Paging: auto-paging control bar & QA "load all answers" pill ==== */
+/* Visibility is toggled inline (display:none / ''); layout lives here */
+#psnine-pagination-indicator {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  margin-right: 4px;
-  vertical-align: middle;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 14px;
+  font-size: 12px;
+  color: var(--p9n-muted);
+  user-select: none;
+}
+#psnine-load-all-qa {
+  margin: 10px 0;
+}
+
+/* ==== Editor: gene word counter & BBCode preview ==== */
+.psnine-gene-count-box {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--p9n-muted);
+  font-variant-numeric: tabular-nums;
+}
+.psnine-gene-count-box.is-over {
+  color: var(--p9n-danger);
+  font-weight: 600;
+}
+#psnine-bbcode-preview {
+  margin-top: 10px;
+  padding: 10px 12px;
+  min-height: 40px;
+  background: var(--p9n-surface);
+  color: var(--p9n-text);
+  border: 1px solid var(--p9n-border);
+  border-radius: 8px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+.psnine-bbcode-preview-label {
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: var(--p9n-muted);
 }
 
 /* Trophy Module V2 Native Card & Outline Pill Styles */
@@ -1683,30 +2081,122 @@ button#psnine-trophy-tips-trigger:focus-visible,
   box-sizing: border-box;
 }
 
-/* Trophy Tip Row */
-.psnine-trophy-tip-row {
+/* Inline Tips Rows (trophy list): muted "Tips \xB7 N \u6761" head with the full-page link on the
+   right, flat items separated by 1px dividers; loading/empty/error share one status line */
+td.psnine-inline-tip-cell {
   padding: 10px 14px;
   background-color: var(--p9n-surface-alt);
   border-bottom: 1px solid var(--p9n-border);
   color: var(--p9n-text);
   font-size: 12px;
 }
-
-/* Filtered Tip Reveal Button */
-.psnine-trophy-filtered-btn,
-.psnine-filtered-tip-btn {
-  display: block;
-  width: 100%;
-  text-align: left;
-  padding: 6px 10px;
-  background-color: var(--p9n-surface);
+.psnine-inline-tip-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
   color: var(--p9n-muted);
+}
+.psnine-inline-tip-status.is-error {
+  color: var(--p9n-danger);
+}
+.psnine-inline-tip-list {
+  max-height: 280px;
+  overflow-y: auto;
+}
+.psnine-inline-tip-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: var(--p9n-muted);
+}
+.psnine-inline-tip-head > a {
+  color: var(--p9n-link) !important;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+.psnine-inline-tip-head > a:hover {
+  text-decoration: underline !important;
+}
+.psnine-inline-tip-item {
+  padding: 8px 0;
+  border-top: 1px solid var(--p9n-border);
+  font-size: 12px;
+}
+.psnine-inline-tip-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 2px;
   font-size: 11px;
-  border-radius: var(--p9n-radius-sm, 4px);
-  border: 1px dashed var(--p9n-border);
+  color: var(--p9n-muted);
+}
+.psnine-inline-tip-author {
+  font-weight: 500;
+  color: var(--p9n-link);
+}
+.psnine-inline-tip-body {
+  line-height: 1.5;
+}
+.psnine-filtered-tip-body {
+  margin-top: 6px;
+}
+
+/* Filtered Tip Reveal Button (\u5DF2\u8FC7\u6EE4 \xB7 \u539F\u56E0 \xB7 \u70B9\u51FB\u663E\u793A): quiet full-width text line */
+/* button.class outranks the generic "[data-psnine-next] button" base rule (0,1,1) */
+button.psnine-filtered-tip-btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 32px;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  border-radius: 0;
+  background: transparent !important;
+  color: var(--p9n-muted) !important;
+  font-size: 12px;
+  border: none !important;
   cursor: pointer;
+  touch-action: manipulation;
   user-select: none;
   box-sizing: border-box;
+}
+.psnine-filtered-tip-btn:hover,
+.psnine-filtered-tip-btn[aria-expanded="true"] {
+  color: var(--p9n-link) !important;
+}
+.psnine-filtered-tip-btn:focus-visible {
+  outline: 2px solid var(--p9n-link);
+  outline-offset: 1px;
+}
+
+/* Trophy Detail Tips Sort (\u6309\u70ED\u5EA6\u6392\u5E8F): .p9n-text-toggle.is-sort above the Tips list */
+#psnine-sort-tips-by-likes-btn {
+  margin: 0 0 4px 10px;
+}
+
+/* Guide Topic Trophy Status (.p9n-tag \u5DF2\u83B7\u5F97 / \u672A\u83B7\u5F97 / \u72B6\u6001\u672A\u77E5) */
+.psnine-guide-trophy-badge {
+  margin-left: 4px;
+}
+
+/* Battle List: monitor pill (.p9n-pill.is-sm.is-warning, aria-pressed = monitored)
+   and personal progress tag */
+.psnine-battle-bell-btn {
+  margin-left: 6px !important;
+  vertical-align: middle;
+  user-select: none;
+}
+.psnine-battle-progress-badge {
+  margin-left: 4px;
+  background-color: var(--p9n-link-soft);
+  color: var(--p9n-link);
 }
 
 /* Trophy Navigation Dropmenu (Keeps sort dropdown, filter buttons, and Tips on one row) */
@@ -1872,6 +2362,256 @@ ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > ul[data-psn
 ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] > ul[data-psnine-trophy-sort-menu="true"] > li > a:focus-visible {
   outline: 2px solid var(--p9n-link);
   outline-offset: -2px;
+}
+
+/* ==== Deals (/dd, /dd/:id, /game/:id/dd, /huodong) ====
+   Controls bar = .p9n-row; toggles = .p9n-pill with aria-pressed state.
+   Component tokens pin the historical best-deal red and CNY green in both themes. */
+#psnine-toggle-best-deal-btn {
+  --p9n-deal-best: #da314b;
+  --p9n-danger: var(--p9n-deal-best);
+}
+#psnine-toggle-cny-btn {
+  --p9n-deal-cny: #28a745;
+}
+#psnine-toggle-cny-btn[aria-pressed="true"] {
+  border-color: var(--p9n-deal-cny) !important;
+}
+#psnine-fx-status {
+  font-size: 11px;
+  color: var(--p9n-muted);
+  white-space: nowrap;
+}
+#psnine-fx-status.is-expired {
+  color: var(--p9n-danger);
+}
+#psnine-fx-status[hidden],
+.psnine-cny-badge[hidden] {
+  display: none !important;
+}
+.psnine-cny-badge {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--p9n-success);
+  white-space: nowrap;
+}
+.psnine-cny-badge.is-expired {
+  color: var(--p9n-danger);
+}
+.psnine-cny-badge.is-pending,
+.psnine-cny-badge.is-unavailable {
+  color: var(--p9n-muted);
+}
+#psnine-price-chart-container {
+  margin: 0;
+  padding: 12px 14px;
+  border-top: 1px solid var(--p9n-border);
+  background-color: var(--p9n-surface);
+  color: var(--p9n-text);
+  box-sizing: border-box;
+}
+.psnine-price-chart-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  margin-bottom: 6px;
+}
+.psnine-price-chart-subtitle,
+.psnine-price-chart-empty {
+  font-size: 12px;
+  color: var(--p9n-muted);
+}
+.psnine-price-chart-empty {
+  padding: 8px 0;
+}
+.psnine-price-chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 240px;
+  color: var(--p9n-muted);
+  font-family: inherit;
+  user-select: none;
+}
+.psnine-price-history-table-wrapper {
+  margin-top: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.psnine-price-history-table-wrapper:focus-visible {
+  outline: 2px solid var(--p9n-link);
+  outline-offset: 1px;
+}
+.psnine-price-history-table {
+  width: 100%;
+  border: none;
+  border-collapse: collapse;
+  font-size: 12px;
+  text-align: left;
+  color: var(--p9n-text);
+}
+.psnine-price-history-table caption {
+  padding: 0 0 4px;
+  text-align: left;
+  font-size: 12px;
+  color: var(--p9n-muted);
+}
+.psnine-price-history-table th,
+.psnine-price-history-table td {
+  padding: 6px 10px 6px 0;
+  border: none;
+  border-bottom: 1px solid var(--p9n-border);
+  background: transparent;
+  vertical-align: top;
+}
+.psnine-price-history-table th {
+  font-weight: 500;
+  color: var(--p9n-muted);
+  white-space: nowrap;
+}
+.psnine-price-history-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.psnine-price-history-table .is-nowrap {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==== Reviews panel (R01-R06, /psngame/:id/comment) ====
+   Flush block of .p9n-row sections: header (title, summary, view seg + \u6B63\u6001\u66F2\u7EBF pill),
+   a single scrollable row of .p9n-pill.is-sm score chips, and borderless chart sections. */
+#psnine-enhanced-reviews-panel {
+  margin: 0;
+  padding: 0;
+  background-color: var(--p9n-surface);
+  color: var(--p9n-text);
+  border-bottom: 1px solid var(--p9n-border);
+}
+#psnine-enhanced-reviews-panel .psnine-reviews-summary {
+  font-size: 12px;
+  color: var(--p9n-muted);
+  white-space: nowrap;
+}
+#psnine-enhanced-reviews-panel .psnine-reviews-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+#psnine-enhanced-reviews-panel .psnine-score-filter-row {
+  flex-wrap: nowrap;
+}
+/* Padding + negative margin keep the pills' 44px hit area and focus ring inside the scroller */
+#psnine-enhanced-reviews-panel .psnine-score-filter-scroll {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: -9px -3px;
+  padding: 9px 3px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+#psnine-enhanced-reviews-panel .psnine-score-filter-chip {
+  flex: 0 0 auto;
+  gap: 4px;
+}
+#psnine-enhanced-reviews-panel .psnine-score-filter-count {
+  font-size: 11px;
+  color: var(--p9n-muted);
+}
+#psnine-enhanced-reviews-panel .psnine-score-filter-chip[aria-pressed="true"] .psnine-score-filter-count {
+  color: inherit;
+}
+#psnine-enhanced-reviews-panel #psnine-clear-score-filter-btn {
+  flex: 0 0 auto;
+  border-color: transparent !important;
+  background-color: var(--p9n-link-soft) !important;
+  color: var(--p9n-link) !important;
+}
+#psnine-enhanced-reviews-panel .psnine-review-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px 20px;
+  align-items: start;
+}
+#psnine-enhanced-reviews-panel .psnine-review-chart {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+#psnine-enhanced-reviews-panel .psnine-review-chart-title {
+  display: block;
+  margin-bottom: 4px;
+}
+#psnine-enhanced-reviews-panel .psnine-review-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 220px;
+  color: var(--p9n-text);
+  font-family: inherit;
+  user-select: none;
+}
+#psnine-enhanced-reviews-panel .psnine-weekly-svg {
+  max-height: 200px;
+}
+#psnine-enhanced-reviews-panel .score-bar-group {
+  cursor: pointer;
+}
+#psnine-enhanced-reviews-panel .score-bar-group:focus-visible {
+  outline: 2px solid var(--p9n-link);
+  outline-offset: 1px;
+}
+#psnine-enhanced-reviews-panel .psnine-empty-chart {
+  padding: 10px 0;
+  font-size: 12px;
+  color: var(--p9n-muted);
+}
+#psnine-enhanced-reviews-panel .psnine-review-table {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--p9n-muted);
+}
+#psnine-enhanced-reviews-panel .psnine-review-table > summary {
+  cursor: pointer;
+}
+#psnine-enhanced-reviews-panel .psnine-review-table-scroll {
+  max-height: 100px;
+  margin-top: 4px;
+  overflow-y: auto;
+}
+#psnine-enhanced-reviews-panel .psnine-review-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+#psnine-enhanced-reviews-panel .psnine-review-table tr {
+  border-bottom: 1px solid var(--p9n-border);
+}
+#psnine-enhanced-reviews-panel .psnine-review-table th,
+#psnine-enhanced-reviews-panel .psnine-review-table td {
+  padding: 2px 0;
+  text-align: left;
+  font-weight: normal;
+}
+#psnine-enhanced-reviews-panel .psnine-review-table .is-num {
+  text-align: right;
+}
+#psnine-enhanced-reviews-panel .psnine-review-table .is-strong {
+  font-weight: 500;
+}
+#psnine-enhanced-reviews-panel .psnine-review-chart-note {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--p9n-muted);
+  text-align: right;
 }
 
 /* Spoiler Bar (.mark) Light Mode Rules (G04) */
@@ -2240,9 +2980,9 @@ html[data-theme="dark"] .psnine-settings-memory-warning {
 }
 
 /* Generic Button Contrast in Dark Mode (Exclude custom status/chip/filter buttons) */
-html[data-theme="dark"] [data-psnine-next] button:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-trophy-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(#psnine-settings-gear):not(.psnine-filtered-tip-btn):not(.psnine-progress-filter-btn)),
-html[data-theme="dark"] button[data-psnine-next]:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-trophy-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(#psnine-settings-gear):not(.psnine-filtered-tip-btn):not(.psnine-progress-filter-btn)),
-html[data-theme="dark"] .psnine-btn:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-progress-filter-btn)) {
+html[data-theme="dark"] [data-psnine-next] button:where(:not(.psnine-btn-primary):not(.p9n-pill):not(.p9n-text-toggle):not(.p9n-seg-btn):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-trophy-chip):not(#psnine-scrollbottom):not(#psnine-settings-gear):not(.psnine-filtered-tip-btn):not(.psnine-progress-filter-btn)),
+html[data-theme="dark"] button[data-psnine-next]:where(:not(.psnine-btn-primary):not(.p9n-pill):not(.p9n-text-toggle):not(.p9n-seg-btn):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-trophy-chip):not(#psnine-scrollbottom):not(#psnine-settings-gear):not(.psnine-filtered-tip-btn):not(.psnine-progress-filter-btn)),
+html[data-theme="dark"] .psnine-btn:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-progress-filter-btn):not(.p9n-pill):not(.p9n-text-toggle):not(.p9n-seg-btn)) {
   color: var(--p9n-text) !important;
   background-color: var(--p9n-surface-alt) !important;
   border-color: var(--p9n-border) !important;
@@ -2292,12 +3032,6 @@ html[data-theme="dark"] #psnine-trophy-preview-card {
   border-color: var(--p9n-border) !important;
   color: var(--p9n-text) !important;
 }
-html[data-theme="dark"] .psnine-trophy-filtered-btn,
-html[data-theme="dark"] .psnine-filtered-tip-btn {
-  background-color: var(--p9n-surface) !important;
-  border-color: var(--p9n-border) !important;
-  color: var(--p9n-muted) !important;
-}
 
 /* Custom Status & Filter Buttons in Dark Mode */
 /* 1. Trophy Icon Chip (Preserve earned green border) */
@@ -2312,88 +3046,24 @@ html[data-theme="dark"] .psnine-trophy-icon-chip[style*="rgb(40, 167, 69)"] {
   border-color: #28a745 !important;
 }
 
-/* 2. Review Score Filter Chip (Preserve selected orange status) */
-html[data-theme="dark"] .psnine-score-filter-chip {
-  background-color: var(--p9n-surface-alt) !important;
-  border: 1px solid var(--p9n-border) !important;
-  color: var(--p9n-muted) !important;
-}
-html[data-theme="dark"] .psnine-score-filter-chip[style*="#ff9800"],
-html[data-theme="dark"] .psnine-score-filter-chip[style*="rgb(255, 152, 0)"] {
-  background-color: #ff9800 !important;
-  border-color: #ff9800 !important;
-  color: var(--p9n-on-accent) !important;
-}
-html[data-theme="dark"] #psnine-clear-score-filter-btn {
-  border-color: #ff9800 !important;
-  background-color: rgba(255, 152, 0, 0.15) !important;
-  color: var(--p9n-warning-text) !important;
-}
-
-/* 3. Deal Best Only Toggle Button (Preserve active red state) */
-html[data-theme="dark"] #psnine-toggle-best-deal-btn {
-  background-color: var(--p9n-surface-alt) !important;
-  border: 1px solid var(--p9n-border) !important;
-  color: var(--p9n-text) !important;
-}
-html[data-theme="dark"] #psnine-toggle-best-deal-btn[style*="#da314b"],
-html[data-theme="dark"] #psnine-toggle-best-deal-btn[style*="rgb(218, 49, 75)"] {
-  background-color: #da314b !important;
-  border-color: #da314b !important;
-  color: var(--p9n-on-accent) !important;
-}
-
-/* 4. Deal CNY Toggle Button (Preserve active green state) */
-html[data-theme="dark"] #psnine-toggle-cny-btn {
-  background-color: rgba(40, 167, 69, 0.15) !important;
-  border: 1px solid #28a745 !important;
-  color: #51cf66 !important;
-}
-
-/* 5. Battle Bell Monitor Button (Preserve active amber/gold state) */
-html[data-theme="dark"] .psnine-battle-bell-btn {
-  background-color: var(--p9n-surface-alt) !important;
-  border: 1px solid var(--p9n-border) !important;
-  color: var(--p9n-muted) !important;
-}
-html[data-theme="dark"] .psnine-battle-bell-btn[style*="245, 159, 0"],
-html[data-theme="dark"] .psnine-battle-bell-btn[style*="#f59f00"] {
-  background-color: rgba(245, 159, 0, 0.2) !important;
-  border-color: #f59f00 !important;
-  color: #fbbf24 !important;
-}
+/* 5. Battle Bell Monitor pill: no dark override needed; .p9n-pill.is-warning[aria-pressed]
+   uses --p9n-warning / --p9n-warning-text, which the dark theme already retunes */
 
 /* Toggle Switch Slider in Dark Mode */
 html[data-theme="dark"] .psnine-slider {
   background-color: var(--p9n-border) !important;
 }
 
-/* Traceback in Dark Mode */
-html[data-theme="dark"] .psnine-traceback-card {
-  background: var(--p9n-surface-alt) !important;
-}
-html[data-theme="dark"] .psnine-traceback-header {
-  color: var(--p9n-link) !important;
-}
-html[data-theme="dark"] .psnine-traceback-content {
-  color: var(--p9n-muted) !important;
-}
-
 /* Plugin Panels & Low Contrast Container Fixes */
 html[data-theme="dark"] #psnine-trophy-stats-panel,
-html[data-theme="dark"] #psnine-trophy-preview-card,
-html[data-theme="dark"] #psnine-enhanced-reviews-panel,
-html[data-theme="dark"] #psnine-deals-controls-bar,
-html[data-theme="dark"] #psnine-price-chart-container,
-html[data-theme="dark"] #psnine-cross-version-tips-section {
+html[data-theme="dark"] #psnine-trophy-preview-card {
   background-color: var(--p9n-surface) !important;
   color: var(--p9n-text) !important;
   border-color: var(--p9n-border) !important;
 }
 
 /* Muted labels & counts in plugin panels */
-html[data-theme="dark"] #psnine-trophy-header-counts,
-html[data-theme="dark"] #psnine-fx-status {
+html[data-theme="dark"] #psnine-trophy-header-counts {
   color: var(--p9n-muted) !important;
 }
 
@@ -3305,6 +3975,8 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
     }
     return null;
   }
+  var DEFAULT_AUTHOR_BACK = "#3890ff";
+  var DEFAULT_AUTHOR_FRONT = "#ffffff";
   function applyUserHighlights(ctx, root) {
     const { document: doc, settings, url } = ctx;
     const authorId = getPageAuthor(doc, url);
@@ -3317,22 +3989,23 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
       if (!lowerId) return;
       if (authorId && lowerId === authorId && !link.parentElement?.querySelector(".psnine-author-badge")) {
         const badge = doc.createElement("span");
-        badge.className = "psnine-author-badge";
+        badge.className = "p9n-tag is-accent psnine-author-badge";
         badge.setAttribute("data-psnine-next", "chrome");
         badge.textContent = "\u697C\u4E3B";
-        badge.style.setProperty("background-color", settings.highlightBack || "#3890ff", "important");
-        badge.style.setProperty("color", settings.highlightFront || "#ffffff", "important");
-        badge.style.setProperty("padding", "1px 4px", "important");
-        badge.style.setProperty("margin-left", "4px", "important");
-        badge.style.setProperty("border-radius", "3px", "important");
-        badge.style.setProperty("font-size", "11px", "important");
+        const back = (settings.highlightBack || "").trim();
+        const front = (settings.highlightFront || "").trim();
+        if (back && back.toLowerCase() !== DEFAULT_AUTHOR_BACK) {
+          badge.style.setProperty("background-color", back, "important");
+        }
+        if (front && front.toLowerCase() !== DEFAULT_AUTHOR_FRONT) {
+          badge.style.setProperty("color", front, "important");
+        }
         link.after(badge);
       }
       if (specificIds.has(lowerId)) {
+        link.classList.add("psnine-specific-user");
         link.style.setProperty("background-color", settings.highlightSpecificBack || "#d9534f", "important");
         link.style.setProperty("color", settings.highlightSpecificFront || "#ffffff", "important");
-        link.style.setProperty("padding", "1px 5px", "important");
-        link.style.setProperty("border-radius", "4px", "important");
       }
     });
   }
@@ -3354,10 +4027,9 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         maxMainFloor++;
         post.setAttribute("data-psnine-floor", String(maxMainFloor));
         const badge = doc.createElement("span");
-        badge.className = "psnine-floor-badge";
+        badge.className = "p9n-tag psnine-floor-badge";
         badge.setAttribute("data-psnine-next", "chrome");
         badge.textContent = `#${maxMainFloor}`;
-        badge.style.cssText = "color:var(--p9n-muted); font-size:12px; margin-right:6px; font-weight:600;";
         meta.prepend(badge);
       }
       const mainFloorNum = post.getAttribute("data-psnine-floor") || post.querySelector(".psnine-floor-badge")?.textContent?.replace("#", "") || "1";
@@ -3368,10 +4040,9 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
           const subfloorNum = `${mainFloorNum}-${subIdx + 1}`;
           subLi.setAttribute("data-psnine-subfloor", subfloorNum);
           const subBadge = doc.createElement("span");
-          subBadge.className = "psnine-subfloor-badge";
+          subBadge.className = "p9n-tag psnine-subfloor-badge";
           subBadge.setAttribute("data-psnine-next", "chrome");
           subBadge.textContent = `#${subfloorNum}`;
-          subBadge.style.cssText = "color:var(--p9n-muted); font-size:11px; margin-right:4px;";
           subMeta.prepend(subBadge);
         }
       });
@@ -3414,16 +4085,23 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
           header.className = "psnine-traceback-header";
           if (avatarImgEl && avatarImgEl.src) {
             const avatar = doc.createElement("img");
+            avatar.className = "psnine-traceback-avatar";
             avatar.src = avatarImgEl.src;
+            avatar.alt = "";
             avatar.width = 16;
             avatar.height = 16;
-            avatar.style.borderRadius = "50%";
-            avatar.style.marginRight = "4px";
             header.appendChild(avatar);
           }
           const titleText = doc.createElement("span");
-          titleText.textContent = `${text} ${prevFloor}`;
+          titleText.className = "psnine-traceback-user";
+          titleText.textContent = text;
           header.appendChild(titleText);
+          if (prevFloor) {
+            const floorTag = doc.createElement("span");
+            floorTag.className = "p9n-tag";
+            floorTag.textContent = prevFloor;
+            header.appendChild(floorTag);
+          }
           card.appendChild(header);
           const contentBody = doc.createElement("div");
           contentBody.className = "psnine-traceback-content";
@@ -3601,41 +4279,61 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
     return clone.textContent || "";
   }
   function createPlaceholder(type, keyword, doc, originalEl) {
+    const buildBody = (parent, remove) => {
+      const label = doc.createElement("span");
+      label.className = "psnine-keyword-placeholder-label";
+      label.textContent = `\u5DF2\u5C4F\u853D\uFF1A\u5305\u542B\u5173\u952E\u8BCD\u201C${keyword}\u201D`;
+      const btn = doc.createElement("button");
+      btn.type = "button";
+      btn.className = "p9n-text-toggle psnine-keyword-reveal";
+      btn.setAttribute("aria-pressed", "false");
+      btn.setAttribute("aria-label", `\u663E\u793A\u5305\u542B\u5173\u952E\u8BCD\u201C${keyword}\u201D\u7684\u5DF2\u5C4F\u853D\u5185\u5BB9`);
+      btn.textContent = "\u663E\u793A";
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        setHidden(originalEl, "keyword-block", false);
+        remove();
+      });
+      parent.append(label, btn);
+    };
     if (type === "tr") {
       const tr = doc.createElement("tr");
       tr.className = "psnine-keyword-placeholder-row";
       tr.setAttribute("data-psnine-next", "chrome");
       const td = doc.createElement("td");
+      td.className = "psnine-keyword-placeholder-cell";
       td.setAttribute("colspan", "100%");
-      td.style.cssText = "padding:6px 12px; background:var(--p9n-surface-alt); color:var(--p9n-muted); font-size:12px;";
-      const btn2 = doc.createElement("button");
-      btn2.type = "button";
-      btn2.style.cssText = "background:none; border:none; color:inherit; font:inherit; cursor:pointer; text-decoration:underline;";
-      btn2.textContent = `[\u5DF2\u5C4F\u853D] \u8BE5\u884C\u5305\u542B\u5173\u952E\u8BCD "${keyword}" (\u70B9\u51FB\u67E5\u770B)`;
-      btn2.addEventListener("click", (e) => {
-        e.stopPropagation();
-        setHidden(originalEl, "keyword-block", false);
-        tr.remove();
-      });
-      td.appendChild(btn2);
+      buildBody(td, () => tr.remove());
       tr.appendChild(td);
       return tr;
     }
     const el = doc.createElement(type);
     el.className = "psnine-keyword-placeholder";
     el.setAttribute("data-psnine-next", "chrome");
-    el.style.cssText = "padding:8px 12px; margin:4px 0; background:var(--p9n-surface-alt); font-size:12px; color:var(--p9n-muted); border-radius:4px;";
-    const btn = doc.createElement("button");
-    btn.type = "button";
-    btn.style.cssText = "background:none; border:none; color:inherit; font:inherit; cursor:pointer; text-decoration:underline;";
-    btn.textContent = `[\u5DF2\u5C4F\u853D] \u8BE5\u5185\u5BB9\u5305\u542B\u5173\u952E\u8BCD "${keyword}" (\u70B9\u51FB\u67E5\u770B)`;
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      setHidden(originalEl, "keyword-block", false);
-      el.remove();
-    });
-    el.appendChild(btn);
+    buildBody(el, () => el.remove());
     return el;
+  }
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  function createUserIcon(doc) {
+    const svg = doc.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("width", "14");
+    svg.setAttribute("height", "14");
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "2");
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("focusable", "false");
+    const path = doc.createElementNS(SVG_NS, "path");
+    path.setAttribute("d", "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2");
+    const circle = doc.createElementNS(SVG_NS, "circle");
+    circle.setAttribute("cx", "12");
+    circle.setAttribute("cy", "7");
+    circle.setAttribute("r", "4");
+    svg.append(path, circle);
+    return svg;
   }
   function setupAvatarProfileCards(ctx, root) {
     if (!ctx.settings.hoverHomepage) return () => {
@@ -3685,10 +4383,10 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
       card.setAttribute("data-psnine-next", "chrome");
       card.setAttribute("role", "dialog");
       card.setAttribute("aria-label", `${username} \u7684\u4E2A\u4EBA\u8D44\u6599`);
-      card.style.cssText = "position:fixed; z-index:10000; background:var(--p9n-surface); color:var(--p9n-text); padding:12px; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,0.25); min-width:240px; max-width:320px; font-size:12px; border:1px solid var(--p9n-border);";
       card.addEventListener("mouseenter", cancelHide);
       card.addEventListener("mouseleave", scheduleHide);
       const loadingText = doc.createElement("div");
+      loadingText.className = "psnine-profile-card-status";
       loadingText.textContent = `\u6B63\u5728\u8F7D\u5165 ${username} \u7684\u8D44\u6599...`;
       card.appendChild(loadingText);
       doc.body.appendChild(card);
@@ -3704,16 +4402,17 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         const profileUrl = new URL(`/psnid/${username}`, currentUrl.origin).href;
         const userDoc = await http.document(profileUrl, { ttl: 6e4, signal: abortSignal });
         if (abortSignal.aborted || card !== activeCard) return;
-        card.innerHTML = "";
+        card.replaceChildren();
         const userHeader = doc.createElement("div");
-        userHeader.style.cssText = "font-weight:bold; font-size:15px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;";
+        userHeader.className = "psnine-profile-card-header";
         const nameSpan = doc.createElement("span");
+        nameSpan.className = "psnine-profile-card-name";
         nameSpan.textContent = username;
         userHeader.appendChild(nameSpan);
         const closeBtn = doc.createElement("button");
         closeBtn.type = "button";
+        closeBtn.className = "psnine-icon-btn psnine-profile-card-close";
         closeBtn.setAttribute("aria-label", "\u5173\u95ED\u8D44\u6599\u5361\u7247");
-        closeBtn.style.cssText = "background:none; border:none; cursor:pointer; color:var(--p9n-muted); font-size:16px; padding:0 4px;";
         closeBtn.innerHTML = ICONS.close;
         closeBtn.addEventListener("click", closeActiveCard);
         userHeader.appendChild(closeBtn);
@@ -3724,16 +4423,16 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         const rankText = rankEl ? rankEl.textContent?.trim() : null;
         if (levelText || rankText) {
           const statsRow = doc.createElement("div");
-          statsRow.style.cssText = "display:flex; gap:10px; align-items:center; margin-bottom:6px;";
+          statsRow.className = "psnine-profile-card-stats";
           if (levelText) {
             const lvlSpan = doc.createElement("span");
-            lvlSpan.style.cssText = "color:var(--p9n-warning-text); font-weight:bold; font-size:13px;";
+            lvlSpan.className = "p9n-tag is-accent";
             lvlSpan.textContent = levelText;
             statsRow.appendChild(lvlSpan);
           }
           if (rankText) {
             const rankSpan = doc.createElement("span");
-            rankSpan.style.cssText = "color:var(--p9n-muted); font-size:11px;";
+            rankSpan.className = "p9n-tag";
             rankSpan.textContent = `\u6392\u540D #${rankText}`;
             statsRow.appendChild(rankSpan);
           }
@@ -3742,16 +4441,16 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         const psntrophyEl = userDoc.querySelector(".psntrophy");
         if (psntrophyEl) {
           const trophyRow = doc.createElement("div");
-          trophyRow.style.cssText = "background:var(--p9n-surface-alt); border-radius:4px; padding:4px 8px; margin:6px 0; font-size:11px; display:flex; gap:8px;";
+          trophyRow.className = "psnine-profile-card-trophies";
           trophyRow.textContent = psntrophyEl.textContent?.trim() || "";
           card.appendChild(trophyRow);
         }
         const linkRow = doc.createElement("div");
-        linkRow.style.cssText = "margin-top:8px; text-align:right; border-top:1px solid var(--p9n-border); padding-top:6px;";
+        linkRow.className = "psnine-profile-card-footer";
         const profileLink = doc.createElement("a");
+        profileLink.className = "psnine-profile-card-link";
         profileLink.href = profileUrl;
-        profileLink.textContent = "\u8BBF\u95EE\u4E2A\u4EBA\u4E3B\u9875 \xBB";
-        profileLink.style.cssText = "color:var(--p9n-link); font-size:11px; text-decoration:none; font-weight:600;";
+        profileLink.textContent = "\u8BBF\u95EE\u4E2A\u4EBA\u4E3B\u9875";
         linkRow.appendChild(profileLink);
         card.appendChild(linkRow);
         const newRect = card.getBoundingClientRect();
@@ -3760,7 +4459,10 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         }
       } catch {
         if (!abortSignal.aborted && card === activeCard) {
-          card.textContent = "\u8D44\u6599\u52A0\u8F7D\u5931\u8D25";
+          const errorText = doc.createElement("div");
+          errorText.className = "psnine-profile-card-status";
+          errorText.textContent = "\u8D44\u6599\u52A0\u8F7D\u5931\u8D25";
+          card.replaceChildren(errorText);
         }
       }
     };
@@ -3776,14 +4478,14 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         showTimer = window.setTimeout(() => showProfileCard(username, link), 500);
       });
       link.addEventListener("mouseleave", scheduleHide);
+      if (link.matches("a.l") || link.querySelector("img")) return;
       const triggerBtn = doc.createElement("button");
-      triggerBtn.className = "psnine-profile-trigger";
+      triggerBtn.className = "psnine-icon-btn psnine-profile-trigger";
       triggerBtn.setAttribute("data-psnine-next", "chrome");
       triggerBtn.type = "button";
-      triggerBtn.style.cssText = "background:none; border:none; padding:0 2px; cursor:pointer; color:var(--p9n-muted); font-size:10px; vertical-align:middle;";
-      triggerBtn.setAttribute("title", "\u67E5\u770B\u4E2A\u4EBA\u5361\u7247");
-      triggerBtn.setAttribute("aria-label", `\u67E5\u770B ${username} \u8D44\u6599\u5361\u7247`);
-      triggerBtn.textContent = "\u{1F464}";
+      triggerBtn.setAttribute("title", "\u67E5\u770B\u7528\u6237\u8D44\u6599");
+      triggerBtn.setAttribute("aria-label", `\u67E5\u770B\u7528\u6237\u8D44\u6599\uFF1A${username}`);
+      triggerBtn.appendChild(createUserIcon(doc));
       triggerBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -3827,10 +4529,9 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         const titleLink = topic.querySelector(".title a, p.title a, td.title a, h4 a");
         if (titleLink) {
           const badge = doc.createElement("span");
-          badge.className = "psnine-hot-badge";
+          badge.className = "p9n-tag is-danger psnine-hot-badge";
           badge.setAttribute("data-psnine-next", "chrome");
           badge.textContent = "HOT";
-          badge.style.cssText = "background:var(--p9n-danger); color:var(--p9n-on-accent); font-size:10px; font-weight:bold; padding:1px 4px; border-radius:3px; margin-left:6px; vertical-align:middle;";
           titleLink.after(badge);
         }
       }
@@ -3845,32 +4546,37 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
       if (!titleLink || node.querySelector(".psnine-qa-status")) return;
       const statusSpan = node.querySelector("div.meta > .r > span:nth-child(2), .meta span.r span:last-child");
       const statusText = statusSpan ? statusSpan.textContent?.trim() : node.textContent || "";
-      const wrapper = doc.createElement("span");
-      wrapper.className = "psnine-qa-status";
-      wrapper.setAttribute("data-psnine-next", "chrome");
+      const insertStatus = (label, variant) => {
+        const tag = doc.createElement("span");
+        tag.className = `p9n-tag psnine-qa-status ${variant}`.trim();
+        tag.setAttribute("data-psnine-next", "chrome");
+        tag.textContent = label;
+        titleLink.before(tag);
+      };
       if (statusText?.includes("\u5DF2\u89E3\u51B3") || node.querySelector(".fa-check-circle")) {
-        wrapper.innerHTML = `${ICONS.checkCircle} <span style="font-size:11px; color:var(--p9n-success); margin-right:4px;">\u5DF2\u89E3\u51B3</span>`;
-        titleLink.before(wrapper);
+        insertStatus("\u5DF2\u89E3\u51B3", "is-success");
       } else if (statusText?.includes("\u89E3\u51B3\u4E2D")) {
-        wrapper.innerHTML = `<span style="font-size:11px; color:var(--p9n-link); font-weight:600; margin-right:4px;">[\u89E3\u51B3\u4E2D]</span>`;
-        titleLink.before(wrapper);
+        insertStatus("\u89E3\u51B3\u4E2D", "is-pending");
       } else if (statusText?.includes("\u672A\u56DE\u7B54")) {
-        wrapper.innerHTML = `<span style="font-size:11px; color:var(--p9n-muted); margin-right:4px;">[\u672A\u56DE\u7B54]</span>`;
-        titleLink.before(wrapper);
+        insertStatus("\u672A\u56DE\u7B54", "");
       }
       const rewardSpan = node.querySelector("div.meta > .r > span:nth-child(1), .meta span.r");
       if (rewardSpan && rewardSpan.textContent) {
         const match = rewardSpan.textContent.match(/悬赏(\d+)铜/);
         if (match && match[1] && !node.querySelector(".psnine-qa-bounty")) {
           const count = parseInt(match[1], 10);
-          let color = "var(--p9n-muted)";
-          if (count > 30) color = "#f39c12";
-          else if (count === 10) color = "#d35400";
+          let tier = "";
+          if (count > 30) tier = "is-gold";
+          else if (count === 10) tier = "is-bronze";
           const bounty = doc.createElement("span");
-          bounty.className = "psnine-qa-bounty";
+          bounty.className = `psnine-qa-bounty ${tier}`.trim();
           bounty.setAttribute("data-psnine-next", "chrome");
-          bounty.style.cssText = "margin-left:6px; vertical-align:middle;";
-          bounty.innerHTML = `${ICONS.coins} <span style="font-size:11px; color:${color}; font-weight:bold;">${count}</span>`;
+          bounty.setAttribute("title", `\u60AC\u8D4F ${count} \u94DC`);
+          bounty.innerHTML = ICONS.coins;
+          const countSpan = doc.createElement("span");
+          countSpan.className = "psnine-qa-bounty-count";
+          countSpan.textContent = String(count);
+          bounty.appendChild(countSpan);
           titleLink.after(bounty);
         }
       }
@@ -4077,7 +4783,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
     const container = ctx.document.createElement("div");
     container.className = "psnine-gene-count-box";
     container.setAttribute("data-psnine-next", "chrome");
-    container.style.cssText = "margin-top:6px; font-size:13px; color:var(--p9n-muted); font-weight:500;";
+    container.setAttribute("aria-live", "polite");
     textarea.after(container);
     const submitBtn = geneForm.querySelector('input[type="submit"], button[type="submit"]');
     const maxLimit = 600;
@@ -4086,15 +4792,8 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
       const cleanText = textarea.value.replace(/[\r\n]/g, "");
       const len = cleanText.length;
       isOverLimit = len > maxLimit;
-      if (isOverLimit) {
-        container.style.color = "#e74c3c";
-        container.style.fontWeight = "bold";
-        container.textContent = `\u673A\u56E0\u5B57\u6570: ${len} / ${maxLimit} (\u5DF2\u8D85\u9650\uFF0C\u65E0\u6CD5\u53D1\u8868)`;
-      } else {
-        container.style.color = "var(--p9n-muted)";
-        container.style.fontWeight = "500";
-        container.textContent = `\u673A\u56E0\u5B57\u6570: ${len} / ${maxLimit}`;
-      }
+      container.classList.toggle("is-over", isOverLimit);
+      container.textContent = isOverLimit ? `\u673A\u56E0\u5B57\u6570 ${len} / ${maxLimit}\uFF08\u5DF2\u8D85\u9650\uFF0C\u65E0\u6CD5\u53D1\u8868\uFF09` : `\u673A\u56E0\u5B57\u6570 ${len} / ${maxLimit}`;
     };
     geneForm.addEventListener("submit", (e) => {
       if (isOverLimit) {
@@ -4121,10 +4820,10 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
     const previewBox = ctx.document.createElement("div");
     previewBox.id = "psnine-bbcode-preview";
     previewBox.setAttribute("data-psnine-next", "chrome");
-    previewBox.style.cssText = "margin-top:10px; padding:12px; border:1px dashed var(--p9n-border); border-radius:6px; min-height:40px; word-wrap:break-word; word-break:break-word; display:none;";
+    previewBox.style.display = "none";
     const previewHeader = ctx.document.createElement("div");
-    previewHeader.textContent = "\u5B9E\u65F6\u9884\u89C8 (BBCode)";
-    previewHeader.style.cssText = "font-size:12px; color:var(--p9n-muted); font-weight:bold; margin-bottom:8px; border-bottom:1px solid var(--p9n-border); padding-bottom:4px;";
+    previewHeader.className = "psnine-bbcode-preview-label";
+    previewHeader.textContent = "\u9884\u89C8";
     previewBox.appendChild(previewHeader);
     const previewContent = ctx.document.createElement("div");
     previewContent.className = "content";
@@ -4347,13 +5046,34 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
     const controlBar = doc.createElement("div");
     controlBar.id = "psnine-pagination-indicator";
     controlBar.setAttribute("data-psnine-next", "chrome");
-    controlBar.style.cssText = "text-align:center; padding:16px; font-size:13px; color:var(--p9n-muted); display:none; user-select:none;";
+    controlBar.setAttribute("role", "status");
+    controlBar.style.display = "none";
     const statusText = doc.createElement("span");
+    statusText.className = "psnine-paging-status";
     statusText.textContent = "\u6B63\u5728\u52A0\u8F7D\u4E0B\u4E00\u9875...";
     controlBar.appendChild(statusText);
+    let actionBtn = null;
+    const clearAction = () => {
+      actionBtn?.remove();
+      actionBtn = null;
+    };
+    const showAction = (status, label, onClick) => {
+      clearAction();
+      statusText.textContent = status;
+      const btn = doc.createElement("button");
+      btn.type = "button";
+      btn.className = "p9n-pill is-sm psnine-paging-action";
+      btn.textContent = label;
+      btn.addEventListener("click", () => {
+        clearAction();
+        onClick();
+      }, { once: true });
+      statusText.after(btn);
+      actionBtn = btn;
+    };
     const stopBtn = doc.createElement("button");
-    stopBtn.className = "psnine-btn";
-    stopBtn.style.cssText = "margin-left:12px; font-size:12px; padding:2px 8px; min-height:24px; min-width:auto; cursor:pointer;";
+    stopBtn.type = "button";
+    stopBtn.className = "p9n-pill is-sm psnine-paging-stop";
     stopBtn.textContent = "\u505C\u6B62\u7FFB\u9875";
     stopBtn.addEventListener("click", () => {
       isStoppedByUser = true;
@@ -4373,13 +5093,11 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
     const loadNextPage = async () => {
       if (isLoading || !hasMore || !nextUrl || isStoppedByUser || !isMounted) return;
       if (maxPages > 0 && pagesLoaded >= maxPages) {
-        controlBar.style.display = "block";
-        statusText.innerHTML = `<span style="cursor:pointer; color:var(--p9n-link); text-decoration:underline;">\u5DF2\u52A0\u8F7D\u9884\u8BBE ${pagesLoaded} \u9875\uFF0C\u70B9\u51FB\u7EE7\u7EED\u52A0\u8F7D\u4E0B\u4E00\u9875</span>`;
-        statusText.onclick = () => {
-          statusText.onclick = null;
+        controlBar.style.display = "";
+        showAction(`\u5DF2\u52A0\u8F7D\u9884\u8BBE ${pagesLoaded} \u9875`, "\u7EE7\u7EED\u52A0\u8F7D\u4E0B\u4E00\u9875", () => {
           pagesLoaded = 0;
           loadNextPage();
-        };
+        });
         return;
       }
       const normalizedTarget = new URL(nextUrl, url.href);
@@ -4390,7 +5108,8 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         return;
       }
       isLoading = true;
-      controlBar.style.display = "block";
+      controlBar.style.display = "";
+      clearAction();
       statusText.textContent = `\u6B63\u5728\u81EA\u52A8\u52A0\u8F7D\u7B2C ${pagesLoaded + 1} \u9875...`;
       abortCtrl = new AbortController();
       const thisCtrl = abortCtrl;
@@ -4433,22 +5152,18 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
           hasMore = false;
           controlBar.style.display = "none";
         } else if (maxPages > 0 && pagesLoaded >= maxPages) {
-          statusText.innerHTML = `<span style="cursor:pointer; color:var(--p9n-link); text-decoration:underline;">\u5DF2\u52A0\u8F7D\u9884\u8BBE ${pagesLoaded} \u9875\uFF0C\u70B9\u51FB\u7EE7\u7EED\u52A0\u8F7D\u4E0B\u4E00\u9875</span>`;
-          statusText.onclick = () => {
-            statusText.onclick = null;
+          showAction(`\u5DF2\u52A0\u8F7D\u9884\u8BBE ${pagesLoaded} \u9875`, "\u7EE7\u7EED\u52A0\u8F7D\u4E0B\u4E00\u9875", () => {
             pagesLoaded = 0;
             loadNextPage();
-          };
+          });
         } else {
           controlBar.style.display = "none";
         }
       } catch (err) {
         if (err?.name === "AbortError" || thisCtrl.signal.aborted) return;
-        statusText.innerHTML = `<span style="color:var(--p9n-danger); cursor:pointer;">\u52A0\u8F7D\u5931\u8D25\uFF0C\u70B9\u51FB\u91CD\u8BD5</span>`;
-        statusText.onclick = () => {
-          statusText.onclick = null;
+        showAction("\u4E0B\u4E00\u9875\u52A0\u8F7D\u5931\u8D25", "\u91CD\u8BD5", () => {
           loadNextPage();
-        };
+        });
         ctx.report("autoPaging", err);
       } finally {
         isLoading = false;
@@ -4486,9 +5201,9 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
     };
     btn = doc.createElement("button");
     btn.id = "psnine-load-all-qa";
-    btn.className = "psnine-btn";
+    btn.type = "button";
+    btn.className = "p9n-pill";
     btn.setAttribute("data-psnine-next", "chrome");
-    btn.style.cssText = "margin:10px 0; font-size:12px; cursor:pointer; padding:4px 10px;";
     btn.textContent = "\u8F7D\u5165\u5168\u90E8\u7B54\u6848";
     paginationBar.before(btn);
     let isCancelled = false;
@@ -4868,7 +5583,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
   function renderScoreDistributionSvg(stats, showNormalCurve, activeFilterScore) {
     const { distribution, maxScoreBucket, average, stdDev, scoredCount } = stats;
     if (scoredCount === 0) {
-      return '<div class="psnine-empty-chart" style="padding:10px;color:var(--p9n-muted);">\u6682\u65E0\u6709\u6548\u8BC4\u5206\u6837\u672C</div>';
+      return '<div class="psnine-empty-chart">\u6682\u65E0\u6709\u6548\u8BC4\u5206\u6837\u672C</div>';
     }
     const svgWidth = 460;
     const svgHeight = 200;
@@ -4885,10 +5600,10 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
       const y = margin.top + innerHeight - barHeight;
       const isMax = s === maxScoreBucket;
       const isSelected = activeFilterScore === s;
-      const color = isSelected ? "#ff9800" : isMax ? "#da314b" : "var(--p9n-link)";
+      const color = isMax ? "var(--p9n-danger)" : "var(--p9n-link)";
       const opacity = activeFilterScore === null || isSelected ? "1" : "0.35";
       barsHtml += `
-      <g class="score-bar-group" data-score="${s}" style="cursor:pointer;" tabindex="0" role="button" aria-label="${s}\u5206: ${count}\u4EBA">
+      <g class="score-bar-group" data-score="${s}" tabindex="0" role="button" aria-pressed="${isSelected ? "true" : "false"}" aria-label="${s}\u5206: ${count}\u4EBA">
         <rect x="${x}" y="${y}" width="${barWidth - 8}" height="${Math.max(2, barHeight)}" rx="2" style="fill:${color}" fill-opacity="${opacity}">
           <title>${s}\u5206: ${count}\u4EBA (${(count / scoredCount * 100).toFixed(1)}%)</title>
         </rect>
@@ -4923,7 +5638,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
       }
     }
     return `
-    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" class="psnine-score-svg" style="width:100%;height:auto;max-height:220px;user-select:none;font-family:inherit;">
+    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" class="psnine-score-svg psnine-review-svg">
       <desc>\u8BC4\u8BBA\u8BC4\u5206\u5206\u5E03\u76F4\u65B9\u56FE\uFF0C\u6A2A\u8F74\u4E3A1-10\u5206\uFF0C\u7EB5\u8F74\u4E3A\u8BC4\u4EF7\u4EBA\u6570</desc>
       <line x1="${margin.left}" y1="${margin.top + innerHeight}" x2="${margin.left + innerWidth}" y2="${margin.top + innerHeight}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
       <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + innerHeight}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
@@ -4935,7 +5650,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
   function renderTrendSvg(stats) {
     const { cumulativeTrend, missingTimeCount } = stats;
     if (cumulativeTrend.length < 2) {
-      return '<div class="psnine-empty-chart" style="padding:10px;color:var(--p9n-muted);">\u9700\u81F3\u5C11 2 \u6761\u6709\u6548\u65F6\u95F4\u6837\u672C\u751F\u6210\u8D70\u52BF\u56FE</div>';
+      return '<div class="psnine-empty-chart">\u9700\u81F3\u5C11 2 \u6761\u6709\u6548\u65F6\u95F4\u6837\u672C\u751F\u6210\u8D70\u52BF\u56FE</div>';
     }
     const svgWidth = 460;
     const svgHeight = 200;
@@ -4959,7 +5674,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
     const firstDate = new Date(firstTime + SHANGHAI_OFFSET_MS).toISOString().slice(0, 10);
     const lastDate = new Date(lastTime + SHANGHAI_OFFSET_MS).toISOString().slice(0, 10);
     return `
-    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" class="psnine-trend-svg" style="width:100%;height:auto;max-height:220px;user-select:none;font-family:inherit;">
+    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" class="psnine-trend-svg psnine-review-svg">
       <desc>\u7D2F\u8BA1\u5747\u5206\u8D70\u52BF\u6298\u7EBF\u56FE\uFF0C\u4ECE ${firstDate} \u81F3 ${lastDate}</desc>
       <line x1="${margin.left}" y1="${margin.top + innerHeight}" x2="${margin.left + innerWidth}" y2="${margin.top + innerHeight}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
       <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + innerHeight}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
@@ -4968,32 +5683,32 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
       <text x="${margin.left}" y="${margin.top + innerHeight + 16}" text-anchor="start" font-size="10" fill="currentColor">${firstDate}</text>
       <text x="${margin.left + innerWidth}" y="${margin.top + innerHeight + 16}" text-anchor="end" font-size="10" fill="currentColor">${lastDate}</text>
       <polyline points="${points.join(" ")}" fill="none" style="stroke:var(--p9n-link)" stroke-width="2.5" />
-      <circle cx="${points[points.length - 1].split(",")[0]}" cy="${points[points.length - 1].split(",")[1]}" r="4" fill="#da314b">
+      <circle cx="${points[points.length - 1].split(",")[0]}" cy="${points[points.length - 1].split(",")[1]}" r="4" style="fill:var(--p9n-danger)">
         <title>\u5F53\u524D\u5747\u5206: ${cumulativeTrend[len - 1].cumAvg}</title>
       </circle>
     </svg>
-    <details style="margin-top:4px;font-size:11px;color:var(--p9n-muted);">
-      <summary style="cursor:pointer;">\u67E5\u770B\u8D70\u52BF\u6570\u636E\u8868\u683C</summary>
-      <div style="max-height:100px;overflow-y:auto;margin-top:4px;">
-        <table style="width:100%;border-collapse:collapse;font-size:11px;">
+    <details class="psnine-review-table">
+      <summary>\u67E5\u770B\u8D70\u52BF\u6570\u636E\u8868\u683C</summary>
+      <div class="psnine-review-table-scroll">
+        <table>
           <thead>
-            <tr style="border-bottom:1px solid var(--p9n-border);"><th style="text-align:left;">\u65E5\u671F</th><th style="text-align:right;">\u5F53\u6761\u8BC4\u5206</th><th style="text-align:right;">\u7D2F\u8BA1\u5747\u5206</th></tr>
+            <tr><th>\u65E5\u671F</th><th class="is-num">\u5F53\u6761\u8BC4\u5206</th><th class="is-num">\u7D2F\u8BA1\u5747\u5206</th></tr>
           </thead>
           <tbody>
             ${cumulativeTrend.slice(-15).map((t) => `
-              <tr style="border-bottom:1px solid var(--p9n-border);"><td style="text-align:left;">${new Date(t.time + SHANGHAI_OFFSET_MS).toISOString().slice(0, 10)}</td><td style="text-align:right;">${t.score}\u5206</td><td style="text-align:right;font-weight:500;">${t.cumAvg}</td></tr>
+              <tr><td>${new Date(t.time + SHANGHAI_OFFSET_MS).toISOString().slice(0, 10)}</td><td class="is-num">${t.score}\u5206</td><td class="is-num is-strong">${t.cumAvg}</td></tr>
             `).join("")}
           </tbody>
         </table>
       </div>
     </details>
-    ${missingTimeCount > 0 ? `<div style="font-size:11px;color:var(--p9n-muted);text-align:right;padding-right:10px;margin-top:2px;">\u6CE8\uFF1A${missingTimeCount} \u6761\u8BC4\u4EF7\u65E0\u6709\u6548\u65F6\u95F4\u6233\u672A\u7EB3\u5165\u8D8B\u52BF</div>` : ""}
+    ${missingTimeCount > 0 ? `<div class="psnine-review-chart-note">\u6CE8\uFF1A${missingTimeCount} \u6761\u8BC4\u4EF7\u65E0\u6709\u6548\u65F6\u95F4\u6233\u672A\u7EB3\u5165\u8D8B\u52BF</div>` : ""}
   `;
   }
   function renderWeeklyHeatmapSvg(stats) {
     const { weeklyHeatmap, scoredCount, missingTimeCount } = stats;
     if (weeklyHeatmap.length === 0) {
-      return '<div class="psnine-empty-chart" style="padding:10px;color:var(--p9n-muted);">\u6682\u65E0\u65F6\u95F4\u6570\u636E</div>';
+      return '<div class="psnine-empty-chart">\u6682\u65E0\u65F6\u95F4\u6570\u636E</div>';
     }
     const svgWidth = 460;
     const svgHeight = 180;
@@ -5017,7 +5732,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
     }
     const sampleCount = scoredCount - missingTimeCount;
     return `
-    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" class="psnine-weekly-svg" style="width:100%;height:auto;max-height:200px;user-select:none;font-family:inherit;">
+    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" class="psnine-weekly-svg psnine-review-svg">
       <desc>\u6BCF\u5468\u8BC4\u8BBA\u70ED\u5EA6\u67F1\u72B6\u56FE\uFF0C\u5305\u542B\u8DE8\u5E74\u7A7A\u5468</desc>
       <line x1="${margin.left}" y1="${margin.top + innerHeight}" x2="${margin.left + innerWidth}" y2="${margin.top + innerHeight}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
       <text x="${margin.left}" y="${margin.top + innerHeight + 16}" text-anchor="start" font-size="10" fill="currentColor">${weeklyHeatmap[0].weekKey}</text>
@@ -5025,16 +5740,16 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
       <text x="${margin.left - 5}" y="${margin.top + 6}" text-anchor="end" font-size="10" fill="currentColor">${maxWeeklyCount}</text>
       ${barsHtml}
     </svg>
-    <details style="margin-top:4px;font-size:11px;color:var(--p9n-muted);">
-      <summary style="cursor:pointer;">\u67E5\u770B\u6BCF\u5468\u70ED\u5EA6\u6570\u636E\u8868\u683C (${sampleCount} \u6761\u65F6\u95F4\u6837\u672C / ${totalWeeks} \u5468)</summary>
-      <div style="max-height:100px;overflow-y:auto;margin-top:4px;">
-        <table style="width:100%;border-collapse:collapse;font-size:11px;">
+    <details class="psnine-review-table">
+      <summary>\u67E5\u770B\u6BCF\u5468\u70ED\u5EA6\u6570\u636E\u8868\u683C (${sampleCount} \u6761\u65F6\u95F4\u6837\u672C / ${totalWeeks} \u5468)</summary>
+      <div class="psnine-review-table-scroll">
+        <table>
           <thead>
-            <tr style="border-bottom:1px solid var(--p9n-border);"><th style="text-align:left;">\u5468 (ISO)</th><th style="text-align:right;">\u8BC4\u8BBA\u6570</th></tr>
+            <tr><th>\u5468 (ISO)</th><th class="is-num">\u8BC4\u8BBA\u6570</th></tr>
           </thead>
           <tbody>
             ${weeklyHeatmap.map((w) => `
-              <tr style="border-bottom:1px solid var(--p9n-border);"><td style="text-align:left;">${w.weekKey}</td><td style="text-align:right;font-weight:500;">${w.count}</td></tr>
+              <tr><td>${w.weekKey}</td><td class="is-num is-strong">${w.count}</td></tr>
             `).join("")}
           </tbody>
         </table>
@@ -5071,7 +5786,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
           container = doc.createElement("div");
           container.id = containerId;
           container.setAttribute("data-psnine-next", "true");
-          container.style.cssText = "margin:15px 0;padding:12px;background:var(--p9n-surface-alt);border:1px solid var(--p9n-border);border-radius:8px;box-sizing:border-box;";
+          container.className = "psnine-reviews-panel";
           const target = doc.querySelector("div.min-inner.mt40 div.box, .box");
           if (target) {
             const list = target.querySelector("ul.list");
@@ -5082,69 +5797,61 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             }
           }
         }
+        const pressed = (on) => on ? "true" : "false";
+        const chartTitle = activeSubTab === "dist" ? showNormalCurve ? "\u8BC4\u5206\u5206\u5E03 \xB7 \u542B\u6B63\u6001\u62DF\u5408" : "\u8BC4\u5206\u5206\u5E03" : "\u6BCF\u5468\u8BC4\u5206\u70ED\u5EA6 \xB7 \u542B\u7A7A\u5468\u8865\u96F6";
         container.innerHTML = `
-        <div data-psnine-next="true" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">
-          <div data-psnine-next="true" style="font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px;">
-            <span>\u{1F4CA} \u73A9\u5BB6\u8BC4\u6D4B\u4E0E\u5747\u5206\u7EDF\u8BA1</span>
-            <span class="alert-success pd5" style="border-radius:4px;font-size:12px;padding:2px 8px;background:var(--p9n-success);color:var(--p9n-on-accent);">
-              \u5747\u5206 ${stats.average} (${stats.scoredCount}\u4EBA\u6253\u5206 / \u5171${stats.totalLoaded}\u6761)
-            </span>
-          </div>
-          <div data-psnine-next="true" style="display:flex;align-items:center;gap:6px;font-size:12px;">
-            <button type="button" id="psnine-toggle-tab-btn" data-psnine-next="true" style="padding:4px 8px;border-radius:4px;border:1px solid var(--p9n-border);background:transparent;cursor:pointer;font-size:12px;">
-              ${activeSubTab === "dist" ? "\u5207\u6362: \u6BCF\u5468\u70ED\u5EA6" : "\u5207\u6362: \u8BC4\u5206\u5206\u5E03"}
-            </button>
-            <button type="button" id="psnine-toggle-gaussian-btn" data-psnine-next="true" style="padding:4px 8px;border-radius:4px;border:1px solid var(--p9n-border);background:transparent;cursor:pointer;font-size:12px;">
-              ${showNormalCurve ? "\u6B63\u6001\u66F2\u7EBF: \u5F00" : "\u6B63\u6001\u66F2\u7EBF: \u5173"}
-            </button>
-            ${activeFilterScore !== null ? `
-              <button type="button" id="psnine-clear-score-filter-btn" data-psnine-next="true" style="padding:4px 8px;border-radius:4px;border:1px solid #ff9800;background:rgba(255,152,0,0.1);color:var(--p9n-warning-text);cursor:pointer;font-weight:500;">
-                \u6E05\u9664 ${activeFilterScore}\u5206 \u7B5B\u9009
-              </button>
-            ` : ""}
-          </div>
-        </div>
-
-        <div data-psnine-next="true" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;align-items:center;">
-          <span style="font-size:12px;color:var(--p9n-muted);">\u5FEB\u6377\u5206\u6BB5\u7B5B\u9009:</span>
-          ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((s) => {
-          const count = stats.distribution[s - 1];
-          const isSel = activeFilterScore === s;
-          return `
-              <button type="button" class="psnine-score-filter-chip" data-psnine-next="true" data-score="${s}" style="padding:2px 6px;font-size:11px;border-radius:3px;border:1px solid ${isSel ? "#ff9800" : "var(--p9n-border)"};background:${isSel ? "#ff9800" : "var(--p9n-surface-alt)"};color:${isSel ? "var(--p9n-on-accent)" : "inherit"};cursor:pointer;">
-                ${s}\u5206 (${count})
-              </button>
-            `;
-        }).join("")}
-        </div>
-
-        <div data-psnine-next="true" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:12px;">
-          <div data-psnine-next="true" style="background:var(--p9n-surface-alt);border-radius:6px;padding:8px;border:1px solid var(--p9n-border);">
-            <div style="font-size:12px;font-weight:500;margin-bottom:4px;color:var(--p9n-muted);">
-              ${activeSubTab === "dist" ? `\u8BC4\u5206\u5206\u5E03\u76F4\u65B9\u56FE ${showNormalCurve ? "(\u542B\u6B63\u6001\u62DF\u5408)" : ""}` : "\u6BCF\u5468\u8BC4\u5206\u70ED\u5EA6\u8D8B\u52BF (\u542B\u7A7A\u5468\u8865\u96F6)"}
+        <div class="p9n-row psnine-reviews-header" data-psnine-next="true">
+          <h3 class="p9n-section-title">\u73A9\u5BB6\u8BC4\u6D4B</h3>
+          <span class="psnine-reviews-summary">\u5747\u5206 ${stats.average} \xB7 ${stats.scoredCount} \u4EBA\u6253\u5206 / \u5171 ${stats.totalLoaded} \u6761</span>
+          <div class="p9n-row-end psnine-reviews-controls" data-psnine-next="true">
+            <div class="p9n-seg" id="psnine-toggle-tab-btn" role="group" aria-label="\u56FE\u8868\u89C6\u56FE" data-psnine-next="true">
+              <button type="button" class="p9n-seg-btn" data-view="dist" aria-pressed="${pressed(activeSubTab === "dist")}" data-psnine-next="true">\u8BC4\u5206\u5206\u5E03</button>
+              <button type="button" class="p9n-seg-btn" data-view="weekly" aria-pressed="${pressed(activeSubTab === "weekly")}" data-psnine-next="true">\u6BCF\u5468\u70ED\u5EA6</button>
             </div>
+            <button type="button" id="psnine-toggle-gaussian-btn" class="p9n-pill is-sm" aria-pressed="${pressed(showNormalCurve)}" data-psnine-next="true">\u6B63\u6001\u66F2\u7EBF</button>
+          </div>
+        </div>
+
+        <div class="p9n-row psnine-score-filter-row" data-psnine-next="true">
+          <span class="p9n-row-label">\u6309\u5206\u6570</span>
+          <div class="psnine-score-filter-scroll" role="group" aria-label="\u6309\u5206\u6570\u7B5B\u9009\u8BC4\u8BBA" data-psnine-next="true">
+            ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((s) => {
+          const count = stats.distribution[s - 1];
+          return `<button type="button" class="p9n-pill is-sm psnine-score-filter-chip" data-psnine-next="true" data-score="${s}" aria-pressed="${pressed(activeFilterScore === s)}" aria-label="${s}\u5206\uFF0C${count} \u6761">${s}\u5206<span class="psnine-score-filter-count">${count}</span></button>`;
+        }).join("")}
+          </div>
+          ${activeFilterScore !== null ? `<button type="button" id="psnine-clear-score-filter-btn" class="p9n-pill is-sm" data-psnine-next="true" aria-label="\u6E05\u9664 ${activeFilterScore} \u5206\u7B5B\u9009">\u6E05\u9664</button>` : ""}
+        </div>
+
+        <div class="p9n-row psnine-review-charts" data-psnine-next="true">
+          <section class="psnine-review-chart" data-psnine-next="true">
+            <div class="p9n-row-label psnine-review-chart-title">${chartTitle}</div>
             <div id="psnine-score-dist-container" data-psnine-next="true">
               ${activeSubTab === "dist" ? renderScoreDistributionSvg(stats, showNormalCurve, activeFilterScore) : renderWeeklyHeatmapSvg(stats)}
             </div>
-          </div>
-          <div data-psnine-next="true" style="background:var(--p9n-surface-alt);border-radius:6px;padding:8px;border:1px solid var(--p9n-border);">
-            <div style="font-size:12px;font-weight:500;margin-bottom:4px;color:var(--p9n-muted);">\u7D2F\u8BA1\u5747\u5206\u8D70\u52BF</div>
+          </section>
+          <section class="psnine-review-chart" data-psnine-next="true">
+            <div class="p9n-row-label psnine-review-chart-title">\u7D2F\u8BA1\u5747\u5206\u8D70\u52BF</div>
             <div id="psnine-trend-container" data-psnine-next="true">${renderTrendSvg(stats)}</div>
-          </div>
+          </section>
         </div>
       `;
-        const tabBtn = doc.getElementById("psnine-toggle-tab-btn");
-        if (tabBtn) {
-          tabBtn.onclick = () => {
-            activeSubTab = activeSubTab === "dist" ? "weekly" : "dist";
+        container.querySelectorAll("#psnine-toggle-tab-btn .p9n-seg-btn").forEach((el) => {
+          const btn = el;
+          btn.onclick = () => {
+            const view = btn.getAttribute("data-view") === "weekly" ? "weekly" : "dist";
+            if (view === activeSubTab) return;
+            activeSubTab = view;
             renderPanel();
+            container?.querySelector(`#psnine-toggle-tab-btn [data-view="${view}"]`)?.focus();
           };
-        }
+        });
         const gaussianBtn = doc.getElementById("psnine-toggle-gaussian-btn");
         if (gaussianBtn) {
           gaussianBtn.onclick = () => {
             showNormalCurve = !showNormalCurve;
             renderPanel();
+            doc.getElementById("psnine-toggle-gaussian-btn")?.focus();
           };
         }
         const clearFilterBtn = doc.getElementById("psnine-clear-score-filter-btn");
@@ -5159,6 +5866,8 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             const s = parseInt(btn.getAttribute("data-score") || "0", 10);
             if (s >= 1 && s <= 10) {
               applyScoreFilter(activeFilterScore === s ? null : s);
+              const sel = btn.classList.contains("score-bar-group") ? ".score-bar-group" : ".psnine-score-filter-chip";
+              container?.querySelector(`${sel}[data-score="${s}"]`)?.focus();
             }
           };
           btn.onclick = trigger;
@@ -5546,12 +6255,14 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
           const sortBtn = doc.createElement("button");
           sortBtn.id = "psnine-sort-tips-by-likes-btn";
           sortBtn.type = "button";
+          sortBtn.className = "p9n-text-toggle is-sort";
           sortBtn.setAttribute("data-psnine-next", "true");
-          sortBtn.style.cssText = "padding:4px 8px;font-size:12px;border-radius:4px;border:1px solid #3890ff;background:transparent;color:#3890ff;cursor:pointer;margin-bottom:8px;";
-          sortBtn.textContent = "\u{1F525} \u6309\u201C\u9876\u201D\u6570\u70ED\u5EA6\u6392\u5E8FTips";
+          sortBtn.setAttribute("aria-pressed", isLikesSorted ? "true" : "false");
+          sortBtn.title = "\u6309\u201C\u9876\u201D\u6570\u6392\u5E8F Tips\uFF08\u518D\u6B21\u70B9\u51FB\u6062\u590D\u9ED8\u8BA4\u6392\u5E8F\uFF09";
+          sortBtn.textContent = "\u6309\u70ED\u5EA6\u6392\u5E8F";
           sortBtn.onclick = () => {
             isLikesSorted = !isLikesSorted;
-            sortBtn.textContent = isLikesSorted ? "\u{1F504} \u6062\u590D\u9ED8\u8BA4\u6392\u5E8F" : "\u{1F525} \u6309\u201C\u9876\u201D\u6570\u70ED\u5EA6\u6392\u5E8FTips";
+            sortBtn.setAttribute("aria-pressed", isLikesSorted ? "true" : "false");
             updateT13Tips();
           };
           tipsList.parentElement?.insertBefore(sortBtn, tipsList);
@@ -5633,24 +6344,19 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             const gameData = await fetchGameData(item.gid);
             if (!isActive || pageAbortController.signal.aborted) return;
             item.a.setAttribute("data-psnine-badge-bound", "true");
-            let badgeText = "\u2753 \u72B6\u6001\u672A\u77E5";
-            let bg = "#6c757d";
-            let fg = "#fff";
+            let badgeText = "\u72B6\u6001\u672A\u77E5";
+            let badgeVariant = "";
             if (gameData && gameData.verifiedPersonal) {
               if (gameData.earnedSet.has(item.tId)) {
-                badgeText = "\u2705 \u5DF2\u83B7\u5F97";
-                bg = "#28a745";
-                fg = "#fff";
+                badgeText = "\u5DF2\u83B7\u5F97";
+                badgeVariant = "is-success";
               } else if (gameData.knownSet.has(item.tId)) {
-                badgeText = "\u23F3 \u672A\u83B7\u5F97";
-                bg = "#ffc107";
-                fg = "#000";
+                badgeText = "\u672A\u83B7\u5F97";
               }
             }
             const badge = doc.createElement("span");
-            badge.className = "psnine-guide-trophy-badge";
+            badge.className = `p9n-tag psnine-guide-trophy-badge ${badgeVariant}`.trim();
             badge.setAttribute("data-psnine-next", "true");
-            badge.style.cssText = `display:inline-block;padding:1px 5px;font-size:11px;border-radius:3px;margin-left:4px;background:${bg};color:${fg};font-weight:500;`;
             badge.textContent = badgeText;
             item.a.after(badge);
           }
@@ -6231,11 +6937,12 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
           const td = doc.createElement("td");
           td.setAttribute("colspan", "4");
           td.setAttribute("data-psnine-next", "true");
-          td.style.cssText = "padding:10px 15px;background:var(--p9n-surface-alt,#f8fafc);border-bottom:1px solid var(--p9n-border,#ccd6dd);color:var(--p9n-text,inherit);";
+          td.className = "psnine-inline-tip-cell";
           const loadingDiv = doc.createElement("div");
+          loadingDiv.className = "psnine-inline-tip-status";
           loadingDiv.setAttribute("data-psnine-next", "true");
-          loadingDiv.style.cssText = "font-size:12px;color:var(--p9n-muted,#5f6b7a);";
-          loadingDiv.textContent = `\u23F3 \u6B63\u5728\u52A0\u8F7D\u5956\u676F Tips (#${t.trophyId})...`;
+          loadingDiv.setAttribute("role", "status");
+          loadingDiv.textContent = "\u6B63\u5728\u52A0\u8F7D Tips\u2026";
           td.appendChild(loadingDiv);
           tipRow.appendChild(td);
           t.row.after(tipRow);
@@ -6252,27 +6959,27 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             const tipNodes = directLis.length > 0 ? directLis : Array.from(tipDoc.querySelectorAll("ul.list > li, div.content"));
             if (tipNodes.length === 0) {
               const emptyMsg = doc.createElement("div");
+              emptyMsg.className = "psnine-inline-tip-status";
               emptyMsg.setAttribute("data-psnine-next", "true");
-              emptyMsg.style.cssText = "font-size:12px;color:var(--p9n-muted,#5f6b7a);";
-              emptyMsg.textContent = "\u6682\u65E0\u53EF\u7528 Tips";
+              emptyMsg.textContent = "\u6682\u65E0 Tips";
               td.appendChild(emptyMsg);
               return;
             }
             const container = doc.createElement("div");
+            container.className = "psnine-inline-tip-list";
             container.setAttribute("data-psnine-next", "true");
-            container.style.cssText = "max-height:280px;overflow-y:auto;";
             const topBar = doc.createElement("div");
+            topBar.className = "psnine-inline-tip-head";
             topBar.setAttribute("data-psnine-next", "true");
-            topBar.style.cssText = "font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;";
             const countSpan = doc.createElement("span");
-            countSpan.textContent = `\u{1F4A1} \u5956\u676F Tips (${tipNodes.length}\u6761):`;
+            countSpan.textContent = `Tips \xB7 ${tipNodes.length} \u6761`;
             topBar.appendChild(countSpan);
             const fullLink = doc.createElement("a");
             fullLink.setAttribute("data-psnine-next", "true");
             fullLink.href = targetUrl;
             fullLink.target = "_blank";
-            fullLink.style.cssText = "font-size:11px;color:#3890ff;text-decoration:none;";
-            fullLink.textContent = "\u524D\u5F80\u5956\u676F\u5B8C\u6574\u9875 \u2197";
+            fullLink.rel = "noopener";
+            fullLink.textContent = "\u5956\u676F\u5B8C\u6574\u9875";
             topBar.appendChild(fullLink);
             container.appendChild(topBar);
             const blockedUsers = new Set(settings.blockList.map((u) => u.toLowerCase().trim()));
@@ -6310,23 +7017,25 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
                 }
               }
               const itemDiv = doc.createElement("div");
+              itemDiv.className = "psnine-inline-tip-item";
               itemDiv.setAttribute("data-psnine-next", "true");
-              itemDiv.style.cssText = "margin-bottom:8px;padding-bottom:8px;border-bottom:1px dashed var(--p9n-border,#ccd6dd);font-size:12px;";
               if (isBlockedAuthor || isBlockedWord) {
                 const placeholderBtn = doc.createElement("button");
                 placeholderBtn.type = "button";
                 placeholderBtn.setAttribute("data-psnine-next", "true");
                 placeholderBtn.className = "psnine-filtered-tip-btn";
-                placeholderBtn.style.cssText = "display:block;width:100%;text-align:left;padding:4px 8px;background:var(--p9n-surface-alt,#f8fafc);color:var(--p9n-muted,#5f6b7a);font-size:11px;border-radius:3px;border:1px dashed var(--p9n-border,#ccd6dd);cursor:pointer;user-select:none;";
-                placeholderBtn.textContent = `\u{1F6AB} \u8BC4\u8BBA\u5DF2\u8FC7\u6EE4 (${isBlockedAuthor ? `\u9ED1\u540D\u5355\u7528\u6237 ${authorDisplay}` : `\u5C4F\u853D\u8BCD: ${blockedReasonWord}`}) - \u70B9\u51FB\u63ED\u793A\u5185\u5BB9`;
+                const filterReason = isBlockedAuthor ? `\u9ED1\u540D\u5355\u7528\u6237 ${authorDisplay}` : `\u5C4F\u853D\u8BCD ${blockedReasonWord}`;
+                placeholderBtn.textContent = `\u5DF2\u8FC7\u6EE4 \xB7 ${filterReason} \xB7 \u70B9\u51FB\u663E\u793A`;
+                placeholderBtn.setAttribute("aria-expanded", "false");
                 const hiddenBody = doc.createElement("div");
+                hiddenBody.className = "psnine-filtered-tip-body";
                 hiddenBody.setAttribute("data-psnine-next", "true");
                 hiddenBody.style.display = "none";
-                hiddenBody.style.marginTop = "4px";
                 placeholderBtn.onclick = () => {
                   const isH = hiddenBody.style.display === "none";
                   hiddenBody.style.display = isH ? "block" : "none";
-                  placeholderBtn.textContent = isH ? `\u{1F441}\uFE0F \u8BC4\u8BBA\u5DF2\u63ED\u793A (${authorDisplay}) - \u70B9\u51FB\u91CD\u65B0\u6298\u53E0` : `\u{1F6AB} \u8BC4\u8BBA\u5DF2\u8FC7\u6EE4 (${authorDisplay}) - \u70B9\u51FB\u63ED\u793A\u5185\u5BB9`;
+                  placeholderBtn.setAttribute("aria-expanded", isH ? "true" : "false");
+                  placeholderBtn.textContent = isH ? `\u5DF2\u663E\u793A \xB7 ${filterReason} \xB7 \u70B9\u51FB\u6536\u8D77` : `\u5DF2\u8FC7\u6EE4 \xB7 ${filterReason} \xB7 \u70B9\u51FB\u663E\u793A`;
                 };
                 itemDiv.appendChild(placeholderBtn);
                 itemDiv.appendChild(hiddenBody);
@@ -6360,10 +7069,10 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
                   }
                 }
                 const metaLine = doc.createElement("div");
+                metaLine.className = "psnine-inline-tip-meta";
                 metaLine.setAttribute("data-psnine-next", "true");
-                metaLine.style.cssText = "display:flex;justify-content:space-between;color:var(--p9n-muted,#5f6b7a);font-size:11px;margin-bottom:2px;";
                 const authorSpan = doc.createElement("span");
-                authorSpan.style.cssText = "font-weight:500;color:#3890ff;";
+                authorSpan.className = "psnine-inline-tip-author";
                 authorSpan.textContent = authorDisplay;
                 if (authorId) {
                   authorSpan.title = `PSNID: ${authorId}`;
@@ -6372,7 +7081,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
                 metaLine.appendChild(authorSpan);
                 const timeLikesSpan = doc.createElement("span");
                 if (likes !== null && likes > 0) {
-                  timeLikesSpan.textContent = timeStr ? `${timeStr} | \u{1F44D} ${likes}` : `\u{1F44D} ${likes}`;
+                  timeLikesSpan.textContent = timeStr ? `${timeStr} \xB7 \u9876 ${likes}` : `\u9876 ${likes}`;
                 } else {
                   timeLikesSpan.textContent = timeStr;
                 }
@@ -6380,8 +7089,8 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
                 itemDiv.appendChild(metaLine);
                 if (contentEl) {
                   const bodyDiv = doc.createElement("div");
+                  bodyDiv.className = "psnine-inline-tip-body";
                   bodyDiv.setAttribute("data-psnine-next", "true");
-                  bodyDiv.style.cssText = "line-height:1.5;";
                   const clone = contentEl.cloneNode(true);
                   clone.querySelectorAll("script, form").forEach((s) => s.remove());
                   const markEls = (clone.classList?.contains("mark") ? [clone] : []).concat(
@@ -6407,15 +7116,16 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             }
             td.innerHTML = "";
             const errDiv = doc.createElement("div");
+            errDiv.className = "psnine-inline-tip-status is-error";
             errDiv.setAttribute("data-psnine-next", "true");
-            errDiv.style.cssText = "font-size:12px;color:#e03131;";
+            errDiv.setAttribute("role", "alert");
             const errMsg = doc.createElement("span");
-            errMsg.textContent = "\u274C \u52A0\u8F7D Tips \u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u7F51\u7EDC\u3002";
+            errMsg.textContent = "Tips \u52A0\u8F7D\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u7F51\u7EDC";
             errDiv.appendChild(errMsg);
             const retryBtn = doc.createElement("button");
             retryBtn.type = "button";
+            retryBtn.className = "p9n-pill is-sm";
             retryBtn.setAttribute("data-psnine-next", "true");
-            retryBtn.style.cssText = "margin-left:8px;padding:2px 6px;border:1px solid var(--p9n-border,#ccd6dd);border-radius:3px;cursor:pointer;";
             retryBtn.textContent = "\u91CD\u8BD5";
             retryBtn.onclick = () => {
               tipRow.remove();
@@ -7037,20 +7747,17 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
               const group = doc.createElement("div");
               group.id = syncBtnId;
               group.setAttribute("data-psnine-next", "true");
-              group.style.cssText = "display:inline-flex;flex-wrap:wrap;gap:8px;margin:8px 0;vertical-align:middle;max-width:100%;box-sizing:border-box;";
               const upbaseA = doc.createElement("a");
               upbaseA.setAttribute("data-psnine-next", "true");
               upbaseA.href = `https://psnine.com/psnid/${profileId}/upbase`;
-              upbaseA.className = "psnine-btn psnine-sync-btn";
-              upbaseA.style.cssText = "display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-md,8px);background-color:var(--p9n-surface);color:var(--p9n-text);border:1px solid var(--p9n-border);text-decoration:none;touch-action:manipulation;box-sizing:border-box;";
-              upbaseA.textContent = "\u{1F504} \u7B49\u7EA7\u540C\u6B65";
+              upbaseA.className = "p9n-pill psnine-sync-btn";
+              upbaseA.textContent = "\u7B49\u7EA7\u540C\u6B65";
               group.appendChild(upbaseA);
               const upgameA = doc.createElement("a");
               upgameA.setAttribute("data-psnine-next", "true");
               upgameA.href = `https://psnine.com/psnid/${profileId}/upgame`;
-              upgameA.className = "psnine-btn psnine-sync-btn";
-              upgameA.style.cssText = "display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-md,8px);background-color:var(--p9n-surface);color:var(--p9n-text);border:1px solid var(--p9n-border);text-decoration:none;touch-action:manipulation;box-sizing:border-box;";
-              upgameA.textContent = "\u{1F3AE} \u6E38\u620F\u540C\u6B65";
+              upgameA.className = "p9n-pill psnine-sync-btn";
+              upgameA.textContent = "\u6E38\u620F\u540C\u6B65";
               group.appendChild(upgameA);
               profileDataArea.appendChild(group);
             }
@@ -7177,7 +7884,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         }));
       }
       if (isGameListPage) {
-        let isHardestFirst = true;
+        let isHardestFirst = null;
         const enhanceGameList = () => {
           refreshGameListBadgesAndBackgrounds();
           const tables = doc.querySelectorAll("table");
@@ -7198,18 +7905,20 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
                     if (!demandBtn) {
                       demandBtn = doc.createElement("button");
                       demandBtn.type = "button";
-                      demandBtn.className = "psnine-btn psnine-ondemand-progress-btn";
+                      demandBtn.className = "p9n-pill is-sm psnine-ondemand-progress-btn";
                       demandBtn.setAttribute("data-psnine-next", "true");
                       demandBtn.setAttribute("aria-label", "\u67E5\u8BE2\u4E2A\u4EBA\u8FDB\u5EA6");
-                      demandBtn.style.cssText = "display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:4px 10px;font-size:12px;font-weight:500;border-radius:var(--p9n-radius-sm,4px);border:1px solid var(--p9n-border);background-color:var(--p9n-surface);color:var(--p9n-link);cursor:pointer;margin-left:6px;touch-action:manipulation;box-sizing:border-box;";
-                      demandBtn.textContent = "\u{1F50D} \u67E5\u8FDB\u5EA6";
+                      demandBtn.textContent = "\u67E5\u8FDB\u5EA6";
                       gameA.parentElement?.appendChild(demandBtn);
                     }
                     let isLoading = false;
                     const fetchOnDemand = async () => {
                       if (!isActive || abortController.signal.aborted || isLoading || myProgress.games[gid]) return;
                       isLoading = true;
-                      if (demandBtn) demandBtn.textContent = "\u23F3 \u67E5\u8BE2\u4E2D...";
+                      if (demandBtn) {
+                        demandBtn.classList.remove("is-error");
+                        demandBtn.textContent = "\u67E5\u8BE2\u4E2D\u2026";
+                      }
                       try {
                         const targetUrl = new URL(`/psngame/${gid}?psnid=${userId}`, ctx.url.origin).href;
                         const gameDoc = await ctx.http.document(targetUrl, { ttl: 6e5, signal: abortController.signal });
@@ -7273,9 +7982,8 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
                         isLoading = false;
                         if (!isActive || abortController.signal.aborted || err?.name === "AbortError") return;
                         if (demandBtn) {
-                          demandBtn.textContent = "\u274C \u91CD\u8BD5";
-                          demandBtn.style.color = "var(--p9n-danger)";
-                          demandBtn.style.borderColor = "var(--p9n-danger)";
+                          demandBtn.textContent = "\u91CD\u8BD5";
+                          demandBtn.classList.add("is-error");
                         }
                         report("demand_progress", err);
                       }
@@ -7315,17 +8023,19 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
               if (navOrHeader) {
                 const sortBtn = doc.createElement("button");
                 sortBtn.id = "psnine-difficulty-sort-btn";
-                sortBtn.className = "psnine-btn psnine-difficulty-sort-btn";
+                sortBtn.className = "p9n-text-toggle is-sort psnine-difficulty-sort-btn";
                 sortBtn.type = "button";
                 sortBtn.setAttribute("data-psnine-next", "true");
-                sortBtn.style.cssText = "display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 14px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-md,8px);border:1px solid var(--p9n-border);background-color:var(--p9n-surface);color:var(--p9n-text);cursor:pointer;margin:6px 0;touch-action:manipulation;box-sizing:border-box;";
-                sortBtn.textContent = "\u{1F4CA} \u6309\u96BE\u5EA6\u6392\u5E8F (\u4ECE\u96BE\u5230\u6613)";
+                sortBtn.setAttribute("aria-pressed", isHardestFirst === null ? "false" : "true");
+                sortBtn.title = "\u6309\u96BE\u5EA6\u6392\u5E8F\uFF08\u518D\u6B21\u70B9\u51FB\u53CD\u8F6C\uFF09";
+                sortBtn.textContent = isHardestFirst === false ? "\u96BE\u5EA6 \u2191" : "\u96BE\u5EA6 \u2193";
                 sortBtn.onclick = () => {
                   const currentRows = Array.from(table.querySelectorAll("tr")).filter(
                     (r) => r.querySelector('a[href*="/psngame/"]') && (r.querySelector("td.pd1015") || r.querySelector("td.pd15") || r.querySelector("td.pdd15"))
                   );
-                  isHardestFirst = !isHardestFirst;
-                  sortBtn.textContent = isHardestFirst ? "\u{1F4CA} \u6309\u96BE\u5EA6\u6392\u5E8F (\u4ECE\u96BE\u5230\u6613)" : "\u{1F4CA} \u6309\u96BE\u5EA6\u6392\u5E8F (\u4ECE\u6613\u5230\u96BE)";
+                  isHardestFirst = isHardestFirst === null ? true : !isHardestFirst;
+                  sortBtn.setAttribute("aria-pressed", "true");
+                  sortBtn.textContent = isHardestFirst ? "\u96BE\u5EA6 \u2193" : "\u96BE\u5EA6 \u2191";
                   const sortedRows = sortGameRowsByDifficulty(currentRows, isHardestFirst);
                   const tbody = table.querySelector("tbody") || table;
                   sortedRows.forEach((r) => tbody.appendChild(r));
@@ -7354,7 +8064,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             }
           }
         }
-        const gameNav = doc.querySelector(".main > ul.inav");
+        const gameNav = doc.querySelector(".main > ul.inav, .min-inner > ul.inav");
         if (settings.collapseGameNav && gameNav && gameNav.querySelector('a[href*="/psngame/"]') && !doc.getElementById("psnine-game-nav-toggle")) {
           const currentLink = gameNav.querySelector("li.current > a");
           const toggle = doc.createElement("button");
@@ -7467,26 +8177,51 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
                   const matched = findMatchingTrophyAcrossVersions(sourceTrophy, targetTrophies);
                   if (matched && isActive) {
                     let crossDiv = doc.getElementById("psnine-cross-version-tips-section");
-                    if (!crossDiv) {
+                    let crossList = crossDiv?.querySelector(".psnine-game-variants-list") ?? null;
+                    if (!crossDiv || !crossList) {
+                      crossDiv?.remove();
                       crossDiv = doc.createElement("div");
                       crossDiv.id = "psnine-cross-version-tips-section";
                       crossDiv.setAttribute("data-psnine-next", "true");
-                      crossDiv.style.cssText = "margin:12px 0;padding:10px 14px;background-color:var(--p9n-surface-alt);border:1px solid var(--p9n-border);border-radius:var(--p9n-radius-md,8px);color:var(--p9n-text);box-sizing:border-box;";
-                      const header = doc.createElement("div");
-                      header.setAttribute("data-psnine-next", "true");
-                      header.style.cssText = "font-weight:600;font-size:13px;margin-bottom:6px;";
-                      header.textContent = "\u{1F3AE} \u8BE5\u6E38\u620F\u5176\u4ED6\u7248\u672C\u7684\u5956\u676FTips\uFF1A";
-                      crossDiv.appendChild(header);
-                      const contentArea = doc.querySelector(".main, .box.pd10, .min-inner");
-                      contentArea?.insertBefore(crossDiv, contentArea.firstChild);
+                      const label = doc.createElement("span");
+                      label.className = "psnine-game-variants-label";
+                      label.setAttribute("data-psnine-next", "true");
+                      label.textContent = "\u5176\u4ED6\u7248\u672C Tips";
+                      crossDiv.appendChild(label);
+                      crossList = doc.createElement("div");
+                      crossList.className = "psnine-game-variants-list";
+                      crossList.setAttribute("data-psnine-next", "true");
+                      crossDiv.appendChild(crossList);
+                      const headerBox = doc.querySelector(".main > .box");
+                      if (headerBox && !headerBox.querySelector("ul.list")) {
+                        headerBox.appendChild(crossDiv);
+                      } else {
+                        const contentArea = doc.querySelector(".main, .box.pd10, .min-inner");
+                        contentArea?.insertBefore(crossDiv, contentArea.firstChild);
+                      }
                     }
+                    const linkHref = new URL(`/trophy/${matched.trophyId}`, ctx.url.origin).href;
+                    if (Array.from(crossList.querySelectorAll("a")).some((el) => el.getAttribute("href") === linkHref)) continue;
                     const linkA = doc.createElement("a");
-                    linkA.className = "psnine-btn psnine-cross-tip-btn";
+                    linkA.className = "psnine-variant-btn psnine-cross-tip-btn";
                     linkA.setAttribute("data-psnine-next", "true");
-                    linkA.href = new URL(`/trophy/${matched.trophyId}`, ctx.url.origin).href;
-                    linkA.style.cssText = "display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 12px;margin-right:8px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-sm,6px);background-color:var(--p9n-surface);color:var(--p9n-link);border:1px solid var(--p9n-border);text-decoration:none;touch-action:manipulation;box-sizing:border-box;";
-                    linkA.textContent = `${variant.title || `\u7248\u672C #${variant.gameId}`} \u7684Tips (#${matched.trophyId}) \u2197`;
-                    crossDiv.appendChild(linkA);
+                    linkA.href = linkHref;
+                    linkA.title = `${variant.platform ? `[${variant.platform}] ` : ""}${variant.title || "\u7248\u672C"} \u7684 Tips (#${matched.trophyId})`;
+                    if (variant.platform) {
+                      const chip = doc.createElement("span");
+                      chip.className = "psnine-variant-platform";
+                      chip.textContent = variant.platform;
+                      linkA.appendChild(chip);
+                    }
+                    const name = doc.createElement("span");
+                    name.className = "psnine-variant-title";
+                    name.textContent = variant.title || `\u7248\u672C #${variant.gameId}`;
+                    linkA.appendChild(name);
+                    const idEl = doc.createElement("span");
+                    idEl.className = "psnine-variant-id";
+                    idEl.textContent = `#${matched.trophyId}`;
+                    linkA.appendChild(idEl);
+                    crossList.appendChild(linkA);
                   }
                 } catch (err) {
                   report("cross_trophy_tips", err);
@@ -7503,9 +8238,10 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         doc.querySelectorAll(".psnine-game-list-progress-badge").forEach((el) => el.remove());
         doc.getElementById("psnine-sync-psn-btn-group")?.remove();
         doc.getElementById("psnine-game-progress-filter")?.remove();
-        doc.getElementById("psnine-game-nav-toggle")?.remove();
-        const collapsedNav = doc.querySelector(".main > ul.inav");
+        const navToggle = doc.getElementById("psnine-game-nav-toggle");
+        const collapsedNav = navToggle?.nextElementSibling;
         if (collapsedNav) setHidden(collapsedNav, "game-nav-collapsed", false);
+        navToggle?.remove();
         doc.querySelectorAll("table tr").forEach((tr) => {
           if (tr.querySelector('a[href*="/psngame/"]')) {
             setHidden(tr, "percent-100-filter", false);
@@ -7962,7 +8698,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
       }
     }
     if (intervals.length === 0) {
-      return '<div data-psnine-next="true" style="padding:10px;color:var(--p9n-muted);">\u9700\u81F3\u5C11\u4E00\u6761\u6709\u6548\u5386\u53F2\u4FC3\u9500\u8BB0\u5F55\u751F\u6210\u8D70\u52BF\u56FE</div>';
+      return '<div data-psnine-next="true" class="psnine-price-chart-empty">\u9700\u81F3\u5C11\u4E00\u6761\u6709\u6548\u5386\u53F2\u4FC3\u9500\u8BB0\u5F55\u751F\u6210\u8D70\u52BF\u56FE</div>';
     }
     const svgWidth = 500;
     const svgHeight = 220;
@@ -8012,26 +8748,26 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         const plusStr = ev.plusPrice === 0 ? "\u514D\u8D39 (0.00)" : ev.plusPrice !== null ? `${safeCurrency}${ev.plusPrice.toFixed(2)}` : "-";
         const oldStr = ev.oldPrice !== null ? `${safeCurrency}${ev.oldPrice.toFixed(2)}` : "\u672A\u77E5";
         return `
-        <tr style="border-bottom:1px solid var(--p9n-border);">
-          <td style="padding:6px 8px;">${escapeXml(ev.title)}</td>
-          <td style="padding:6px 8px;">${escapeXml(ev.startDate)} ~ ${escapeXml(ev.endDate)}</td>
-          <td style="padding:6px 8px;">${normalStr}</td>
-          <td style="padding:6px 8px;">${plusStr}</td>
-          <td style="padding:6px 8px;">${oldStr}</td>
+        <tr>
+          <td>${escapeXml(ev.title)}</td>
+          <td class="is-nowrap">${escapeXml(ev.startDate)} ~ ${escapeXml(ev.endDate)}</td>
+          <td class="is-nowrap">${normalStr}</td>
+          <td class="is-nowrap">${plusStr}</td>
+          <td class="is-nowrap">${oldStr}</td>
         </tr>
       `;
       }).join("");
       tableHtml = `
-      <div class="psnine-price-history-table-wrapper" style="margin-top:12px;overflow-x:auto;">
-        <table class="psnine-price-history-table" style="width:100%;font-size:12px;text-align:left;border-collapse:collapse;border:1px solid var(--p9n-border);" summary="\u5546\u54C1\u5386\u53F2\u4EF7\u683C\u8D70\u52BF\u660E\u7EC6">
-          <caption style="text-align:left;font-weight:600;padding:4px 0;">\u4FC3\u9500\u5386\u53F2\u6570\u636E\u660E\u7EC6 (\u53EF\u952E\u76D8\u8BBF\u95EE)</caption>
+      <div class="psnine-price-history-table-wrapper" tabindex="0" role="region" aria-label="\u4FC3\u9500\u660E\u7EC6">
+        <table class="psnine-price-history-table" summary="\u5546\u54C1\u5386\u53F2\u4EF7\u683C\u8D70\u52BF\u660E\u7EC6">
+          <caption>\u4FC3\u9500\u660E\u7EC6</caption>
           <thead>
-            <tr style="background:var(--p9n-surface-alt);border-bottom:1px solid var(--p9n-border);">
-              <th scope="col" style="padding:6px 8px;">\u6D3B\u52A8\u540D\u79F0</th>
-              <th scope="col" style="padding:6px 8px;">\u4FC3\u9500\u5468\u671F</th>
-              <th scope="col" style="padding:6px 8px;">\u666E\u901A\u4F1A\u5458\u4EF7</th>
-              <th scope="col" style="padding:6px 8px;">PS+\u4F1A\u5458\u4EF7</th>
-              <th scope="col" style="padding:6px 8px;">\u539F\u4EF7\u6062\u590D</th>
+            <tr>
+              <th scope="col">\u6D3B\u52A8</th>
+              <th scope="col">\u5468\u671F</th>
+              <th scope="col">\u666E\u901A\u4F1A\u5458\u4EF7</th>
+              <th scope="col">PS+\u4F1A\u5458\u4EF7</th>
+              <th scope="col">\u539F\u4EF7</th>
             </tr>
           </thead>
           <tbody>
@@ -8042,7 +8778,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
     `;
     }
     return `
-    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" data-psnine-next="true" class="psnine-price-chart-svg" style="width:100%;height:auto;max-height:240px;user-select:none;font-family:inherit;">
+    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" data-psnine-next="true" class="psnine-price-chart-svg" role="img" aria-label="\u5386\u53F2\u4EF7\u683C\u8D70\u52BF\u56FE">
       <desc>\u5386\u53F2\u4EF7\u683C\u9636\u68AF\u8D70\u52BF\u56FE\uFF0C\u5305\u542B\u666E\u901A\u4F1A\u5458\u4EF7\u4E0E PS+ \u4F1A\u5458\u4EF7\u9636\u68AF\u8D70\u52BF\u53CA\u539F\u4EF7\u6062\u590D\u8BB0\u5F55</desc>
       <line x1="${margin.left}" y1="${margin.top + innerHeight}" x2="${margin.left + innerWidth}" y2="${margin.top + innerHeight}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
       <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + innerHeight}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
@@ -8062,11 +8798,13 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         </circle>
       ` : ""}
 
-      <g transform="translate(${margin.left + 10}, ${margin.top - 8})">
-        <line x1="0" y1="0" x2="16" y2="0" style="stroke:var(--p9n-link)" stroke-width="2" />
-        <text x="20" y="3" font-size="11" fill="currentColor">\u666E\u901A\u4F1A\u5458\u4EF7</text>
-        <line x1="100" y1="0" x2="116" y2="0" stroke="#ffd633" stroke-width="2" stroke-dasharray="4,2" />
-        <text x="120" y="3" font-size="11" fill="currentColor">PS+\u4F1A\u5458\u4EF7</text>
+      <g transform="translate(${margin.left + 4}, ${margin.top - 10})" class="psnine-price-chart-legend">
+        <line x1="0" y1="0" x2="12" y2="0" style="stroke:var(--p9n-link)" stroke-width="2" />
+        <text x="16" y="3" font-size="10" fill="currentColor">\u666E\u901A\u4F1A\u5458\u4EF7</text>
+        <line x1="80" y1="0" x2="92" y2="0" stroke="#ffd633" stroke-width="2" stroke-dasharray="4,2" />
+        <text x="96" y="3" font-size="10" fill="currentColor">PS+\u4F1A\u5458\u4EF7</text>
+        <circle cx="160" cy="0" r="3" style="fill:var(--p9n-danger)" />
+        <text x="166" y="3" font-size="10" fill="currentColor">\u53F2\u4F4E</text>
       </g>
     </svg>
     ${tableHtml}
@@ -8152,25 +8890,36 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         if (!fxStatus) return;
         if (!currentShowCny) {
           fxStatus.textContent = "";
-          fxStatus.style.display = "none";
+          fxStatus.hidden = true;
+          fxStatus.classList.remove("is-expired");
           return;
         }
-        fxStatus.style.display = "inline-block";
+        fxStatus.hidden = false;
+        let isExp = false;
         if (ratesData) {
-          const isExp = Date.now() - (/* @__PURE__ */ new Date(ratesData.date + "T00:00:00Z")).getTime() > MAX_FRESHNESS_MS;
+          isExp = Date.now() - (/* @__PURE__ */ new Date(ratesData.date + "T00:00:00Z")).getTime() > MAX_FRESHNESS_MS;
           fxStatus.textContent = `\u6C47\u7387: Frankfurter (${ratesData.date}${isExp ? " \u5DF2\u8FC7\u671F" : ""})`;
-          fxStatus.style.color = isExp ? "#e03131" : "var(--p9n-muted)";
         } else if (settings.exchangeRateDate && isValidFxDate(settings.exchangeRateDate)) {
-          const isExp = Date.now() - (/* @__PURE__ */ new Date(settings.exchangeRateDate + "T00:00:00Z")).getTime() > MAX_FRESHNESS_MS;
+          isExp = Date.now() - (/* @__PURE__ */ new Date(settings.exchangeRateDate + "T00:00:00Z")).getTime() > MAX_FRESHNESS_MS;
           fxStatus.textContent = `\u6C47\u7387: \u7528\u6237\u8BBE\u7F6E (${settings.exchangeRateDate}${isExp ? " \u5DF2\u8FC7\u671F" : ""})`;
-          fxStatus.style.color = isExp ? "#e03131" : "var(--p9n-muted)";
         } else if (ratesFetchFailed) {
           fxStatus.textContent = "\u6C47\u7387: \u4E0D\u53EF\u7528";
-          fxStatus.style.color = "var(--p9n-muted)";
         } else {
           fxStatus.textContent = "\u6C47\u7387: \u52A0\u8F7D\u4E2D...";
-          fxStatus.style.color = "var(--p9n-muted)";
         }
+        fxStatus.classList.toggle("is-expired", isExp);
+      };
+      const createCnyBadge = () => {
+        const badge = doc.createElement("span");
+        badge.className = "psnine-cny-badge";
+        badge.setAttribute("data-psnine-next", "true");
+        return badge;
+      };
+      const setCnyBadgeState = (badge, state) => {
+        badge.classList.toggle("is-pending", state === "pending");
+        badge.classList.toggle("is-expired", state === "expired");
+        badge.classList.toggle("is-unavailable", state === "unavailable");
+        badge.hidden = !currentShowCny;
       };
       const convertPriceElement = (priceEl, currency) => {
         if (!currency || !currentShowCny || priceEl.classList.contains("psnine-cny-badge")) return;
@@ -8185,14 +8934,11 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         const isOurBadge = cnySpan && cnySpan.classList.contains("psnine-cny-badge");
         if (!res && !ratesFetchFailed && !ratesData && !settings.exchangeRateDate) {
           if (!isOurBadge) {
-            cnySpan = doc.createElement("span");
-            cnySpan.className = "psnine-cny-badge";
-            cnySpan.setAttribute("data-psnine-next", "true");
-            cnySpan.setAttribute("style", "display:inline-block;font-size:11px;color:var(--p9n-muted);font-weight:500;margin-left:4px;");
+            cnySpan = createCnyBadge();
             priceEl.after(cnySpan);
           }
           cnySpan.textContent = "(\u6362\u7B97\u4E2D...)";
-          cnySpan.style.display = currentShowCny ? "inline-block" : "none";
+          setCnyBadgeState(cnySpan, "pending");
           return;
         }
         if (!res && !ratesFetchFailed) {
@@ -8202,22 +8948,17 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
           return;
         }
         if (!isOurBadge) {
-          cnySpan = doc.createElement("span");
-          cnySpan.className = "psnine-cny-badge";
-          cnySpan.setAttribute("data-psnine-next", "true");
-          cnySpan.setAttribute("style", "display:inline-block;font-size:11px;color:var(--p9n-success);font-weight:500;margin-left:4px;");
+          cnySpan = createCnyBadge();
           priceEl.after(cnySpan);
         }
         if (res) {
           cnySpan.textContent = res.badgeText;
           cnySpan.setAttribute("title", res.titleText);
-          cnySpan.style.color = res.isExpired ? "var(--p9n-danger)" : "var(--p9n-success)";
-          cnySpan.style.display = currentShowCny ? "inline-block" : "none";
+          setCnyBadgeState(cnySpan, res.isExpired ? "expired" : "ok");
         } else if (ratesFetchFailed) {
           cnySpan.textContent = "(\u6C47\u7387\u4E0D\u53EF\u7528)";
           cnySpan.setAttribute("title", "\u6C47\u7387\u670D\u52A1\u4E0D\u53EF\u7528\u6216\u6570\u636E\u5931\u6548");
-          cnySpan.style.color = "var(--p9n-muted)";
-          cnySpan.style.display = currentShowCny ? "inline-block" : "none";
+          setCnyBadgeState(cnySpan, "unavailable");
         }
       };
       const enhanceDealsAndStores = () => {
@@ -8279,24 +9020,24 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             const bar = doc.createElement("div");
             bar.id = "psnine-deals-controls-bar";
             bar.setAttribute("data-psnine-next", "true");
-            bar.style.cssText = "display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:10px 0;padding:8px 12px;background:var(--p9n-surface-alt);border:1px solid var(--p9n-border);border-radius:6px;";
+            bar.className = "p9n-row";
+            bar.setAttribute("role", "group");
+            bar.setAttribute("aria-label", "\u6570\u6298");
             const titleSpan = doc.createElement("span");
-            titleSpan.textContent = "\u{1F3F7}\uFE0F \u6570\u6298\u589E\u5F3A:";
-            titleSpan.style.cssText = "font-weight:500;font-size:13px;";
+            titleSpan.className = "p9n-row-label";
+            titleSpan.textContent = "\u6570\u6298";
             bar.appendChild(titleSpan);
             const bestBtn = doc.createElement("button");
             bestBtn.type = "button";
             bestBtn.id = "psnine-toggle-best-deal-btn";
             bestBtn.setAttribute("data-psnine-next", "true");
-            bestBtn.style.cssText = "padding:4px 10px;border-radius:4px;border:1px solid var(--p9n-border);background:transparent;cursor:pointer;font-size:12px;";
-            bestBtn.textContent = isBestOnlyFilterActive ? "\u5DF2\u8FC7\u6EE4\uFF1A\u53EA\u770B\u53F2\u4F4E" : "\u53EA\u770B\u53F2\u4F4E";
+            bestBtn.className = "p9n-pill is-danger";
+            bestBtn.textContent = "\u53EA\u770B\u53F2\u4F4E";
+            bestBtn.setAttribute("aria-pressed", String(isBestOnlyFilterActive));
             bestBtn.onclick = () => {
               if (!isMounted) return;
               isBestOnlyFilterActive = !isBestOnlyFilterActive;
-              bestBtn.textContent = isBestOnlyFilterActive ? "\u5DF2\u8FC7\u6EE4\uFF1A\u53EA\u770B\u53F2\u4F4E" : "\u53EA\u770B\u53F2\u4F4E";
-              bestBtn.style.background = isBestOnlyFilterActive ? "#da314b" : "transparent";
-              bestBtn.style.color = isBestOnlyFilterActive ? "var(--p9n-on-accent)" : "inherit";
-              bestBtn.style.borderColor = isBestOnlyFilterActive ? "#da314b" : "var(--p9n-border)";
+              bestBtn.setAttribute("aria-pressed", String(isBestOnlyFilterActive));
               enhanceDealsAndStores();
             };
             bar.appendChild(bestBtn);
@@ -8304,12 +9045,13 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             cnyBtn.type = "button";
             cnyBtn.id = "psnine-toggle-cny-btn";
             cnyBtn.setAttribute("data-psnine-next", "true");
-            cnyBtn.style.cssText = "padding:4px 10px;border-radius:4px;border:1px solid #28a745;background:transparent;color:#28a745;cursor:pointer;font-size:12px;";
-            cnyBtn.textContent = currentShowCny ? "\u5DF2\u5F00\u542F\u4EBA\u6C11\u5E01\u6362\u7B97 (CNY)" : "\u5207\u6362\u4EBA\u6C11\u5E01\u6362\u7B97";
+            cnyBtn.className = "p9n-pill is-success";
+            cnyBtn.textContent = "\u4EBA\u6C11\u5E01\u6362\u7B97";
+            cnyBtn.setAttribute("aria-pressed", String(currentShowCny));
             cnyBtn.onclick = async () => {
               if (!isMounted) return;
               currentShowCny = !currentShowCny;
-              cnyBtn.textContent = currentShowCny ? "\u5DF2\u5F00\u542F\u4EBA\u6C11\u5E01\u6362\u7B97 (CNY)" : "\u5207\u6362\u4EBA\u6C11\u5E01\u6362\u7B97";
+              cnyBtn.setAttribute("aria-pressed", String(currentShowCny));
               updateFxStatusDisplay();
               if (currentShowCny && !ratesData) {
                 await loadRates();
@@ -8317,7 +9059,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
               if (!isMounted) return;
               updateFxStatusDisplay();
               doc.querySelectorAll(".psnine-cny-badge").forEach((bg) => {
-                bg.style.display = currentShowCny ? "inline-block" : "none";
+                bg.hidden = !currentShowCny;
               });
               enhanceDealsAndStores();
             };
@@ -8325,7 +9067,8 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             const fxStatusSpan = doc.createElement("span");
             fxStatusSpan.id = "psnine-fx-status";
             fxStatusSpan.setAttribute("data-psnine-next", "true");
-            fxStatusSpan.style.cssText = "font-size:11px;color:var(--p9n-muted);margin-left:auto;";
+            fxStatusSpan.className = "p9n-row-end";
+            fxStatusSpan.setAttribute("aria-live", "polite");
             bar.appendChild(fxStatusSpan);
             targetContainer.insertBefore(bar, targetContainer.firstChild);
             updateFxStatusDisplay();
@@ -8349,12 +9092,17 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
                   const chartDiv = doc.createElement("div");
                   chartDiv.id = "psnine-price-chart-container";
                   chartDiv.setAttribute("data-psnine-next", "true");
-                  chartDiv.style.cssText = "margin:15px 0;padding:12px;border:1px solid var(--p9n-border);border-radius:8px;background:var(--p9n-surface-alt);";
-                  const heading = doc.createElement("div");
-                  heading.setAttribute("data-psnine-next", "true");
-                  heading.style.cssText = "font-weight:600;font-size:13px;margin-bottom:8px;";
-                  heading.textContent = "\u{1F4C8} \u672C\u5546\u54C1\u5386\u53F2\u4EF7\u683C\u53D8\u52A8\u8D70\u52BF (\u771F\u5B9E\u4FC3\u9500\u9636\u68AF\u8BB0\u5F55)";
-                  chartDiv.appendChild(heading);
+                  const header = doc.createElement("div");
+                  header.className = "psnine-price-chart-header";
+                  header.setAttribute("data-psnine-next", "true");
+                  const heading = doc.createElement("h3");
+                  heading.className = "p9n-section-title";
+                  heading.textContent = "\u5386\u53F2\u4EF7\u683C";
+                  const subtitle = doc.createElement("span");
+                  subtitle.className = "psnine-price-chart-subtitle";
+                  subtitle.textContent = `\u6309\u4FC3\u9500\u8BB0\u5F55 \xB7 ${events.length} \u6B21`;
+                  header.append(heading, subtitle);
+                  chartDiv.appendChild(header);
                   const currencySymbol = targetCurrency === "HKD" ? "HK$" : targetCurrency === "USD" ? "$" : targetCurrency === "GBP" ? "\xA3" : targetCurrency === "JPY" ? "\u5186" : targetCurrency === "CNY" ? "\xA5" : targetCurrency;
                   const svgWrapper = doc.createElement("div");
                   svgWrapper.setAttribute("data-psnine-next", "true");
@@ -8579,10 +9327,8 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
           const gid = btn.getAttribute("data-game-id");
           if (!gid) return;
           const isMonitored = monitoredGames.includes(gid);
-          btn.textContent = isMonitored ? "\u{1F514} \u5DF2\u76D1\u63A7" : "\u{1F515} \u76D1\u63A7";
-          btn.style.borderColor = isMonitored ? "#f59f00" : "var(--p9n-border)";
-          btn.style.background = isMonitored ? "rgba(245, 159, 0, 0.15)" : "transparent";
-          btn.style.color = isMonitored ? "#d97706" : "inherit";
+          btn.textContent = isMonitored ? "\u5DF2\u76D1\u63A7" : "\u76D1\u63A7";
+          btn.setAttribute("aria-pressed", isMonitored ? "true" : "false");
           btn.setAttribute("title", isMonitored ? "\u70B9\u51FB\u53D6\u6D88\u5BF9\u6B64\u6E38\u620F\u7684\u7EA6\u6218\u76D1\u63A7" : "\u70B9\u51FB\u5F00\u542F\u5BF9\u6B64\u6E38\u620F\u7684\u7EA6\u6218\u76D1\u63A7");
         });
       };
@@ -8656,9 +9402,8 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
               row.style.background = `linear-gradient(to right, var(--p9n-link-soft) ${rec.percent}%, transparent ${rec.percent}%)`;
               if (!row.querySelector(".psnine-battle-progress-badge")) {
                 const badge = doc.createElement("span");
-                badge.className = "psnine-battle-progress-badge";
+                badge.className = "p9n-tag psnine-battle-progress-badge";
                 badge.setAttribute("data-psnine-next", "true");
-                badge.style.cssText = "display:inline-block;padding:1px 4px;font-size:10px;border-radius:3px;background:var(--p9n-link-soft);color:var(--p9n-link);margin-left:4px;";
                 badge.textContent = `\u6211\u7684\u8FDB\u5EA6:${rec.percent}%`;
                 const battleTitleLink = row.querySelector('td.pd15 a[href*="/battle/"]') || gameLink;
                 battleTitleLink.parentElement?.appendChild(badge);
@@ -8667,10 +9412,10 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             if (!row.querySelector(".psnine-battle-bell-btn")) {
               const bellBtn = doc.createElement("button");
               bellBtn.type = "button";
-              bellBtn.className = "psnine-battle-bell-btn";
+              bellBtn.className = "p9n-pill is-sm is-warning psnine-battle-bell-btn";
               bellBtn.setAttribute("data-psnine-next", "true");
               bellBtn.setAttribute("data-game-id", gameId);
-              bellBtn.style.cssText = "padding:2px 6px;font-size:11px;border-radius:4px;border:1px solid var(--p9n-border);cursor:pointer;margin-left:6px;user-select:none;transition:all 0.15s;";
+              bellBtn.setAttribute("aria-pressed", "false");
               bellBtn.onclick = (e) => {
                 e.preventDefault();
                 e.stopPropagation();

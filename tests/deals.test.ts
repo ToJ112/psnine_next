@@ -192,8 +192,27 @@ describe('Deals Feature Module (D01 - D05)', () => {
       const bestBtn = document.getElementById('psnine-toggle-best-deal-btn') as HTMLElement;
       expect(bestBtn).not.toBeNull();
       expect(bestBtn.hasAttribute('data-psnine-next')).toBe(true);
+      expect(bestBtn.classList.contains('p9n-pill')).toBe(true);
+      expect(bestBtn.classList.contains('is-danger')).toBe(true);
+      expect(bestBtn.getAttribute('aria-pressed')).toBe('false');
+      expect(bestBtn.getAttribute('style')).toBeNull();
+
+      // Controls bar uses the shared flush row with a plain (emoji-free) label
+      const bar = document.getElementById('psnine-deals-controls-bar') as HTMLElement;
+      expect(bar.classList.contains('p9n-row')).toBe(true);
+      expect(bar.getAttribute('style')).toBeNull();
+      expect(bar.querySelector('.p9n-row-label')?.textContent).toBe('数折');
+      expect(bar.textContent).not.toMatch(/\p{Extended_Pictographic}/u);
+      const cnyBtn = document.getElementById('psnine-toggle-cny-btn') as HTMLElement;
+      expect(cnyBtn.classList.contains('is-success')).toBe(true);
+      expect(cnyBtn.textContent).toBe('人民币换算');
+      expect(document.getElementById('psnine-fx-status')?.classList.contains('p9n-row-end')).toBe(true);
+      // CNY badges carry no inline static styling
+      cnyBadges.forEach((badge) => expect(badge.getAttribute('style')).toBeNull());
 
       bestBtn.click();
+      expect(bestBtn.getAttribute('aria-pressed')).toBe('true');
+      expect(bestBtn.textContent).toBe('只看史低');
       expect(isHiddenByReason(deal1, 'best-deal-filter')).toBe(false);
       expect(isHiddenByReason(deal2, 'best-deal-filter')).toBe(true);
 
@@ -210,6 +229,51 @@ describe('Deals Feature Module (D01 - D05)', () => {
         (onContentCallback as () => void)();
       }
       expect(isHiddenByReason(newDealBox, 'best-deal-filter')).toBe(true);
+    });
+
+    it('renders the product price history as a flush section with a plain title, idempotently', () => {
+      document.body.innerHTML = `
+        <div class="box">
+          <ul class="dd_ul">
+            <li class="dd_box">
+              <div class="dd_pic"><a href="/dd/PROD_A"></a></div>
+              <div class="dd_info">
+                <p class="dd_text">港服</p>
+                <p class="dd_text">20年10月14日 ~ 20年10月28日</p>
+                <div class="dd_price"><s class="dd_price_old">HK$100.00</s><span class="dd_price_off">HK$66.00</span></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      `;
+      let onContentCallback: (() => void) | null = null;
+      const ctx: Context = {
+        document,
+        window,
+        url: new URL('https://psnine.com/dd/PROD_A'),
+        settings: { ...defaultSettings, currencyConversion: false },
+        store: { get: vi.fn().mockResolvedValue(null), set: vi.fn(), remove: vi.fn() },
+        http: { text: vi.fn(), document: vi.fn(), json: vi.fn() },
+        userId: 'test_user',
+        onContent: vi.fn().mockImplementation((cb: () => void) => {
+          onContentCallback = cb;
+          return () => {};
+        }),
+        report: vi.fn()
+      };
+
+      mountDeals(ctx);
+      if (onContentCallback) (onContentCallback as () => void)();
+
+      const charts = document.querySelectorAll('#psnine-price-chart-container');
+      expect(charts.length).toBe(1);
+      const chart = charts[0] as HTMLElement;
+      expect(chart.getAttribute('style')).toBeNull();
+      const title = chart.querySelector('h3.p9n-section-title') as HTMLElement;
+      expect(title.textContent).toBe('历史价格');
+      expect(chart.querySelector('.psnine-price-chart-header')?.textContent).not.toMatch(/\p{Extended_Pictographic}/u);
+      expect(chart.querySelector('table.psnine-price-history-table')).not.toBeNull();
+      expect(chart.querySelector('svg.psnine-price-chart-svg')).not.toBeNull();
     });
   });
 });

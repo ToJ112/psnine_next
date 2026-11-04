@@ -464,6 +464,23 @@ describe('Deals Feature Last-Mile Regressions (5 Audit Items + Final 3 Items)', 
       expect(html).toContain('<table class="psnine-price-history-table"');
       expect(html).toContain('scope="col"');
       expect(html).toContain('免费 (0.00)');
+
+      // Light table: static look lives in CSS, date ranges never wrap, scroll container is focusable
+      const host = document.createElement('div');
+      host.innerHTML = html;
+      const table = host.querySelector('table.psnine-price-history-table') as HTMLTableElement;
+      expect(table.getAttribute('style')).toBeNull();
+      expect(host.querySelectorAll('table [style]').length).toBe(0);
+      const wrapper = host.querySelector('.psnine-price-history-table-wrapper') as HTMLElement;
+      expect(wrapper.getAttribute('tabindex')).toBe('0');
+      expect(wrapper.getAttribute('style')).toBeNull();
+      const dateCell = table.querySelector('tbody tr td:nth-child(2)') as HTMLElement;
+      expect(dateCell.classList.contains('is-nowrap')).toBe(true);
+      expect((host.querySelector('svg.psnine-price-chart-svg') as SVGElement).getAttribute('style')).toBeNull();
+      // Chart data colors are preserved
+      expect(html).toContain('stroke="#ffd633"');
+      expect(html).toContain('stroke:var(--p9n-link)');
+      expect(html).toContain('fill:var(--p9n-danger)');
     });
   });
 
@@ -574,7 +591,10 @@ describe('Deals Feature Last-Mile Regressions (5 Audit Items + Final 3 Items)', 
       expect(fxStatus.textContent).toContain('汇率: 用户设置');
       expect(fxStatus.textContent).toContain('2026-08-01');
       expect(fxStatus.textContent).toContain('已过期');
-      expect(fxStatus.style.color).toBe('rgb(224, 49, 49)'); // Expired color #e03131
+      // Expired state is conveyed by class (CSS paints it with --p9n-danger), not inline color
+      expect(fxStatus.classList.contains('is-expired')).toBe(true);
+      expect(fxStatus.getAttribute('style')).toBeNull();
+      expect(fxStatus.hidden).toBe(false);
     });
   });
 
@@ -858,8 +878,15 @@ describe('Deals Feature Last-Mile Regressions (5 Audit Items + Final 3 Items)', 
 
       // Toggle currency button off and on
       const cnyBtn = document.getElementById('psnine-toggle-cny-btn') as HTMLElement;
+      expect(cnyBtn.getAttribute('aria-pressed')).toBe('true');
       cnyBtn.click();
+      expect(cnyBtn.getAttribute('aria-pressed')).toBe('false');
+      expect(cnyBtn.textContent).toBe('人民币换算');
+      expect((badges[0] as HTMLElement).hidden).toBe(true);
+      expect((document.getElementById('psnine-fx-status') as HTMLElement).hidden).toBe(true);
       cnyBtn.click();
+      expect(cnyBtn.getAttribute('aria-pressed')).toBe('true');
+      expect(cnyBtn.textContent).toBe('人民币换算');
       badges = document.querySelectorAll('.psnine-cny-badge');
       expect(badges.length).toBe(1); // Still exactly 1!
     });

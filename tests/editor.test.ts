@@ -77,7 +77,9 @@ describe('Editor features module (C17, C18)', () => {
       textarea.dispatchEvent(new Event('input'));
       expect(countBox.textContent).toContain('601 / 600');
       expect(countBox.textContent).toContain('已超限');
-      expect(countBox.style.color).toBe('rgb(231, 76, 60)');
+      // Over-limit color now comes from the --p9n-danger token via the .is-over class (no inline hex)
+      expect(countBox.classList.contains('is-over')).toBe(true);
+      expect(countBox.style.color).toBe('');
 
       // Form submission should be prevented by capturing phase listener
       const submitEvent = new Event('submit', { cancelable: true });

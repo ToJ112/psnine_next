@@ -654,7 +654,7 @@ export function renderPriceHistorySvg(
   }
 
   if (intervals.length === 0) {
-    return '<div data-psnine-next="true" style="padding:10px;color:var(--p9n-muted);">需至少一条有效历史促销记录生成走势图</div>';
+    return '<div data-psnine-next="true" class="psnine-price-chart-empty">需至少一条有效历史促销记录生成走势图</div>';
   }
 
   const svgWidth = 500;
@@ -714,27 +714,27 @@ export function renderPriceHistorySvg(
       const plusStr = ev.plusPrice === 0 ? '免费 (0.00)' : (ev.plusPrice !== null ? `${safeCurrency}${ev.plusPrice.toFixed(2)}` : '-');
       const oldStr = ev.oldPrice !== null ? `${safeCurrency}${ev.oldPrice.toFixed(2)}` : '未知';
       return `
-        <tr style="border-bottom:1px solid var(--p9n-border);">
-          <td style="padding:6px 8px;">${escapeXml(ev.title)}</td>
-          <td style="padding:6px 8px;">${escapeXml(ev.startDate)} ~ ${escapeXml(ev.endDate)}</td>
-          <td style="padding:6px 8px;">${normalStr}</td>
-          <td style="padding:6px 8px;">${plusStr}</td>
-          <td style="padding:6px 8px;">${oldStr}</td>
+        <tr>
+          <td>${escapeXml(ev.title)}</td>
+          <td class="is-nowrap">${escapeXml(ev.startDate)} ~ ${escapeXml(ev.endDate)}</td>
+          <td class="is-nowrap">${normalStr}</td>
+          <td class="is-nowrap">${plusStr}</td>
+          <td class="is-nowrap">${oldStr}</td>
         </tr>
       `;
     }).join('');
 
     tableHtml = `
-      <div class="psnine-price-history-table-wrapper" style="margin-top:12px;overflow-x:auto;">
-        <table class="psnine-price-history-table" style="width:100%;font-size:12px;text-align:left;border-collapse:collapse;border:1px solid var(--p9n-border);" summary="商品历史价格走势明细">
-          <caption style="text-align:left;font-weight:600;padding:4px 0;">促销历史数据明细 (可键盘访问)</caption>
+      <div class="psnine-price-history-table-wrapper" tabindex="0" role="region" aria-label="促销明细">
+        <table class="psnine-price-history-table" summary="商品历史价格走势明细">
+          <caption>促销明细</caption>
           <thead>
-            <tr style="background:var(--p9n-surface-alt);border-bottom:1px solid var(--p9n-border);">
-              <th scope="col" style="padding:6px 8px;">活动名称</th>
-              <th scope="col" style="padding:6px 8px;">促销周期</th>
-              <th scope="col" style="padding:6px 8px;">普通会员价</th>
-              <th scope="col" style="padding:6px 8px;">PS+会员价</th>
-              <th scope="col" style="padding:6px 8px;">原价恢复</th>
+            <tr>
+              <th scope="col">活动</th>
+              <th scope="col">周期</th>
+              <th scope="col">普通会员价</th>
+              <th scope="col">PS+会员价</th>
+              <th scope="col">原价</th>
             </tr>
           </thead>
           <tbody>
@@ -746,7 +746,7 @@ export function renderPriceHistorySvg(
   }
 
   return `
-    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" data-psnine-next="true" class="psnine-price-chart-svg" style="width:100%;height:auto;max-height:240px;user-select:none;font-family:inherit;">
+    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" data-psnine-next="true" class="psnine-price-chart-svg" role="img" aria-label="历史价格走势图">
       <desc>历史价格阶梯走势图，包含普通会员价与 PS+ 会员价阶梯走势及原价恢复记录</desc>
       <line x1="${margin.left}" y1="${margin.top + innerHeight}" x2="${margin.left + innerWidth}" y2="${margin.top + innerHeight}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
       <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + innerHeight}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
@@ -766,11 +766,13 @@ export function renderPriceHistorySvg(
         </circle>
       ` : ''}
 
-      <g transform="translate(${margin.left + 10}, ${margin.top - 8})">
-        <line x1="0" y1="0" x2="16" y2="0" style="stroke:var(--p9n-link)" stroke-width="2" />
-        <text x="20" y="3" font-size="11" fill="currentColor">普通会员价</text>
-        <line x1="100" y1="0" x2="116" y2="0" stroke="#ffd633" stroke-width="2" stroke-dasharray="4,2" />
-        <text x="120" y="3" font-size="11" fill="currentColor">PS+会员价</text>
+      <g transform="translate(${margin.left + 4}, ${margin.top - 10})" class="psnine-price-chart-legend">
+        <line x1="0" y1="0" x2="12" y2="0" style="stroke:var(--p9n-link)" stroke-width="2" />
+        <text x="16" y="3" font-size="10" fill="currentColor">普通会员价</text>
+        <line x1="80" y1="0" x2="92" y2="0" stroke="#ffd633" stroke-width="2" stroke-dasharray="4,2" />
+        <text x="96" y="3" font-size="10" fill="currentColor">PS+会员价</text>
+        <circle cx="160" cy="0" r="3" style="fill:var(--p9n-danger)" />
+        <text x="166" y="3" font-size="10" fill="currentColor">史低</text>
       </g>
     </svg>
     ${tableHtml}
@@ -893,26 +895,41 @@ export const mountDeals: Mount = (ctx: Context): Cleanup => {
 
       if (!currentShowCny) {
         fxStatus.textContent = '';
-        fxStatus.style.display = 'none';
+        fxStatus.hidden = true;
+        fxStatus.classList.remove('is-expired');
         return;
       }
 
-      fxStatus.style.display = 'inline-block';
+      fxStatus.hidden = false;
+      let isExp = false;
       if (ratesData) {
-        const isExp = (Date.now() - new Date(ratesData.date + 'T00:00:00Z').getTime()) > MAX_FRESHNESS_MS;
+        isExp = (Date.now() - new Date(ratesData.date + 'T00:00:00Z').getTime()) > MAX_FRESHNESS_MS;
         fxStatus.textContent = `汇率: Frankfurter (${ratesData.date}${isExp ? ' 已过期' : ''})`;
-        fxStatus.style.color = isExp ? '#e03131' : 'var(--p9n-muted)';
       } else if (settings.exchangeRateDate && isValidFxDate(settings.exchangeRateDate)) {
-        const isExp = (Date.now() - new Date(settings.exchangeRateDate + 'T00:00:00Z').getTime()) > MAX_FRESHNESS_MS;
+        isExp = (Date.now() - new Date(settings.exchangeRateDate + 'T00:00:00Z').getTime()) > MAX_FRESHNESS_MS;
         fxStatus.textContent = `汇率: 用户设置 (${settings.exchangeRateDate}${isExp ? ' 已过期' : ''})`;
-        fxStatus.style.color = isExp ? '#e03131' : 'var(--p9n-muted)';
       } else if (ratesFetchFailed) {
         fxStatus.textContent = '汇率: 不可用';
-        fxStatus.style.color = 'var(--p9n-muted)';
       } else {
         fxStatus.textContent = '汇率: 加载中...';
-        fxStatus.style.color = 'var(--p9n-muted)';
       }
+      fxStatus.classList.toggle('is-expired', isExp);
+    };
+
+    // Helper: create a CNY badge; static look lives in CSS (.psnine-cny-badge)
+    const createCnyBadge = (): HTMLElement => {
+      const badge = doc.createElement('span');
+      badge.className = 'psnine-cny-badge';
+      badge.setAttribute('data-psnine-next', 'true');
+      return badge;
+    };
+
+    // Helper: apply badge state (pending / ok / expired / unavailable) via classes and visibility
+    const setCnyBadgeState = (badge: HTMLElement, state: 'pending' | 'ok' | 'expired' | 'unavailable') => {
+      badge.classList.toggle('is-pending', state === 'pending');
+      badge.classList.toggle('is-expired', state === 'expired');
+      badge.classList.toggle('is-unavailable', state === 'unavailable');
+      badge.hidden = !currentShowCny;
     };
 
     // Helper to convert single price element
@@ -934,14 +951,11 @@ export const mountDeals: Mount = (ctx: Context): Cleanup => {
       if (!res && !ratesFetchFailed && !ratesData && !settings.exchangeRateDate) {
         // Pending load: render placeholder
         if (!isOurBadge) {
-          cnySpan = doc.createElement('span');
-          cnySpan.className = 'psnine-cny-badge';
-          cnySpan.setAttribute('data-psnine-next', 'true');
-          cnySpan.setAttribute('style', 'display:inline-block;font-size:11px;color:var(--p9n-muted);font-weight:500;margin-left:4px;');
+          cnySpan = createCnyBadge();
           priceEl.after(cnySpan);
         }
         cnySpan!.textContent = '(换算中...)';
-        cnySpan!.style.display = currentShowCny ? 'inline-block' : 'none';
+        setCnyBadgeState(cnySpan!, 'pending');
         return;
       }
 
@@ -953,23 +967,18 @@ export const mountDeals: Mount = (ctx: Context): Cleanup => {
       }
 
       if (!isOurBadge) {
-        cnySpan = doc.createElement('span');
-        cnySpan.className = 'psnine-cny-badge';
-        cnySpan.setAttribute('data-psnine-next', 'true');
-        cnySpan.setAttribute('style', 'display:inline-block;font-size:11px;color:var(--p9n-success);font-weight:500;margin-left:4px;');
+        cnySpan = createCnyBadge();
         priceEl.after(cnySpan);
       }
 
       if (res) {
         cnySpan!.textContent = res.badgeText;
         cnySpan!.setAttribute('title', res.titleText);
-        cnySpan!.style.color = res.isExpired ? 'var(--p9n-danger)' : 'var(--p9n-success)';
-        cnySpan!.style.display = currentShowCny ? 'inline-block' : 'none';
+        setCnyBadgeState(cnySpan!, res.isExpired ? 'expired' : 'ok');
       } else if (ratesFetchFailed) {
         cnySpan!.textContent = '(汇率不可用)';
         cnySpan!.setAttribute('title', '汇率服务不可用或数据失效');
-        cnySpan!.style.color = 'var(--p9n-muted)';
-        cnySpan!.style.display = currentShowCny ? 'inline-block' : 'none';
+        setCnyBadgeState(cnySpan!, 'unavailable');
       }
     };
 
@@ -1046,11 +1055,13 @@ export const mountDeals: Mount = (ctx: Context): Cleanup => {
           const bar = doc.createElement('div');
           bar.id = 'psnine-deals-controls-bar';
           bar.setAttribute('data-psnine-next', 'true');
-          bar.style.cssText = 'display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:10px 0;padding:8px 12px;background:var(--p9n-surface-alt);border:1px solid var(--p9n-border);border-radius:6px;';
+          bar.className = 'p9n-row';
+          bar.setAttribute('role', 'group');
+          bar.setAttribute('aria-label', '数折');
 
           const titleSpan = doc.createElement('span');
-          titleSpan.textContent = '🏷️ 数折增强:';
-          titleSpan.style.cssText = 'font-weight:500;font-size:13px;';
+          titleSpan.className = 'p9n-row-label';
+          titleSpan.textContent = '数折';
           bar.appendChild(titleSpan);
 
           // D05 Button
@@ -1058,15 +1069,13 @@ export const mountDeals: Mount = (ctx: Context): Cleanup => {
           bestBtn.type = 'button';
           bestBtn.id = 'psnine-toggle-best-deal-btn';
           bestBtn.setAttribute('data-psnine-next', 'true');
-          bestBtn.style.cssText = 'padding:4px 10px;border-radius:4px;border:1px solid var(--p9n-border);background:transparent;cursor:pointer;font-size:12px;';
-          bestBtn.textContent = isBestOnlyFilterActive ? '已过滤：只看史低' : '只看史低';
+          bestBtn.className = 'p9n-pill is-danger';
+          bestBtn.textContent = '只看史低';
+          bestBtn.setAttribute('aria-pressed', String(isBestOnlyFilterActive));
           bestBtn.onclick = () => {
             if (!isMounted) return;
             isBestOnlyFilterActive = !isBestOnlyFilterActive;
-            bestBtn.textContent = isBestOnlyFilterActive ? '已过滤：只看史低' : '只看史低';
-            bestBtn.style.background = isBestOnlyFilterActive ? '#da314b' : 'transparent';
-            bestBtn.style.color = isBestOnlyFilterActive ? 'var(--p9n-on-accent)' : 'inherit';
-            bestBtn.style.borderColor = isBestOnlyFilterActive ? '#da314b' : 'var(--p9n-border)';
+            bestBtn.setAttribute('aria-pressed', String(isBestOnlyFilterActive));
             enhanceDealsAndStores();
           };
           bar.appendChild(bestBtn);
@@ -1076,12 +1085,13 @@ export const mountDeals: Mount = (ctx: Context): Cleanup => {
           cnyBtn.type = 'button';
           cnyBtn.id = 'psnine-toggle-cny-btn';
           cnyBtn.setAttribute('data-psnine-next', 'true');
-          cnyBtn.style.cssText = 'padding:4px 10px;border-radius:4px;border:1px solid #28a745;background:transparent;color:#28a745;cursor:pointer;font-size:12px;';
-          cnyBtn.textContent = currentShowCny ? '已开启人民币换算 (CNY)' : '切换人民币换算';
+          cnyBtn.className = 'p9n-pill is-success';
+          cnyBtn.textContent = '人民币换算';
+          cnyBtn.setAttribute('aria-pressed', String(currentShowCny));
           cnyBtn.onclick = async () => {
             if (!isMounted) return;
             currentShowCny = !currentShowCny;
-            cnyBtn.textContent = currentShowCny ? '已开启人民币换算 (CNY)' : '切换人民币换算';
+            cnyBtn.setAttribute('aria-pressed', String(currentShowCny));
             updateFxStatusDisplay();
             if (currentShowCny && !ratesData) {
               await loadRates();
@@ -1089,7 +1099,7 @@ export const mountDeals: Mount = (ctx: Context): Cleanup => {
             if (!isMounted) return;
             updateFxStatusDisplay();
             doc.querySelectorAll('.psnine-cny-badge').forEach((bg) => {
-              (bg as HTMLElement).style.display = currentShowCny ? 'inline-block' : 'none';
+              (bg as HTMLElement).hidden = !currentShowCny;
             });
             enhanceDealsAndStores();
           };
@@ -1099,7 +1109,8 @@ export const mountDeals: Mount = (ctx: Context): Cleanup => {
           const fxStatusSpan = doc.createElement('span');
           fxStatusSpan.id = 'psnine-fx-status';
           fxStatusSpan.setAttribute('data-psnine-next', 'true');
-          fxStatusSpan.style.cssText = 'font-size:11px;color:var(--p9n-muted);margin-left:auto;';
+          fxStatusSpan.className = 'p9n-row-end';
+          fxStatusSpan.setAttribute('aria-live', 'polite');
           bar.appendChild(fxStatusSpan);
 
           targetContainer.insertBefore(bar, targetContainer.firstChild);
@@ -1128,13 +1139,18 @@ export const mountDeals: Mount = (ctx: Context): Cleanup => {
                 const chartDiv = doc.createElement('div');
                 chartDiv.id = 'psnine-price-chart-container';
                 chartDiv.setAttribute('data-psnine-next', 'true');
-                chartDiv.style.cssText = 'margin:15px 0;padding:12px;border:1px solid var(--p9n-border);border-radius:8px;background:var(--p9n-surface-alt);';
 
-                const heading = doc.createElement('div');
-                heading.setAttribute('data-psnine-next', 'true');
-                heading.style.cssText = 'font-weight:600;font-size:13px;margin-bottom:8px;';
-                heading.textContent = '📈 本商品历史价格变动走势 (真实促销阶梯记录)';
-                chartDiv.appendChild(heading);
+                const header = doc.createElement('div');
+                header.className = 'psnine-price-chart-header';
+                header.setAttribute('data-psnine-next', 'true');
+                const heading = doc.createElement('h3');
+                heading.className = 'p9n-section-title';
+                heading.textContent = '历史价格';
+                const subtitle = doc.createElement('span');
+                subtitle.className = 'psnine-price-chart-subtitle';
+                subtitle.textContent = `按促销记录 · ${events.length} 次`;
+                header.append(heading, subtitle);
+                chartDiv.appendChild(header);
 
                 const currencySymbol = targetCurrency === 'HKD' ? 'HK$'
                   : targetCurrency === 'USD' ? '$'

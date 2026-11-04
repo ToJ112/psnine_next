@@ -727,13 +727,16 @@ export const mountTrophies: Mount = async (ctx: Context) => {
         const sortBtn = doc.createElement('button');
         sortBtn.id = 'psnine-sort-tips-by-likes-btn';
         sortBtn.type = 'button';
+        sortBtn.className = 'p9n-text-toggle is-sort';
         sortBtn.setAttribute('data-psnine-next', 'true');
-        sortBtn.style.cssText = 'padding:4px 8px;font-size:12px;border-radius:4px;border:1px solid #3890ff;background:transparent;color:#3890ff;cursor:pointer;margin-bottom:8px;';
-        sortBtn.textContent = '🔥 按“顶”数热度排序Tips';
+        // Pressed = Tips sorted by 顶 count; pressing again restores the site order
+        sortBtn.setAttribute('aria-pressed', isLikesSorted ? 'true' : 'false');
+        sortBtn.title = '按“顶”数排序 Tips（再次点击恢复默认排序）';
+        sortBtn.textContent = '按热度排序';
 
         sortBtn.onclick = () => {
           isLikesSorted = !isLikesSorted;
-          sortBtn.textContent = isLikesSorted ? '🔄 恢复默认排序' : '🔥 按“顶”数热度排序Tips';
+          sortBtn.setAttribute('aria-pressed', isLikesSorted ? 'true' : 'false');
           updateT13Tips();
         };
 
@@ -850,26 +853,21 @@ export const mountTrophies: Mount = async (ctx: Context) => {
 
           item.a.setAttribute('data-psnine-badge-bound', 'true');
 
-          let badgeText = '❓ 状态未知';
-          let bg = '#6c757d';
-          let fg = '#fff';
+          let badgeText = '状态未知';
+          let badgeVariant = '';
 
           if (gameData && gameData.verifiedPersonal) {
             if (gameData.earnedSet.has(item.tId)) {
-              badgeText = '✅ 已获得';
-              bg = '#28a745';
-              fg = '#fff';
+              badgeText = '已获得';
+              badgeVariant = 'is-success';
             } else if (gameData.knownSet.has(item.tId)) {
-              badgeText = '⏳ 未获得';
-              bg = '#ffc107';
-              fg = '#000';
+              badgeText = '未获得';
             }
           }
 
           const badge = doc.createElement('span');
-          badge.className = 'psnine-guide-trophy-badge';
+          badge.className = `p9n-tag psnine-guide-trophy-badge ${badgeVariant}`.trim();
           badge.setAttribute('data-psnine-next', 'true');
-          badge.style.cssText = `display:inline-block;padding:1px 5px;font-size:11px;border-radius:3px;margin-left:4px;background:${bg};color:${fg};font-weight:500;`;
           badge.textContent = badgeText;
           item.a.after(badge);
         }
@@ -1573,12 +1571,13 @@ export const mountTrophies: Mount = async (ctx: Context) => {
         const td = doc.createElement('td');
         td.setAttribute('colspan', '4');
         td.setAttribute('data-psnine-next', 'true');
-        td.style.cssText = 'padding:10px 15px;background:var(--p9n-surface-alt,#f8fafc);border-bottom:1px solid var(--p9n-border,#ccd6dd);color:var(--p9n-text,inherit);';
+        td.className = 'psnine-inline-tip-cell';
 
         const loadingDiv = doc.createElement('div');
+        loadingDiv.className = 'psnine-inline-tip-status';
         loadingDiv.setAttribute('data-psnine-next', 'true');
-        loadingDiv.style.cssText = 'font-size:12px;color:var(--p9n-muted,#5f6b7a);';
-        loadingDiv.textContent = `⏳ 正在加载奖杯 Tips (#${t.trophyId})...`;
+        loadingDiv.setAttribute('role', 'status');
+        loadingDiv.textContent = '正在加载 Tips…';
         td.appendChild(loadingDiv);
         tipRow.appendChild(td);
 
@@ -1600,31 +1599,31 @@ export const mountTrophies: Mount = async (ctx: Context) => {
 
           if (tipNodes.length === 0) {
             const emptyMsg = doc.createElement('div');
+            emptyMsg.className = 'psnine-inline-tip-status';
             emptyMsg.setAttribute('data-psnine-next', 'true');
-            emptyMsg.style.cssText = 'font-size:12px;color:var(--p9n-muted,#5f6b7a);';
-            emptyMsg.textContent = '暂无可用 Tips';
+            emptyMsg.textContent = '暂无 Tips';
             td.appendChild(emptyMsg);
             return;
           }
 
           const container = doc.createElement('div');
+          container.className = 'psnine-inline-tip-list';
           container.setAttribute('data-psnine-next', 'true');
-          container.style.cssText = 'max-height:280px;overflow-y:auto;';
 
           const topBar = doc.createElement('div');
+          topBar.className = 'psnine-inline-tip-head';
           topBar.setAttribute('data-psnine-next', 'true');
-          topBar.style.cssText = 'font-size:12px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between;';
 
           const countSpan = doc.createElement('span');
-          countSpan.textContent = `💡 奖杯 Tips (${tipNodes.length}条):`;
+          countSpan.textContent = `Tips · ${tipNodes.length} 条`;
           topBar.appendChild(countSpan);
 
           const fullLink = doc.createElement('a');
           fullLink.setAttribute('data-psnine-next', 'true');
           fullLink.href = targetUrl;
           fullLink.target = '_blank';
-          fullLink.style.cssText = 'font-size:11px;color:#3890ff;text-decoration:none;';
-          fullLink.textContent = '前往奖杯完整页 ↗';
+          fullLink.rel = 'noopener';
+          fullLink.textContent = '奖杯完整页';
           topBar.appendChild(fullLink);
           container.appendChild(topBar);
 
@@ -1669,26 +1668,28 @@ export const mountTrophies: Mount = async (ctx: Context) => {
             }
 
             const itemDiv = doc.createElement('div');
+            itemDiv.className = 'psnine-inline-tip-item';
             itemDiv.setAttribute('data-psnine-next', 'true');
-            itemDiv.style.cssText = 'margin-bottom:8px;padding-bottom:8px;border-bottom:1px dashed var(--p9n-border,#ccd6dd);font-size:12px;';
 
             if (isBlockedAuthor || isBlockedWord) {
               const placeholderBtn = doc.createElement('button');
               placeholderBtn.type = 'button';
               placeholderBtn.setAttribute('data-psnine-next', 'true');
               placeholderBtn.className = 'psnine-filtered-tip-btn';
-              placeholderBtn.style.cssText = 'display:block;width:100%;text-align:left;padding:4px 8px;background:var(--p9n-surface-alt,#f8fafc);color:var(--p9n-muted,#5f6b7a);font-size:11px;border-radius:3px;border:1px dashed var(--p9n-border,#ccd6dd);cursor:pointer;user-select:none;';
-              placeholderBtn.textContent = `🚫 评论已过滤 (${isBlockedAuthor ? `黑名单用户 ${authorDisplay}` : `屏蔽词: ${blockedReasonWord}`}) - 点击揭示内容`;
+              const filterReason = isBlockedAuthor ? `黑名单用户 ${authorDisplay}` : `屏蔽词 ${blockedReasonWord}`;
+              placeholderBtn.textContent = `已过滤 · ${filterReason} · 点击显示`;
+              placeholderBtn.setAttribute('aria-expanded', 'false');
 
               const hiddenBody = doc.createElement('div');
+              hiddenBody.className = 'psnine-filtered-tip-body';
               hiddenBody.setAttribute('data-psnine-next', 'true');
               hiddenBody.style.display = 'none';
-              hiddenBody.style.marginTop = '4px';
 
               placeholderBtn.onclick = () => {
                 const isH = hiddenBody.style.display === 'none';
                 hiddenBody.style.display = isH ? 'block' : 'none';
-                placeholderBtn.textContent = isH ? `👁️ 评论已揭示 (${authorDisplay}) - 点击重新折叠` : `🚫 评论已过滤 (${authorDisplay}) - 点击揭示内容`;
+                placeholderBtn.setAttribute('aria-expanded', isH ? 'true' : 'false');
+                placeholderBtn.textContent = isH ? `已显示 · ${filterReason} · 点击收起` : `已过滤 · ${filterReason} · 点击显示`;
               };
 
               itemDiv.appendChild(placeholderBtn);
@@ -1734,11 +1735,11 @@ export const mountTrophies: Mount = async (ctx: Context) => {
               }
 
               const metaLine = doc.createElement('div');
+              metaLine.className = 'psnine-inline-tip-meta';
               metaLine.setAttribute('data-psnine-next', 'true');
-              metaLine.style.cssText = 'display:flex;justify-content:space-between;color:var(--p9n-muted,#5f6b7a);font-size:11px;margin-bottom:2px;';
 
               const authorSpan = doc.createElement('span');
-              authorSpan.style.cssText = 'font-weight:500;color:#3890ff;';
+              authorSpan.className = 'psnine-inline-tip-author';
               authorSpan.textContent = authorDisplay;
               if (authorId) {
                 authorSpan.title = `PSNID: ${authorId}`;
@@ -1748,7 +1749,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
 
               const timeLikesSpan = doc.createElement('span');
               if (likes !== null && likes > 0) {
-                timeLikesSpan.textContent = timeStr ? `${timeStr} | 👍 ${likes}` : `👍 ${likes}`;
+                timeLikesSpan.textContent = timeStr ? `${timeStr} · 顶 ${likes}` : `顶 ${likes}`;
               } else {
                 timeLikesSpan.textContent = timeStr;
               }
@@ -1757,8 +1758,8 @@ export const mountTrophies: Mount = async (ctx: Context) => {
 
               if (contentEl) {
                 const bodyDiv = doc.createElement('div');
+                bodyDiv.className = 'psnine-inline-tip-body';
                 bodyDiv.setAttribute('data-psnine-next', 'true');
-                bodyDiv.style.cssText = 'line-height:1.5;';
 
                 const clone = contentEl.cloneNode(true) as HTMLElement;
                 clone.querySelectorAll('script, form').forEach(s => s.remove());
@@ -1787,17 +1788,18 @@ export const mountTrophies: Mount = async (ctx: Context) => {
           }
           td.innerHTML = '';
           const errDiv = doc.createElement('div');
+          errDiv.className = 'psnine-inline-tip-status is-error';
           errDiv.setAttribute('data-psnine-next', 'true');
-          errDiv.style.cssText = 'font-size:12px;color:#e03131;';
+          errDiv.setAttribute('role', 'alert');
 
           const errMsg = doc.createElement('span');
-          errMsg.textContent = '❌ 加载 Tips 失败，请检查网络。';
+          errMsg.textContent = 'Tips 加载失败，请检查网络';
           errDiv.appendChild(errMsg);
 
           const retryBtn = doc.createElement('button');
           retryBtn.type = 'button';
+          retryBtn.className = 'p9n-pill is-sm';
           retryBtn.setAttribute('data-psnine-next', 'true');
-          retryBtn.style.cssText = 'margin-left:8px;padding:2px 6px;border:1px solid var(--p9n-border,#ccd6dd);border-radius:3px;cursor:pointer;';
           retryBtn.textContent = '重试';
           retryBtn.onclick = () => {
             tipRow.remove();

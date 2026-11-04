@@ -110,6 +110,7 @@ describe('Community features module with real fixture semantics', () => {
       const p1Badge = document.querySelector('#p1 .psnine-floor-badge');
       const p2Badge = document.querySelector('#p2 .psnine-floor-badge');
       expect(p1Badge?.textContent).toBe('#1');
+      expect(p1Badge?.classList.contains('p9n-tag')).toBe(true);
       expect(p2Badge?.textContent).toBe('#2');
 
       const subBadges = document.querySelectorAll('.psnine-subfloor-badge');
@@ -289,6 +290,11 @@ describe('Community features module with real fixture semantics', () => {
 
       const triggerBtn = document.querySelector('.psnine-profile-trigger') as HTMLButtonElement;
       expect(triggerBtn).not.toBeNull();
+      // Quiet inline SVG icon button instead of the old emoji glyph
+      expect(triggerBtn.querySelector('svg')).not.toBeNull();
+      expect(triggerBtn.textContent).toBe('');
+      expect(triggerBtn.getAttribute('aria-label')).toContain('查看用户资料');
+      expect(triggerBtn.getAttribute('style')).toBeNull();
 
       triggerBtn.click();
       await new Promise(r => setTimeout(r, 60));
@@ -300,6 +306,9 @@ describe('Community features module with real fixture semantics', () => {
       expect(card?.textContent).toContain('11584');
       expect(card?.textContent).toContain('白59');
       expect(card?.textContent).not.toContain('总耗时');
+      // Level / rank rendered as shared tags; static look lives in CSS, not inline
+      expect(card?.querySelector('.p9n-tag.is-accent')?.textContent).toBe('Lv 336');
+      expect((card as HTMLElement).style.position).toBe('');
 
       cleanup();
     });
@@ -332,6 +341,8 @@ describe('Community features module with real fixture semantics', () => {
 
       const t1 = document.getElementById('t1');
       expect(t1?.querySelector('.psnine-hot-badge')).not.toBeNull();
+      expect(t1?.querySelector('.psnine-hot-badge')?.classList.contains('p9n-tag')).toBe(true);
+      expect(t1?.querySelector('.psnine-hot-badge')?.classList.contains('is-danger')).toBe(true);
 
       const t2 = document.getElementById('t2');
       expect(t2?.querySelector('.psnine-hot-badge')).toBeNull();
@@ -479,5 +490,86 @@ describe('Community features module with real fixture semantics', () => {
         }
       }).not.toThrow();
     });
+  });
+
+  describe('Restyle: QA status tags, bounty and keyword placeholder use shared primitives', () => {
+    const makeCtx = (path: string, overrides: Partial<typeof defaultSettings> = {}) => {
+      const ctx = createContext({
+        document,
+        window,
+        settings: { ...defaultSettings, newQaStatus: true, ...overrides },
+        store: createStore(),
+        http: createHttpClient(),
+      });
+      ctx.url = new URL(`https://psnine.com${path}`);
+      return ctx;
+    };
+
+    it('renders QA status as emoji-free .p9n-tag variants and bounty count via textContent, idempotently', () => {
+      document.body.innerHTML = `
+        <ul class="list">
+          <li id="q1"><div class="ml64"><p class="title font16"><a href="/qa/1">Q1</a></p></div>
+            <div class="meta"><span class="r"><span>悬赏50铜</span><span>已解决</span></span></div></li>
+          <li id="q2"><div class="ml64"><p class="title font16"><a href="/qa/2">Q2</a></p></div>
+            <div class="meta"><span class="r"><span>悬赏10铜</span><span>解决中</span></span></div></li>
+        </ul>
+      `;
+      const ctx = makeCtx('/qa');
+      applyQaStatusIcons(ctx, document.body);
+      applyQaStatusIcons(ctx, document.body);
+
+      const s1 = document.querySelectorAll('#q1 .psnine-qa-status');
+      expect(s1.length).toBe(1);
+      expect(s1[0].classList.contains('p9n-tag')).toBe(true);
+      expect(s1[0].classList.contains('is-success')).toBe(true);
+      expect(s1[0].textContent).toBe('已解决');
+      expect(s1[0].querySelector('svg')).toBeNull();
+
+      const s2 = document.querySelector('#q2 .psnine-qa-status');
+      expect(s2?.classList.contains('is-pending')).toBe(true);
+      expect(s2?.textContent).toBe('解决中');
+
+      expect(document.querySelector('#q1 .psnine-qa-bounty')?.classList.contains('is-gold')).toBe(true);
+      expect(document.querySelector('#q1 .psnine-qa-bounty-count')?.textContent).toBe('50');
+      expect(document.querySelector('#q2 .psnine-qa-bounty')?.classList.contains('is-bronze')).toBe(true);
+    });
+
+    it('keyword placeholder exposes a text-toggle reveal button that restores the hidden post', () => {
+      document.body.innerHTML = `
+        <ul class="list">
+          <li id="bad"><div class="meta"><a class="psnnode" href="/psnid/x">x</a></div><div class="content">spoiler word</div></li>
+        </ul>
+      `;
+      const ctx = makeCtx('/topic/1', { blockWordsList: ['spoiler'] });
+      applyKeywordFilter(ctx, document.body);
+
+      const bad = document.getElementById('bad') as HTMLElement;
+      const placeholder = bad.previousElementSibling as HTMLElement;
+      expect(placeholder.className).toBe('psnine-keyword-placeholder');
+      expect(placeholder.getAttribute('style')).toBeNull();
+      const reveal = placeholder.querySelector('button.p9n-text-toggle') as HTMLButtonElement;
+      expect(reveal.textContent).toBe('显示');
+      reveal.click();
+      expect(isHiddenByReason(bad, 'keyword-block')).toBe(false);
+      expect(placeholder.isConnected).toBe(false);
+    });
+  });
+  it('adds one profile trigger per post: next to the username, not after the avatar link', () => {
+    document.body.innerHTML = `
+      <div class="post">
+        <a class="l" href="https://www.psnine.com/psnid/alice"><img src="a.png" width="50" height="50"></a>
+        <div class="ml64"><div class="content pb10">hi</div>
+          <div class="meta"><a href="https://www.psnine.com/psnid/alice" class="psnnode">alice</a> 14天前</div>
+        </div>
+      </div>`;
+    const ctx = createContext({ document, window, settings: { ...defaultSettings, hoverHomepage: true }, store: createStore(), http: createHttpClient() });
+    ctx.url = new URL('https://psnine.com/topic/123');
+    const cleanup = setupAvatarProfileCards(ctx, document.body);
+    const triggers = document.querySelectorAll('.psnine-profile-trigger');
+    expect(triggers.length).toBe(1);
+    expect(triggers[0].previousElementSibling?.classList.contains('psnnode')).toBe(true);
+    // Avatar still gets hover preview wiring
+    expect(document.querySelector('a.l')!.getAttribute('data-psnine-card-ready')).toBe('true');
+    cleanup?.();
   });
 });

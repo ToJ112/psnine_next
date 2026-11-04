@@ -392,7 +392,7 @@ export function renderScoreDistributionSvg(
 ): string {
   const { distribution, maxScoreBucket, average, stdDev, scoredCount } = stats;
   if (scoredCount === 0) {
-    return '<div class="psnine-empty-chart" style="padding:10px;color:var(--p9n-muted);">暂无有效评分样本</div>';
+    return '<div class="psnine-empty-chart">暂无有效评分样本</div>';
   }
 
   const svgWidth = 460;
@@ -412,11 +412,12 @@ export function renderScoreDistributionSvg(
     const y = margin.top + innerHeight - barHeight;
     const isMax = s === maxScoreBucket;
     const isSelected = activeFilterScore === s;
-    const color = isSelected ? '#ff9800' : isMax ? '#da314b' : 'var(--p9n-link)';
+    // Selection is conveyed by dimming the other bars; bars keep their data color.
+    const color = isMax ? 'var(--p9n-danger)' : 'var(--p9n-link)';
     const opacity = activeFilterScore === null || isSelected ? '1' : '0.35';
 
     barsHtml += `
-      <g class="score-bar-group" data-score="${s}" style="cursor:pointer;" tabindex="0" role="button" aria-label="${s}分: ${count}人">
+      <g class="score-bar-group" data-score="${s}" tabindex="0" role="button" aria-pressed="${isSelected ? 'true' : 'false'}" aria-label="${s}分: ${count}人">
         <rect x="${x}" y="${y}" width="${barWidth - 8}" height="${Math.max(2, barHeight)}" rx="2" style="fill:${color}" fill-opacity="${opacity}">
           <title>${s}分: ${count}人 (${((count / scoredCount) * 100).toFixed(1)}%)</title>
         </rect>
@@ -454,7 +455,7 @@ export function renderScoreDistributionSvg(
   }
 
   return `
-    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" class="psnine-score-svg" style="width:100%;height:auto;max-height:220px;user-select:none;font-family:inherit;">
+    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" class="psnine-score-svg psnine-review-svg">
       <desc>评论评分分布直方图，横轴为1-10分，纵轴为评价人数</desc>
       <line x1="${margin.left}" y1="${margin.top + innerHeight}" x2="${margin.left + innerWidth}" y2="${margin.top + innerHeight}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
       <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + innerHeight}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
@@ -467,7 +468,7 @@ export function renderScoreDistributionSvg(
 export function renderTrendSvg(stats: ReviewStats): string {
   const { cumulativeTrend, missingTimeCount } = stats;
   if (cumulativeTrend.length < 2) {
-    return '<div class="psnine-empty-chart" style="padding:10px;color:var(--p9n-muted);">需至少 2 条有效时间样本生成走势图</div>';
+    return '<div class="psnine-empty-chart">需至少 2 条有效时间样本生成走势图</div>';
   }
 
   const svgWidth = 460;
@@ -497,7 +498,7 @@ export function renderTrendSvg(stats: ReviewStats): string {
   const lastDate = new Date(lastTime + SHANGHAI_OFFSET_MS).toISOString().slice(0, 10);
 
   return `
-    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" class="psnine-trend-svg" style="width:100%;height:auto;max-height:220px;user-select:none;font-family:inherit;">
+    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" class="psnine-trend-svg psnine-review-svg">
       <desc>累计均分走势折线图，从 ${firstDate} 至 ${lastDate}</desc>
       <line x1="${margin.left}" y1="${margin.top + innerHeight}" x2="${margin.left + innerWidth}" y2="${margin.top + innerHeight}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
       <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + innerHeight}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
@@ -506,33 +507,33 @@ export function renderTrendSvg(stats: ReviewStats): string {
       <text x="${margin.left}" y="${margin.top + innerHeight + 16}" text-anchor="start" font-size="10" fill="currentColor">${firstDate}</text>
       <text x="${margin.left + innerWidth}" y="${margin.top + innerHeight + 16}" text-anchor="end" font-size="10" fill="currentColor">${lastDate}</text>
       <polyline points="${points.join(' ')}" fill="none" style="stroke:var(--p9n-link)" stroke-width="2.5" />
-      <circle cx="${points[points.length - 1].split(',')[0]}" cy="${points[points.length - 1].split(',')[1]}" r="4" fill="#da314b">
+      <circle cx="${points[points.length - 1].split(',')[0]}" cy="${points[points.length - 1].split(',')[1]}" r="4" style="fill:var(--p9n-danger)">
         <title>当前均分: ${cumulativeTrend[len - 1].cumAvg}</title>
       </circle>
     </svg>
-    <details style="margin-top:4px;font-size:11px;color:var(--p9n-muted);">
-      <summary style="cursor:pointer;">查看走势数据表格</summary>
-      <div style="max-height:100px;overflow-y:auto;margin-top:4px;">
-        <table style="width:100%;border-collapse:collapse;font-size:11px;">
+    <details class="psnine-review-table">
+      <summary>查看走势数据表格</summary>
+      <div class="psnine-review-table-scroll">
+        <table>
           <thead>
-            <tr style="border-bottom:1px solid var(--p9n-border);"><th style="text-align:left;">日期</th><th style="text-align:right;">当条评分</th><th style="text-align:right;">累计均分</th></tr>
+            <tr><th>日期</th><th class="is-num">当条评分</th><th class="is-num">累计均分</th></tr>
           </thead>
           <tbody>
             ${cumulativeTrend.slice(-15).map(t => `
-              <tr style="border-bottom:1px solid var(--p9n-border);"><td style="text-align:left;">${new Date(t.time + SHANGHAI_OFFSET_MS).toISOString().slice(0, 10)}</td><td style="text-align:right;">${t.score}分</td><td style="text-align:right;font-weight:500;">${t.cumAvg}</td></tr>
+              <tr><td>${new Date(t.time + SHANGHAI_OFFSET_MS).toISOString().slice(0, 10)}</td><td class="is-num">${t.score}分</td><td class="is-num is-strong">${t.cumAvg}</td></tr>
             `).join('')}
           </tbody>
         </table>
       </div>
     </details>
-    ${missingTimeCount > 0 ? `<div style="font-size:11px;color:var(--p9n-muted);text-align:right;padding-right:10px;margin-top:2px;">注：${missingTimeCount} 条评价无有效时间戳未纳入趋势</div>` : ''}
+    ${missingTimeCount > 0 ? `<div class="psnine-review-chart-note">注：${missingTimeCount} 条评价无有效时间戳未纳入趋势</div>` : ''}
   `;
 }
 
 export function renderWeeklyHeatmapSvg(stats: ReviewStats): string {
   const { weeklyHeatmap, scoredCount, missingTimeCount } = stats;
   if (weeklyHeatmap.length === 0) {
-    return '<div class="psnine-empty-chart" style="padding:10px;color:var(--p9n-muted);">暂无时间数据</div>';
+    return '<div class="psnine-empty-chart">暂无时间数据</div>';
   }
 
   const svgWidth = 460;
@@ -562,7 +563,7 @@ export function renderWeeklyHeatmapSvg(stats: ReviewStats): string {
   const sampleCount = scoredCount - missingTimeCount;
 
   return `
-    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" class="psnine-weekly-svg" style="width:100%;height:auto;max-height:200px;user-select:none;font-family:inherit;">
+    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" class="psnine-weekly-svg psnine-review-svg">
       <desc>每周评论热度柱状图，包含跨年空周</desc>
       <line x1="${margin.left}" y1="${margin.top + innerHeight}" x2="${margin.left + innerWidth}" y2="${margin.top + innerHeight}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1" />
       <text x="${margin.left}" y="${margin.top + innerHeight + 16}" text-anchor="start" font-size="10" fill="currentColor">${weeklyHeatmap[0].weekKey}</text>
@@ -570,16 +571,16 @@ export function renderWeeklyHeatmapSvg(stats: ReviewStats): string {
       <text x="${margin.left - 5}" y="${margin.top + 6}" text-anchor="end" font-size="10" fill="currentColor">${maxWeeklyCount}</text>
       ${barsHtml}
     </svg>
-    <details style="margin-top:4px;font-size:11px;color:var(--p9n-muted);">
-      <summary style="cursor:pointer;">查看每周热度数据表格 (${sampleCount} 条时间样本 / ${totalWeeks} 周)</summary>
-      <div style="max-height:100px;overflow-y:auto;margin-top:4px;">
-        <table style="width:100%;border-collapse:collapse;font-size:11px;">
+    <details class="psnine-review-table">
+      <summary>查看每周热度数据表格 (${sampleCount} 条时间样本 / ${totalWeeks} 周)</summary>
+      <div class="psnine-review-table-scroll">
+        <table>
           <thead>
-            <tr style="border-bottom:1px solid var(--p9n-border);"><th style="text-align:left;">周 (ISO)</th><th style="text-align:right;">评论数</th></tr>
+            <tr><th>周 (ISO)</th><th class="is-num">评论数</th></tr>
           </thead>
           <tbody>
             ${weeklyHeatmap.map(w => `
-              <tr style="border-bottom:1px solid var(--p9n-border);"><td style="text-align:left;">${w.weekKey}</td><td style="text-align:right;font-weight:500;">${w.count}</td></tr>
+              <tr><td>${w.weekKey}</td><td class="is-num is-strong">${w.count}</td></tr>
             `).join('')}
           </tbody>
         </table>
@@ -628,7 +629,7 @@ export const mountReviews: Mount = (ctx: Context) => {
         container = doc.createElement('div');
         container.id = containerId;
         container.setAttribute('data-psnine-next', 'true');
-        container.style.cssText = 'margin:15px 0;padding:12px;background:var(--p9n-surface-alt);border:1px solid var(--p9n-border);border-radius:8px;box-sizing:border-box;';
+        container.className = 'psnine-reviews-panel';
 
         const target = doc.querySelector('div.min-inner.mt40 div.box, .box');
         if (target) {
@@ -641,71 +642,68 @@ export const mountReviews: Mount = (ctx: Context) => {
         }
       }
 
+      const pressed = (on: boolean) => (on ? 'true' : 'false');
+      const chartTitle = activeSubTab === 'dist'
+        ? (showNormalCurve ? '评分分布 · 含正态拟合' : '评分分布')
+        : '每周评分热度 · 含空周补零';
+
+      // All interpolated values below are numbers or fixed strings; no user text is inserted.
       container.innerHTML = `
-        <div data-psnine-next="true" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">
-          <div data-psnine-next="true" style="font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px;">
-            <span>📊 玩家评测与均分统计</span>
-            <span class="alert-success pd5" style="border-radius:4px;font-size:12px;padding:2px 8px;background:var(--p9n-success);color:var(--p9n-on-accent);">
-              均分 ${stats.average} (${stats.scoredCount}人打分 / 共${stats.totalLoaded}条)
-            </span>
-          </div>
-          <div data-psnine-next="true" style="display:flex;align-items:center;gap:6px;font-size:12px;">
-            <button type="button" id="psnine-toggle-tab-btn" data-psnine-next="true" style="padding:4px 8px;border-radius:4px;border:1px solid var(--p9n-border);background:transparent;cursor:pointer;font-size:12px;">
-              ${activeSubTab === 'dist' ? '切换: 每周热度' : '切换: 评分分布'}
-            </button>
-            <button type="button" id="psnine-toggle-gaussian-btn" data-psnine-next="true" style="padding:4px 8px;border-radius:4px;border:1px solid var(--p9n-border);background:transparent;cursor:pointer;font-size:12px;">
-              ${showNormalCurve ? '正态曲线: 开' : '正态曲线: 关'}
-            </button>
-            ${activeFilterScore !== null ? `
-              <button type="button" id="psnine-clear-score-filter-btn" data-psnine-next="true" style="padding:4px 8px;border-radius:4px;border:1px solid #ff9800;background:rgba(255,152,0,0.1);color:var(--p9n-warning-text);cursor:pointer;font-weight:500;">
-                清除 ${activeFilterScore}分 筛选
-              </button>
-            ` : ''}
-          </div>
-        </div>
-
-        <div data-psnine-next="true" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;align-items:center;">
-          <span style="font-size:12px;color:var(--p9n-muted);">快捷分段筛选:</span>
-          ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(s => {
-            const count = stats.distribution[s - 1];
-            const isSel = activeFilterScore === s;
-            return `
-              <button type="button" class="psnine-score-filter-chip" data-psnine-next="true" data-score="${s}" style="padding:2px 6px;font-size:11px;border-radius:3px;border:1px solid ${isSel ? '#ff9800' : 'var(--p9n-border)'};background:${isSel ? '#ff9800' : 'var(--p9n-surface-alt)'};color:${isSel ? 'var(--p9n-on-accent)' : 'inherit'};cursor:pointer;">
-                ${s}分 (${count})
-              </button>
-            `;
-          }).join('')}
-        </div>
-
-        <div data-psnine-next="true" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:12px;">
-          <div data-psnine-next="true" style="background:var(--p9n-surface-alt);border-radius:6px;padding:8px;border:1px solid var(--p9n-border);">
-            <div style="font-size:12px;font-weight:500;margin-bottom:4px;color:var(--p9n-muted);">
-              ${activeSubTab === 'dist' ? `评分分布直方图 ${showNormalCurve ? '(含正态拟合)' : ''}` : '每周评分热度趋势 (含空周补零)'}
+        <div class="p9n-row psnine-reviews-header" data-psnine-next="true">
+          <h3 class="p9n-section-title">玩家评测</h3>
+          <span class="psnine-reviews-summary">均分 ${stats.average} · ${stats.scoredCount} 人打分 / 共 ${stats.totalLoaded} 条</span>
+          <div class="p9n-row-end psnine-reviews-controls" data-psnine-next="true">
+            <div class="p9n-seg" id="psnine-toggle-tab-btn" role="group" aria-label="图表视图" data-psnine-next="true">
+              <button type="button" class="p9n-seg-btn" data-view="dist" aria-pressed="${pressed(activeSubTab === 'dist')}" data-psnine-next="true">评分分布</button>
+              <button type="button" class="p9n-seg-btn" data-view="weekly" aria-pressed="${pressed(activeSubTab === 'weekly')}" data-psnine-next="true">每周热度</button>
             </div>
+            <button type="button" id="psnine-toggle-gaussian-btn" class="p9n-pill is-sm" aria-pressed="${pressed(showNormalCurve)}" data-psnine-next="true">正态曲线</button>
+          </div>
+        </div>
+
+        <div class="p9n-row psnine-score-filter-row" data-psnine-next="true">
+          <span class="p9n-row-label">按分数</span>
+          <div class="psnine-score-filter-scroll" role="group" aria-label="按分数筛选评论" data-psnine-next="true">
+            ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(s => {
+              const count = stats.distribution[s - 1];
+              return `<button type="button" class="p9n-pill is-sm psnine-score-filter-chip" data-psnine-next="true" data-score="${s}" aria-pressed="${pressed(activeFilterScore === s)}" aria-label="${s}分，${count} 条">${s}分<span class="psnine-score-filter-count">${count}</span></button>`;
+            }).join('')}
+          </div>
+          ${activeFilterScore !== null ? `<button type="button" id="psnine-clear-score-filter-btn" class="p9n-pill is-sm" data-psnine-next="true" aria-label="清除 ${activeFilterScore} 分筛选">清除</button>` : ''}
+        </div>
+
+        <div class="p9n-row psnine-review-charts" data-psnine-next="true">
+          <section class="psnine-review-chart" data-psnine-next="true">
+            <div class="p9n-row-label psnine-review-chart-title">${chartTitle}</div>
             <div id="psnine-score-dist-container" data-psnine-next="true">
               ${activeSubTab === 'dist' ? renderScoreDistributionSvg(stats, showNormalCurve, activeFilterScore) : renderWeeklyHeatmapSvg(stats)}
             </div>
-          </div>
-          <div data-psnine-next="true" style="background:var(--p9n-surface-alt);border-radius:6px;padding:8px;border:1px solid var(--p9n-border);">
-            <div style="font-size:12px;font-weight:500;margin-bottom:4px;color:var(--p9n-muted);">累计均分走势</div>
+          </section>
+          <section class="psnine-review-chart" data-psnine-next="true">
+            <div class="p9n-row-label psnine-review-chart-title">累计均分走势</div>
             <div id="psnine-trend-container" data-psnine-next="true">${renderTrendSvg(stats)}</div>
-          </div>
+          </section>
         </div>
       `;
 
-      const tabBtn = doc.getElementById('psnine-toggle-tab-btn');
-      if (tabBtn) {
-        tabBtn.onclick = () => {
-          activeSubTab = activeSubTab === 'dist' ? 'weekly' : 'dist';
+      container.querySelectorAll('#psnine-toggle-tab-btn .p9n-seg-btn').forEach((el) => {
+        const btn = el as HTMLElement;
+        btn.onclick = () => {
+          const view = btn.getAttribute('data-view') === 'weekly' ? 'weekly' : 'dist';
+          if (view === activeSubTab) return;
+          activeSubTab = view;
           renderPanel();
+          // Re-render replaces the buttons; keep keyboard focus on the chosen segment.
+          (container?.querySelector(`#psnine-toggle-tab-btn [data-view="${view}"]`) as HTMLElement | null)?.focus();
         };
-      }
+      });
 
       const gaussianBtn = doc.getElementById('psnine-toggle-gaussian-btn');
       if (gaussianBtn) {
         gaussianBtn.onclick = () => {
           showNormalCurve = !showNormalCurve;
           renderPanel();
+          doc.getElementById('psnine-toggle-gaussian-btn')?.focus();
         };
       }
 
@@ -722,6 +720,9 @@ export const mountReviews: Mount = (ctx: Context) => {
           const s = parseInt(btn.getAttribute('data-score') || '0', 10);
           if (s >= 1 && s <= 10) {
             applyScoreFilter(activeFilterScore === s ? null : s);
+            // Re-render replaces the control; restore focus for keyboard users.
+            const sel = btn.classList.contains('score-bar-group') ? '.score-bar-group' : '.psnine-score-filter-chip';
+            (container?.querySelector(`${sel}[data-score="${s}"]`) as HTMLElement | null)?.focus();
           }
         };
         btn.onclick = trigger;
