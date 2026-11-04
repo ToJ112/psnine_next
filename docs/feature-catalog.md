@@ -45,8 +45,8 @@
 |T05|汇总 Tips 标记与预览|[trophies](../src/features/trophies.ts)|**按用户要求移除（1.0.4）**：整个概览及相关设置已删除；历史证据保留。|
 |T06|奖杯汇总折叠|[trophies](../src/features/trophies.ts)|**按用户要求移除（1.0.4）**：整个概览及相关设置已删除；历史证据保留。|
 |T07|奖杯图表折叠|[trophies](../src/features/trophies.ts)|**按用户要求移除（1.0.4）**：整个概览及相关设置已删除；历史证据保留。|
-|T08|获得时间排序|[trophies](../src/features/trophies.ts)|补充在个人页的原生排序菜单中；公开页不显示，无原菜单时跳过。|
-|T09|原序/类型/稀有度排序|[trophies](../src/features/trophies.ts)|保留原生 XMB/类型/完美率链接；菜单内只补充反向排序，默认顺序沿用 XMB（1.0.5 移除重复选项），本地排序保持现有 DLC 分组与 Tips 归属。|
+|T08|获得时间排序|[trophies](../src/features/trophies.ts)|个人页原生排序菜单中只补充一项“获得时间 ↓/↑”：首次选择新→旧，再点一次倒序；公开页不显示，无原菜单时跳过。|
+|T09|原序/类型/稀有度排序|[trophies](../src/features/trophies.ts)|保留原生 XMB/类型/完美率链接；1.0.9 起按用户要求移除插件补充的“类型（铜→白金）/完美率（高→低）”反向项，只用原站排序；本地排序保持现有 DLC 分组与 Tips 归属。|
 |T10|获得状态筛选|[trophies](../src/features/trophies.ts)|沿用原站已获得/未获得控件，仅同步内联 Tips 与动态行；不再添加独立筛选。|
 |T11|内联展开单个 Tips|[trophies](../src/features/trophies.ts)|同游戏奖杯链接在当前列表定位并短暂高亮；跨游戏和修饰键操作保留原链接。|
 |T12|批量全部/未获 Tips|[trophies](../src/features/trophies.ts)|1.0.8 起改为单一“展开/收起 Tips”开关：只展开当前已获得/未获得筛选下的奖杯，切换筛选保持展开并补载新显示的奖杯；限速，收起即停止，异常后允许重试。原“展开所有/展开未获/停止加载”菜单已移除。|

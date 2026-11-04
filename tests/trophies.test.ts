@@ -250,12 +250,15 @@ describe('Trophies Feature Module (T01 - T14 + C19) - Followup Verification', ()
       expect(tipsToggle.getAttribute('aria-pressed')).toBe('false');
       expect(document.getElementById('psnine-trophy-tips-menu')).toBeNull();
 
-      // T08 & T09: Sort via native dropdown menu items
-      const sortRarityDescItem = document.querySelector('[data-psnine-sort="rarity-desc"]') as HTMLElement;
-      expect(sortRarityDescItem).not.toBeNull();
-      sortRarityDescItem.click(); // desc (50% then 3.6%)
-      const table = document.querySelector('table.list')!;
-      expect(table.querySelector('tbody')?.children[0].id).toBe('trophy-2');
+      // T08: single 获得时间 item in the native dropdown; picking it again flips the order
+      const timeItem = document.querySelector('[data-psnine-sort="time"]') as HTMLElement;
+      expect(timeItem).not.toBeNull();
+      expect(document.querySelectorAll('[data-psnine-sort-item]').length).toBe(1);
+      const sortTrigger = document.querySelector('[data-psnine-trophy-sort-trigger]') as HTMLElement;
+      timeItem.click();
+      expect(sortTrigger.textContent).toBe('获得时间 ↓');
+      timeItem.click();
+      expect(sortTrigger.textContent).toBe('获得时间 ↑');
 
       // Redundant "initial" sort option is removed; XMB serves as default
       expect(document.querySelector('[data-psnine-sort="initial"]')).toBeNull();

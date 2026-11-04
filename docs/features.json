@@ -1618,7 +1618,7 @@
     "id": "T08",
     "name": "获得时间排序",
     "module": "trophies",
-    "behavior": "个人奖杯页原生排序菜单内补充获得时间最新/最早，未知排最后",
+    "behavior": "个人奖杯页原生排序菜单内补充单一“获得时间 ↓/↑”项，首次新→旧，再点倒序，未知排最后",
     "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
@@ -1650,7 +1650,7 @@
     "id": "T09",
     "name": "原序/类型/稀有度排序",
     "module": "trophies",
-    "behavior": "复用原生 XMB/类型/完美率链接，菜单内补充反向排序；默认顺序沿用原站 XMB；DLC 分组不混排",
+    "behavior": "复用原生 XMB/类型/完美率链接；1.0.9 起移除插件补充的反向排序项；默认顺序沿用原站 XMB；DLC 分组不混排",
     "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [

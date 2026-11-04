@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PSNINE Next (PSN中文网功能增强)
 // @namespace    https://github.com/ToJ112/psnine_next
-// @version      1.0.8
+// @version      1.0.9
 // @description  现代化重构版 PSN中文网功能增强脚本，深度适配桌面 Tampermonkey 与 iOS Safari Stay
 // @author       ToJ112, swsoyee, InfinityLoop, mordom0404, Nathaniel-Wu, JayusTree, aesct
 // @match        https://psnine.com/*
@@ -1572,12 +1572,12 @@ button#psnine-trophy-tips-trigger,
   gap: 4px !important;
   margin: 0 !important;
   width: auto !important;
-  min-height: 30px !important;
-  height: 30px !important;
-  padding: 0 12px !important;
+  min-height: 34px !important;
+  height: 34px !important;
+  padding: 0 14px !important;
   font-size: 12px !important;
   line-height: 1 !important;
-  border-radius: 15px !important;
+  border-radius: 16px !important;
   border: 1px solid var(--p9n-border) !important;
   background-color: var(--p9n-surface) !important;
   color: var(--p9n-text) !important;
@@ -1758,9 +1758,7 @@ ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment {
   margin: 6px 0 10px 12px !important;
 }
 ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment {
-  height: 30px !important;
   margin: 0 4px !important;
-  border-radius: 15px !important;
 }
 
 .psnine-progress-filter-btn,
@@ -1788,8 +1786,6 @@ ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_bt
 }
 ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn {
   width: auto !important;
-  height: 24px !important;
-  border-radius: 12px !important;
 }
 
 .psnine-progress-filter-btn.active,
@@ -5758,7 +5754,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
           }
           if (!targetDropdown) return;
           const { dropdownLi, trigger, submenu } = targetDropdown;
-          if (dropdownLi.getAttribute("data-psnine-trophy-sort-dropdown") === "true" && submenu.querySelector('[data-psnine-sort="type-asc"]')) {
+          if (dropdownLi.getAttribute("data-psnine-trophy-sort-dropdown") === "true" && submenu.getAttribute("data-psnine-trophy-sort-menu") === "true") {
             return;
           }
           cleanupNativeSortDropdown?.();
@@ -5804,51 +5800,45 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             }
           };
           closeNativeSortMenu = () => setDropdownOpen(false, false);
-          const extraItems = [
-            ...isPersonalPage ? [
-              { mode: "time-desc", label: "\u83B7\u5F97\u65F6\u95F4\uFF08\u65B0\u2192\u65E7\uFF09" },
-              { mode: "time-asc", label: "\u83B7\u5F97\u65F6\u95F4\uFF08\u65E7\u2192\u65B0\uFF09" }
-            ] : [],
-            { mode: "type-asc", label: "\u7C7B\u578B\uFF08\u94DC\u2192\u767D\u91D1\uFF09" },
-            { mode: "rarity-desc", label: "\u5B8C\u7F8E\u7387\uFF08\u9AD8\u2192\u4F4E\uFF09" }
-          ];
           const createdLis = [];
           const itemCleanups = [];
-          const selectLocalSort = (mode, label, restoreFocus) => {
+          const timeLabel = (mode) => `\u83B7\u5F97\u65F6\u95F4 ${mode === "time-asc" ? "\u2191" : "\u2193"}`;
+          let timeLink = null;
+          const selectTimeSort = (restoreFocus) => {
+            const mode = currentSortMode === "time-desc" ? "time-asc" : "time-desc";
             currentSortMode = mode;
+            const label = timeLabel(mode);
             trigger.textContent = label;
-            trigger.setAttribute("title", label);
-            submenu.querySelectorAll(":scope > li > a").forEach((el) => {
-              if (el.getAttribute("data-psnine-sort") === mode) {
-                el.classList.add("current");
-                el.setAttribute("data-psnine-sort-active", "true");
-              } else {
-                el.classList.remove("current");
-                el.removeAttribute("data-psnine-sort-active");
-              }
-            });
+            trigger.setAttribute("title", mode === "time-desc" ? "\u83B7\u5F97\u65F6\u95F4\uFF1A\u65B0\u2192\u65E7\uFF08\u518D\u70B9\u4E00\u6B21\u5012\u5E8F\uFF09" : "\u83B7\u5F97\u65F6\u95F4\uFF1A\u65E7\u2192\u65B0\uFF08\u518D\u70B9\u4E00\u6B21\u5012\u5E8F\uFF09");
+            submenu.querySelectorAll(":scope > li > a").forEach((el) => el.classList.remove("current"));
+            if (timeLink) {
+              timeLink.textContent = label;
+              timeLink.classList.add("current");
+              timeLink.setAttribute("data-psnine-sort-active", "true");
+            }
             applyActiveSortToTables(mode);
             setDropdownOpen(false, restoreFocus);
           };
-          for (const item of extraItems) {
+          if (isPersonalPage) {
             const li = doc.createElement("li");
             li.setAttribute("data-psnine-next", "true");
-            li.setAttribute("data-psnine-sort-item", item.mode);
+            li.setAttribute("data-psnine-sort-item", "time");
             const a = doc.createElement("a");
             a.href = "javascript:void(0)";
             a.setAttribute("data-psnine-next", "true");
-            a.setAttribute("data-psnine-sort", item.mode);
-            a.textContent = item.label;
+            a.setAttribute("data-psnine-sort", "time");
+            a.textContent = timeLabel("time-desc");
+            timeLink = a;
             const onItemClick = (e) => {
               e.preventDefault();
               e.stopPropagation();
-              selectLocalSort(item.mode, item.label, false);
+              selectTimeSort(false);
             };
             const onItemKeyDown = (e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
                 e.stopPropagation();
-                selectLocalSort(item.mode, item.label, true);
+                selectTimeSort(true);
               }
             };
             a.addEventListener("click", onItemClick);
@@ -6054,11 +6044,10 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             nativeFilterClassObserver = null;
             observedOwnBtn = ownBtn;
             observedUnownBtn = unownBtn;
-            [ownBtn, unownBtn].forEach((btn) => {
-              if (btn?.classList.contains("o_btn") && btn.parentElement?.tagName === "LI") {
-                btn.parentElement.classList.add("psnine-trophy-filter-segment");
-              }
-            });
+            const segment = ownBtn?.parentElement === unownBtn?.parentElement ? ownBtn?.parentElement : null;
+            if (segment?.tagName === "LI" && ownBtn?.classList.contains("o_btn")) {
+              segment.classList.add("psnine-trophy-filter-segment");
+            }
             if (ownBtn || unownBtn) {
               nativeFilterClassObserver = new MutationObserver(() => {
                 if (isActive) syncNativeFilter();
@@ -6072,6 +6061,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             }
           }
           cleanupNativeFilterSync = () => {
+            doc.querySelectorAll(".psnine-trophy-filter-segment").forEach((li) => li.classList.remove("psnine-trophy-filter-segment"));
             if (docFilterClickBound) {
               doc.removeEventListener("click", onDocNativeFilterClick);
               docFilterClickBound = false;

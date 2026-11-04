@@ -665,9 +665,9 @@ describe('Trophies Last-Mile Regression Suite', () => {
       expect(menu).not.toBeNull();
       expect(trigger.getAttribute('aria-expanded')).toBe('false');
 
-      // Only missing directions + time added (4 items on personal page, initial removed)
+      // Only one item added: 获得时间 (personal page); no extra 类型/完美率 directions, initial removed
       const addedItems = Array.from(menu.querySelectorAll('a[data-psnine-sort]')).map(a => a.getAttribute('data-psnine-sort'));
-      expect(addedItems).toEqual(['time-desc', 'time-asc', 'type-asc', 'rarity-desc']);
+      expect(addedItems).toEqual(['time']);
       expect(menu.querySelector('[data-psnine-sort="initial"]')).toBeNull();
 
       // Attach an inline tip row to trophy #1 (46507001) to verify co-movement
@@ -701,12 +701,13 @@ describe('Trophies Last-Mile Regression Suite', () => {
       expect(extEscEvent.defaultPrevented).toBe(false);
       expect(document.activeElement).toBe(outsideBtn);
 
-      // Select time-desc: #1 (2026-05) -> #2 (2025-01) -> #3 (unearned last)
-      const timeDescLink = menu.querySelector('[data-psnine-sort="time-desc"]') as HTMLAnchorElement;
-      timeDescLink.click();
-      expect(trigger.textContent).toBe('获得时间（新→旧）');
+      // First pick of 获得时间 sorts newest first: #1 (2026-05) -> #2 (2025-01) -> #3 (unearned last)
+      const timeLink = menu.querySelector('[data-psnine-sort="time"]') as HTMLAnchorElement;
+      timeLink.click();
+      expect(trigger.textContent).toBe('获得时间 ↓');
+      expect(timeLink.textContent).toBe('获得时间 ↓');
       expect(menu.querySelectorAll('a.current').length).toBe(1);
-      expect(timeDescLink.classList.contains('current')).toBe(true);
+      expect(timeLink.classList.contains('current')).toBe(true);
 
       expect(Array.from(baseTbody.querySelectorAll('tr.trophy')).map(r => r.id)).toEqual(['1', '2', '3']);
       expect(document.getElementById('1')!.nextElementSibling).toBe(tipRow);
@@ -730,9 +731,13 @@ describe('Trophies Last-Mile Regression Suite', () => {
       origLinks[0].dispatchEvent(nativeClickEvent);
       expect(nativeClickDefaultPreventedByPlugin).toBe(false);
 
-      // Dynamic row append under active rarity-desc maintains sort & settles without observer loop
-      (menu.querySelector('[data-psnine-sort="rarity-desc"]') as HTMLElement).click();
-      expect(Array.from(baseTbody.querySelectorAll('tr.trophy')).map(r => r.id)).toEqual(['3', '1', '2']);
+      // Picking 获得时间 again flips to oldest first (unearned still last)
+      timeLink.click();
+      expect(trigger.textContent).toBe('获得时间 ↑');
+      expect(timeLink.textContent).toBe('获得时间 ↑');
+      expect(Array.from(baseTbody.querySelectorAll('tr.trophy')).map(r => r.id)).toEqual(['2', '1', '3']);
+
+      // Dynamic row append under active time-asc maintains sort & settles without observer loop
 
       const dynRow = document.createElement('tr');
       dynRow.id = '4';
@@ -746,8 +751,8 @@ describe('Trophies Last-Mile Regression Suite', () => {
       baseTbody.appendChild(dynRow);
       await new Promise(r => setTimeout(r, 120));
 
-      expect(Array.from(baseTbody.querySelectorAll('tr.trophy')).map(r => r.id)).toEqual(['3', '4', '1', '2']);
-      expect(menu.querySelectorAll('a[data-psnine-sort]').length).toBe(4);
+      expect(Array.from(baseTbody.querySelectorAll('tr.trophy')).map(r => r.id)).toEqual(['2', '1', '3', '4']);
+      expect(menu.querySelectorAll('a[data-psnine-sort]').length).toBe(1);
 
       let extraMutations = 0;
       const obs = new MutationObserver(ms => { extraMutations += ms.length; });
@@ -830,11 +835,8 @@ describe('Trophies Last-Mile Regression Suite', () => {
 
       const realDropdown = document.getElementById('real-sort-dropdown')!;
       expect(realDropdown.getAttribute('data-psnine-trophy-sort-dropdown')).toBe('true');
-      expect(realDropdown.querySelectorAll('[data-psnine-sort="time-desc"], [data-psnine-sort="time-asc"]').length).toBe(0);
-      expect(Array.from(realDropdown.querySelectorAll('a[data-psnine-sort]')).map(a => a.getAttribute('data-psnine-sort'))).toEqual([
-        'type-asc',
-        'rarity-desc'
-      ]);
+      // Public page: no 获得时间 item and no other plugin sort items, only the native links
+      expect(realDropdown.querySelectorAll('a[data-psnine-sort]').length).toBe(0);
       expect(realDropdown.querySelector('[data-psnine-sort="initial"]')).toBeNull();
       if (cleanup) cleanup();
 

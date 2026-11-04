@@ -728,12 +728,12 @@ button#psnine-trophy-tips-trigger,
   gap: 4px !important;
   margin: 0 !important;
   width: auto !important;
-  min-height: 30px !important;
-  height: 30px !important;
-  padding: 0 12px !important;
+  min-height: 34px !important;
+  height: 34px !important;
+  padding: 0 14px !important;
   font-size: 12px !important;
   line-height: 1 !important;
-  border-radius: 15px !important;
+  border-radius: 16px !important;
   border: 1px solid var(--p9n-border) !important;
   background-color: var(--p9n-surface) !important;
   color: var(--p9n-text) !important;
@@ -914,9 +914,7 @@ ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment {
   margin: 6px 0 10px 12px !important;
 }
 ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment {
-  height: 30px !important;
   margin: 0 4px !important;
-  border-radius: 15px !important;
 }
 
 .psnine-progress-filter-btn,
@@ -944,8 +942,6 @@ ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_bt
 }
 ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn {
   width: auto !important;
-  height: 24px !important;
-  border-radius: 12px !important;
 }
 
 .psnine-progress-filter-btn.active,

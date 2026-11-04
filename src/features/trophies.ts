@@ -9,8 +9,8 @@
  * T05: 汇总 Tips 标记与预览 (悬浮/点击安全DOM展示名称描述与跳转)
  * T06: 奖杯汇总折叠 (默认折叠偏好与手动展开切换)
  * T07: 奖杯图表折叠 (默认折叠偏好与手动展开切换)
- * T08: 获得时间排序 (个人页原生排序菜单内补充最新/最早，持久data-psnine-orig-seq恢复页面初始顺序，DLC分组独立且Tips跟随)
- * T09: 原序/类型/稀有度排序 (保留原生XMB/类型/完美率链接，菜单内补充反向排序与恢复页面初始顺序，DLC 分组不混排)
+ * T08: 获得时间排序 (个人页原生排序菜单内补充单一“获得时间 ↓/↑”项，再点倒序，DLC分组独立且Tips跟随)
+ * T09: 原序/类型/稀有度排序 (保留原生XMB/类型/完美率链接；1.0.9 起不再补充反向排序项)
  * T10: 获得状态筛选 (全部/已获/未获，setHidden多原因隔离，保留内联 Tips 归属)
  * T11: 内联展开单个 Tips (http.document安全DOM保留链接/图片/剧透刮刮条，黑名单大小写忽略，屏蔽词正则与可揭示button，重试与setHidden)
  * T12: 批量 Tips 展开开关 (单一展开/收起，跟随原生已获得/未获得筛选，切换筛选保持展开并补载，收起即 AbortController 打断无假错误)
@@ -1023,9 +1023,10 @@ export const mountTrophies: Mount = async (ctx: Context) => {
         if (!targetDropdown) return;
         const { dropdownLi, trigger, submenu } = targetDropdown;
 
+        // Already enhanced unless the site re-rendered the submenu (a fresh <ul> lacks our marker)
         if (
           dropdownLi.getAttribute('data-psnine-trophy-sort-dropdown') === 'true' &&
-          submenu.querySelector('[data-psnine-sort="type-asc"]')
+          submenu.getAttribute('data-psnine-trophy-sort-menu') === 'true'
         ) {
           return;
         }
@@ -1078,58 +1079,52 @@ export const mountTrophies: Mount = async (ctx: Context) => {
         };
         closeNativeSortMenu = () => setDropdownOpen(false, false);
 
-        const extraItems: Array<{ mode: TrophySortMode; label: string }> = [
-          ...(isPersonalPage
-            ? [
-                { mode: 'time-desc' as const, label: '获得时间（新→旧）' },
-                { mode: 'time-asc' as const, label: '获得时间（旧→新）' }
-              ]
-            : []),
-          { mode: 'type-asc', label: '类型（铜→白金）' },
-          { mode: 'rarity-desc', label: '完美率（高→低）' }
-        ];
-
         const createdLis: HTMLLIElement[] = [];
         const itemCleanups: Array<() => void> = [];
 
-        const selectLocalSort = (mode: TrophySortMode, label: string, restoreFocus: boolean) => {
+        // T08: one extra "获得时间" item next to the native XMB/类型/完美率 links (personal pages only).
+        // First pick sorts newest first; picking it again while active flips the order.
+        const timeLabel = (mode: TrophySortMode) => `获得时间 ${mode === 'time-asc' ? '↑' : '↓'}`;
+        let timeLink: HTMLAnchorElement | null = null;
+
+        const selectTimeSort = (restoreFocus: boolean) => {
+          const mode: TrophySortMode = currentSortMode === 'time-desc' ? 'time-asc' : 'time-desc';
           currentSortMode = mode;
+          const label = timeLabel(mode);
           trigger.textContent = label;
-          trigger.setAttribute('title', label);
-          submenu.querySelectorAll(':scope > li > a').forEach((el) => {
-            if (el.getAttribute('data-psnine-sort') === mode) {
-              el.classList.add('current');
-              el.setAttribute('data-psnine-sort-active', 'true');
-            } else {
-              el.classList.remove('current');
-              el.removeAttribute('data-psnine-sort-active');
-            }
-          });
+          trigger.setAttribute('title', mode === 'time-desc' ? '获得时间：新→旧（再点一次倒序）' : '获得时间：旧→新（再点一次倒序）');
+          submenu.querySelectorAll(':scope > li > a').forEach(el => el.classList.remove('current'));
+          if (timeLink) {
+            timeLink.textContent = label;
+            timeLink.classList.add('current');
+            timeLink.setAttribute('data-psnine-sort-active', 'true');
+          }
           applyActiveSortToTables(mode);
           setDropdownOpen(false, restoreFocus);
         };
 
-        for (const item of extraItems) {
+        if (isPersonalPage) {
           const li = doc.createElement('li');
           li.setAttribute('data-psnine-next', 'true');
-          li.setAttribute('data-psnine-sort-item', item.mode);
+          li.setAttribute('data-psnine-sort-item', 'time');
 
           const a = doc.createElement('a');
           a.href = 'javascript:void(0)';
           a.setAttribute('data-psnine-next', 'true');
-          a.setAttribute('data-psnine-sort', item.mode);
-          a.textContent = item.label;
+          a.setAttribute('data-psnine-sort', 'time');
+          a.textContent = timeLabel('time-desc');
+          timeLink = a;
 
           const onItemClick = (e: MouseEvent) => {
             e.preventDefault();
             e.stopPropagation();
-            selectLocalSort(item.mode, item.label, false);
+            selectTimeSort(false);
           };
           const onItemKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
               e.stopPropagation();
-              selectLocalSort(item.mode, item.label, true);
+              selectTimeSort(true);
             }
           };
 
@@ -1379,12 +1374,12 @@ export const mountTrophies: Mount = async (ctx: Context) => {
           nativeFilterClassObserver = null;
           observedOwnBtn = ownBtn;
           observedUnownBtn = unownBtn;
-          // Group native earned/unearned buttons into one segmented capsule (CSS scoped to the nav dropmenu class)
-          [ownBtn, unownBtn].forEach((btn) => {
-            if (btn?.classList.contains('o_btn') && btn.parentElement?.tagName === 'LI') {
-              btn.parentElement.classList.add('psnine-trophy-filter-segment');
-            }
-          });
+          // Group native earned/unearned buttons into one segmented capsule
+          // (same look as the game progress filter; CSS scoped to the nav dropmenu class)
+          const segment = ownBtn?.parentElement === unownBtn?.parentElement ? ownBtn?.parentElement : null;
+          if (segment?.tagName === 'LI' && ownBtn?.classList.contains('o_btn')) {
+            segment.classList.add('psnine-trophy-filter-segment');
+          }
 
           if (ownBtn || unownBtn) {
             nativeFilterClassObserver = new MutationObserver(() => {
@@ -1400,6 +1395,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
         }
 
         cleanupNativeFilterSync = () => {
+          doc.querySelectorAll('.psnine-trophy-filter-segment').forEach(li => li.classList.remove('psnine-trophy-filter-segment'));
           if (docFilterClickBound) {
             doc.removeEventListener('click', onDocNativeFilterClick);
             docFilterClickBound = false;

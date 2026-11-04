@@ -134,7 +134,7 @@ test(`native trophy status controls and Tips share a row in ${scheme} and keep i
   await expect(page.locator('tr.psnine-inline-tip-row:visible')).toHaveCount(0);
   // Switching to a longer local sort label must not push Tips onto another row.
   await page.locator('[data-psnine-trophy-sort-trigger]').click();
-  await page.locator('[data-psnine-sort="time-desc"]').click();
+  await page.locator('[data-psnine-sort="time"]').click();
   const aligned=await page.locator('[data-psnine-trophy-sort-trigger], .o_btn.own, .o_btn.unown, #psnine-trophy-tips-trigger').evaluateAll(els=>els.map(el=>{const r=el.getBoundingClientRect();return {center:r.y+r.height/2,right:r.right};}));
   for(const g of aligned){expect(Math.abs(g.center-aligned[0].center)).toBeLessThanOrEqual(3);expect(g.right).toBeLessThanOrEqual(390);}
 
@@ -146,7 +146,17 @@ test(`native trophy status controls and Tips share a row in ${scheme} and keep i
   await page.locator('#cup-2 em.alert-success').click();
   const tip = page.locator('tr.psnine-inline-tip-row[data-for-trophy="12345002"]');
   await expect(tip).toContainText('测试 Tips');
+  const segBtn=(sel:string)=>page.locator(sel).evaluate(async el=>{await Promise.allSettled(el.getAnimations().map(a=>a.finished));const r=el.getBoundingClientRect(),c=getComputedStyle(el);return {height:Math.round(r.height),bg:c.backgroundColor,color:c.color,weight:c.fontWeight};});
+  const idleOwn=await segBtn('.own');
+  // Same capsule metrics as the game progress filter: 28px segments, unselected = transparent
+  expect(idleOwn.height).toBe(28);
+  expect(idleOwn.bg).toBe('rgba(0, 0, 0, 0)');
   await page.locator('.own').click();
+  const selOwn=await segBtn('.own'), idleUnown=await segBtn('.unown');
+  expect(selOwn.bg).not.toBe('rgba(0, 0, 0, 0)');
+  expect(selOwn.color).not.toBe(idleUnown.color);
+  expect(selOwn.weight).toBe('600');
+  expect(idleUnown.bg).toBe('rgba(0, 0, 0, 0)');
   await expect(page.locator('#cup-1')).toBeVisible();
   await expect(page.locator('#cup-2')).toBeHidden();
   await expect(tip).toBeHidden();

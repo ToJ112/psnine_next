@@ -5,11 +5,11 @@ const bundle = readFileSync(new URL('../dist/psnine_next.user.js', import.meta.u
 
 function fixture(personal: boolean) {
   const query = personal ? 'psnid=fixture_user&' : '';
-  const row = (id: number, type: number, rarity: number) => `
+  const row = (id: number, type: number, rarity: number, earned: string) => `
     <tr class="trophy" id="cup-${id}">
       <td class="t${type}"><a href="/trophy/1234500${id}">图标</a></td>
       <td><p><a href="/trophy/1234500${id}">奖杯 ${id}</a></p><div class="text-strong">说明</div></td>
-      <td class="twoge">${rarity}%</td><td></td>
+      <td class="twoge">${rarity}%</td><td>${personal ? `<em class="alert-success pd5 r" tips="${earned.slice(0, 4)}">${earned.slice(5)}<br>10:00</em>` : ''}</td>
     </tr>`;
   return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,7 +36,7 @@ function fixture(personal: boolean) {
         <li><a href="?${query}ob=rarity&psngamelang=zh-Hans" class="current">完美率</a></li>
       </ul>
     </li></ul>
-    <table class="list"><tbody>${row(2, 4, 3)}${row(1, 1, 10)}${row(3, 2, 40)}</tbody></table>
+    <table class="list"><tbody>${row(2, 4, 3, '2024-05-18')}${row(1, 1, 10, '2025-01-02')}${row(3, 2, 40, '2023-03-04')}</tbody></table>
     </div></main><script>
       // Equivalent to the site's jQuery hover handlers; no other site scripts run.
       document.querySelectorAll('.dropdown').forEach(el => {
@@ -62,7 +62,9 @@ for (const personal of [true, false]) {
     await expect(page.locator('#psnine-trophy-tips-toolbar')).toBeVisible();
     await expect(page.locator('#psnine-trophy-stats-panel, #psnine-trophy-header-title, #psnine-filter-status-btn')).toHaveCount(0);
     await expect(page.locator('#psnine-sort-xmb-btn, #psnine-sort-time-btn, #psnine-sort-type-btn, #psnine-sort-rarity-btn')).toHaveCount(0);
-    await expect(page.locator('[data-psnine-sort="time-desc"]')).toHaveCount(personal ? 1 : 0);
+    // Only one extra item: 获得时间 (personal pages); no extra 类型/完美率 variants
+    await expect(page.locator('[data-psnine-sort-item]')).toHaveCount(personal ? 1 : 0);
+    await expect(page.locator('[data-psnine-sort="time"]')).toHaveCount(personal ? 1 : 0);
     const activate = () => isMobile ? trigger.tap() : trigger.click();
     await activate();
     await expect(menu).toBeVisible();
@@ -73,14 +75,20 @@ for (const personal of [true, false]) {
     });
     expect(within).toBe(true);
     await page.screenshot({ path: testInfo.outputPath('native-menu.png') });
-    const ascendingType = page.locator('[data-psnine-sort="type-asc"]');
-    if (isMobile) await ascendingType.tap(); else await ascendingType.click();
-    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
-    await expect(menu).toBeHidden();
-    await expect(trigger).toContainText('类型（铜→白金）');
-    await expect(menu.locator('a.current')).toHaveCount(1);
-    await expect(ascendingType).toHaveClass(/current/);
-    expect(await page.locator('tr.trophy').evaluateAll(rows => rows.map(row => row.id))).toEqual(['cup-2', 'cup-3', 'cup-1']);
+    const order = () => page.locator('tr.trophy').evaluateAll(rows => rows.map(row => row.id));
+    const timeItem = page.locator('[data-psnine-sort="time"]');
+    if (personal) {
+      // First pick: newest first
+      if (isMobile) await timeItem.tap(); else await timeItem.click();
+      await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+      await expect(menu).toBeHidden();
+      await expect(trigger).toHaveText('获得时间 ↓');
+      await expect(menu.locator('a.current')).toHaveCount(1);
+      await expect(timeItem).toHaveClass(/current/);
+      expect(await order()).toEqual(['cup-1', 'cup-2', 'cup-3']);
+    } else {
+      await page.keyboard.press('Escape');
+    }
 
     // Keyboard must be usable even on a touch-capable browser. Escape returns focus.
     await trigger.focus();
@@ -92,13 +100,16 @@ for (const personal of [true, false]) {
     await expect(trigger).toBeFocused();
     await page.keyboard.press('Enter');
     await expect(page.locator('[data-psnine-sort="initial"]')).toHaveCount(0);
-    const reverseRarity = page.locator('[data-psnine-sort="rarity-desc"]');
-    await reverseRarity.focus();
-    await page.keyboard.press('Enter');
-    await expect(trigger).toContainText('完美率（高→低）');
-    await expect(menu.locator('a.current')).toHaveCount(1);
-    await expect(reverseRarity).toHaveClass(/current/);
-    expect(await page.locator('tr.trophy').evaluateAll(rows => rows.map(row => row.id))).toEqual(['cup-3', 'cup-1', 'cup-2']);
+    const lastItem = menu.locator(':scope > li > a').last();
+    if (personal) {
+      // Picking 获得时间 again flips to oldest first
+      await timeItem.focus();
+      await page.keyboard.press('Enter');
+      await expect(trigger).toHaveText('获得时间 ↑');
+      await expect(timeItem).toHaveText('获得时间 ↑');
+      await expect(menu.locator('a.current')).toHaveCount(1);
+      expect(await order()).toEqual(['cup-3', 'cup-2', 'cup-1']);
+    }
 
     expect(await page.evaluate(() => {
       const links = [...document.querySelectorAll('.dropdown > ul > li > a')].slice(0, 3);
@@ -108,7 +119,7 @@ for (const personal of [true, false]) {
     // Tabbing out must close the menu without a later Escape stealing focus.
     await trigger.focus();
     await page.keyboard.press('Enter');
-    await reverseRarity.focus();
+    await lastItem.focus();
     await page.keyboard.press('Tab');
     const summaryToggle = page.locator('#psnine-trophy-tips-trigger');
     await expect(summaryToggle).toBeFocused();
