@@ -1382,7 +1382,7 @@ describe('Games Feature Module - Comprehensive Regressions', () => {
         expect(btn.className).toContain('psnine-progress-filter-btn');
         expect(btn.getAttribute('style')).toBeNull();
       });
-      expect(CORE_STYLES).toMatch(/#psnine-game-progress-filter,\s*ul\.dropmenu\.psnine-trophy-nav-dropmenu > li\.psnine-trophy-filter-segment \{[^}]*border-radius: 16px/);
+      expect(CORE_STYLES).toMatch(/#psnine-game-progress-filter,\s*\.psnine-trophy-filter-segment\[data-psnine-next\] \{[^}]*border-radius: 16px/);
       expect(CORE_STYLES).toMatch(/\.psnine-progress-filter-btn,\s*[^{]*\{[^}]*height: 28px[^}]*padding: 0 12px[^}]*font-size: 12px[^}]*border-radius: 14px/);
 
       // Initially "全部" active

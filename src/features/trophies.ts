@@ -903,6 +903,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
       let closeNativeSortMenu: (() => void) | null = null;
       let cleanupTipsToolbar: (() => void) | null = null;
       let tipsExpanded = false;
+      let restoreFilterSegment: (() => void) | null = null;
       let batchRerunRequested = false;
 
       const getTipRow = (t: TrophyItem) =>
@@ -1374,11 +1375,25 @@ export const mountTrophies: Mount = async (ctx: Context) => {
           nativeFilterClassObserver = null;
           observedOwnBtn = ownBtn;
           observedUnownBtn = unownBtn;
-          // Group native earned/unearned buttons into one segmented capsule
-          // (same look as the game progress filter; CSS scoped to the nav dropmenu class)
-          const segment = ownBtn?.parentElement === unownBtn?.parentElement ? ownBtn?.parentElement : null;
-          if (segment?.tagName === 'LI' && ownBtn?.classList.contains('o_btn')) {
-            segment.classList.add('psnine-trophy-filter-segment');
+          // Group native earned/unearned controls into one segmented capsule (same look as the game
+          // progress filter). The site's markup varies (separate <li>s, extra wrappers), so instead of
+          // styling their parent we move both native nodes into our own wrapper; their handlers are
+          // untouched, and cleanup puts them back where they were.
+          if (ownBtn && unownBtn && ownBtn !== unownBtn && !ownBtn.closest('.psnine-trophy-filter-segment')) {
+            const segment = doc.createElement('span');
+            segment.className = 'psnine-trophy-filter-segment';
+            segment.setAttribute('data-psnine-next', 'true');
+            const origins = [ownBtn, unownBtn].map(node => ({ node, parent: node.parentNode, next: node.nextSibling }));
+            ownBtn.parentNode?.insertBefore(segment, ownBtn);
+            segment.append(ownBtn, unownBtn);
+            restoreFilterSegment = () => {
+              // Reverse order so each node's recorded nextSibling is back in place first
+              for (const { node, parent, next } of [...origins].reverse()) {
+                if (parent && (!next || next.parentNode === parent)) parent.insertBefore(node, next);
+                else segment.parentNode?.insertBefore(node, segment);
+              }
+              segment.remove();
+            };
           }
 
           if (ownBtn || unownBtn) {
@@ -1395,7 +1410,8 @@ export const mountTrophies: Mount = async (ctx: Context) => {
         }
 
         cleanupNativeFilterSync = () => {
-          doc.querySelectorAll('.psnine-trophy-filter-segment').forEach(li => li.classList.remove('psnine-trophy-filter-segment'));
+          restoreFilterSegment?.();
+          restoreFilterSegment = null;
           if (docFilterClickBound) {
             doc.removeEventListener('click', onDocNativeFilterClick);
             docFilterClickBound = false;
@@ -1441,7 +1457,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
             tipsToolbar.id = 'psnine-trophy-tips-toolbar';
             tipsToolbar.setAttribute('data-psnine-next', 'true');
             tipsToolbar.className = 'psnine-trophy-toolbar';
-            tipsToolbar.style.cssText = 'position:relative;float:none;margin:0 0 0 4px;height:36px;display:inline-flex;align-items:center;vertical-align:middle;flex-shrink:0;';
+            tipsToolbar.style.cssText = 'position:relative;float:none;margin:0 0 0 auto;height:36px;display:inline-flex;align-items:center;vertical-align:middle;flex-shrink:0;';
             confirmedUl.appendChild(tipsToolbar);
           } else {
             tipsToolbar = doc.createElement('div');

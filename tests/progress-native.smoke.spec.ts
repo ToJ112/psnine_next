@@ -99,7 +99,7 @@ test(`native trophy status controls and Tips share a row in ${scheme} and keep i
   .dropmenu,.dropmenu ul{padding:0;margin:0;list-style:none}.dropmenu{height:36px;line-height:36px}.dropmenu li{float:left;position:relative}
   .dropdown>a{padding:0 20px 0 10px}.dropdown>ul{display:none;position:absolute}.dropdown>ul li{float:none}
   .o_btn{display:inline-block;margin:8px -12px 5px 16px;padding:2px 4px;font-size:12px;text-align:center;width:52px;line-height:17px;border:1px solid darkslategray;border-radius:15px;box-sizing:content-box}
-  </style><ul class="dropmenu"><li><em>排序</em></li><li class="dropdown"><a class="arr-down" href="#">XMB</a><ul><li><a href="?psnid=fixture_user&ob=trophyid">XMB</a></li><li><a href="?psnid=fixture_user&ob=type">类型</a></li><li><a href="?psnid=fixture_user&ob=rarity">完美率</a></li></ul></li><li><button class="o_btn own" onclick="getOwn()">已获得</button><button class="o_btn unown" onclick="getUnOwn()">未获得</button></li></ul><table class="list"><tbody>${row(1,true)}${row(2,false)}</tbody></table></main>${nativeScript}</body></html>`;
+  </style><ul class="dropmenu"><li><em>排序</em></li><li class="dropdown"><a class="arr-down" href="#">XMB</a><ul><li><a href="?psnid=fixture_user&ob=trophyid">XMB</a></li><li><a href="?psnid=fixture_user&ob=type">类型</a></li><li><a href="?psnid=fixture_user&ob=rarity">完美率</a></li></ul></li><li><button class="o_btn own" onclick="getOwn()">已获得</button></li><li><button class="o_btn unown" onclick="getUnOwn()">未获得</button></li></ul><table class="list"><tbody>${row(1,true)}${row(2,false)}</tbody></table></main>${nativeScript}</body></html>`;
   await page.route('**/*', route => route.fulfill({ contentType:'text/html; charset=utf-8', body:route.request().url().includes('/trophy/') ? '<ul class="list"><li><div class="content">测试 Tips <a href="/trophy/12345001">同游戏奖杯</a><a href="/trophy/54321001">跨游戏奖杯</a></div></li></ul>' : html }));
   await page.goto('https://psnine.com/psngame/12345?psnid=fixture_user');
   await page.evaluate(() => {
@@ -119,7 +119,12 @@ test(`native trophy status controls and Tips share a row in ${scheme} and keep i
   // Earned/unearned sit inside one segmented capsule; Tips is a separate capsule of the same height.
   expect(geometry[2].left-geometry[1].right).toBeGreaterThanOrEqual(0);
   expect(geometry[3].left-geometry[2].right).toBeGreaterThanOrEqual(4);
-  const segment=await page.locator('li.psnine-trophy-filter-segment').evaluate(el=>{const r=el.getBoundingClientRect(),s=getComputedStyle(el);return {height:r.height,radius:s.borderRadius,border:s.borderTopColor,fontSize:getComputedStyle(el.querySelector('.o_btn')!).fontSize};});
+  // Both native buttons live in one plugin capsule even though the site puts them in separate <li>s
+  await expect(page.locator('.psnine-trophy-filter-segment > .own, .psnine-trophy-filter-segment > .unown')).toHaveCount(2);
+  // Tips toggle is the right-most control of the row
+  const rowRight=await page.locator('ul.dropmenu').evaluate(el=>el.getBoundingClientRect().right);
+  expect(Math.abs(geometry[3].right-rowRight)).toBeLessThanOrEqual(12);
+  const segment=await page.locator('.psnine-trophy-filter-segment').evaluate(el=>{const r=el.getBoundingClientRect(),s=getComputedStyle(el);return {height:r.height,radius:s.borderRadius,border:s.borderTopColor,fontSize:getComputedStyle(el.querySelector('.o_btn')!).fontSize};});
   const tips=geometry[3];
   for(const prop of ['border','radius','fontSize'] as const)expect(tips[prop]).toBe(segment[prop]);
   expect(Math.abs(tips.height-segment.height)).toBeLessThanOrEqual(1);

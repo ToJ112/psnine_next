@@ -894,13 +894,15 @@ ul.dropmenu.psnine-trophy-nav-dropmenu > li:not(.dropdown),
 ul.dropmenu[data-psnine-trophy-nav="true"] > li:not(.dropdown) {
   flex-shrink: 0 !important;
 }
-ul.dropmenu.psnine-trophy-nav-dropmenu .o_btn:not(#psnine-trophy-tips-trigger),
-ul.dropmenu[data-psnine-trophy-nav="true"] .o_btn:not(#psnine-trophy-tips-trigger) {
+ul.dropmenu.psnine-trophy-nav-dropmenu > li > .o_btn:not(#psnine-trophy-tips-trigger),
+ul.dropmenu[data-psnine-trophy-nav="true"] > li > .o_btn:not(#psnine-trophy-tips-trigger) {
   margin: 0 4px !important;
 }
 /* Segmented Capsule Control: game progress filter (全部/非 100%/100%) and trophy earned/unearned */
+/* The trophy segment wraps native buttons; its child selectors repeat the class to outrank the
+   generic dark-theme "[data-psnine-next] button" rule (0,2,2) without !important wars elsewhere. */
 #psnine-game-progress-filter,
-ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment {
+.psnine-trophy-filter-segment[data-psnine-next] {
   display: inline-flex !important;
   align-items: center !important;
   gap: 2px !important;
@@ -913,12 +915,14 @@ ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment {
 #psnine-game-progress-filter {
   margin: 6px 0 10px 12px !important;
 }
-ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment {
+.psnine-trophy-filter-segment[data-psnine-next] {
   margin: 0 4px !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
 }
 
 .psnine-progress-filter-btn,
-ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn {
+.psnine-trophy-filter-segment.psnine-trophy-filter-segment[data-psnine-next] > * {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -940,25 +944,28 @@ ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_bt
   box-shadow: none !important;
   transition: background-color 0.15s ease, color 0.15s ease !important;
 }
-ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn {
+.psnine-trophy-filter-segment.psnine-trophy-filter-segment[data-psnine-next] > * {
   width: auto !important;
+  float: none !important;
+  min-width: 0 !important;
+  white-space: nowrap !important;
 }
 
 .psnine-progress-filter-btn.active,
-ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn.select {
+.psnine-trophy-filter-segment.psnine-trophy-filter-segment[data-psnine-next] > *.select {
   background: var(--p9n-surface) !important;
   color: var(--p9n-link) !important;
   font-weight: 600 !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
 }
 .psnine-progress-filter-btn:focus-visible,
-ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn:focus-visible {
+.psnine-trophy-filter-segment.psnine-trophy-filter-segment[data-psnine-next] > *:focus-visible {
   outline: 2px solid var(--p9n-link) !important;
   outline-offset: 1px !important;
 }
 
 html[data-theme="dark"] .psnine-progress-filter-btn.active,
-html[data-theme="dark"] ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn.select {
+html[data-theme="dark"] .psnine-trophy-filter-segment.psnine-trophy-filter-segment[data-psnine-next] > *.select {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
 }
 

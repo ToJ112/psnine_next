@@ -137,6 +137,9 @@ describe('Trophies Last-Mile Regression Suite', () => {
       tipRow2.setAttribute('data-for-trophy', '46507002');
       document.getElementById('trophy-2')!.after(tipRow2);
 
+      // Native earned/unearned buttons are wrapped in the plugin capsule
+      expect(document.querySelector('.psnine-trophy-filter-segment')?.contains(document.querySelector('.own'))).toBe(true);
+
       const ownBtn = document.querySelector('.own') as HTMLElement;
       const unownBtn = document.querySelector('.unown') as HTMLElement;
       ownBtn.onclick = () => runNativeFilter('own');
@@ -203,6 +206,10 @@ describe('Trophies Last-Mile Regression Suite', () => {
       expect(document.querySelector('[data-psnine-sort="initial"]')).toBeNull();
 
       if (cleanup) cleanup();
+      // Cleanup returns the native buttons to their original <li> and drops the wrapper
+      expect(document.querySelector('.psnine-trophy-filter-segment')).toBeNull();
+      expect(document.querySelector('.own')!.parentElement!.tagName).toBe('LI');
+      expect(document.querySelector('.own')!.nextElementSibling).toBe(document.querySelector('.unown'));
     });
   });
 

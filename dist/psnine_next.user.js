@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PSNINE Next (PSN中文网功能增强)
 // @namespace    https://github.com/ToJ112/psnine_next
-// @version      1.0.9
+// @version      1.0.10
 // @description  现代化重构版 PSN中文网功能增强脚本，深度适配桌面 Tampermonkey 与 iOS Safari Stay
 // @author       ToJ112, swsoyee, InfinityLoop, mordom0404, Nathaniel-Wu, JayusTree, aesct
 // @match        https://psnine.com/*
@@ -1738,13 +1738,15 @@ ul.dropmenu.psnine-trophy-nav-dropmenu > li:not(.dropdown),
 ul.dropmenu[data-psnine-trophy-nav="true"] > li:not(.dropdown) {
   flex-shrink: 0 !important;
 }
-ul.dropmenu.psnine-trophy-nav-dropmenu .o_btn:not(#psnine-trophy-tips-trigger),
-ul.dropmenu[data-psnine-trophy-nav="true"] .o_btn:not(#psnine-trophy-tips-trigger) {
+ul.dropmenu.psnine-trophy-nav-dropmenu > li > .o_btn:not(#psnine-trophy-tips-trigger),
+ul.dropmenu[data-psnine-trophy-nav="true"] > li > .o_btn:not(#psnine-trophy-tips-trigger) {
   margin: 0 4px !important;
 }
 /* Segmented Capsule Control: game progress filter (\u5168\u90E8/\u975E 100%/100%) and trophy earned/unearned */
+/* The trophy segment wraps native buttons; its child selectors repeat the class to outrank the
+   generic dark-theme "[data-psnine-next] button" rule (0,2,2) without !important wars elsewhere. */
 #psnine-game-progress-filter,
-ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment {
+.psnine-trophy-filter-segment[data-psnine-next] {
   display: inline-flex !important;
   align-items: center !important;
   gap: 2px !important;
@@ -1757,12 +1759,14 @@ ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment {
 #psnine-game-progress-filter {
   margin: 6px 0 10px 12px !important;
 }
-ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment {
+.psnine-trophy-filter-segment[data-psnine-next] {
   margin: 0 4px !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
 }
 
 .psnine-progress-filter-btn,
-ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn {
+.psnine-trophy-filter-segment.psnine-trophy-filter-segment[data-psnine-next] > * {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1784,25 +1788,28 @@ ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_bt
   box-shadow: none !important;
   transition: background-color 0.15s ease, color 0.15s ease !important;
 }
-ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn {
+.psnine-trophy-filter-segment.psnine-trophy-filter-segment[data-psnine-next] > * {
   width: auto !important;
+  float: none !important;
+  min-width: 0 !important;
+  white-space: nowrap !important;
 }
 
 .psnine-progress-filter-btn.active,
-ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn.select {
+.psnine-trophy-filter-segment.psnine-trophy-filter-segment[data-psnine-next] > *.select {
   background: var(--p9n-surface) !important;
   color: var(--p9n-link) !important;
   font-weight: 600 !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
 }
 .psnine-progress-filter-btn:focus-visible,
-ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn:focus-visible {
+.psnine-trophy-filter-segment.psnine-trophy-filter-segment[data-psnine-next] > *:focus-visible {
   outline: 2px solid var(--p9n-link) !important;
   outline-offset: 1px !important;
 }
 
 html[data-theme="dark"] .psnine-progress-filter-btn.active,
-html[data-theme="dark"] ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn.select {
+html[data-theme="dark"] .psnine-trophy-filter-segment.psnine-trophy-filter-segment[data-psnine-next] > *.select {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
 }
 
@@ -5659,6 +5666,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
         let closeNativeSortMenu = null;
         let cleanupTipsToolbar = null;
         let tipsExpanded = false;
+        let restoreFilterSegment = null;
         let batchRerunRequested = false;
         const getTipRow = (t) => t.table.querySelector(`tr.psnine-inline-tip-row[data-for-trophy="${t.trophyId}"]`);
         const updateTipsTrigger = () => {
@@ -6044,9 +6052,20 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             nativeFilterClassObserver = null;
             observedOwnBtn = ownBtn;
             observedUnownBtn = unownBtn;
-            const segment = ownBtn?.parentElement === unownBtn?.parentElement ? ownBtn?.parentElement : null;
-            if (segment?.tagName === "LI" && ownBtn?.classList.contains("o_btn")) {
-              segment.classList.add("psnine-trophy-filter-segment");
+            if (ownBtn && unownBtn && ownBtn !== unownBtn && !ownBtn.closest(".psnine-trophy-filter-segment")) {
+              const segment = doc.createElement("span");
+              segment.className = "psnine-trophy-filter-segment";
+              segment.setAttribute("data-psnine-next", "true");
+              const origins = [ownBtn, unownBtn].map((node) => ({ node, parent: node.parentNode, next: node.nextSibling }));
+              ownBtn.parentNode?.insertBefore(segment, ownBtn);
+              segment.append(ownBtn, unownBtn);
+              restoreFilterSegment = () => {
+                for (const { node, parent, next } of [...origins].reverse()) {
+                  if (parent && (!next || next.parentNode === parent)) parent.insertBefore(node, next);
+                  else segment.parentNode?.insertBefore(node, segment);
+                }
+                segment.remove();
+              };
             }
             if (ownBtn || unownBtn) {
               nativeFilterClassObserver = new MutationObserver(() => {
@@ -6061,7 +6080,8 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
             }
           }
           cleanupNativeFilterSync = () => {
-            doc.querySelectorAll(".psnine-trophy-filter-segment").forEach((li) => li.classList.remove("psnine-trophy-filter-segment"));
+            restoreFilterSegment?.();
+            restoreFilterSegment = null;
             if (docFilterClickBound) {
               doc.removeEventListener("click", onDocNativeFilterClick);
               docFilterClickBound = false;
@@ -6101,7 +6121,7 @@ html[data-theme="dark"] .psnine-game-list-progress-badge {
               tipsToolbar.id = "psnine-trophy-tips-toolbar";
               tipsToolbar.setAttribute("data-psnine-next", "true");
               tipsToolbar.className = "psnine-trophy-toolbar";
-              tipsToolbar.style.cssText = "position:relative;float:none;margin:0 0 0 4px;height:36px;display:inline-flex;align-items:center;vertical-align:middle;flex-shrink:0;";
+              tipsToolbar.style.cssText = "position:relative;float:none;margin:0 0 0 auto;height:36px;display:inline-flex;align-items:center;vertical-align:middle;flex-shrink:0;";
               confirmedUl.appendChild(tipsToolbar);
             } else {
               tipsToolbar = doc.createElement("div");
