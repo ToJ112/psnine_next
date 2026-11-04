@@ -124,16 +124,20 @@ test(`native trophy status controls and Tips share a row in ${scheme} and keep i
   // Tips toggle is the right-most control of the row
   const rowRight=await page.locator('ul.dropmenu').evaluate(el=>el.getBoundingClientRect().right);
   expect(Math.abs(geometry[3].right-rowRight)).toBeLessThanOrEqual(12);
-  const segment=await page.locator('.psnine-trophy-filter-segment').evaluate(el=>{const r=el.getBoundingClientRect(),s=getComputedStyle(el);return {height:r.height,radius:s.borderRadius,border:s.borderTopColor,fontSize:getComputedStyle(el.querySelector('.o_btn')!).fontSize};});
+  // Tips toggle is plain text (no capsule): no border, transparent, same font size and height as the capsule
+  const segment=await page.locator('.psnine-trophy-filter-segment').evaluate(el=>{const r=el.getBoundingClientRect();return {height:r.height,fontSize:getComputedStyle(el.querySelector('.o_btn')!).fontSize};});
+  const tipsStyle=await tipsTrigger.evaluate(el=>{const c=getComputedStyle(el);return {borderWidth:c.borderTopWidth,bg:c.backgroundColor};});
   const tips=geometry[3];
-  for(const prop of ['border','radius','fontSize'] as const)expect(tips[prop]).toBe(segment[prop]);
+  expect(tipsStyle.borderWidth).toBe('0px');
+  expect(tipsStyle.bg).toBe('rgba(0, 0, 0, 0)');
+  expect(tips.fontSize).toBe(segment.fontSize);
   expect(Math.abs(tips.height-segment.height)).toBeLessThanOrEqual(1);
-  const idleBorder=await tipsTrigger.evaluate(el=>getComputedStyle(el).borderTopColor);
+  const idleColor=await tipsTrigger.evaluate(el=>getComputedStyle(el).color);
   await tipsTrigger.click();
   await expect(tipsTrigger).toHaveAttribute('aria-pressed','true');
   await expect(tipsTrigger).toHaveText('收起 Tips');
   // Pressed state must be visible, not just an attribute
-  expect(await tipsTrigger.evaluate(el=>getComputedStyle(el).borderTopColor)).not.toBe(idleBorder);
+  expect(await tipsTrigger.evaluate(async el=>{await Promise.allSettled(el.getAnimations().map(a=>a.finished));return getComputedStyle(el).color;})).not.toBe(idleColor);
   await tipsTrigger.click();
   await expect(tipsTrigger).toHaveAttribute('aria-pressed','false');
   await expect(page.locator('tr.psnine-inline-tip-row:visible')).toHaveCount(0);

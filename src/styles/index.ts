@@ -718,7 +718,7 @@ a.psnine-variant-btn:focus-visible {
   font-size: 12px;
 }
 
-/* Trophy Tips Expand Toggle & Jump Highlight (Capsule matching the earned/unearned segment) */
+/* Trophy Tips Expand Toggle & Jump Highlight (plain text + chevron, same idiom as the game nav toggle) */
 #psnine-trophy-tips-trigger,
 button#psnine-trophy-tips-trigger,
 .o_btn.psnine-trophy-tips-btn {
@@ -730,23 +730,35 @@ button#psnine-trophy-tips-trigger,
   width: auto !important;
   min-height: 34px !important;
   height: 34px !important;
-  padding: 0 14px !important;
+  padding: 0 4px 0 8px !important;
   font-size: 12px !important;
   line-height: 1 !important;
-  border-radius: 16px !important;
-  border: 1px solid var(--p9n-border) !important;
-  background-color: var(--p9n-surface) !important;
-  color: var(--p9n-text) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--p9n-muted) !important;
   cursor: pointer !important;
   text-align: center !important;
   box-sizing: border-box !important;
   outline: none !important;
   vertical-align: middle !important;
+  white-space: nowrap !important;
+}
+#psnine-trophy-tips-trigger::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  margin-left: 2px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.15s ease;
 }
 #psnine-trophy-tips-trigger[aria-pressed="true"] {
-  background-color: var(--p9n-surface) !important;
   color: var(--p9n-link) !important;
-  border-color: var(--p9n-link) !important;
+}
+#psnine-trophy-tips-trigger[aria-pressed="true"]::after {
+  transform: translateY(1px) rotate(-135deg);
 }
 #psnine-trophy-tips-trigger:focus-visible,
 button#psnine-trophy-tips-trigger:focus-visible,

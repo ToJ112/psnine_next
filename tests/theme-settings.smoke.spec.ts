@@ -258,15 +258,15 @@ for (const scheme of ['light','dark'] as const) {
     expect(floatingBoxes).toHaveLength(3);
     expect(floatingBoxes[0].top).toBeGreaterThanOrEqual(0);
     for(let i=1;i<floatingBoxes.length;i++) expect(floatingBoxes[i].top).toBeGreaterThanOrEqual(floatingBoxes[i-1].bottom+4);
+    // Tips toggle is plain text on the row (no capsule) whose color follows the site's secondary text var
     const action=page.locator('#psnine-trophy-tips-trigger');
-    expect((await colors(action)).background).toBe(native.background);
+    expect((await colors(action)).background).toBe('rgba(0, 0, 0, 0)');
     expect((await action.boundingBox())!.height).toBeGreaterThanOrEqual(23);
-    expect(parseFloat((await styleOf(action)).radius)).toBeGreaterThanOrEqual(12);
     await page.screenshot({path:testInfo.outputPath(`native-style-${scheme}.png`)});
     // Native variables may be changed by the site; plugin surfaces must follow without reinjection.
-    await page.evaluate(()=>document.documentElement.style.setProperty('--c-card','#26364a'));
-    await expect(action).toHaveCSS('background-color',(await colors(page.locator('#native-icon-probe'))).background);
-    await page.evaluate(()=>document.documentElement.style.removeProperty('--c-card'));
+    await page.evaluate(()=>document.documentElement.style.setProperty('--c-text-2','#123456'));
+    await expect(action).toHaveCSS('color','rgb(18, 52, 86)');
+    await page.evaluate(()=>document.documentElement.style.removeProperty('--c-text-2'));
     const url=page.url();
     await entry.focus();
     await entry.press('Space');
