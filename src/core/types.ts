@@ -56,6 +56,7 @@ export interface Settings {
 
   // Modern / Extended fields
   redirectToMine: boolean;
+  collapseGameNav: boolean;
   currencyConversion: boolean;
   exchangeRates: Record<string, number>;
   exchangeRateDate: string;
@@ -102,6 +103,7 @@ export const defaultSettings: Settings = {
   BattleInfoUpdateInterval: 3600000,
 
   redirectToMine: true,
+  collapseGameNav: true,
   currencyConversion: true,
   exchangeRates: {},
   exchangeRateDate: '',

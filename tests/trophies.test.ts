@@ -241,12 +241,14 @@ describe('Trophies Feature Module (T01 - T14 + C19) - Followup Verification', ()
       expect(document.getElementById('psnine-filter-status-btn')).toBeNull();
       expect(document.querySelectorAll('#psnine-sort-xmb-btn, #psnine-sort-time-btn, #psnine-sort-rarity-btn, #psnine-sort-type-btn').length).toBe(0);
 
-      // Compact Tips toolbar is rendered with the 3 action buttons
+      // Compact Tips toolbar is a single expand/collapse toggle (no dropdown menu)
       const toolbar = document.getElementById('psnine-trophy-tips-toolbar')!;
       expect(toolbar).not.toBeNull();
       expect(toolbar.getAttribute('data-psnine-next')).toBe('true');
-      expect(document.getElementById('psnine-batch-load-all-tips-btn')).not.toBeNull();
-      expect((document.getElementById('psnine-batch-load-unearned-tips-btn') as HTMLButtonElement).disabled).toBe(false);
+      const tipsToggle = document.getElementById('psnine-trophy-tips-trigger') as HTMLButtonElement;
+      expect(tipsToggle.textContent).toBe('展开 Tips');
+      expect(tipsToggle.getAttribute('aria-pressed')).toBe('false');
+      expect(document.getElementById('psnine-trophy-tips-menu')).toBeNull();
 
       // T08 & T09: Sort via native dropdown menu items
       const sortRarityDescItem = document.querySelector('[data-psnine-sort="rarity-desc"]') as HTMLElement;
@@ -276,14 +278,15 @@ describe('Trophies Feature Module (T01 - T14 + C19) - Followup Verification', ()
       mark.click();
       expect(mark.classList.contains('unmasked')).toBe(true);
 
-      // T12: Batch queue abort
-      const batchBtn = document.getElementById('psnine-batch-load-all-tips-btn') as HTMLElement;
-      const stopBtn = document.getElementById('psnine-stop-batch-tips-btn') as HTMLElement;
-      batchBtn.click();
-      expect(stopBtn.style.display).toBe('inline-block');
-      stopBtn.click(); // Abort!
+      // T12: Expand starts the batch queue, collapse aborts it and hides loaded Tips
+      tipsToggle.click();
+      expect(tipsToggle.textContent).toBe('收起 Tips');
+      expect(tipsToggle.getAttribute('aria-pressed')).toBe('true');
+      tipsToggle.click(); // Collapse + abort
       await new Promise(r => setTimeout(r, 50));
-      expect(stopBtn.style.display).toBe('none');
+      expect(tipsToggle.textContent).toBe('展开 Tips');
+      expect(tipsToggle.getAttribute('aria-busy')).toBe('false');
+      expect((document.querySelector('.psnine-inline-tip-row') as HTMLElement).hidden).toBe(true);
 
       // Verify onContent preserves toolbar reference
       const toolbarRef = document.getElementById('psnine-trophy-tips-toolbar');

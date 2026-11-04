@@ -212,49 +212,15 @@ test.describe('Profile & Game Action Controls Smoke Tests (390px Viewport)', () 
     }
   });
 
-  test('2. trophy to-mine entry: height >= 44px, computedStyle contrast >= 4.5, and theme light/dark follows media', async ({ page }) => {
+  test('2. removed game header actions: no to-mine button and no game-page battle bell', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light' });
     await page.goto('https://psnine.com/psngame/46507?psnid=test_gamer');
-
-    const toMineBtn = page.locator('#psnine-to-mine-trophy-btn');
-    await expect(toMineBtn).toBeVisible();
-
-    // 1. Touch target >= 44px
-    const box = await toMineBtn.boundingBox();
-    expect(box).not.toBeNull();
-    expect(box!.height).toBeGreaterThanOrEqual(44);
-
-    // 2. Light mode computedStyle verification
-    const lightStyles = await toMineBtn.evaluate((el) => {
-      const cs = window.getComputedStyle(el);
-      return { color: cs.color, backgroundColor: cs.backgroundColor };
-    });
-    expect(lightStyles.backgroundColor).not.toBe('rgb(56, 144, 255)');
-    const lightContrast = calculateContrast(lightStyles.color, lightStyles.backgroundColor);
-    expect(lightContrast).toBeGreaterThanOrEqual(4.5);
-
-    // 3. Dark mode switch via emulateMedia, assert html data-theme=dark
-    await page.emulateMedia({ colorScheme: 'dark' });
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-
-    await toMineBtn.evaluate(async el => {
-        await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
-        await Promise.allSettled(el.getAnimations().map(animation => animation.finished));
-      });
-      const darkStyles = await toMineBtn.evaluate((el) => {
-      const cs = window.getComputedStyle(el);
-            return { color: cs.color, backgroundColor: cs.backgroundColor };
-    });
-
-    // Verify computedStyle color/background actually changes across themes
-    expect(darkStyles.backgroundColor).not.toBe(lightStyles.backgroundColor);
-    expect(darkStyles.color).not.toBe(lightStyles.color);
-
-    const darkContrast = calculateContrast(darkStyles.color, darkStyles.backgroundColor);
-    expect(darkContrast).toBeGreaterThanOrEqual(4.5);
+    await expect(page.locator('#psnine-game-variants-section')).toBeVisible();
+    await expect(page.locator('#psnine-to-mine-trophy-btn')).toHaveCount(0);
+    await expect(page.locator('#psnine-game-page-battle-bell')).toHaveCount(0);
   });
 
-  test('3. game variants button: height >= 44px, computedStyle contrast >= 4.5, and theme light/dark follows media', async ({ page }) => {
+  test('3. game variants capsule: 32px visual / 44px hit area, computedStyle contrast >= 4.5, and theme light/dark follows media', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light' });
     await page.goto('https://psnine.com/psngame/46507');
 
@@ -264,10 +230,16 @@ test.describe('Profile & Game Action Controls Smoke Tests (390px Viewport)', () 
     const variantBtn = variantsSection.locator('.psnine-variant-btn').first();
     await expect(variantBtn).toBeVisible();
 
-    // 1. Touch target >= 44px
+    // 1. Compact 32px capsule whose ::after pseudo extends the touch target to >= 44px
     const box = await variantBtn.boundingBox();
     expect(box).not.toBeNull();
-    expect(box!.height).toBeGreaterThanOrEqual(44);
+    expect(Math.round(box!.height)).toBe(32);
+    const hitArea = await variantBtn.evaluate((el) => {
+      const after = window.getComputedStyle(el, '::after');
+      return { position: after.position, top: parseFloat(after.top), bottom: parseFloat(after.bottom) };
+    });
+    expect(hitArea.position).toBe('absolute');
+    expect(box!.height - hitArea.top - hitArea.bottom).toBeGreaterThanOrEqual(44);
 
     // 2. Light mode computedStyle contrast
     const lightStyles = await variantBtn.evaluate((el) => {

@@ -16,6 +16,7 @@
  * P12: 跨版本奖杯 Tips (在/trophy/:id挂载入口，冷启动自动解析父游戏元数据，真实td:nth-child(2) > a选择器，严谨交叉核对，无盲拼)
  * P13: 子页面版本导航 (保留v2全部子路由)
  * P14: PSPC 与 PS5 封面修正 (移出height属性恢复自然宽高比，PSPC专属标识修复)
+ * P15: 游戏页栏目折叠 (默认把奖杯/排行/评论等栏目网格收起为一行，显示当前栏目，点击展开，可设置关闭)
  */
 
 import { Context, Mount, Store } from '../core/types';
@@ -751,68 +752,12 @@ export const mountGames: Mount = async (ctx: Context) => {
           line-height: 1.4 !important;
           font-weight: 500 !important;
           border-radius: var(--p9n-radius-sm, 4px) !important;
-          background-color: var(--p9n-surface-alt, #f4f6fa) !important;
-          color: var(--p9n-text, #1f2937) !important;
-          border: 1px solid var(--p9n-border, #ccd6dd) !important;
+          background-color: var(--p9n-surface-alt) !important;
+          color: var(--p9n-text) !important;
+          border: 1px solid var(--p9n-border) !important;
           margin-left: 6px !important;
           vertical-align: middle !important;
           box-sizing: border-box !important;
-        }
-        html[data-theme="dark"] .psnine-game-list-progress-badge {
-          background-color: var(--p9n-surface-alt, #202c3a) !important;
-          color: var(--p9n-text, #e6ebf2) !important;
-          border-color: var(--p9n-border, #3b4859) !important;
-        }
-        #psnine-game-progress-filter {
-          display: inline-flex !important;
-          align-items: center !important;
-          background: var(--p9n-surface-alt, #f0f2f5) !important;
-          border: 1px solid var(--p9n-border, #e5e8ef) !important;
-          border-radius: 16px !important;
-          padding: 2px !important;
-          margin: 6px 0 10px 0 !important;
-          gap: 2px !important;
-          box-sizing: border-box !important;
-        }
-        html[data-theme="dark"] #psnine-game-progress-filter {
-          background: rgba(255, 255, 255, 0.08) !important;
-          border-color: rgba(255, 255, 255, 0.12) !important;
-        }
-        .psnine-progress-filter-btn {
-          display: inline-flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          height: 28px !important;
-          padding: 0 12px !important;
-          font-size: 12px !important;
-          line-height: 28px !important;
-          border-radius: 14px !important;
-          border: none !important;
-          outline: none !important;
-          cursor: pointer !important;
-          touch-action: manipulation !important;
-          box-sizing: border-box !important;
-          text-decoration: none !important;
-          background: transparent !important;
-          color: var(--p9n-text-muted, #6b7280) !important;
-          font-weight: normal !important;
-          transition: all 0.15s ease !important;
-        }
-        .psnine-progress-filter-btn.active {
-          background: var(--p9n-surface, #ffffff) !important;
-          color: var(--p9n-link, #1e5ae6) !important;
-          font-weight: 600 !important;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
-        }
-        html[data-theme="dark"] .psnine-progress-filter-btn:not(.active) {
-          background: transparent !important;
-          color: var(--p9n-muted, #a8b3c2) !important;
-        }
-        html[data-theme="dark"] .psnine-progress-filter-btn.active {
-          background: var(--p9n-surface, #1e293b) !important;
-          color: #70b8ff !important;
-          font-weight: 600 !important;
-          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
         }
       `;
       doc.head.appendChild(style);
@@ -958,14 +903,6 @@ export const mountGames: Mount = async (ctx: Context) => {
       // Progress filter: 全部 / 非 100% / 100%
       let activeProgressFilter: 'all' | 'non-100' | '100' = 'all';
 
-      const updateFilterBtnStyle = (btn: HTMLButtonElement, isActive: boolean) => {
-        if (isActive) {
-          btn.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;height:28px;padding:0 12px;font-size:12px;font-weight:600;border-radius:14px;border:none;cursor:pointer;touch-action:manipulation;box-sizing:border-box;background-color:var(--p9n-surface,#ffffff);color:var(--p9n-link,#1e5ae6);box-shadow:0 1px 3px rgba(0,0,0,0.12);';
-        } else {
-          btn.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;height:28px;padding:0 12px;font-size:12px;font-weight:normal;border-radius:14px;border:none;cursor:pointer;touch-action:manipulation;box-sizing:border-box;background-color:transparent;color:var(--p9n-text-muted,#6b7280);';
-        }
-      };
-
       const applyProgressFilter = (filter: 'all' | 'non-100' | '100') => {
         activeProgressFilter = filter;
         const filterContainer = doc.getElementById('psnine-game-progress-filter');
@@ -979,7 +916,6 @@ export const mountGames: Mount = async (ctx: Context) => {
             } else {
               btn.classList.remove('active');
             }
-            updateFilterBtnStyle(btn, isActive);
           });
         }
 
@@ -1009,7 +945,6 @@ export const mountGames: Mount = async (ctx: Context) => {
           filterContainer = doc.createElement('div');
           filterContainer.id = 'psnine-game-progress-filter';
           filterContainer.setAttribute('data-psnine-next', 'true');
-          filterContainer.style.cssText = 'display:inline-flex;align-items:center;background:var(--p9n-surface-alt,#f0f2f5);border:1px solid var(--p9n-border,#e5e8ef);border-radius:16px;padding:2px;margin:6px 0 10px 0;gap:2px;box-sizing:border-box;';
 
           const filters: { label: string; value: 'all' | 'non-100' | '100' }[] = [
             { label: '全部', value: 'all' },
@@ -1026,7 +961,6 @@ export const mountGames: Mount = async (ctx: Context) => {
             btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
             btn.className = `psnine-progress-filter-btn ${isActive ? 'active' : ''}`.trim();
             btn.textContent = label;
-            updateFilterBtnStyle(btn, isActive);
 
             btn.addEventListener('click', (e) => {
               e.preventDefault();
@@ -1239,8 +1173,8 @@ export const mountGames: Mount = async (ctx: Context) => {
 
                       if (demandBtn) {
                         demandBtn.textContent = '❌ 重试';
-                        demandBtn.style.color = '#c92a2a';
-                        demandBtn.style.borderColor = '#c92a2a';
+                        demandBtn.style.color = 'var(--p9n-danger)';
+                        demandBtn.style.borderColor = 'var(--p9n-danger)';
                       }
                       report('demand_progress', err);
                     }
@@ -1328,22 +1262,50 @@ export const mountGames: Mount = async (ctx: Context) => {
           if (!hasPsnid) {
             ctx.window.location.replace(targetUrl.href);
           }
-
-          let toMineBtn = doc.getElementById('psnine-to-mine-trophy-btn');
-          if (!toMineBtn) {
-            const inav = doc.querySelector('ul.inav, .main > ul.inav, .box.pd10');
-            if (inav) {
-              toMineBtn = doc.createElement('a');
-              toMineBtn.id = 'psnine-to-mine-trophy-btn';
-              toMineBtn.className = 'psnine-btn psnine-to-mine-btn';
-              toMineBtn.setAttribute('data-psnine-next', 'true');
-              toMineBtn.setAttribute('href', targetUrl.href);
-              toMineBtn.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 14px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-md,8px);background-color:var(--p9n-surface);color:var(--p9n-text);border:1px solid var(--p9n-border);text-decoration:none;margin-left:8px;touch-action:manipulation;box-sizing:border-box;';
-              toMineBtn.textContent = '🏆 切换至我的奖杯进度';
-              inav.appendChild(toMineBtn);
-            }
-          }
         }
+      }
+
+      // P15: Collapse the game section nav grid (奖杯/排行/评论/…) behind a one-line toggle
+      const gameNav = doc.querySelector<HTMLElement>('.main > ul.inav');
+      if (settings.collapseGameNav && gameNav && gameNav.querySelector('a[href*="/psngame/"]') && !doc.getElementById('psnine-game-nav-toggle')) {
+        const currentLink = gameNav.querySelector<HTMLAnchorElement>('li.current > a');
+
+        const toggle = doc.createElement('button');
+        toggle.type = 'button';
+        toggle.id = 'psnine-game-nav-toggle';
+        toggle.setAttribute('data-psnine-next', 'true');
+
+        const current = doc.createElement('span');
+        current.className = 'psnine-game-nav-current';
+        const icon = currentLink?.querySelector('span.icon');
+        if (icon) {
+          const iconClone = icon.cloneNode(false) as HTMLElement;
+          iconClone.removeAttribute('style');
+          iconClone.setAttribute('aria-hidden', 'true');
+          current.appendChild(iconClone);
+        }
+        const currentText = doc.createElement('span');
+        currentText.textContent = currentLink?.textContent?.trim() || '栏目';
+        current.appendChild(currentText);
+
+        const hint = doc.createElement('span');
+        hint.className = 'psnine-game-nav-hint';
+
+        toggle.appendChild(current);
+        toggle.appendChild(hint);
+
+        const setCollapsed = (collapsed: boolean) => {
+          toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+          hint.textContent = collapsed ? '全部栏目' : '收起';
+          setHidden(gameNav, 'game-nav-collapsed', collapsed);
+        };
+        toggle.addEventListener('click', (e) => {
+          e.preventDefault();
+          setCollapsed(toggle.getAttribute('aria-expanded') === 'true');
+        });
+
+        gameNav.parentElement?.insertBefore(toggle, gameNav);
+        setCollapsed(true);
       }
 
       // P10 & P11: Associated Game Variants
@@ -1354,30 +1316,43 @@ export const mountGames: Mount = async (ctx: Context) => {
           const variantsDiv = doc.createElement('div');
           variantsDiv.id = 'psnine-game-variants-section';
           variantsDiv.setAttribute('data-psnine-next', 'true');
-          variantsDiv.style.cssText = 'margin:12px 0;padding:10px 14px;background-color:var(--p9n-surface-alt);border:1px solid var(--p9n-border);border-radius:var(--p9n-radius-md,8px);color:var(--p9n-text);box-sizing:border-box;';
 
           const subPageMatch = url.pathname.match(/\/psngame\/\d+(\/[^/?#]+)/);
           const subPath = subPageMatch ? subPageMatch[1] : '';
 
-          const heading = doc.createElement('div');
+          const heading = doc.createElement('span');
+          heading.className = 'psnine-game-variants-label';
           heading.setAttribute('data-psnine-next', 'true');
-          heading.style.cssText = 'font-weight:600;font-size:13px;margin-bottom:6px;';
-          heading.textContent = '🎮 本游戏其他版本/平台关联：';
+          heading.textContent = '其他版本';
           variantsDiv.appendChild(heading);
 
           const btnContainer = doc.createElement('div');
+          btnContainer.className = 'psnine-game-variants-list';
           btnContainer.setAttribute('data-psnine-next', 'true');
-          btnContainer.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;';
 
-          // Point 1: Include platform and gameId in title
+          // Platform chip + title + muted gameId, built without HTML interpolation
           variants.forEach((v) => {
             const a = doc.createElement('a');
-            a.className = 'psnine-btn psnine-variant-btn';
+            a.className = 'psnine-variant-btn';
             a.setAttribute('data-psnine-next', 'true');
             a.href = new URL(`/psngame/${v.gameId}${subPath}${url.search}`, ctx.url.origin).href;
-            a.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 12px;font-size:13px;font-weight:500;border-radius:var(--p9n-radius-sm,6px);background-color:var(--p9n-surface);color:var(--p9n-link);text-decoration:none;border:1px solid var(--p9n-border);touch-action:manipulation;box-sizing:border-box;';
-            const platformPrefix = v.platform ? `[${v.platform}] ` : '';
-            a.textContent = `${platformPrefix}${v.title || '版本'} (#${v.gameId})`;
+            a.title = `${v.platform ? `[${v.platform}] ` : ''}${v.title || '版本'} (#${v.gameId})`;
+
+            if (v.platform) {
+              const chip = doc.createElement('span');
+              chip.className = 'psnine-variant-platform';
+              chip.textContent = v.platform;
+              a.appendChild(chip);
+            }
+            const name = doc.createElement('span');
+            name.className = 'psnine-variant-title';
+            name.textContent = v.title || '版本';
+            a.appendChild(name);
+            const idEl = doc.createElement('span');
+            idEl.className = 'psnine-variant-id';
+            idEl.textContent = `#${v.gameId}`;
+            a.appendChild(idEl);
+
             btnContainer.appendChild(a);
           });
 
@@ -1469,6 +1444,9 @@ export const mountGames: Mount = async (ctx: Context) => {
       doc.querySelectorAll('.psnine-game-list-progress-badge').forEach(el => el.remove());
       doc.getElementById('psnine-sync-psn-btn-group')?.remove();
       doc.getElementById('psnine-game-progress-filter')?.remove();
+      doc.getElementById('psnine-game-nav-toggle')?.remove();
+      const collapsedNav = doc.querySelector<HTMLElement>('.main > ul.inav');
+      if (collapsedNav) setHidden(collapsedNav, 'game-nav-collapsed', false);
       doc.querySelectorAll('table tr').forEach((tr) => {
         if (tr.querySelector('a[href*="/psngame/"]')) {
           setHidden(tr as HTMLElement, 'percent-100-filter', false);

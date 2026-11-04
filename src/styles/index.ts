@@ -5,8 +5,8 @@
 
 export const ICONS = {
   gear: `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>`,
-  checkCircle: `<svg viewBox="0 0 24 24" width="16" height="16" fill="#28a745"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>`,
-  coins: `<svg viewBox="0 0 24 24" width="16" height="16" fill="#f39c12"><path d="M12 2C6.48 2 2 4.24 2 7v10c0 2.76 4.48 5 10 5s10-2.24 10-5V7c0-2.76-4.48-5-10-5zm0 2c4.42 0 8 1.79 8 3s-3.58 3-8 3-8-1.79-8-3 3.58-3 8-3zm0 16c-4.42 0-8-1.79-8-3v-2.22c1.78 1.34 4.67 2.22 8 2.22s6.22-.88 8-2.22V17c0 1.21-3.58 3-8 3zm0-5c-4.42 0-8-1.79-8-3v-2.22c1.78 1.34 4.67 2.22 8 2.22s6.22-.88 8-2.22V12c0 1.21-3.58 3-8 3z"/></svg>`,
+  checkCircle: `<svg viewBox="0 0 24 24" width="16" height="16" style="fill:var(--p9n-success)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>`,
+  coins: `<svg viewBox="0 0 24 24" width="16" height="16" style="fill:var(--p9n-warning)"><path d="M12 2C6.48 2 2 4.24 2 7v10c0 2.76 4.48 5 10 5s10-2.24 10-5V7c0-2.76-4.48-5-10-5zm0 2c4.42 0 8 1.79 8 3s-3.58 3-8 3-8-1.79-8-3 3.58-3 8-3zm0 16c-4.42 0-8-1.79-8-3v-2.22c1.78 1.34 4.67 2.22 8 2.22s6.22-.88 8-2.22V17c0 1.21-3.58 3-8 3zm0-5c-4.42 0-8-1.79-8-3v-2.22c1.78 1.34 4.67 2.22 8 2.22s6.22-.88 8-2.22V12c0 1.21-3.58 3-8 3z"/></svg>`,
   arrowDown: `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>`,
   close: `<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M18 6L6 18M6 6l12 12"/></svg>`
 };
@@ -19,10 +19,16 @@ export const CORE_STYLES = `
   --p9n-surface-alt: var(--c-bg, #f8fafc);
   --p9n-text: var(--c-text, #1f2937);
   --p9n-muted: var(--c-text-2, #5f6b7a);
-  --p9n-text-muted: var(--c-text-2, #596375);
+  --p9n-text-muted: var(--p9n-muted);
   --p9n-border: var(--c-line, #ccd6dd);
   --p9n-link: var(--c-brand, #1966c2);
+  --p9n-link-soft: rgba(56, 144, 255, 0.12);
   --p9n-primary: #1d4ed8;
+  --p9n-on-accent: #ffffff;
+  --p9n-success: #28a745;
+  --p9n-danger: #e03131;
+  --p9n-warning: #f59f00;
+  --p9n-warning-text: #b45309;
   --p9n-radius-sm: var(--r-sm, 4px);
   --p9n-radius-md: var(--r-md, 8px);
 }
@@ -53,7 +59,7 @@ button[data-psnine-next]:where(:not(.psnine-settings-close):not(.psnine-progress
 .psnine-btn.psnine-btn-primary,
 [data-psnine-next] button.psnine-btn-primary,
 button[data-psnine-next].psnine-btn-primary {
-  color: #ffffff !important;
+  color: var(--p9n-on-accent) !important;
   background-color: var(--p9n-primary) !important;
   border-color: var(--p9n-primary) !important;
 }
@@ -61,9 +67,9 @@ button[data-psnine-next].psnine-btn-primary {
 .psnine-btn.psnine-btn-danger,
 [data-psnine-next] button.psnine-btn-danger,
 button[data-psnine-next].psnine-btn-danger {
-  color: #e74c3c !important;
+  color: var(--p9n-danger) !important;
   background-color: var(--p9n-surface) !important;
-  border-color: #e74c3c !important;
+  border-color: var(--p9n-danger) !important;
 }
 
 /* Floating Action Buttons (.float-btn native style) */
@@ -345,13 +351,13 @@ a.psnine-nav-settings-link {
   width: 22px;
   left: 3px;
   bottom: 3px;
-  background-color: #ffffff;
+  background-color: var(--p9n-on-accent);
   transition: transform 0.25s ease;
   border-radius: 50%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 .psnine-switch input:checked + .psnine-slider {
-  background-color: #2ecc71;
+  background-color: var(--p9n-success);
 }
 .psnine-switch input:checked + .psnine-slider:before {
   transform: translateX(20px);
@@ -378,9 +384,9 @@ a.psnine-nav-settings-link {
   line-height: 1.4;
   font-weight: 500;
   border-radius: var(--p9n-radius-sm, 4px);
-  background-color: var(--p9n-surface-alt, #f4f6fa);
-  color: var(--p9n-text, #1f2937);
-  border: 1px solid var(--p9n-border, #ccd6dd);
+  background-color: var(--p9n-surface-alt);
+  color: var(--p9n-text);
+  border: 1px solid var(--p9n-border);
   margin-left: 6px;
   vertical-align: middle;
   box-sizing: border-box;
@@ -388,12 +394,9 @@ a.psnine-nav-settings-link {
 
 /* Game List & Profile Action Buttons (Neutral Outline, Contrast >= 4.5:1, Touch >= 44px) */
 .psnine-sync-btn,
-.psnine-to-mine-btn,
-#psnine-to-mine-trophy-btn,
 .psnine-difficulty-sort-btn,
 #psnine-difficulty-sort-btn,
 .psnine-ondemand-progress-btn,
-.psnine-variant-btn,
 .psnine-cross-tip-btn {
   display: inline-flex !important;
   align-items: center !important;
@@ -415,14 +418,6 @@ a.psnine-nav-settings-link {
   font-weight: 500 !important;
 }
 
-.psnine-to-mine-btn,
-#psnine-to-mine-trophy-btn {
-  padding: 6px 14px !important;
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  margin-left: 8px !important;
-}
-
 .psnine-difficulty-sort-btn,
 #psnine-difficulty-sort-btn {
   padding: 6px 14px !important;
@@ -442,7 +437,6 @@ a.psnine-nav-settings-link {
   margin-left: 6px !important;
 }
 
-.psnine-variant-btn,
 .psnine-cross-tip-btn {
   padding: 6px 12px !important;
   font-size: 13px !important;
@@ -452,12 +446,9 @@ a.psnine-nav-settings-link {
 }
 
 .psnine-sync-btn:hover,
-.psnine-to-mine-btn:hover,
-#psnine-to-mine-trophy-btn:hover,
 .psnine-difficulty-sort-btn:hover,
 #psnine-difficulty-sort-btn:hover,
 .psnine-ondemand-progress-btn:hover,
-.psnine-variant-btn:hover,
 .psnine-cross-tip-btn:hover {
   background-color: var(--p9n-surface-alt) !important;
   color: var(--p9n-link) !important;
@@ -465,10 +456,161 @@ a.psnine-nav-settings-link {
   text-decoration: none !important;
 }
 
+/* Game Section Nav Toggle (collapsed 奖杯/排行/评论… grid) */
+#psnine-game-nav-toggle {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 14px;
+  border: none !important;
+  border-top: 1px solid var(--p9n-border) !important;
+  border-radius: 0;
+  background-color: var(--p9n-surface) !important;
+  color: var(--p9n-text) !important;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+  box-sizing: border-box;
+}
+#psnine-game-nav-toggle:focus-visible {
+  outline: 2px solid var(--p9n-link);
+  outline-offset: -2px;
+}
+.psnine-game-nav-current {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--p9n-link);
+  font-weight: 500;
+}
+.psnine-game-nav-current .icon {
+  font-size: 18px;
+  line-height: 1;
+}
+.psnine-game-nav-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--p9n-muted);
+}
+.psnine-game-nav-hint::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  margin-left: 2px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.15s ease;
+}
+#psnine-game-nav-toggle[aria-expanded="true"] .psnine-game-nav-hint::after {
+  transform: translateY(1px) rotate(-135deg);
+}
+/* Expanded grid sits flush under the toggle so both read as one card */
+#psnine-game-nav-toggle + ul.inav {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  border-top: 1px solid var(--p9n-border) !important;
+  box-shadow: none !important;
+}
+
+/* Game Variants Row (compact label + capsule links, 32px visual / 44px hit area) */
+#psnine-game-variants-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  margin: 0;
+  padding: 10px 14px;
+  background-color: var(--p9n-surface);
+  border-top: 1px solid var(--p9n-border);
+  border-radius: 0;
+  color: var(--p9n-text);
+  box-sizing: border-box;
+}
+.psnine-game-variants-label {
+  font-size: 12px;
+  color: var(--p9n-muted);
+  white-space: nowrap;
+}
+.psnine-game-variants-list {
+  display: flex;
+  flex-wrap: wrap;
+  /* Row gap >= 2 x the ::after hit-area overhang so wrapped chips never share tap area */
+  gap: 12px 8px;
+  min-width: 0;
+}
+a.psnine-variant-btn {
+  position: relative;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px;
+  max-width: 100%;
+  height: 32px;
+  padding: 0 12px 0 4px;
+  font-size: 13px;
+  line-height: 1;
+  border-radius: 16px;
+  border: 1px solid var(--p9n-border);
+  background-color: var(--p9n-surface);
+  color: var(--p9n-text) !important;
+  text-decoration: none !important;
+  touch-action: manipulation;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+a.psnine-variant-btn::after {
+  content: "";
+  position: absolute;
+  inset: -6px 0;
+}
+a.psnine-variant-btn:not(:has(.psnine-variant-platform)) {
+  padding-left: 12px;
+}
+a.psnine-variant-btn:hover {
+  border-color: var(--p9n-link);
+  color: var(--p9n-link) !important;
+  text-decoration: none !important;
+}
+a.psnine-variant-btn:focus-visible {
+  outline: 2px solid var(--p9n-link);
+  outline-offset: 1px;
+}
+.psnine-variant-platform {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 12px;
+  background-color: var(--p9n-link);
+  /* surface (not on-accent): dark-theme link is light blue, so white text would lose contrast */
+  color: var(--p9n-surface);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.psnine-variant-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+.psnine-variant-id {
+  font-size: 12px;
+  color: var(--p9n-muted);
+}
+
 .psnine-author-badge {
   display: inline-block;
   background: var(--p9n-link);
-  color: #ffffff;
+  color: var(--p9n-on-accent);
   padding: 1px 6px;
   font-size: 11px;
   border-radius: var(--p9n-radius-sm, 4px);
@@ -502,8 +644,8 @@ a.psnine-nav-settings-link {
 /* Hot Tag */
 .psnine-hot-badge {
   display: inline-block;
-  background: #e74c3c;
-  color: #fff;
+  background: var(--p9n-danger);
+  color: var(--p9n-on-accent);
   padding: 1px 6px;
   font-size: 11px;
   font-weight: bold;
@@ -576,28 +718,23 @@ a.psnine-nav-settings-link {
   font-size: 12px;
 }
 
-.psnine-trophy-action-group {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
-}
-
-/* Trophy Tips Compact Trigger, Popup Menu & Jump Highlight (Matches native .o_btn) */
+/* Trophy Tips Expand Toggle & Jump Highlight (Capsule matching the earned/unearned segment) */
 #psnine-trophy-tips-trigger,
 button#psnine-trophy-tips-trigger,
 .o_btn.psnine-trophy-tips-btn {
-  display: inline-block !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
   margin: 0 !important;
-  width: 52px !important;
-  min-height: 24px !important;
-  height: 24px !important;
-  padding: 2px 4px !important;
+  width: auto !important;
+  min-height: 30px !important;
+  height: 30px !important;
+  padding: 0 12px !important;
   font-size: 12px !important;
-  line-height: 17px !important;
+  line-height: 1 !important;
   border-radius: 15px !important;
-  border: 1px solid darkslategray !important;
-  border-color: darkslategray !important;
+  border: 1px solid var(--p9n-border) !important;
   background-color: var(--p9n-surface) !important;
   color: var(--p9n-text) !important;
   cursor: pointer !important;
@@ -606,21 +743,20 @@ button#psnine-trophy-tips-trigger,
   outline: none !important;
   vertical-align: middle !important;
 }
+#psnine-trophy-tips-trigger[aria-pressed="true"] {
+  background-color: var(--p9n-surface) !important;
+  color: var(--p9n-link) !important;
+  border-color: var(--p9n-link) !important;
+}
 #psnine-trophy-tips-trigger:focus-visible,
 button#psnine-trophy-tips-trigger:focus-visible,
 .o_btn.psnine-trophy-tips-btn:focus-visible {
-  outline: 2px solid var(--p9n-link, #1966c2) !important;
+  outline: 2px solid var(--p9n-link) !important;
   outline-offset: 1px !important;
 }
-#psnine-trophy-tips-menu {
-  background-color: var(--p9n-surface);
-  border: 1px solid var(--p9n-border);
-  border-radius: var(--p9n-radius-md, 8px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
 .psnine-tip-jump-target {
-  background-color: var(--p9n-surface-alt, #f8fafc) !important;
-  outline: 2px solid var(--p9n-link, #1966c2) !important;
+  background-color: var(--p9n-surface-alt) !important;
+  outline: 2px solid var(--p9n-link) !important;
   outline-offset: -2px !important;
   transition: background-color 0.25s ease, outline 0.25s ease;
 }
@@ -628,65 +764,6 @@ button#psnine-trophy-tips-trigger:focus-visible,
   .psnine-tip-jump-target {
     transition: none !important;
   }
-}
-html[data-theme="dark"] .psnine-tip-jump-target {
-  background-color: var(--p9n-surface-alt, #202c3a) !important;
-  outline: 2px solid var(--p9n-link, #70b8ff) !important;
-}
-
-/* Neutral outline pill button */
-.psnine-trophy-pill-btn,
-.psnine-pill-btn,
-.psnine-trophy-toolbar button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 36px;
-  padding: 4px 12px;
-  font-size: 12px;
-  font-weight: 500;
-  border-radius: 18px;
-  border: 1px solid var(--p9n-border);
-  background-color: var(--p9n-surface);
-  color: var(--p9n-text);
-  cursor: pointer;
-  touch-action: manipulation;
-  box-sizing: border-box;
-  text-decoration: none;
-  transition: all 0.15s ease;
-  white-space: nowrap;
-}
-.psnine-trophy-pill-btn:hover:not(:disabled),
-.psnine-pill-btn:hover:not(:disabled),
-.psnine-trophy-toolbar button:hover:not(:disabled) {
-  background-color: var(--p9n-surface-alt);
-  border-color: var(--p9n-link);
-  color: var(--p9n-link);
-}
-.psnine-trophy-pill-btn.active,
-.psnine-trophy-pill-btn[aria-pressed="true"],
-.psnine-pill-btn.active,
-.psnine-trophy-toolbar button.active,
-.psnine-trophy-toolbar button[aria-pressed="true"] {
-  background-color: var(--p9n-surface-alt);
-  border-color: var(--p9n-link);
-  color: var(--p9n-link);
-  font-weight: 600;
-}
-.psnine-trophy-pill-btn.danger,
-.psnine-trophy-pill-btn.psnine-btn-danger,
-.psnine-trophy-toolbar button.danger,
-.psnine-trophy-toolbar button.psnine-btn-danger {
-  color: #e74c3c !important;
-  border-color: #e74c3c !important;
-  background-color: var(--p9n-surface) !important;
-}
-.psnine-trophy-pill-btn:disabled,
-.psnine-pill-btn:disabled,
-.psnine-trophy-toolbar button:disabled {
-  opacity: 0.45 !important;
-  cursor: not-allowed !important;
-  pointer-events: none;
 }
 
 /* Trophy Charts grid & sections */
@@ -821,6 +898,73 @@ ul.dropmenu.psnine-trophy-nav-dropmenu .o_btn:not(#psnine-trophy-tips-trigger),
 ul.dropmenu[data-psnine-trophy-nav="true"] .o_btn:not(#psnine-trophy-tips-trigger) {
   margin: 0 4px !important;
 }
+/* Segmented Capsule Control: game progress filter (全部/非 100%/100%) and trophy earned/unearned */
+#psnine-game-progress-filter,
+ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 2px !important;
+  padding: 2px !important;
+  background: var(--p9n-surface-alt) !important;
+  border: 1px solid var(--p9n-border) !important;
+  border-radius: 16px !important;
+  box-sizing: border-box !important;
+}
+#psnine-game-progress-filter {
+  margin: 6px 0 10px 12px !important;
+}
+ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment {
+  height: 30px !important;
+  margin: 0 4px !important;
+  border-radius: 15px !important;
+}
+
+.psnine-progress-filter-btn,
+ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 28px !important;
+  margin: 0 !important;
+  padding: 0 12px !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  border-radius: 14px !important;
+  border: none !important;
+  outline: none !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
+  box-sizing: border-box !important;
+  text-decoration: none !important;
+  background: transparent !important;
+  color: var(--p9n-muted) !important;
+  font-weight: normal !important;
+  box-shadow: none !important;
+  transition: background-color 0.15s ease, color 0.15s ease !important;
+}
+ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn {
+  width: auto !important;
+  height: 24px !important;
+  border-radius: 12px !important;
+}
+
+.psnine-progress-filter-btn.active,
+ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn.select {
+  background: var(--p9n-surface) !important;
+  color: var(--p9n-link) !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+}
+.psnine-progress-filter-btn:focus-visible,
+ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn:focus-visible {
+  outline: 2px solid var(--p9n-link) !important;
+  outline-offset: 1px !important;
+}
+
+html[data-theme="dark"] .psnine-progress-filter-btn.active,
+html[data-theme="dark"] ul.dropmenu.psnine-trophy-nav-dropmenu > li.psnine-trophy-filter-segment > .o_btn.select {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
+}
 
 /* Native Sort Dropdown */
 ul.dropmenu > li.dropdown[data-psnine-trophy-sort-dropdown="true"] {
@@ -910,8 +1054,15 @@ html[data-theme="dark"] body {
   --p9n-text: var(--c-text, #e6ebf2);
   --p9n-muted: var(--c-text-2, #a8b3c2);
   --p9n-border: var(--c-line, #3b4859);
+  --p9n-text-muted: var(--p9n-muted);
   --p9n-link: var(--c-brand, #91bdff);
+  --p9n-link-soft: rgba(145, 189, 255, 0.16);
   --p9n-primary: #1d4ed8;
+  --p9n-on-accent: #ffffff;
+  --p9n-success: #51cf66;
+  --p9n-danger: #ff6b6b;
+  --p9n-warning: #fbbf24;
+  --p9n-warning-text: #fbbf24;
 }
 
 /* Page Background & Base Text (scoped with html[data-theme="dark"]) */
@@ -919,8 +1070,8 @@ html[data-theme="dark"] body.bg,
 html[data-theme="dark"] body[data-theme="dark"],
 html[data-theme="dark"] body,
 body[data-theme="dark"] {
-  background-color: #10151d !important;
-  color: #e6ebf2 !important;
+  background-color: var(--p9n-bg) !important;
+  color: var(--p9n-text) !important;
 }
 
 /* Floating Action Buttons in Dark Mode */
@@ -978,7 +1129,7 @@ html[data-theme="dark"] .page li a {
 }
 html[data-theme="dark"] .page li.current a {
   background-color: var(--p9n-primary) !important;
-  color: #ffffff !important;
+  color: var(--p9n-on-accent) !important;
   border-color: var(--p9n-primary) !important;
 }
 
@@ -1231,8 +1382,8 @@ html[data-theme="dark"] .psnine-settings-memory-warning {
 }
 
 /* Generic Button Contrast in Dark Mode (Exclude custom status/chip/filter buttons) */
-html[data-theme="dark"] [data-psnine-next] button:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-trophy-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(#psnine-settings-gear):not(.psnine-filtered-tip-btn):not(.psnine-trophy-pill-btn):not(.psnine-progress-filter-btn)),
-html[data-theme="dark"] button[data-psnine-next]:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-trophy-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(#psnine-settings-gear):not(.psnine-filtered-tip-btn):not(.psnine-trophy-pill-btn):not(.psnine-progress-filter-btn)),
+html[data-theme="dark"] [data-psnine-next] button:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-trophy-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(#psnine-settings-gear):not(.psnine-filtered-tip-btn):not(.psnine-progress-filter-btn)),
+html[data-theme="dark"] button[data-psnine-next]:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-settings-close):not(.psnine-trophy-icon-chip):not(.psnine-trophy-chip):not(.psnine-score-filter-chip):not(#psnine-clear-score-filter-btn):not(#psnine-toggle-best-deal-btn):not(#psnine-toggle-cny-btn):not(.psnine-battle-bell-btn):not(#psnine-scrollbottom):not(#psnine-settings-gear):not(.psnine-filtered-tip-btn):not(.psnine-progress-filter-btn)),
 html[data-theme="dark"] .psnine-btn:where(:not(.psnine-btn-primary):not(.psnine-btn-danger):not(.psnine-progress-filter-btn)) {
   color: var(--p9n-text) !important;
   background-color: var(--p9n-surface-alt) !important;
@@ -1241,16 +1392,16 @@ html[data-theme="dark"] .psnine-btn:where(:not(.psnine-btn-primary):not(.psnine-
 html[data-theme="dark"] .psnine-btn.psnine-btn-primary,
 html[data-theme="dark"] [data-psnine-next] button.psnine-btn-primary,
 html[data-theme="dark"] button[data-psnine-next].psnine-btn-primary {
-  color: #ffffff !important;
+  color: var(--p9n-on-accent) !important;
   background-color: var(--p9n-primary) !important;
   border-color: var(--p9n-primary) !important;
 }
 html[data-theme="dark"] .psnine-btn.psnine-btn-danger,
 html[data-theme="dark"] [data-psnine-next] button.psnine-btn-danger,
 html[data-theme="dark"] button[data-psnine-next].psnine-btn-danger {
-  color: #ff6b6b !important;
+  color: var(--p9n-danger) !important;
   background-color: var(--p9n-surface-alt) !important;
-  border-color: #ff6b6b !important;
+  border-color: var(--p9n-danger) !important;
 }
 html[data-theme="dark"] .psnine-settings-close {
   color: var(--p9n-muted) !important;
@@ -1262,19 +1413,6 @@ html[data-theme="dark"] .psnine-settings-close:hover {
 }
 
 /* Trophy Module Dark Mode */
-html[data-theme="dark"] #psnine-trophy-tips-menu {
-  background-color: var(--p9n-surface) !important;
-  border-color: var(--p9n-border) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
-}
-html[data-theme="dark"] #psnine-trophy-tips-trigger,
-html[data-theme="dark"] button#psnine-trophy-tips-trigger,
-html[data-theme="dark"] .o_btn.psnine-trophy-tips-btn {
-  border: 1px solid darkslategray !important;
-  border-color: darkslategray !important;
-  color: var(--p9n-text) !important;
-  background-color: var(--p9n-surface) !important;
-}
 html[data-theme="dark"] .psnine-trophy-panel {
   background-color: var(--p9n-surface) !important;
   border-color: var(--p9n-border) !important;
@@ -1289,43 +1427,6 @@ html[data-theme="dark"] .psnine-trophy-chart-section {
   border: none !important;
   border-top: 1px solid var(--p9n-border) !important;
   color: var(--p9n-text) !important;
-}
-html[data-theme="dark"] .psnine-trophy-pill-btn,
-html[data-theme="dark"] .psnine-pill-btn,
-html[data-theme="dark"] .psnine-trophy-toolbar button {
-  background-color: var(--p9n-surface) !important;
-  border-color: var(--p9n-border) !important;
-  color: var(--p9n-text) !important;
-}
-html[data-theme="dark"] .psnine-trophy-pill-btn:hover:not(:disabled),
-html[data-theme="dark"] .psnine-pill-btn:hover:not(:disabled),
-html[data-theme="dark"] .psnine-trophy-toolbar button:hover:not(:disabled) {
-  background-color: var(--p9n-surface-alt) !important;
-  border-color: var(--p9n-link) !important;
-  color: var(--p9n-link) !important;
-}
-html[data-theme="dark"] .psnine-trophy-pill-btn.active,
-html[data-theme="dark"] .psnine-trophy-pill-btn[aria-pressed="true"],
-html[data-theme="dark"] .psnine-pill-btn.active,
-html[data-theme="dark"] .psnine-trophy-toolbar button.active,
-html[data-theme="dark"] .psnine-trophy-toolbar button[aria-pressed="true"] {
-  background-color: var(--p9n-surface-alt) !important;
-  border-color: var(--p9n-link) !important;
-  color: var(--p9n-link) !important;
-}
-html[data-theme="dark"] .psnine-trophy-pill-btn.danger,
-html[data-theme="dark"] .psnine-trophy-pill-btn.psnine-btn-danger,
-html[data-theme="dark"] .psnine-trophy-toolbar button.danger,
-html[data-theme="dark"] .psnine-trophy-toolbar button.psnine-btn-danger {
-  color: #ff6b6b !important;
-  border-color: #ff6b6b !important;
-  background-color: var(--p9n-surface) !important;
-}
-html[data-theme="dark"] .psnine-trophy-pill-btn:disabled,
-html[data-theme="dark"] .psnine-pill-btn:disabled,
-html[data-theme="dark"] .psnine-trophy-toolbar button:disabled {
-  opacity: 0.45 !important;
-  cursor: not-allowed !important;
 }
 html[data-theme="dark"] .psnine-trophy-preview-card,
 html[data-theme="dark"] #psnine-trophy-preview-card {
@@ -1363,12 +1464,12 @@ html[data-theme="dark"] .psnine-score-filter-chip[style*="#ff9800"],
 html[data-theme="dark"] .psnine-score-filter-chip[style*="rgb(255, 152, 0)"] {
   background-color: #ff9800 !important;
   border-color: #ff9800 !important;
-  color: #ffffff !important;
+  color: var(--p9n-on-accent) !important;
 }
 html[data-theme="dark"] #psnine-clear-score-filter-btn {
   border-color: #ff9800 !important;
   background-color: rgba(255, 152, 0, 0.15) !important;
-  color: #ffb74d !important;
+  color: var(--p9n-warning-text) !important;
 }
 
 /* 3. Deal Best Only Toggle Button (Preserve active red state) */
@@ -1381,7 +1482,7 @@ html[data-theme="dark"] #psnine-toggle-best-deal-btn[style*="#da314b"],
 html[data-theme="dark"] #psnine-toggle-best-deal-btn[style*="rgb(218, 49, 75)"] {
   background-color: #da314b !important;
   border-color: #da314b !important;
-  color: #ffffff !important;
+  color: var(--p9n-on-accent) !important;
 }
 
 /* 4. Deal CNY Toggle Button (Preserve active green state) */
@@ -1408,9 +1509,6 @@ html[data-theme="dark"] .psnine-battle-bell-btn[style*="#f59f00"] {
 html[data-theme="dark"] .psnine-slider {
   background-color: var(--p9n-border) !important;
 }
-html[data-theme="dark"] .psnine-switch input:checked + .psnine-slider {
-  background-color: #2ecc71 !important;
-}
 
 /* Traceback in Dark Mode */
 html[data-theme="dark"] .psnine-traceback-card {
@@ -1429,7 +1527,6 @@ html[data-theme="dark"] #psnine-trophy-preview-card,
 html[data-theme="dark"] #psnine-enhanced-reviews-panel,
 html[data-theme="dark"] #psnine-deals-controls-bar,
 html[data-theme="dark"] #psnine-price-chart-container,
-html[data-theme="dark"] #psnine-game-variants-section,
 html[data-theme="dark"] #psnine-cross-version-tips-section {
   background-color: var(--p9n-surface) !important;
   color: var(--p9n-text) !important;
@@ -1438,96 +1535,16 @@ html[data-theme="dark"] #psnine-cross-version-tips-section {
 
 /* Muted labels & counts in plugin panels */
 html[data-theme="dark"] #psnine-trophy-header-counts,
-html[data-theme="dark"] #psnine-fx-status,
-html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color:#666"],
-html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color: #666"],
-html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color:#888"],
-html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color: #888"],
-html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color:#555"],
-html[data-theme="dark"] #psnine-trophy-stats-panel [style*="color: #555"],
-html[data-theme="dark"] #psnine-trophy-preview-card [style*="color:#666"],
-html[data-theme="dark"] #psnine-trophy-preview-card [style*="color: #666"],
-html[data-theme="dark"] #psnine-enhanced-reviews-panel [style*="color:#666"],
-html[data-theme="dark"] #psnine-enhanced-reviews-panel [style*="color: #666"],
-html[data-theme="dark"] #psnine-enhanced-reviews-panel [style*="color:#888"],
-html[data-theme="dark"] #psnine-enhanced-reviews-panel [style*="color: #888"],
-html[data-theme="dark"] #psnine-deals-controls-bar [style*="color:#666"],
-html[data-theme="dark"] #psnine-deals-controls-bar [style*="color: #666"],
-html[data-theme="dark"] #psnine-price-chart-container [style*="color:#666"],
-html[data-theme="dark"] #psnine-price-chart-container [style*="color: #666"],
-html[data-theme="dark"] #psnine-price-chart-container [style*="color:#888"],
-html[data-theme="dark"] #psnine-price-chart-container [style*="color: #888"],
-html[data-theme="dark"] #psnine-game-variants-section [style*="color:#666"],
-html[data-theme="dark"] #psnine-game-variants-section [style*="color: #666"],
-html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color:#666"],
-html[data-theme="dark"] #psnine-cross-version-tips-section [style*="color: #666"] {
+html[data-theme="dark"] #psnine-fx-status {
   color: var(--p9n-muted) !important;
 }
 
 
-/* Game Progress Filter (iOS-style Segmented Capsule Control) */
-#psnine-game-progress-filter {
-  display: inline-flex !important;
-  align-items: center !important;
-  background: var(--p9n-surface-alt, #f0f2f5) !important;
-  border: 1px solid var(--p9n-border, #e5e8ef) !important;
-  border-radius: 16px !important;
-  padding: 2px !important;
-  margin: 6px 0 10px 0 !important;
-  gap: 2px !important;
-  box-sizing: border-box !important;
-}
-
-html[data-theme="dark"] #psnine-game-progress-filter {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
-}
-
-.psnine-progress-filter-btn {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  height: 28px !important;
-  padding: 0 12px !important;
-  font-size: 12px !important;
-  line-height: 28px !important;
-  border-radius: 14px !important;
-  border: none !important;
-  outline: none !important;
-  cursor: pointer !important;
-  touch-action: manipulation !important;
-  box-sizing: border-box !important;
-  text-decoration: none !important;
-  background: transparent !important;
-  color: var(--p9n-text-muted, #6b7280) !important;
-  font-weight: normal !important;
-  transition: all 0.15s ease !important;
-}
-
-.psnine-progress-filter-btn.active {
-  background: var(--p9n-surface, #ffffff) !important;
-  color: var(--p9n-link, #1e5ae6) !important;
-  font-weight: 600 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
-}
-
-html[data-theme="dark"] .psnine-progress-filter-btn:not(.active) {
-  background: transparent !important;
-  color: var(--p9n-muted, #a8b3c2) !important;
-}
-
-html[data-theme="dark"] .psnine-progress-filter-btn.active {
-  background: var(--p9n-surface, #1e293b) !important;
-  color: #70b8ff !important;
-  font-weight: 600 !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
-}
-
 /* Game List Progress Badge in Dark Mode */
 html[data-theme="dark"] .psnine-game-list-progress-badge {
-  background-color: var(--p9n-surface-alt, #202c3a) !important;
-  color: var(--p9n-text, #e6ebf2) !important;
-  border-color: var(--p9n-border, #3b4859) !important;
+  background-color: var(--p9n-surface-alt) !important;
+  color: var(--p9n-text) !important;
+  border-color: var(--p9n-border) !important;
 }
 
 `;

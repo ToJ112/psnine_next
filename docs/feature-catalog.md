@@ -49,7 +49,7 @@
 |T09|原序/类型/稀有度排序|[trophies](../src/features/trophies.ts)|保留原生 XMB/类型/完美率链接；菜单内只补充反向排序，默认顺序沿用 XMB（1.0.5 移除重复选项），本地排序保持现有 DLC 分组与 Tips 归属。|
 |T10|获得状态筛选|[trophies](../src/features/trophies.ts)|沿用原站已获得/未获得控件，仅同步内联 Tips 与动态行；不再添加独立筛选。|
 |T11|内联展开单个 Tips|[trophies](../src/features/trophies.ts)|同游戏奖杯链接在当前列表定位并短暂高亮；跨游戏和修饰键操作保留原链接。|
-|T12|批量全部/未获 Tips|[trophies](../src/features/trophies.ts)|同一原站排序行的 Tips 菜单；批量全部/未获、限速、可取消，异常后允许重试。|
+|T12|批量全部/未获 Tips|[trophies](../src/features/trophies.ts)|1.0.8 起改为单一“展开/收起 Tips”开关：只展开当前已获得/未获得筛选下的奖杯，切换筛选保持展开并补载新显示的奖杯；限速，收起即停止，异常后允许重试。原“展开所有/展开未获/停止加载”菜单已移除。|
 |T13|Tips 顶数排序|[trophies](../src/features/trophies.ts)|读取已载入 Tips 自身的顶数，不包含子评论；匿名站点不提供顶数时不能推断。|
 |T14|Tips 输入框缩放|[trophies](../src/features/trophies.ts)|代码审阅、关联模块回归|
 |P01|无白金游戏降低透明度|[games](../src/features/games.ts)|代码审阅、关联模块回归|
@@ -60,15 +60,16 @@
 |P06|列表背景进度与徽章|[games](../src/features/games.ts)|官方进度条优先，避免重复百分比与整行底色；缓存徽章覆盖亮暗主题、动态更新及他人主页回归。|
 |P07|白金封面修饰|[games](../src/features/games.ts)|代码审阅、关联模块回归|
 |P08|未注册主页同步入口|[games](../src/features/games.ts)|只添加手动同步链接，本次未在网站执行同步。|
-|P09|游戏页转到我的奖杯|[games](../src/features/games.ts)|模拟导航验证；不覆盖 URL 已指定的其他用户。|
+|P09|游戏页转到我的奖杯|[games](../src/features/games.ts)|模拟导航验证；不覆盖 URL 已指定的其他用户。1.0.8 起按用户要求移除游戏页“切换至我的奖杯进度”按钮，仅保留自动跳转。|
 |P10|元数据关联游戏版本|[games](../src/features/games.ts)|以站点元数据为依据；部分游戏可能没有其他版本。|
 |P11|搜索关联游戏版本|[games](../src/features/games.ts)|规范化名称精确匹配；不把标题包含关系当同款证明。|
 |P12|跨版本奖杯 Tips|[games](../src/features/games.ts)|仅对名称或描述能明确对应的奖杯生成链接；跨语言无法确认时不猜。|
 |P13|子页面版本导航|[games](../src/features/games.ts)|代码审阅、关联模块回归|
 |P14|PSPC 与 PS5 封面修正|[games](../src/features/games.ts)|代码审阅、关联模块回归|
+|P15|游戏页栏目折叠|[games](../src/features/games.ts)|1.0.8 新增；栏目网格默认收起为一行，可设置关闭，不改原生链接。|
 |B01|隐藏约战发起人头像|[battle](../src/features/battle.ts)|代码审阅、关联模块回归|
 |B02|约战列表我的进度|[battle](../src/features/battle.ts)|代码审阅、关联模块回归|
-|B03|约战游戏监控|[battle](../src/features/battle.ts)|代码审阅、关联模块回归|
+|B03|约战游戏监控|[battle](../src/features/battle.ts)|代码审阅、关联模块回归。1.0.8 起按用户要求移除游戏页铃铛，仅约战列表行可切换监控。|
 |B04|导航招募提醒|[battle](../src/features/battle.ts)|导航提醒为本地监控游戏的匹配数量，不是系统推送。|
 |B05|约战信息缓存|[battle](../src/features/battle.ts)|代码审阅、关联模块回归|
 |R01|测评均分|[reviews](../src/features/reviews.ts)|当前已载入评论样本，不声称全站总分。|

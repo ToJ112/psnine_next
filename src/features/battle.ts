@@ -4,7 +4,7 @@
  * Implements:
  * B01: 隐藏约战发起人头像 (按设置作用于头像列，无:has兼容Safari 15，不误伤游戏封面)
  * B02: 约战列表我的进度 (与games共享UserProgressData模型、渐变背景、严格验证用户ID与schema)
- * B03: 约战游戏监控 (游戏页及列表行增加/移除、状态同步，标题单元格挂载，data-psnine-next标记)
+ * B03: 约战游戏监控 (约战列表行增加/移除、状态同步，标题单元格挂载，data-psnine-next标记；游戏页铃铛已按用户要求移除)
  * B04: 导航招募提醒 (本地监控游戏与公开列表求交集，按游戏ID去重计数，桌面/手机菜单)
  * B05: 约战信息缓存 (刷新间隔、无监控不请求、有效空列表清空缓存、失败及登录页保留旧缓存)
  */
@@ -253,7 +253,6 @@ export const mountBattle: Mount = async (ctx: Context) => {
   const { document: doc, url, settings, onContent, report } = ctx;
 
   const isBattlePage = url.pathname.includes('/battle');
-  const isGamePage = url.pathname.includes('/psngame/');
 
   let isActive = true;
   const unsubs: Array<() => void> = [];
@@ -310,7 +309,7 @@ export const mountBattle: Mount = async (ctx: Context) => {
         if (!gid) return;
         const isMonitored = monitoredGames.includes(gid);
         btn.textContent = isMonitored ? '🔔 已监控' : '🔕 监控';
-        btn.style.borderColor = isMonitored ? '#f59f00' : '#ccc';
+        btn.style.borderColor = isMonitored ? '#f59f00' : 'var(--p9n-border)';
         btn.style.background = isMonitored ? 'rgba(245, 159, 0, 0.15)' : 'transparent';
         btn.style.color = isMonitored ? '#d97706' : 'inherit';
         btn.setAttribute('title', isMonitored ? '点击取消对此游戏的约战监控' : '点击开启对此游戏的约战监控');
@@ -347,7 +346,7 @@ export const mountBattle: Mount = async (ctx: Context) => {
               badge = doc.createElement('span');
               badge.className = 'psnine-battle-notify-badge';
               badge.setAttribute('data-psnine-next', 'true');
-              badge.setAttribute('style', 'display:inline-block;padding:0 5px;margin-left:4px;border-radius:10px;background:#e03131;color:#fff;font-size:10px;font-weight:bold;line-height:16px;vertical-align:middle;');
+              badge.setAttribute('style', 'display:inline-block;padding:0 5px;margin-left:4px;border-radius:10px;background:var(--p9n-danger);color:var(--p9n-on-accent);font-size:10px;font-weight:bold;line-height:16px;vertical-align:middle;');
               a.appendChild(badge);
             }
             badge.textContent = `${distinctGameCount}`;
@@ -401,12 +400,12 @@ export const mountBattle: Mount = async (ctx: Context) => {
           // B02: Render personal game progress background and badge
           if (settings.showGameProgressInBattle && userProgressMap[gameId]) {
             const rec = userProgressMap[gameId];
-            row.style.background = `linear-gradient(to right, rgba(56, 144, 255, 0.12) ${rec.percent}%, transparent ${rec.percent}%)`;
+            row.style.background = `linear-gradient(to right, var(--p9n-link-soft) ${rec.percent}%, transparent ${rec.percent}%)`;
             if (!row.querySelector('.psnine-battle-progress-badge')) {
               const badge = doc.createElement('span');
               badge.className = 'psnine-battle-progress-badge';
               badge.setAttribute('data-psnine-next', 'true');
-              badge.style.cssText = 'display:inline-block;padding:1px 4px;font-size:10px;border-radius:3px;background:rgba(56, 144, 255, 0.2);color:#0056b3;margin-left:4px;';
+              badge.style.cssText = 'display:inline-block;padding:1px 4px;font-size:10px;border-radius:3px;background:var(--p9n-link-soft);color:var(--p9n-link);margin-left:4px;';
               badge.textContent = `我的进度:${rec.percent}%`;
               const battleTitleLink = row.querySelector('td.pd15 a[href*="/battle/"]') || gameLink;
               battleTitleLink.parentElement?.appendChild(badge);
@@ -420,7 +419,7 @@ export const mountBattle: Mount = async (ctx: Context) => {
             bellBtn.className = 'psnine-battle-bell-btn';
             bellBtn.setAttribute('data-psnine-next', 'true');
             bellBtn.setAttribute('data-game-id', gameId);
-            bellBtn.style.cssText = 'padding:2px 6px;font-size:11px;border-radius:4px;border:1px solid #ccc;cursor:pointer;margin-left:6px;user-select:none;transition:all 0.15s;';
+            bellBtn.style.cssText = 'padding:2px 6px;font-size:11px;border-radius:4px;border:1px solid var(--p9n-border);cursor:pointer;margin-left:6px;user-select:none;transition:all 0.15s;';
             bellBtn.onclick = (e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -447,45 +446,6 @@ export const mountBattle: Mount = async (ctx: Context) => {
       enhanceBattlePage();
       const unsub = onContent(() => enhanceBattlePage());
       unsubs.push(unsub);
-    }
-
-    // 2. Single Game Page (/psngame/\d+)
-    if (isGamePage) {
-      const gameId = extractGameIdFromUrl(url.pathname);
-      if (gameId) {
-        const injectGamePageBell = () => {
-          if (!isActive || doc.getElementById('psnine-game-page-battle-bell')) return;
-          const targetBar = doc.querySelector('.main > ul.inav, ul.inav, .box.pd10, h1');
-          if (!targetBar) return;
-
-          const bellBtn = doc.createElement('button');
-          bellBtn.type = 'button';
-          bellBtn.id = 'psnine-game-page-battle-bell';
-          bellBtn.className = 'psnine-battle-bell-btn';
-          bellBtn.setAttribute('data-psnine-next', 'true');
-          bellBtn.setAttribute('data-game-id', gameId);
-          bellBtn.style.cssText = 'display:inline-flex;align-items:center;gap:4px;padding:4px 10px;font-size:12px;font-weight:500;border-radius:4px;border:1px solid #ccc;cursor:pointer;margin-left:10px;vertical-align:middle;';
-
-          bellBtn.onclick = (e) => {
-            e.preventDefault();
-            toggleGameMonitoring(gameId, bellBtn).catch((err) => report('battle_game_bell_click', err));
-          };
-
-          if (targetBar.tagName === 'H1') {
-            targetBar.appendChild(bellBtn);
-          } else {
-            const li = doc.createElement('li');
-            li.setAttribute('data-psnine-next', 'true');
-            li.appendChild(bellBtn);
-            targetBar.appendChild(li);
-          }
-          updateAllBellIcons();
-        };
-
-        injectGamePageBell();
-        const unsub = onContent(() => injectGamePageBell());
-        unsubs.push(unsub);
-      }
     }
 
     updateNavRecruitNotification().catch((err) => report('battle_nav_init', err));

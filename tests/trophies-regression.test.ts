@@ -268,19 +268,20 @@ describe('Trophies Last-Mile Regression Suite', () => {
 
       const cleanup = await mountTrophies(ctx);
 
-      const batchBtn = document.getElementById('psnine-batch-load-all-tips-btn') as HTMLElement;
-      const stopBtn = document.getElementById('psnine-stop-batch-tips-btn') as HTMLElement;
+      const tipsToggle = document.getElementById('psnine-trophy-tips-trigger') as HTMLElement;
 
-      // Start batch queue
-      batchBtn.click();
-      expect(stopBtn.style.display).toBe('inline-block');
+      // Expand: starts the batch queue
+      tipsToggle.click();
+      expect(tipsToggle.getAttribute('aria-pressed')).toBe('true');
+      expect(tipsToggle.getAttribute('aria-busy')).toBe('true');
       expect(mockHttpDocument).toHaveBeenCalledTimes(1);
 
       // Row is currently in loading state
       expect(document.querySelector('.psnine-inline-tip-row')).not.toBeNull();
 
-      // Click Stop button to abort
-      stopBtn.click();
+      // Collapse while loading aborts the queue
+      tipsToggle.click();
+      expect(tipsToggle.getAttribute('aria-pressed')).toBe('false');
       await new Promise(r => setTimeout(r, 60));
 
       // 1. Still loading row is cleanly removed
@@ -689,7 +690,7 @@ describe('Trophies Last-Mile Regression Suite', () => {
       // Tab / focus moving outside dropdown silently closes menu and external Escape neither steals focus nor calls preventDefault
       trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
       expect(trigger.getAttribute('aria-expanded')).toBe('true');
-      const outsideBtn = document.getElementById('psnine-batch-load-all-tips-btn') as HTMLButtonElement;
+      const outsideBtn = document.getElementById('psnine-trophy-tips-trigger') as HTMLButtonElement;
       outsideBtn.focus();
       trigger.dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: outsideBtn }));
       expect(trigger.getAttribute('aria-expanded')).toBe('false');
@@ -952,6 +953,115 @@ describe('Trophies Last-Mile Regression Suite', () => {
       // Cleanup while filter is active must clear plugin trophy-status-filter reason on inline tips
       if (cleanup) cleanup();
       expect(isHiddenByReason(dlcTip, 'trophy-status-filter')).toBe(false);
+    });
+  });
+  describe('T12 Tips expand toggle follows the earned/unearned filter', () => {
+    const setupPage = () => {
+      document.cookie = '__Psnine_psnid=test_user; path=/';
+      const row = (n: number, earned: boolean) => `
+        <tr id="trophy-${n}" class="trophy">
+          <td class="t4"><a href="/trophy/4650700${n}"><img class="imgbg${earned ? ' earned' : ''}" src="t.png" /></a></td>
+          <td><p><a href="/trophy/4650700${n}">T${n}</a> <em class="alert-success"><b>1</b> Tips</em></p></td>
+          <td class="twoge">50.0%</td>
+          <td>${earned ? '<em class="alert-success pd5 r" tips="2024">05-18<br>10:00</em>' : ''}</td>
+        </tr>`;
+      document.body.innerHTML = `
+        <div class="min-inner"><div class="box pd10">
+          <ul class="dropmenu">
+            <li><em>排序</em></li>
+            <li class="dropdown"><a href="javascript:void(0)" class="arr-down">XMB</a><ul>
+              <li><a href="?psnid=test_user&ob=trophyid" class="current">XMB</a></li>
+              <li><a href="?psnid=test_user&ob=type">类型</a></li>
+              <li><a href="?psnid=test_user&ob=rarity">完美率</a></li>
+            </ul></li>
+            <li><button type="button" class="o_btn own">已获得</button><button type="button" class="o_btn unown">未获得</button></li>
+          </ul>
+          <table class="list"><tbody>${row(1, true)}${row(2, false)}${row(3, true)}</tbody></table>
+        </div></div>`;
+      // Native-like filter: toggles .select and hides rows by inline display
+      const filter = (which: 'own' | 'unown') => {
+        const btn = document.querySelector(`.${which}`)!;
+        const other = document.querySelector(`.${which === 'own' ? 'unown' : 'own'}`)!;
+        const on = !btn.classList.contains('select');
+        btn.classList.toggle('select', on);
+        other.classList.remove('select');
+        document.querySelectorAll<HTMLElement>('tr.trophy').forEach((r) => {
+          const earned = r.querySelector('.earned') !== null;
+          r.style.display = !on || (which === 'own' ? earned : !earned) ? '' : 'none';
+        });
+      };
+      document.querySelector('.own')!.addEventListener('click', () => filter('own'));
+      document.querySelector('.unown')!.addEventListener('click', () => filter('unown'));
+    };
+
+    const mount = async () => {
+      const requested: string[] = [];
+      const http = {
+        text: vi.fn(),
+        json: vi.fn(),
+        document: vi.fn().mockImplementation((url: string) => {
+          requested.push(url.match(/trophy\/(\d+)/)![1]);
+          return Promise.resolve(new DOMParser().parseFromString('<ul class="list"><li><div class="content">tip</div></li></ul>', 'text/html'));
+        })
+      };
+      const ctx = createContext({
+        document,
+        window: makeWindowWithUrl('https://psnine.com/psngame/46507?psnid=test_user'),
+        settings: { ...defaultSettings },
+        store: createStore(),
+        http
+      });
+      const cleanup = await mountTrophies(ctx);
+      return { requested, cleanup };
+    };
+
+    const settle = (ms: number) => new Promise(r => setTimeout(r, ms));
+    // Wait for the expand queue to drain (aria-busy flips back) instead of a fixed sleep
+    const drained = () => vi.waitFor(() => {
+      expect(document.getElementById('psnine-trophy-tips-trigger')!.getAttribute('aria-busy')).toBe('false');
+    }, { timeout: 3000, interval: 20 });
+    const tipVisible = (n: number) => {
+      const r = document.querySelector<HTMLElement>(`tr.psnine-inline-tip-row[data-for-trophy="4650700${n}"]`);
+      return r ? !r.hidden : null;
+    };
+
+    it('filter first, then expand: only loads Tips for trophies in the current filter, and stays expanded across filter switches', async () => {
+      setupPage();
+      const { requested, cleanup } = await mount();
+      const toggle = document.getElementById('psnine-trophy-tips-trigger') as HTMLElement;
+
+      (document.querySelector('.unown') as HTMLElement).click();
+      toggle.click();
+      await drained();
+      expect(requested).toEqual(['46507002']);
+      expect(tipVisible(2)).toBe(true);
+      expect(tipVisible(1)).toBeNull();
+
+      // Switch to earned while expanded: stays expanded and loads the newly visible ones
+      (document.querySelector('.own') as HTMLElement).click();
+      await vi.waitFor(() => expect(requested.length).toBe(3), { timeout: 3000, interval: 20 });
+      await drained();
+      expect(toggle.getAttribute('aria-pressed')).toBe('true');
+      expect(requested.sort()).toEqual(['46507001', '46507002', '46507003']);
+      expect(tipVisible(1)).toBe(true);
+      expect(tipVisible(3)).toBe(true);
+      expect(tipVisible(2)).toBe(false); // filtered out, not collapsed
+
+      // Back to unearned: its already-loaded Tips reappear without refetching
+      (document.querySelector('.unown') as HTMLElement).click();
+      await settle(50);
+      expect(tipVisible(2)).toBe(true);
+      expect(requested.length).toBe(3);
+
+      // Collapse hides everything; re-expand restores without refetching
+      toggle.click();
+      expect(tipVisible(2)).toBe(false);
+      toggle.click();
+      await settle(50);
+      expect(tipVisible(2)).toBe(true);
+      expect(requested.length).toBe(3);
+
+      if (cleanup) cleanup();
     });
   });
 });

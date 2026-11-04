@@ -110,24 +110,28 @@ test(`native trophy status controls and Tips share a row in ${scheme} and keep i
   await page.addScriptTag({ content:bundle });
   await expect(page.locator('#psnine-trophy-tips-toolbar')).toBeVisible();
   const tipsTrigger=page.locator('#psnine-trophy-tips-trigger');
-  const tipsMenu=page.locator('#psnine-trophy-tips-menu');
-  await expect(tipsMenu).toBeHidden();
+  // Tips is a single expand/collapse toggle; there is no popup menu any more.
+  await expect(page.locator('#psnine-trophy-tips-menu')).toHaveCount(0);
+  await expect(tipsTrigger).toHaveText('展开 Tips');
   const geometry=await page.locator('[data-psnine-trophy-sort-trigger], .o_btn.own, .o_btn.unown, #psnine-trophy-tips-trigger').evaluateAll(els=>els.map(el=>{const r=el.getBoundingClientRect(),s=getComputedStyle(el);return {center:r.y+r.height/2,left:r.left,right:r.right,height:r.height,color:s.color,border:s.borderTopColor,radius:s.borderRadius,fontSize:s.fontSize};}));
   expect(geometry).toHaveLength(4);
   for(const g of geometry){expect(Math.abs(g.center-geometry[0].center)).toBeLessThanOrEqual(3);expect(g.right).toBeLessThanOrEqual(390);expect(g.left).toBeGreaterThanOrEqual(0);}
-  for (let i=2; i<geometry.length; i++) expect(geometry[i].left-geometry[i-1].right).toBeGreaterThanOrEqual(4);
-  const native=geometry[1],tips=geometry[3];
-  for(const prop of ['border','radius','fontSize'] as const)expect(tips[prop]).toBe(native[prop]);
-  expect(Math.abs(tips.height-native.height)).toBeLessThanOrEqual(1);
+  // Earned/unearned sit inside one segmented capsule; Tips is a separate capsule of the same height.
+  expect(geometry[2].left-geometry[1].right).toBeGreaterThanOrEqual(0);
+  expect(geometry[3].left-geometry[2].right).toBeGreaterThanOrEqual(4);
+  const segment=await page.locator('li.psnine-trophy-filter-segment').evaluate(el=>{const r=el.getBoundingClientRect(),s=getComputedStyle(el);return {height:r.height,radius:s.borderRadius,border:s.borderTopColor,fontSize:getComputedStyle(el.querySelector('.o_btn')!).fontSize};});
+  const tips=geometry[3];
+  for(const prop of ['border','radius','fontSize'] as const)expect(tips[prop]).toBe(segment[prop]);
+  expect(Math.abs(tips.height-segment.height)).toBeLessThanOrEqual(1);
+  const idleBorder=await tipsTrigger.evaluate(el=>getComputedStyle(el).borderTopColor);
   await tipsTrigger.click();
-  await expect(tipsMenu).toBeVisible();
-  expect(await tipsMenu.evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth;})).toBe(true);
-  await page.keyboard.press('Escape');
-  await expect(tipsTrigger).toBeFocused();
-  await expect(tipsMenu).toBeHidden();
+  await expect(tipsTrigger).toHaveAttribute('aria-pressed','true');
+  await expect(tipsTrigger).toHaveText('收起 Tips');
+  // Pressed state must be visible, not just an attribute
+  expect(await tipsTrigger.evaluate(el=>getComputedStyle(el).borderTopColor)).not.toBe(idleBorder);
   await tipsTrigger.click();
-  await page.locator('#cup-1').click();
-  await expect(tipsMenu).toBeHidden();
+  await expect(tipsTrigger).toHaveAttribute('aria-pressed','false');
+  await expect(page.locator('tr.psnine-inline-tip-row:visible')).toHaveCount(0);
   // Switching to a longer local sort label must not push Tips onto another row.
   await page.locator('[data-psnine-trophy-sort-trigger]').click();
   await page.locator('[data-psnine-sort="time-desc"]').click();

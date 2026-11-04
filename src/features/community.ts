@@ -122,7 +122,7 @@ export function applyFloorNumbers(doc: Document, root: ParentNode): void {
       badge.className = 'psnine-floor-badge';
       badge.setAttribute('data-psnine-next', 'chrome');
       badge.textContent = `#${maxMainFloor}`;
-      badge.style.cssText = 'color:#95a5a6; font-size:12px; margin-right:6px; font-weight:600;';
+      badge.style.cssText = 'color:var(--p9n-muted); font-size:12px; margin-right:6px; font-weight:600;';
       meta.prepend(badge);
     }
 
@@ -141,7 +141,7 @@ export function applyFloorNumbers(doc: Document, root: ParentNode): void {
         subBadge.className = 'psnine-subfloor-badge';
         subBadge.setAttribute('data-psnine-next', 'chrome');
         subBadge.textContent = `#${subfloorNum}`;
-        subBadge.style.cssText = 'color:#bdc3c7; font-size:11px; margin-right:4px;';
+        subBadge.style.cssText = 'color:var(--p9n-muted); font-size:11px; margin-right:4px;';
         subMeta.prepend(subBadge);
       }
     });
@@ -243,7 +243,7 @@ export function applyReplyTraceback(ctx: Context, root: ParentNode): void {
           e.stopPropagation();
           matchedPost?.scrollIntoView({ behavior: 'smooth', block: 'center' });
           if (matchedPost instanceof HTMLElement) {
-            matchedPost.style.outline = '2px solid #3498db';
+            matchedPost.style.outline = '2px solid var(--p9n-link)';
             setTimeout(() => { matchedPost.style.outline = ''; }, 1500);
           }
         };
@@ -443,7 +443,7 @@ function createPlaceholder(type: 'tr' | 'li' | 'div', keyword: string, doc: Docu
     tr.setAttribute('data-psnine-next', 'chrome');
     const td = doc.createElement('td');
     td.setAttribute('colspan', '100%');
-    td.style.cssText = 'padding:6px 12px; background:rgba(0,0,0,0.03); color:#7f8c8d; font-size:12px;';
+    td.style.cssText = 'padding:6px 12px; background:var(--p9n-surface-alt); color:var(--p9n-muted); font-size:12px;';
     const btn = doc.createElement('button');
     btn.type = 'button';
     btn.style.cssText = 'background:none; border:none; color:inherit; font:inherit; cursor:pointer; text-decoration:underline;';
@@ -461,7 +461,7 @@ function createPlaceholder(type: 'tr' | 'li' | 'div', keyword: string, doc: Docu
   const el = doc.createElement(type);
   el.className = 'psnine-keyword-placeholder';
   el.setAttribute('data-psnine-next', 'chrome');
-  el.style.cssText = 'padding:8px 12px; margin:4px 0; background:rgba(0,0,0,0.04); font-size:12px; color:#7f8c8d; border-radius:4px;';
+  el.style.cssText = 'padding:8px 12px; margin:4px 0; background:var(--p9n-surface-alt); font-size:12px; color:var(--p9n-muted); border-radius:4px;';
   const btn = doc.createElement('button');
   btn.type = 'button';
   btn.style.cssText = 'background:none; border:none; color:inherit; font:inherit; cursor:pointer; text-decoration:underline;';
@@ -535,7 +535,7 @@ export function setupAvatarProfileCards(ctx: Context, root: ParentNode): () => v
     card.setAttribute('data-psnine-next', 'chrome');
     card.setAttribute('role', 'dialog');
     card.setAttribute('aria-label', `${username} 的个人资料`);
-    card.style.cssText = 'position:fixed; z-index:10000; background:#fff; color:#333; padding:12px; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,0.25); min-width:240px; max-width:320px; font-size:12px; border:1px solid #ddd;';
+    card.style.cssText = 'position:fixed; z-index:10000; background:var(--p9n-surface); color:var(--p9n-text); padding:12px; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,0.25); min-width:240px; max-width:320px; font-size:12px; border:1px solid var(--p9n-border);';
 
     // Keep card open when cursor moves into it
     card.addEventListener('mouseenter', cancelHide);
@@ -575,7 +575,7 @@ export function setupAvatarProfileCards(ctx: Context, root: ParentNode): () => v
       const closeBtn = doc.createElement('button');
       closeBtn.type = 'button';
       closeBtn.setAttribute('aria-label', '关闭资料卡片');
-      closeBtn.style.cssText = 'background:none; border:none; cursor:pointer; color:#95a5a6; font-size:16px; padding:0 4px;';
+      closeBtn.style.cssText = 'background:none; border:none; cursor:pointer; color:var(--p9n-muted); font-size:16px; padding:0 4px;';
       closeBtn.innerHTML = ICONS.close;
       closeBtn.addEventListener('click', closeActiveCard);
       userHeader.appendChild(closeBtn);
@@ -595,14 +595,14 @@ export function setupAvatarProfileCards(ctx: Context, root: ParentNode): () => v
 
         if (levelText) {
           const lvlSpan = doc.createElement('span');
-          lvlSpan.style.cssText = 'color:#f39c12; font-weight:bold; font-size:13px;';
+          lvlSpan.style.cssText = 'color:var(--p9n-warning-text); font-weight:bold; font-size:13px;';
           lvlSpan.textContent = levelText;
           statsRow.appendChild(lvlSpan);
         }
 
         if (rankText) {
           const rankSpan = doc.createElement('span');
-          rankSpan.style.cssText = 'color:#7f8c8d; font-size:11px;';
+          rankSpan.style.cssText = 'color:var(--p9n-muted); font-size:11px;';
           rankSpan.textContent = `排名 #${rankText}`;
           statsRow.appendChild(rankSpan);
         }
@@ -613,18 +613,18 @@ export function setupAvatarProfileCards(ctx: Context, root: ParentNode): () => v
       const psntrophyEl = userDoc.querySelector('.psntrophy');
       if (psntrophyEl) {
         const trophyRow = doc.createElement('div');
-        trophyRow.style.cssText = 'background:#f8f9fa; border-radius:4px; padding:4px 8px; margin:6px 0; font-size:11px; display:flex; gap:8px;';
+        trophyRow.style.cssText = 'background:var(--p9n-surface-alt); border-radius:4px; padding:4px 8px; margin:6px 0; font-size:11px; display:flex; gap:8px;';
         trophyRow.textContent = psntrophyEl.textContent?.trim() || '';
         card.appendChild(trophyRow);
       }
 
       // Link to profile
       const linkRow = doc.createElement('div');
-      linkRow.style.cssText = 'margin-top:8px; text-align:right; border-top:1px solid #f0f0f0; padding-top:6px;';
+      linkRow.style.cssText = 'margin-top:8px; text-align:right; border-top:1px solid var(--p9n-border); padding-top:6px;';
       const profileLink = doc.createElement('a');
       profileLink.href = profileUrl;
       profileLink.textContent = '访问个人主页 »';
-      profileLink.style.cssText = 'color:#3498db; font-size:11px; text-decoration:none; font-weight:600;';
+      profileLink.style.cssText = 'color:var(--p9n-link); font-size:11px; text-decoration:none; font-weight:600;';
       linkRow.appendChild(profileLink);
       card.appendChild(linkRow);
 
@@ -660,7 +660,7 @@ export function setupAvatarProfileCards(ctx: Context, root: ParentNode): () => v
     triggerBtn.className = 'psnine-profile-trigger';
     triggerBtn.setAttribute('data-psnine-next', 'chrome');
     triggerBtn.type = 'button';
-    triggerBtn.style.cssText = 'background:none; border:none; padding:0 2px; cursor:pointer; color:#7f8c8d; font-size:10px; vertical-align:middle;';
+    triggerBtn.style.cssText = 'background:none; border:none; padding:0 2px; cursor:pointer; color:var(--p9n-muted); font-size:10px; vertical-align:middle;';
     triggerBtn.setAttribute('title', '查看个人卡片');
     triggerBtn.setAttribute('aria-label', `查看 ${username} 资料卡片`);
     triggerBtn.textContent = '👤';
@@ -725,7 +725,7 @@ export function applyHotTags(ctx: Context, root: ParentNode): void {
         badge.className = 'psnine-hot-badge';
         badge.setAttribute('data-psnine-next', 'chrome');
         badge.textContent = 'HOT';
-        badge.style.cssText = 'background:#e74c3c; color:#fff; font-size:10px; font-weight:bold; padding:1px 4px; border-radius:3px; margin-left:6px; vertical-align:middle;';
+        badge.style.cssText = 'background:var(--p9n-danger); color:var(--p9n-on-accent); font-size:10px; font-weight:bold; padding:1px 4px; border-radius:3px; margin-left:6px; vertical-align:middle;';
         titleLink.after(badge);
       }
     }
@@ -755,13 +755,13 @@ export function applyQaStatusIcons(ctx: Context, root: ParentNode): void {
     wrapper.setAttribute('data-psnine-next', 'chrome');
 
     if (statusText?.includes('已解决') || node.querySelector('.fa-check-circle')) {
-      wrapper.innerHTML = `${ICONS.checkCircle} <span style="font-size:11px; color:#28a745; margin-right:4px;">已解决</span>`;
+      wrapper.innerHTML = `${ICONS.checkCircle} <span style="font-size:11px; color:var(--p9n-success); margin-right:4px;">已解决</span>`;
       titleLink.before(wrapper);
     } else if (statusText?.includes('解决中')) {
-      wrapper.innerHTML = `<span style="font-size:11px; color:#3498db; font-weight:600; margin-right:4px;">[解决中]</span>`;
+      wrapper.innerHTML = `<span style="font-size:11px; color:var(--p9n-link); font-weight:600; margin-right:4px;">[解决中]</span>`;
       titleLink.before(wrapper);
     } else if (statusText?.includes('未回答')) {
-      wrapper.innerHTML = `<span style="font-size:11px; color:#95a5a6; margin-right:4px;">[未回答]</span>`;
+      wrapper.innerHTML = `<span style="font-size:11px; color:var(--p9n-muted); margin-right:4px;">[未回答]</span>`;
       titleLink.before(wrapper);
     }
 
@@ -771,7 +771,7 @@ export function applyQaStatusIcons(ctx: Context, root: ParentNode): void {
       const match = rewardSpan.textContent.match(/悬赏(\d+)铜/);
       if (match && match[1] && !node.querySelector('.psnine-qa-bounty')) {
         const count = parseInt(match[1], 10);
-        let color = '#7f8c8d';
+        let color = 'var(--p9n-muted)';
         if (count > 30) color = '#f39c12'; // gold
         else if (count === 10) color = '#d35400'; // bronze
 

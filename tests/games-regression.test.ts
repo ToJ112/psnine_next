@@ -1072,7 +1072,7 @@ describe('Games Feature Module - Comprehensive Regressions', () => {
       if (cleanup) cleanup();
     });
 
-    it('mounts trophy to-mine button with neutral outline, no hardcoded #3890ff/#fff, and touch >= 44px', async () => {
+    it('does not mount the removed to-mine trophy button on bare game pages', async () => {
       document.body.innerHTML = `
         <div class="box pd10">
           <ul class="inav"><li>Game Nav</li></ul>
@@ -1093,25 +1093,9 @@ describe('Games Feature Module - Comprehensive Regressions', () => {
 
       const cleanup = await mountGames(ctx);
 
-      const toMineBtn = document.getElementById('psnine-to-mine-trophy-btn');
-      expect(toMineBtn).not.toBeNull();
-      expect(toMineBtn?.className).toContain('psnine-to-mine-btn');
-      expect(toMineBtn?.className).toContain('psnine-btn');
-
-      const style = toMineBtn?.getAttribute('style') || '';
-      // No hardcoded #3890ff background or #fff color
-      expect(style).not.toContain('#3890ff');
-      expect(style).not.toContain('background: #3890ff');
-      expect(style).not.toContain('background:#3890ff');
-
-      // Uses site tokens
-      expect(style).toContain('var(--p9n-surface)');
-      expect(style).toContain('var(--p9n-text)');
-      expect(style).toContain('var(--p9n-border)');
-
-      // Minimum touch target >= 44px
-      expect(style).toContain('min-height: 44px');
-      expect(toMineBtn?.textContent).toContain('切换至我的奖杯进度');
+      // Already on own progress: no redirect and no redundant header button
+      expect(ctx.window.location.replace).not.toHaveBeenCalled();
+      expect(document.getElementById('psnine-to-mine-trophy-btn')).toBeNull();
 
       if (cleanup) cleanup();
     });
@@ -1178,18 +1162,13 @@ describe('Games Feature Module - Comprehensive Regressions', () => {
       if (cleanup) cleanup();
     });
 
-    it('mounts game variants with token-based styles and touch >= 44px without hardcoded #0056b3', async () => {
+    it('mounts game variants as platform-chip capsules without hardcoded #0056b3', async () => {
       document.body.innerHTML = `
         <div class="main">
-          <ul class="inav"><li>Nav</li></ul>
-          <div class="box pd10">
-            <div class="min-inner">
-              <ul class="darklist">
-                <li><span class="r">PS5</span><a href="/game/555">Variant Title</a></li>
-              </ul>
-            </div>
-          </div>
+          <div class="box pd10"><h1>Game</h1></div>
+          <ul class="inav"><li><a href="/psngame/444/trophy">奖杯</a></li></ul>
         </div>
+        <div class="side"><a href="/game/9001">Game metadata</a></div>
       `;
 
       const mockHttp = {
@@ -1199,7 +1178,7 @@ describe('Games Feature Module - Comprehensive Regressions', () => {
             return Promise.resolve(new DOMParser().parseFromString(`
               <div class="min-inner">
                 <ul class="darklist">
-                  <li><span class="r">PS5</span><a href="/game/555">Variant Title</a></li>
+                  <li><span class="r">PS5</span><a href="/psngame/555">Variant Title</a></li>
                 </ul>
               </div>
             `, 'text/html'));
@@ -1225,17 +1204,15 @@ describe('Games Feature Module - Comprehensive Regressions', () => {
       await new Promise(r => setTimeout(r, 40));
 
       const variantsDiv = document.getElementById('psnine-game-variants-section');
-      if (variantsDiv) {
-        expect(variantsDiv.getAttribute('style') || '').toContain('var(--p9n-surface-alt)');
-        const variantA = variantsDiv.querySelector('.psnine-variant-btn');
-        if (variantA) {
-          const aStyle = variantA.getAttribute('style') || '';
-          expect(aStyle).not.toContain('#0056b3');
-          expect(aStyle).toContain('var(--p9n-surface)');
-          expect(aStyle).toContain('var(--p9n-link)');
-          expect(aStyle).toContain('min-height: 44px');
-        }
-      }
+      expect(variantsDiv).not.toBeNull();
+      expect(variantsDiv!.querySelector('.psnine-game-variants-label')?.textContent).toBe('其他版本');
+      const variantA = variantsDiv!.querySelector('.psnine-variant-btn');
+      expect(variantA).not.toBeNull();
+      expect(variantA!.getAttribute('style') || '').not.toContain('#0056b3');
+      expect(variantA!.querySelector('.psnine-variant-platform')?.textContent).toBe('PS5');
+      expect(variantA!.querySelector('.psnine-variant-title')?.textContent).toBe('Variant Title');
+      expect(variantA!.querySelector('.psnine-variant-id')?.textContent).toBe('#555');
+      expect(variantA!.getAttribute('title')).toBe('[PS5] Variant Title (#555)');
 
       if (cleanup) cleanup();
     });
@@ -1399,16 +1376,14 @@ describe('Games Feature Module - Comprehensive Regressions', () => {
       expect(btnNon100.textContent).toBe("非 100%");
       expect(btn100.textContent).toBe("100%");
 
-      // Compact segmented control dimensions and track container
-      expect(filter!.style.display).toBe("inline-flex");
-      expect(filter!.style.borderRadius).toBe("16px");
-
+      // Look comes from the shared segmented-capsule rule in CORE_STYLES (no inline styles)
+      expect(filter!.getAttribute('style')).toBeNull();
       buttons.forEach(btn => {
-        expect(btn.style.height).toBe("28px");
-        expect(btn.style.padding).toMatch(/0p?x?\s*12px/);
-        expect(btn.style.fontSize).toBe("12px");
-        expect(btn.style.borderRadius).toBe("14px");
+        expect(btn.className).toContain('psnine-progress-filter-btn');
+        expect(btn.getAttribute('style')).toBeNull();
       });
+      expect(CORE_STYLES).toMatch(/#psnine-game-progress-filter,\s*ul\.dropmenu\.psnine-trophy-nav-dropmenu > li\.psnine-trophy-filter-segment \{[^}]*border-radius: 16px/);
+      expect(CORE_STYLES).toMatch(/\.psnine-progress-filter-btn,\s*[^{]*\{[^}]*height: 28px[^}]*padding: 0 12px[^}]*font-size: 12px[^}]*border-radius: 14px/);
 
       // Initially "全部" active
       expect(btnAll.getAttribute("aria-pressed")).toBe("true");
@@ -1485,6 +1460,70 @@ describe('Games Feature Module - Comprehensive Regressions', () => {
       expect(document.getElementById("psnine-game-progress-filter")).toBeNull();
       expect(r100.hidden).toBe(false);
       expect(dynamicRow100.hidden).toBe(false);
+    });
+  });
+
+  describe('9. P15 Game Section Nav Collapse', () => {
+    const navHtml = `
+      <div class="main">
+        <div class="box pd10"><h1>Game</h1></div>
+        <ul class="inav">
+          <li class="current"><a href="/psngame/46507/trophy"><span class="icon icon-trophy" style="font-size:32px"></span>奖杯</a></li>
+          <li><a href="/psngame/46507/rank"><span class="icon icon-rank"></span>排行</a></li>
+          <li><a href="/psngame/46507/comment"><span class="icon icon-comment"></span>评论</a></li>
+        </ul>
+      </div>
+    `;
+    const makeCtx = (collapseGameNav: boolean): Context => ({
+      document,
+      window,
+      url: new URL('https://psnine.com/psngame/46507/comment'),
+      settings: { ...defaultSettings, collapseGameNav, referGameVariants: false, redirectToMine: false },
+      store: { get: vi.fn().mockResolvedValue(null), set: vi.fn().mockResolvedValue(undefined), remove: vi.fn() },
+      http: { text: vi.fn(), document: vi.fn(), json: vi.fn() },
+      userId: 'alice',
+      onContent: vi.fn().mockReturnValue(() => {}),
+      report: vi.fn()
+    });
+
+    it('collapses the nav by default, shows the current section, toggles, and restores on cleanup', async () => {
+      document.body.innerHTML = navHtml;
+      const nav = document.querySelector('ul.inav') as HTMLElement;
+      const cleanup = await mountGames(makeCtx(true));
+
+      const toggle = document.getElementById('psnine-game-nav-toggle') as HTMLButtonElement;
+      expect(toggle).not.toBeNull();
+      expect(toggle.nextElementSibling).toBe(nav);
+      expect(toggle.getAttribute('aria-expanded')).toBe('false');
+      expect(toggle.querySelector('.psnine-game-nav-current')?.textContent).toBe('奖杯');
+      expect(toggle.querySelector('.psnine-game-nav-current .icon-trophy')?.getAttribute('style')).toBeNull();
+      expect(nav.hidden).toBe(true);
+
+      toggle.click();
+      expect(toggle.getAttribute('aria-expanded')).toBe('true');
+      expect(toggle.querySelector('.psnine-game-nav-hint')?.textContent).toBe('收起');
+      expect(nav.hidden).toBe(false);
+
+      toggle.click();
+      expect(nav.hidden).toBe(true);
+
+      // Idempotent: a second mount does not add another toggle
+      const cleanup2 = await mountGames(makeCtx(true));
+      expect(document.querySelectorAll('#psnine-game-nav-toggle').length).toBe(1);
+      if (cleanup2) cleanup2();
+
+      if (cleanup) cleanup();
+      expect(document.getElementById('psnine-game-nav-toggle')).toBeNull();
+      expect(nav.hidden).toBe(false);
+      expect(nav.style.display).not.toBe('none');
+    });
+
+    it('leaves the native nav untouched when the setting is off', async () => {
+      document.body.innerHTML = navHtml;
+      const cleanup = await mountGames(makeCtx(false));
+      expect(document.getElementById('psnine-game-nav-toggle')).toBeNull();
+      expect((document.querySelector('ul.inav') as HTMLElement).hidden).toBe(false);
+      if (cleanup) cleanup();
     });
   });
 });

@@ -425,6 +425,7 @@ export function validateSettings(raw: unknown): Settings {
   s.BattleInfoUpdateInterval = Math.max(60000, Math.floor(toNum(r.BattleInfoUpdateInterval, defaults.BattleInfoUpdateInterval)));
 
   s.redirectToMine = toBool(r.redirectToMine, defaults.redirectToMine);
+  s.collapseGameNav = toBool(r.collapseGameNav, defaults.collapseGameNav);
   s.currencyConversion = toBool(r.currencyConversion, defaults.currencyConversion);
 
   if (r.exchangeRates && typeof r.exchangeRates === 'object') {

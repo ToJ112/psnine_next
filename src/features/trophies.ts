@@ -13,7 +13,7 @@
  * T09: 原序/类型/稀有度排序 (保留原生XMB/类型/完美率链接，菜单内补充反向排序与恢复页面初始顺序，DLC 分组不混排)
  * T10: 获得状态筛选 (全部/已获/未获，setHidden多原因隔离，保留内联 Tips 归属)
  * T11: 内联展开单个 Tips (http.document安全DOM保留链接/图片/剧透刮刮条，黑名单大小写忽略，屏蔽词正则与可揭示button，重试与setHidden)
- * T12: 批量全部/未获 Tips (支持全展与仅未获、公开页禁用未获并提示、AbortController支持随时打断无假错误)
+ * T12: 批量 Tips 展开开关 (单一展开/收起，跟随原生已获得/未获得筛选，切换筛选保持展开并补载，收起即 AbortController 打断无假错误)
  * T13: Tips 顶数排序 (仅限直接子li、持久orig-seq恢复、onContent动态追加)
  * T14: Tips 输入框缩放 (垂直resize、移动端16px防缩放)
  * C19: 攻略中我的奖杯 (slice(0,-3)提取gameId、knownSet+earnedSet准确区分未获与未知、同段多杯独立徽章)
@@ -900,10 +900,82 @@ export const mountTrophies: Mount = async (ctx: Context) => {
       let currentSortMode: TrophySortMode | null = null;
       let cleanupNativeSortDropdown: (() => void) | null = null;
       let cleanupNativeFilterSync: (() => void) | null = null;
-      let closeTipsMenu: (() => void) | null = null;
       let closeNativeSortMenu: (() => void) | null = null;
       let cleanupTipsToolbar: (() => void) | null = null;
-      let isBatchRunning = false;
+      let tipsExpanded = false;
+      let batchRerunRequested = false;
+
+      const getTipRow = (t: TrophyItem) =>
+        t.table.querySelector<HTMLElement>(`tr.psnine-inline-tip-row[data-for-trophy="${t.trophyId}"]`);
+
+      const updateTipsTrigger = () => {
+        const trigger = doc.getElementById('psnine-trophy-tips-trigger');
+        if (!trigger) return;
+        trigger.textContent = tipsExpanded ? '收起 Tips' : '展开 Tips';
+        trigger.setAttribute('aria-pressed', tipsExpanded ? 'true' : 'false');
+        const loading = batchAbortController !== null;
+        trigger.setAttribute('aria-busy', loading ? 'true' : 'false');
+        trigger.setAttribute('title', tipsExpanded
+          ? (loading ? '正在加载当前筛选下的 Tips，点击收起并停止' : '点击收起所有 Tips')
+          : '展开当前筛选下所有奖杯的 Tips');
+      };
+
+      const sleepBatch = (signal: AbortSignal, ms: number) => new Promise<boolean>((resolve) => {
+        if (signal.aborted) return resolve(false);
+        const timer = setTimeout(() => {
+          signal.removeEventListener('abort', onAbort);
+          resolve(true);
+        }, ms);
+        const onAbort = () => {
+          clearTimeout(timer);
+          resolve(false);
+        };
+        signal.addEventListener('abort', onAbort, { once: true });
+      });
+
+      // T12 Batch Tips Loading: loads Tips for every trophy visible under the current filter.
+      // Re-runs when the filter changes mid-load so newly revealed trophies are covered too.
+      const runExpandQueue = async () => {
+        if (!tipsExpanded || !isActive) return;
+        if (batchAbortController) {
+          // A pass is running (or still unwinding after a collapse): run again once it exits.
+          batchRerunRequested = true;
+          updateTipsTrigger();
+          return;
+        }
+        // Collapsing and unmounting both abort this controller, so the signal is the only stop condition.
+        const controller = new AbortController();
+        batchAbortController = controller;
+        batchRerunRequested = false;
+        updateTipsTrigger();
+
+        try {
+          for (const t of currentTrophies) {
+            if (controller.signal.aborted) break;
+            // Re-checked per item: the filter may change between fetches.
+            if (t.tipsCount === 0 || getTipRow(t) || isTrophyRowFilteredOut(t)) continue;
+            await toggleInlineTips(t, controller.signal);
+            if (!(await sleepBatch(controller.signal, 300))) break;
+          }
+        } finally {
+          batchAbortController = null;
+          updateTipsTrigger();
+          if (batchRerunRequested) runExpandQueue();
+        }
+      };
+
+      const setTipsExpanded = (expanded: boolean) => {
+        tipsExpanded = expanded;
+        doc.querySelectorAll<HTMLElement>('tr.psnine-inline-tip-row').forEach((tipRow) => {
+          setHidden(tipRow, 'inline-tip-toggle', !expanded);
+        });
+        if (expanded) {
+          runExpandQueue();
+        } else {
+          batchAbortController?.abort();
+          updateTipsTrigger();
+        }
+      };
 
       const applyActiveSortToTables = (mode: TrophySortMode) => {
         doc.querySelectorAll('table.list').forEach((tbl) => {
@@ -990,7 +1062,6 @@ export const mountTrophies: Mount = async (ctx: Context) => {
         const setDropdownOpen = (open: boolean, restoreFocus = false) => {
           isDropdownOpen = open;
           if (open) {
-            closeTipsMenu?.();
             dropdownLi.classList.add('psnine-dropdown-open', 'hover');
             dropdownLi.setAttribute('data-psnine-dropdown-open', 'true');
             dropdownLi.setAttribute('data-psnine-dropdown-state', 'open');
@@ -1251,6 +1322,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
       const syncNativeFilter = () => {
         if (!isActive) return;
         const nativeMode = getNativeFilterMode();
+        let hasPendingTips = false;
 
         currentTrophies.forEach((t) => {
           const isEarned = isTrophyRowEarned(t);
@@ -1271,11 +1343,14 @@ export const mountTrophies: Mount = async (ctx: Context) => {
           }
 
           const rowIsHidden = shouldHideByNativeMode || t.row.style.display === 'none' || t.row.hidden;
-          const tipRow = t.table.querySelector<HTMLElement>(`tr.psnine-inline-tip-row[data-for-trophy="${t.trophyId}"]`);
+          const tipRow = getTipRow(t);
           if (tipRow && isHiddenByReason(tipRow, 'trophy-status-filter') !== rowIsHidden) {
             setHidden(tipRow, 'trophy-status-filter', rowIsHidden);
           }
+          if (!tipRow && !rowIsHidden && t.tipsCount > 0) hasPendingTips = true;
         });
+
+        if (tipsExpanded && hasPendingTips) runExpandQueue();
       };
 
       const onDocNativeFilterClick = (e: MouseEvent) => {
@@ -1304,6 +1379,12 @@ export const mountTrophies: Mount = async (ctx: Context) => {
           nativeFilterClassObserver = null;
           observedOwnBtn = ownBtn;
           observedUnownBtn = unownBtn;
+          // Group native earned/unearned buttons into one segmented capsule (CSS scoped to the nav dropmenu class)
+          [ownBtn, unownBtn].forEach((btn) => {
+            if (btn?.classList.contains('o_btn') && btn.parentElement?.tagName === 'LI') {
+              btn.parentElement.classList.add('psnine-trophy-filter-segment');
+            }
+          });
 
           if (ownBtn || unownBtn) {
             nativeFilterClassObserver = new MutationObserver(() => {
@@ -1364,7 +1445,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
             tipsToolbar.id = 'psnine-trophy-tips-toolbar';
             tipsToolbar.setAttribute('data-psnine-next', 'true');
             tipsToolbar.className = 'psnine-trophy-toolbar';
-            tipsToolbar.style.cssText = 'position:relative;float:none;margin:0 0 0 10px;height:36px;display:inline-flex;align-items:center;vertical-align:middle;flex-shrink:0;';
+            tipsToolbar.style.cssText = 'position:relative;float:none;margin:0 0 0 4px;height:36px;display:inline-flex;align-items:center;vertical-align:middle;flex-shrink:0;';
             confirmedUl.appendChild(tipsToolbar);
           } else {
             tipsToolbar = doc.createElement('div');
@@ -1384,191 +1465,29 @@ export const mountTrophies: Mount = async (ctx: Context) => {
         }
 
         if (!tipsToolbar.hasChildNodes()) {
-          tipsToolbar.innerHTML = `
-            <button type="button" id="psnine-trophy-tips-trigger" class="o_btn psnine-trophy-tips-btn" data-psnine-next="true" aria-expanded="false" aria-controls="psnine-trophy-tips-menu" aria-haspopup="menu" style="display:inline-block;margin:0;width:52px;min-height:24px;height:24px;padding:2px 4px;font-size:12px;line-height:17px;border-radius:15px;border:1px solid darkslategray;background:var(--p9n-surface,#fff);color:var(--p9n-text,#333);cursor:pointer;touch-action:manipulation;box-sizing:border-box;outline:none;text-align:center;">Tips ▾</button>
-            <div id="psnine-trophy-tips-menu" class="psnine-trophy-action-group psnine-trophy-menu" data-psnine-next="true" hidden style="position:absolute;top:100%;left:0;z-index:998;margin-top:4px;padding:6px;background:var(--p9n-surface,#fff);border:1px solid var(--p9n-border,#ccd6dd);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);display:none;flex-direction:column;gap:6px;white-space:nowrap;max-width:calc(100vw - 24px);box-sizing:border-box;">
-              <button type="button" id="psnine-batch-load-all-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true" style="display:inline-flex;align-items:center;justify-content:center;padding:4px 12px;font-size:12px;line-height:18px;min-height:28px;border-radius:14px;border:1px solid var(--p9n-border,#ccd6dd);background:var(--p9n-surface,#fff);color:var(--p9n-text,#333);cursor:pointer;white-space:nowrap;box-sizing:border-box;">
-                展开所有Tips
-              </button>
-              <button type="button" id="psnine-batch-load-unearned-tips-btn" class="psnine-trophy-pill-btn" data-psnine-next="true"${!isPersonalPage ? ' disabled title="公开页面无法确认获得状态，请访问个人奖杯页使用此功能"' : ''} style="display:inline-flex;align-items:center;justify-content:center;padding:4px 12px;font-size:12px;line-height:18px;min-height:28px;border-radius:14px;border:1px solid var(--p9n-border,#ccd6dd);background:var(--p9n-surface,#fff);color:var(--p9n-text,#333);cursor:pointer;white-space:nowrap;box-sizing:border-box;">
-                展开未获Tips
-              </button>
-              <button type="button" id="psnine-stop-batch-tips-btn" class="psnine-trophy-pill-btn danger" data-psnine-next="true" style="display:none;align-items:center;justify-content:center;padding:4px 12px;font-size:12px;line-height:18px;min-height:28px;border-radius:14px;border:1px solid #e74c3c;background:var(--p9n-surface,#fff);color:#e74c3c;cursor:pointer;white-space:nowrap;box-sizing:border-box;">
-                停止加载
-              </button>
-            </div>
-          `;
-
-          const trigger = doc.getElementById('psnine-trophy-tips-trigger') as HTMLButtonElement | null;
-          const menu = doc.getElementById('psnine-trophy-tips-menu') as HTMLElement | null;
-
-          let isMenuOpen = false;
-          const setMenuOpen = (open: boolean, restoreFocus = false) => {
-            isMenuOpen = open;
-            if (trigger && menu) {
-              if (open) {
-                closeNativeSortMenu?.();
-                trigger.setAttribute('aria-expanded', 'true');
-                menu.removeAttribute('hidden');
-                menu.style.display = 'flex';
-
-                // Reset position before measuring to avoid alternating overflow
-                menu.style.left = '0';
-                menu.style.right = 'auto';
-
-                const rect = menu.getBoundingClientRect();
-                if (rect.right > (win.innerWidth || 390) - 8) {
-                  menu.style.left = 'auto';
-                  menu.style.right = '0';
-                }
-              } else {
-                trigger.setAttribute('aria-expanded', 'false');
-                menu.setAttribute('hidden', '');
-                menu.style.display = 'none';
-                if (restoreFocus) {
-                  trigger.focus();
-                }
-              }
-            }
-          };
-
-          closeTipsMenu = () => setMenuOpen(false, false);
+          // T12: single expand/collapse toggle. Expanded state survives earned/unearned switches and
+          // only loads Tips for trophies visible under the current filter.
+          const trigger = doc.createElement('button');
+          trigger.type = 'button';
+          trigger.id = 'psnine-trophy-tips-trigger';
+          trigger.className = 'o_btn psnine-trophy-tips-btn';
+          trigger.setAttribute('data-psnine-next', 'true');
+          trigger.setAttribute('aria-pressed', 'false');
+          tipsToolbar.appendChild(trigger);
+          updateTipsTrigger();
 
           const onTriggerClick = (e: MouseEvent) => {
             e.preventDefault();
             e.stopPropagation();
-            setMenuOpen(!isMenuOpen);
+            closeNativeSortMenu?.();
+            setTipsExpanded(!tipsExpanded);
           };
-
-          const onTriggerKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              e.stopPropagation();
-              setMenuOpen(!isMenuOpen);
-            } else if (e.key === 'ArrowDown') {
-              e.preventDefault();
-              e.stopPropagation();
-              setMenuOpen(true);
-              const firstBtn = menu?.querySelector('button:not([disabled])') as HTMLElement | null;
-              firstBtn?.focus();
-            } else if (e.key === 'Escape') {
-              if (isMenuOpen) {
-                e.preventDefault();
-                e.stopPropagation();
-                setMenuOpen(false, true);
-              }
-            }
-          };
-
-          const onMenuKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape' && isMenuOpen) {
-              e.preventDefault();
-              e.stopPropagation();
-              setMenuOpen(false, true);
-            }
-          };
-
-          const onDocClick = (e: MouseEvent) => {
-            if (!isMenuOpen) return;
-            const target = e.target as Node | null;
-            if (target && !tipsToolbar?.contains(target)) {
-              setMenuOpen(false, false);
-            }
-          };
-
-          const onDocKeyDownForTips = (e: KeyboardEvent) => {
-            if (e.key === 'Escape' && isMenuOpen) {
-              e.preventDefault();
-              e.stopPropagation();
-              setMenuOpen(false, true);
-            }
-          };
-
-          const onToolbarFocusOut = (e: FocusEvent) => {
-            const nextTarget = e.relatedTarget as Node | null;
-            if (nextTarget && !tipsToolbar?.contains(nextTarget)) {
-              setMenuOpen(false, false);
-            }
-          };
-
-          trigger?.addEventListener('click', onTriggerClick);
-          trigger?.addEventListener('keydown', onTriggerKeyDown);
-          menu?.addEventListener('keydown', onMenuKeyDown);
-          doc.addEventListener('click', onDocClick);
-          doc.addEventListener('keydown', onDocKeyDownForTips);
-          tipsToolbar.addEventListener('focusout', onToolbarFocusOut);
+          trigger.addEventListener('click', onTriggerClick);
 
           cleanupTipsToolbar = () => {
-            trigger?.removeEventListener('click', onTriggerClick);
-            trigger?.removeEventListener('keydown', onTriggerKeyDown);
-            menu?.removeEventListener('keydown', onMenuKeyDown);
-            doc.removeEventListener('click', onDocClick);
-            doc.removeEventListener('keydown', onDocKeyDownForTips);
-            tipsToolbar?.removeEventListener('focusout', onToolbarFocusOut);
+            trigger.removeEventListener('click', onTriggerClick);
             clearTrophyRowHighlight();
           };
-
-          // T12 Batch Tips Loading
-          const runBatchQueue = async (unearnedOnly: boolean) => {
-            if (isBatchRunning) return;
-            isBatchRunning = true;
-            batchAbortController = new AbortController();
-
-            const batchAllBtn = doc.getElementById('psnine-batch-load-all-tips-btn');
-            const batchUnearnedBtn = doc.getElementById('psnine-batch-load-unearned-tips-btn');
-            const stopBtn = doc.getElementById('psnine-stop-batch-tips-btn');
-
-            if (batchAllBtn) batchAllBtn.style.display = 'none';
-            if (batchUnearnedBtn) batchUnearnedBtn.style.display = 'none';
-            if (stopBtn) stopBtn.style.display = 'inline-block';
-
-            const targets = currentTrophies.filter(t => t.tipsCount > 0 && (!unearnedOnly || t.status === 'unearned'));
-            for (const t of targets) {
-              if (!isActive || batchAbortController.signal.aborted) break;
-              const existing = t.table.querySelector(`tr.psnine-inline-tip-row[data-for-trophy="${t.trophyId}"]`);
-              if (!existing) {
-                await toggleInlineTips(t, batchAbortController.signal);
-                if (!isActive || batchAbortController.signal.aborted) break;
-                try {
-                  await new Promise<void>((resolve, reject) => {
-                    let timer: any = null;
-                    const onAbort = () => {
-                      if (timer) clearTimeout(timer);
-                      batchAbortController?.signal.removeEventListener('abort', onAbort);
-                      reject(new Error('aborted'));
-                    };
-                    timer = setTimeout(() => {
-                      batchAbortController?.signal.removeEventListener('abort', onAbort);
-                      resolve();
-                    }, 300);
-                    batchAbortController?.signal.addEventListener('abort', onAbort, { once: true });
-                  });
-                } catch {
-                  break;
-                }
-              }
-            }
-
-            if (stopBtn) stopBtn.style.display = 'none';
-            if (batchAllBtn) batchAllBtn.style.display = 'inline-block';
-            if (batchUnearnedBtn) batchUnearnedBtn.style.display = 'inline-block';
-            isBatchRunning = false;
-          };
-
-          const batchAllBtn = doc.getElementById('psnine-batch-load-all-tips-btn');
-          if (batchAllBtn) batchAllBtn.onclick = () => runBatchQueue(false);
-          const batchUnearnedBtn = doc.getElementById('psnine-batch-load-unearned-tips-btn');
-          if (batchUnearnedBtn && isPersonalPage) batchUnearnedBtn.onclick = () => runBatchQueue(true);
-
-          const stopBtn = doc.getElementById('psnine-stop-batch-tips-btn');
-          if (stopBtn) {
-            stopBtn.onclick = () => {
-              batchAbortController?.abort();
-              stopBtn.style.display = 'none';
-              if (batchAllBtn) batchAllBtn.style.display = 'inline-block';
-              if (batchUnearnedBtn) batchUnearnedBtn.style.display = 'inline-block';
-            };
-          }
         } else if (currentSortMode !== null) {
           applyActiveSortToTables(currentSortMode);
         }
@@ -1603,7 +1522,7 @@ export const mountTrophies: Mount = async (ctx: Context) => {
 
       // T11 Safe DOM Inline Tips Loader
       const toggleInlineTips = async (t: TrophyItem, customSignal?: AbortSignal) => {
-        const existingTipRow = t.table.querySelector(`tr.psnine-inline-tip-row[data-for-trophy="${t.trophyId}"]`) as HTMLElement | null;
+        const existingTipRow = getTipRow(t);
         if (existingTipRow) {
           if (activeManualControllers.has(t.trophyId) && !customSignal) {
             activeManualControllers.get(t.trophyId)!.abort();

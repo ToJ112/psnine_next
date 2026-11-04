@@ -259,7 +259,7 @@ export function setupAutoPagination(ctx: Context): Cleanup {
   const controlBar = doc.createElement('div');
   controlBar.id = 'psnine-pagination-indicator';
   controlBar.setAttribute('data-psnine-next', 'chrome');
-  controlBar.style.cssText = 'text-align:center; padding:16px; font-size:13px; color:#7f8c8d; display:none; user-select:none;';
+  controlBar.style.cssText = 'text-align:center; padding:16px; font-size:13px; color:var(--p9n-muted); display:none; user-select:none;';
 
   const statusText = doc.createElement('span');
   statusText.textContent = '正在加载下一页...';
@@ -292,7 +292,7 @@ export function setupAutoPagination(ctx: Context): Cleanup {
     // Check if auto-pagination budget is reached; allow manual continue
     if (maxPages > 0 && pagesLoaded >= maxPages) {
       controlBar.style.display = 'block';
-      statusText.innerHTML = `<span style="cursor:pointer; color:#3498db; text-decoration:underline;">已加载预设 ${pagesLoaded} 页，点击继续加载下一页</span>`;
+      statusText.innerHTML = `<span style="cursor:pointer; color:var(--p9n-link); text-decoration:underline;">已加载预设 ${pagesLoaded} 页，点击继续加载下一页</span>`;
       statusText.onclick = () => {
         statusText.onclick = null;
         pagesLoaded = 0; // Reset batch counter to allow another round
@@ -369,7 +369,7 @@ export function setupAutoPagination(ctx: Context): Cleanup {
         controlBar.style.display = 'none';
       } else if (maxPages > 0 && pagesLoaded >= maxPages) {
         // Budget reached: show manual continue prompt
-        statusText.innerHTML = `<span style="cursor:pointer; color:#3498db; text-decoration:underline;">已加载预设 ${pagesLoaded} 页，点击继续加载下一页</span>`;
+        statusText.innerHTML = `<span style="cursor:pointer; color:var(--p9n-link); text-decoration:underline;">已加载预设 ${pagesLoaded} 页，点击继续加载下一页</span>`;
         statusText.onclick = () => {
           statusText.onclick = null;
           pagesLoaded = 0;
@@ -380,7 +380,7 @@ export function setupAutoPagination(ctx: Context): Cleanup {
       }
     } catch (err: any) {
       if (err?.name === 'AbortError' || thisCtrl.signal.aborted) return;
-      statusText.innerHTML = `<span style="color:#e74c3c; cursor:pointer;">加载失败，点击重试</span>`;
+      statusText.innerHTML = `<span style="color:var(--p9n-danger); cursor:pointer;">加载失败，点击重试</span>`;
       statusText.onclick = () => {
         statusText.onclick = null;
         loadNextPage();

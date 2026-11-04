@@ -347,6 +347,7 @@ export function mountSettingsUI(ctx: Context): void {
     // SECTION 5: 游戏、奖杯与约战
     const s5 = createSection('5. 游戏、奖杯与约战', false);
     s5.body.appendChild(createSwitch('redirectToMine', '游戏页自动跳转至我的奖杯'));
+    s5.body.appendChild(createSwitch('collapseGameNav', '游戏页默认折叠栏目导航'));
     s5.body.appendChild(createNumberInput('filterNonePlatinumAlpha', '无白金游戏卡片透明度 (0~1)', 0, 1, 0.05));
     s5.body.appendChild(createSwitch('platinumGlow', '白金奖杯发光光晕特效'));
     s5.body.appendChild(createSwitch('referGameVariants', '关联游戏多版本信息'));

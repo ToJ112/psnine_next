@@ -392,7 +392,7 @@ export function renderScoreDistributionSvg(
 ): string {
   const { distribution, maxScoreBucket, average, stdDev, scoredCount } = stats;
   if (scoredCount === 0) {
-    return '<div class="psnine-empty-chart" style="padding:10px;color:#888;">暂无有效评分样本</div>';
+    return '<div class="psnine-empty-chart" style="padding:10px;color:var(--p9n-muted);">暂无有效评分样本</div>';
   }
 
   const svgWidth = 460;
@@ -412,12 +412,12 @@ export function renderScoreDistributionSvg(
     const y = margin.top + innerHeight - barHeight;
     const isMax = s === maxScoreBucket;
     const isSelected = activeFilterScore === s;
-    const color = isSelected ? '#ff9800' : isMax ? '#da314b' : '#3890ff';
+    const color = isSelected ? '#ff9800' : isMax ? '#da314b' : 'var(--p9n-link)';
     const opacity = activeFilterScore === null || isSelected ? '1' : '0.35';
 
     barsHtml += `
       <g class="score-bar-group" data-score="${s}" style="cursor:pointer;" tabindex="0" role="button" aria-label="${s}分: ${count}人">
-        <rect x="${x}" y="${y}" width="${barWidth - 8}" height="${Math.max(2, barHeight)}" rx="2" fill="${color}" fill-opacity="${opacity}">
+        <rect x="${x}" y="${y}" width="${barWidth - 8}" height="${Math.max(2, barHeight)}" rx="2" style="fill:${color}" fill-opacity="${opacity}">
           <title>${s}分: ${count}人 (${((count / scoredCount) * 100).toFixed(1)}%)</title>
         </rect>
         <text x="${x + (barWidth - 8) / 2}" y="${margin.top + innerHeight + 16}" text-anchor="middle" font-size="11" fill="currentColor">${s}</text>
@@ -448,7 +448,7 @@ export function renderScoreDistributionSvg(
         }
       }
       if (points.length > 1) {
-        normalCurveHtml = `<polyline points="${points.join(' ')}" fill="none" stroke="#4caf50" stroke-width="2" stroke-dasharray="4,2" />`;
+        normalCurveHtml = `<polyline points="${points.join(' ')}" fill="none" style="stroke:var(--p9n-success)" stroke-width="2" stroke-dasharray="4,2" />`;
       }
     }
   }
@@ -467,7 +467,7 @@ export function renderScoreDistributionSvg(
 export function renderTrendSvg(stats: ReviewStats): string {
   const { cumulativeTrend, missingTimeCount } = stats;
   if (cumulativeTrend.length < 2) {
-    return '<div class="psnine-empty-chart" style="padding:10px;color:#888;">需至少 2 条有效时间样本生成走势图</div>';
+    return '<div class="psnine-empty-chart" style="padding:10px;color:var(--p9n-muted);">需至少 2 条有效时间样本生成走势图</div>';
   }
 
   const svgWidth = 460;
@@ -505,34 +505,34 @@ export function renderTrendSvg(stats: ReviewStats): string {
       <text x="${margin.left - 5}" y="${margin.top + innerHeight}" text-anchor="end" font-size="10" fill="currentColor">${minAvg}</text>
       <text x="${margin.left}" y="${margin.top + innerHeight + 16}" text-anchor="start" font-size="10" fill="currentColor">${firstDate}</text>
       <text x="${margin.left + innerWidth}" y="${margin.top + innerHeight + 16}" text-anchor="end" font-size="10" fill="currentColor">${lastDate}</text>
-      <polyline points="${points.join(' ')}" fill="none" stroke="#3890ff" stroke-width="2.5" />
+      <polyline points="${points.join(' ')}" fill="none" style="stroke:var(--p9n-link)" stroke-width="2.5" />
       <circle cx="${points[points.length - 1].split(',')[0]}" cy="${points[points.length - 1].split(',')[1]}" r="4" fill="#da314b">
         <title>当前均分: ${cumulativeTrend[len - 1].cumAvg}</title>
       </circle>
     </svg>
-    <details style="margin-top:4px;font-size:11px;color:#666;">
+    <details style="margin-top:4px;font-size:11px;color:var(--p9n-muted);">
       <summary style="cursor:pointer;">查看走势数据表格</summary>
       <div style="max-height:100px;overflow-y:auto;margin-top:4px;">
         <table style="width:100%;border-collapse:collapse;font-size:11px;">
           <thead>
-            <tr style="border-bottom:1px solid #ddd;"><th style="text-align:left;">日期</th><th style="text-align:right;">当条评分</th><th style="text-align:right;">累计均分</th></tr>
+            <tr style="border-bottom:1px solid var(--p9n-border);"><th style="text-align:left;">日期</th><th style="text-align:right;">当条评分</th><th style="text-align:right;">累计均分</th></tr>
           </thead>
           <tbody>
             ${cumulativeTrend.slice(-15).map(t => `
-              <tr style="border-bottom:1px solid rgba(0,0,0,0.05);"><td style="text-align:left;">${new Date(t.time + SHANGHAI_OFFSET_MS).toISOString().slice(0, 10)}</td><td style="text-align:right;">${t.score}分</td><td style="text-align:right;font-weight:500;">${t.cumAvg}</td></tr>
+              <tr style="border-bottom:1px solid var(--p9n-border);"><td style="text-align:left;">${new Date(t.time + SHANGHAI_OFFSET_MS).toISOString().slice(0, 10)}</td><td style="text-align:right;">${t.score}分</td><td style="text-align:right;font-weight:500;">${t.cumAvg}</td></tr>
             `).join('')}
           </tbody>
         </table>
       </div>
     </details>
-    ${missingTimeCount > 0 ? `<div style="font-size:11px;color:#888;text-align:right;padding-right:10px;margin-top:2px;">注：${missingTimeCount} 条评价无有效时间戳未纳入趋势</div>` : ''}
+    ${missingTimeCount > 0 ? `<div style="font-size:11px;color:var(--p9n-muted);text-align:right;padding-right:10px;margin-top:2px;">注：${missingTimeCount} 条评价无有效时间戳未纳入趋势</div>` : ''}
   `;
 }
 
 export function renderWeeklyHeatmapSvg(stats: ReviewStats): string {
   const { weeklyHeatmap, scoredCount, missingTimeCount } = stats;
   if (weeklyHeatmap.length === 0) {
-    return '<div class="psnine-empty-chart" style="padding:10px;color:#888;">暂无时间数据</div>';
+    return '<div class="psnine-empty-chart" style="padding:10px;color:var(--p9n-muted);">暂无时间数据</div>';
   }
 
   const svgWidth = 460;
@@ -570,16 +570,16 @@ export function renderWeeklyHeatmapSvg(stats: ReviewStats): string {
       <text x="${margin.left - 5}" y="${margin.top + 6}" text-anchor="end" font-size="10" fill="currentColor">${maxWeeklyCount}</text>
       ${barsHtml}
     </svg>
-    <details style="margin-top:4px;font-size:11px;color:#666;">
+    <details style="margin-top:4px;font-size:11px;color:var(--p9n-muted);">
       <summary style="cursor:pointer;">查看每周热度数据表格 (${sampleCount} 条时间样本 / ${totalWeeks} 周)</summary>
       <div style="max-height:100px;overflow-y:auto;margin-top:4px;">
         <table style="width:100%;border-collapse:collapse;font-size:11px;">
           <thead>
-            <tr style="border-bottom:1px solid #ddd;"><th style="text-align:left;">周 (ISO)</th><th style="text-align:right;">评论数</th></tr>
+            <tr style="border-bottom:1px solid var(--p9n-border);"><th style="text-align:left;">周 (ISO)</th><th style="text-align:right;">评论数</th></tr>
           </thead>
           <tbody>
             ${weeklyHeatmap.map(w => `
-              <tr style="border-bottom:1px solid rgba(0,0,0,0.05);"><td style="text-align:left;">${w.weekKey}</td><td style="text-align:right;font-weight:500;">${w.count}</td></tr>
+              <tr style="border-bottom:1px solid var(--p9n-border);"><td style="text-align:left;">${w.weekKey}</td><td style="text-align:right;font-weight:500;">${w.count}</td></tr>
             `).join('')}
           </tbody>
         </table>
@@ -628,7 +628,7 @@ export const mountReviews: Mount = (ctx: Context) => {
         container = doc.createElement('div');
         container.id = containerId;
         container.setAttribute('data-psnine-next', 'true');
-        container.style.cssText = 'margin:15px 0;padding:12px;background:rgba(0,0,0,0.02);border:1px solid rgba(0,0,0,0.08);border-radius:8px;box-sizing:border-box;';
+        container.style.cssText = 'margin:15px 0;padding:12px;background:var(--p9n-surface-alt);border:1px solid var(--p9n-border);border-radius:8px;box-sizing:border-box;';
 
         const target = doc.querySelector('div.min-inner.mt40 div.box, .box');
         if (target) {
@@ -645,19 +645,19 @@ export const mountReviews: Mount = (ctx: Context) => {
         <div data-psnine-next="true" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">
           <div data-psnine-next="true" style="font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px;">
             <span>📊 玩家评测与均分统计</span>
-            <span class="alert-success pd5" style="border-radius:4px;font-size:12px;padding:2px 8px;background:#5cb85c;color:#fff;">
+            <span class="alert-success pd5" style="border-radius:4px;font-size:12px;padding:2px 8px;background:var(--p9n-success);color:var(--p9n-on-accent);">
               均分 ${stats.average} (${stats.scoredCount}人打分 / 共${stats.totalLoaded}条)
             </span>
           </div>
           <div data-psnine-next="true" style="display:flex;align-items:center;gap:6px;font-size:12px;">
-            <button type="button" id="psnine-toggle-tab-btn" data-psnine-next="true" style="padding:4px 8px;border-radius:4px;border:1px solid #ccc;background:transparent;cursor:pointer;font-size:12px;">
+            <button type="button" id="psnine-toggle-tab-btn" data-psnine-next="true" style="padding:4px 8px;border-radius:4px;border:1px solid var(--p9n-border);background:transparent;cursor:pointer;font-size:12px;">
               ${activeSubTab === 'dist' ? '切换: 每周热度' : '切换: 评分分布'}
             </button>
-            <button type="button" id="psnine-toggle-gaussian-btn" data-psnine-next="true" style="padding:4px 8px;border-radius:4px;border:1px solid #ccc;background:transparent;cursor:pointer;font-size:12px;">
+            <button type="button" id="psnine-toggle-gaussian-btn" data-psnine-next="true" style="padding:4px 8px;border-radius:4px;border:1px solid var(--p9n-border);background:transparent;cursor:pointer;font-size:12px;">
               ${showNormalCurve ? '正态曲线: 开' : '正态曲线: 关'}
             </button>
             ${activeFilterScore !== null ? `
-              <button type="button" id="psnine-clear-score-filter-btn" data-psnine-next="true" style="padding:4px 8px;border-radius:4px;border:1px solid #ff9800;background:rgba(255,152,0,0.1);color:#e65100;cursor:pointer;font-weight:500;">
+              <button type="button" id="psnine-clear-score-filter-btn" data-psnine-next="true" style="padding:4px 8px;border-radius:4px;border:1px solid #ff9800;background:rgba(255,152,0,0.1);color:var(--p9n-warning-text);cursor:pointer;font-weight:500;">
                 清除 ${activeFilterScore}分 筛选
               </button>
             ` : ''}
@@ -665,12 +665,12 @@ export const mountReviews: Mount = (ctx: Context) => {
         </div>
 
         <div data-psnine-next="true" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;align-items:center;">
-          <span style="font-size:12px;color:#666;">快捷分段筛选:</span>
+          <span style="font-size:12px;color:var(--p9n-muted);">快捷分段筛选:</span>
           ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(s => {
             const count = stats.distribution[s - 1];
             const isSel = activeFilterScore === s;
             return `
-              <button type="button" class="psnine-score-filter-chip" data-psnine-next="true" data-score="${s}" style="padding:2px 6px;font-size:11px;border-radius:3px;border:1px solid ${isSel ? '#ff9800' : '#ddd'};background:${isSel ? '#ff9800' : 'rgba(0,0,0,0.03)'};color:${isSel ? '#fff' : 'inherit'};cursor:pointer;">
+              <button type="button" class="psnine-score-filter-chip" data-psnine-next="true" data-score="${s}" style="padding:2px 6px;font-size:11px;border-radius:3px;border:1px solid ${isSel ? '#ff9800' : 'var(--p9n-border)'};background:${isSel ? '#ff9800' : 'var(--p9n-surface-alt)'};color:${isSel ? 'var(--p9n-on-accent)' : 'inherit'};cursor:pointer;">
                 ${s}分 (${count})
               </button>
             `;
@@ -678,16 +678,16 @@ export const mountReviews: Mount = (ctx: Context) => {
         </div>
 
         <div data-psnine-next="true" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:12px;">
-          <div data-psnine-next="true" style="background:rgba(255,255,255,0.03);border-radius:6px;padding:8px;border:1px solid rgba(0,0,0,0.04);">
-            <div style="font-size:12px;font-weight:500;margin-bottom:4px;color:#666;">
+          <div data-psnine-next="true" style="background:var(--p9n-surface-alt);border-radius:6px;padding:8px;border:1px solid var(--p9n-border);">
+            <div style="font-size:12px;font-weight:500;margin-bottom:4px;color:var(--p9n-muted);">
               ${activeSubTab === 'dist' ? `评分分布直方图 ${showNormalCurve ? '(含正态拟合)' : ''}` : '每周评分热度趋势 (含空周补零)'}
             </div>
             <div id="psnine-score-dist-container" data-psnine-next="true">
               ${activeSubTab === 'dist' ? renderScoreDistributionSvg(stats, showNormalCurve, activeFilterScore) : renderWeeklyHeatmapSvg(stats)}
             </div>
           </div>
-          <div data-psnine-next="true" style="background:rgba(255,255,255,0.03);border-radius:6px;padding:8px;border:1px solid rgba(0,0,0,0.04);">
-            <div style="font-size:12px;font-weight:500;margin-bottom:4px;color:#666;">累计均分走势</div>
+          <div data-psnine-next="true" style="background:var(--p9n-surface-alt);border-radius:6px;padding:8px;border:1px solid var(--p9n-border);">
+            <div style="font-size:12px;font-weight:500;margin-bottom:4px;color:var(--p9n-muted);">累计均分走势</div>
             <div id="psnine-trend-container" data-psnine-next="true">${renderTrendSvg(stats)}</div>
           </div>
         </div>

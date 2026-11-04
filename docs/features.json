@@ -1807,7 +1807,7 @@
     "id": "T12",
     "name": "批量全部/未获 Tips",
     "module": "trophies",
-    "behavior": "原站排序行内单一 Tips 菜单，批量全部/未获 Tips，队列可停止",
+    "behavior": "原站排序行内单一展开/收起 Tips 开关，跟随原生已获得/未获得筛选批量加载，切换筛选保持展开，收起即停止；1.0.8 起移除原三项菜单",
     "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
@@ -2177,7 +2177,7 @@
     "id": "P09",
     "name": "游戏页转到我的奖杯",
     "module": "games",
-    "behavior": "保留 query/hash，可设置关闭",
+    "behavior": "保留 query/hash，可设置关闭；1.0.8 起移除游戏页“切换至我的奖杯进度”按钮，仅保留自动跳转",
     "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
@@ -2363,6 +2363,27 @@
     "verification_note": "实现已接入对应页面模块；测试文件是关联模块的回归范围，并非本条独立真机测试。"
   },
   {
+    "id": "P15",
+    "name": "游戏页栏目折叠",
+    "module": "games",
+    "behavior": "游戏页奖杯/排行/评论/问答/主题/约战/游列栏目网格默认收起为一行，显示当前栏目，点击展开或收起，可设置关闭",
+    "status": "implemented",
+    "baseline": "69a91e4",
+    "history_keys": [],
+    "evidence_commits": [],
+    "origin": "new",
+    "implementation": [
+      "src/features/games.ts",
+      "src/styles/index.ts",
+      "src/core/settings-ui.ts"
+    ],
+    "test_files": [
+      "tests/games-regression.test.ts"
+    ],
+    "verification_scope": "code_review_and_module_regression",
+    "verification_note": "1.0.8 按用户要求新增；不改原生链接，仅隐藏/显示原生 ul.inav。"
+  },
+  {
     "id": "B01",
     "name": "隐藏约战发起人头像",
     "module": "battle",
@@ -2416,7 +2437,7 @@
     "id": "B03",
     "name": "约战游戏监控",
     "module": "battle",
-    "behavior": "游戏页及列表行增加/移除、状态同步",
+    "behavior": "约战列表行增加/移除、状态同步；1.0.8 起按用户要求移除游戏页铃铛",
     "status": "implemented",
     "baseline": "304b14e8bb6cf6d10bc0deb7f9250667822ac444",
     "history_keys": [
